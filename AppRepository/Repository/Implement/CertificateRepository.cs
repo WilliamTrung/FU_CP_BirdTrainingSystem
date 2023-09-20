@@ -12,7 +12,7 @@ namespace AppRepository.Repository.Implement
 {
     public class CertificateRepository : GenericRepository<Certificate>, ICertificateRepository
     {
-        public CertificateRepository(BirdTrainingSystemContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
+        public CertificateRepository(BirdTrainingCenterSystemContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
         {
         }
     }

@@ -12,7 +12,7 @@ namespace AppRepository.Repository.Implement
 {
     public class AppointmentBillRepository : GenericRepository<AppointmentBill>, IAppointmentBillRepository
     {
-        public AppointmentBillRepository(BirdTrainingSystemContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
+        public AppointmentBillRepository(BirdTrainingCenterSystemContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
         {
         }
     }

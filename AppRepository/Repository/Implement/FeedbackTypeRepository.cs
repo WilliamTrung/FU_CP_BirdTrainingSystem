@@ -12,7 +12,7 @@ namespace AppRepository.Repository.Implement
 {
     public class FeedbackTypeRepository : GenericRepository<FeedbackType>, IFeedbackTypeRepository
     {
-        public FeedbackTypeRepository(BirdTrainingSystemContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
+        public FeedbackTypeRepository(BirdTrainingCenterSystemContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
         {
         }
     }

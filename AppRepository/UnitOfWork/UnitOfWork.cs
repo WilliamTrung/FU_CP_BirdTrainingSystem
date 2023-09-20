@@ -85,9 +85,9 @@ namespace AppRepository.UnitOfWork
 
         public IWorkShopCategoryRepository WorkShopCategoryRepository { get; private set; } = null! ;
 
-        private readonly BirdTrainingSystemContext _context;
+        private readonly BirdTrainingCenterSystemContext _context;
 
-        public UnitOfWork(BirdTrainingSystemContext context)
+        public UnitOfWork(BirdTrainingCenterSystemContext context)
         {
             _context = context;
             InitRepositories();

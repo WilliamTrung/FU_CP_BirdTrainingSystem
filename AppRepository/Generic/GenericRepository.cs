@@ -12,10 +12,10 @@ namespace AppRepository.Generic
 {
     public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
     {
-        public readonly BirdTrainingSystemContext _context;
+        public readonly BirdTrainingCenterSystemContext _context;
         public readonly IUnitOfWork _unitOfWork;
         private DbSet<TEntity> _entities;
-        public GenericRepository(BirdTrainingSystemContext context, IUnitOfWork unitOfWork)
+        public GenericRepository(BirdTrainingCenterSystemContext context, IUnitOfWork unitOfWork)
         {
             _context= context;
             _entities = _context.Set<TEntity>();

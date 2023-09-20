@@ -6,13 +6,13 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace AppCore.Context
 {
-    public partial class BirdTrainingSystemContext : DbContext
+    public partial class BirdTrainingCenterSystemContext : DbContext
     {
-        public BirdTrainingSystemContext()
+        public BirdTrainingCenterSystemContext()
         {
         }
 
-        public BirdTrainingSystemContext(DbContextOptions<BirdTrainingSystemContext> options)
+        public BirdTrainingCenterSystemContext(DbContextOptions<BirdTrainingCenterSystemContext> options)
             : base(options)
         {
         }
@@ -59,7 +59,7 @@ namespace AppCore.Context
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=(local);uid=sa;pwd=1234567890;database= BirdTrainingSystem;TrustServerCertificate=True;");
+                optionsBuilder.UseSqlServer("Server=(local);uid=sa;pwd=1234567890;database= BirdTrainingCenterSystem;TrustServerCertificate=True;");
             }
         }
 

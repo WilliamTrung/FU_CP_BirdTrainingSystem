@@ -12,7 +12,7 @@ namespace AppRepository.Repository.Implement
 {
     public class WorkShopCategoryRepository : GenericRepository<WorkShopCategory>, IWorkShopCategoryRepository
     {
-        public WorkShopCategoryRepository(BirdTrainingSystemContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
+        public WorkShopCategoryRepository(BirdTrainingCenterSystemContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
         {
         }
     }

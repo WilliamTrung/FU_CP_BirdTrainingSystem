@@ -12,7 +12,7 @@ namespace AppRepository.Repository.Implement
 {
     public class WeekRepository : GenericRepository<Week>, IWeekRepository
     {
-        public WeekRepository(BirdTrainingSystemContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
+        public WeekRepository(BirdTrainingCenterSystemContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
         {
         }
     }

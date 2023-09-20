@@ -12,7 +12,7 @@ namespace AppRepository.Repository.Implement
 {
     public class TrainerWorkshopRepository : GenericRepository<TrainerWorkshop>, ITrainerWorkshopRepository
     {
-        public TrainerWorkshopRepository(BirdTrainingSystemContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
+        public TrainerWorkshopRepository(BirdTrainingCenterSystemContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
         {
         }
     }
