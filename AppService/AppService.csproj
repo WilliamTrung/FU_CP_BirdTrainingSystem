@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FirebaseStorage.net" Version="1.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\AdministrativeSubsystem\AdministrativeSubsystem.csproj" />
     <ProjectReference Include="..\AdviceConsultingSubsystem\AdviceConsultingSubsystem.csproj" />
     <ProjectReference Include="..\AppCore\AppCore.csproj" />
