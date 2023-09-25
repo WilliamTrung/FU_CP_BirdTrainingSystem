@@ -15,7 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AppService\AppService.csproj" />
     <ProjectReference Include="..\SP_AutoMapperConfig\SP_AutoMapperConfig.csproj" />
+    <ProjectReference Include="..\SP_Middleware\SP_Middleware.csproj" />
   </ItemGroup>
 
 </Project>

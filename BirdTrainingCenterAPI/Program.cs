@@ -1,3 +1,7 @@
+using AppService;
+using AppService.Implementation;
+using AuthSubsystem;
+using AuthSubsystem.Implementation;
 using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +12,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(SP_AutoMapperConfig.SP_AutoMapperAssembly)));
 
+//Add features
+builder.Services.AddTransient<IAuthFeature, AuthFeature>(); 
+//Add services
+builder.Services.AddTransient<IAuthService, AuthService>();
 
 var app = builder.Build();
 
