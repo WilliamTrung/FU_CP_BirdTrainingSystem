@@ -1,0 +1,17 @@
+﻿using Microsoft.Win32;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace WorkshopSubsystem
+{
+    public interface IFeatureCustomer
+    {
+        
+        //[Customer] register joining[Class] for specified[Workshop] - then pay for the charge amount of the[Workshop] to the center
+
+
+    }
+}

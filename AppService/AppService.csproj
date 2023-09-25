@@ -7,8 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AdministrativeSubsystem\AdministrativeSubsystem.csproj" />
+    <ProjectReference Include="..\AdviceConsultingSubsystem\AdviceConsultingSubsystem.csproj" />
     <ProjectReference Include="..\AppCore\AppCore.csproj" />
     <ProjectReference Include="..\AppRepository\AppRepository.csproj" />
+    <ProjectReference Include="..\AuthSubsystem\AuthSubsystem.csproj" />
+    <ProjectReference Include="..\TrainingCourseSubsystem\TrainingCourseSubsystem.csproj" />
+    <ProjectReference Include="..\WorkshopSubsystem\WorkshopSubsystem.csproj" />
   </ItemGroup>
 
 </Project>

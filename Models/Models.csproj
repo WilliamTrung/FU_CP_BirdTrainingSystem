@@ -1,0 +1,24 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="ServiceModels\AdviceConsultantModels\" />
+    <Folder Include="ServiceModels\OnlineCourseModels\" />
+    <Folder Include="ServiceModels\WorkshopModels\" />
+    <Folder Include="ServiceModels\TrainingCourseModels\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\SP_Validator\SP_Validator.csproj" />
+  </ItemGroup>
+
+</Project>
