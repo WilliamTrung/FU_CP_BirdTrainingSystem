@@ -59,7 +59,7 @@ namespace AppCore.Context
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=(local);uid=sa;pwd=1234567890;database= BirdTrainingCenterSystem;TrustServerCertificate=True;");
+                optionsBuilder.UseSqlServer("Server=(local);uid=sa;pwd=1234567890;database= BirdTraining;TrustServerCertificate=True;");
             }
         }
 
