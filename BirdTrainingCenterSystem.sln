@@ -29,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SP_Validator", "SP_Validato
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test_AutoMapperConfig", "Test_AutoMapperConfig\Test_AutoMapperConfig.csproj", "{4B7C40D8-72C4-4233-83C3-4B6DEC9B6DCC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SP_Middleware", "SP_Middleware\SP_Middleware.csproj", "{6F556E5F-FC8D-4C87-A408-1F719D93FE01}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SP_Middleware", "SP_Middleware\SP_Middleware.csproj", "{6F556E5F-FC8D-4C87-A408-1F719D93FE01}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
