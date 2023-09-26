@@ -10,5 +10,6 @@ namespace AppService
     public interface IFirebaseService
     {
         Task<string> UploadFile(IFormFile file,string fileName, string saveFolder, string bucketName);
+        Task<bool> DeleteFile(string fileUrl, string bucketName);
     }
 }

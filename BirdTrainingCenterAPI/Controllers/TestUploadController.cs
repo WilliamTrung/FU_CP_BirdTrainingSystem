@@ -23,10 +23,18 @@ namespace BirdTrainingCenterAPI.Controllers
             return Ok();
         }
         [HttpPost]
-        public async Task<IActionResult> PostFiles(IFormFile file)
+        public async Task<IActionResult> PostFile(IFormFile file)
         {
             //for guidance used only
             var temp = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.TEST, _bucket.General);
+            var delete = await _firebaseService.DeleteFile(temp, _bucket.General);
+            return Ok(temp);
+        }
+        [HttpDelete]
+        public async Task<IActionResult> DeleteFile(string fileUrl)
+        {
+            //for guidance used only
+            var temp = await _firebaseService.DeleteFile(fileUrl, _bucket.General);
             return Ok(temp);
         }
     }
