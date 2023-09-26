@@ -1,32 +1,53 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Mime;
+using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
-using Firebase;
-using Firebase.Storage;
+
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
+using Google.Cloud.Storage.V1;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
+using Models;
+using Models.ConfigModels;
+//using Models.ServiceModels;
 
 namespace AppService.Implementation
 {
     public class FirebaseService : IFirebaseService
     {
-        public Task UploadFile()
+        private readonly StorageClient _storageClient;
+        private readonly FirebaseConfig _firebaseConfig;
+        public FirebaseService(StorageClient storageClient, IOptions<FirebaseConfig> firebaseConfig)
         {
-            // Get any Stream - it can be FileStream, MemoryStream or any other type of Stream
-            var stream = File.Open(@"C:\Users\you\file.png", FileMode.Open);
-
-            // Construct FirebaseStorage, path to where you want to upload the file and Put it there
-            var task = new FirebaseStorage("your-bucket.appspot.com")
-                .Child("data")
-                .Child("random")
-                .Child("file.png")
-                .PutAsync(stream);
-
-            // Track progress of the upload
-            task.Progress.ProgressChanged += (s, e) => Console.WriteLine($"Progress: {e.Percentage} %");
-
-            // await the task to wait until upload completes and get the download url
-            var downloadUrl = await task;
+            _storageClient = storageClient;
+            _firebaseConfig = firebaseConfig.Value;
+        }
+        public async Task<string> UploadFile(IFormFile file, string fileName, string saveFolder, string bucketName)
+        {                  
+            //Set public read action
+            UploadObjectOptions options = new UploadObjectOptions
+            {
+                PredefinedAcl = PredefinedObjectAcl.PublicRead
+            };
+            var fileSavePath = $@"{saveFolder}/{fileName}";
+            using (var fileStream = file.OpenReadStream())
+            {
+                var task = _storageClient.UploadObjectAsync(
+                                bucketName,
+                                fileSavePath,
+                                contentType: file.ContentType,
+                                fileStream,
+                                options: options
+                                );
+                var uploaded = await task;
+                var url = @$"{_firebaseConfig.Storage}{uploaded.Bucket}/{uploaded.Name}";
+                return url;
+            }            
         }
     }
 }
