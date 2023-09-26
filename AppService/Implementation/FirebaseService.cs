@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Pipes;
 using System.Linq;
 using System.Net.Mime;
 using System.Security.AccessControl;
@@ -14,6 +15,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Models;
 using Models.ConfigModels;
+using static Google.Cloud.Storage.V1.UrlSigner;
 //using Models.ServiceModels;
 
 namespace AppService.Implementation
@@ -27,6 +29,22 @@ namespace AppService.Implementation
             _storageClient = storageClient;
             _firebaseConfig = firebaseConfig.Value;
         }
+
+        public async Task<bool> DeleteFile(string fileUrl, string bucketName)
+        {         
+            try
+            {
+                var fileName = fileUrl.Split(bucketName)[1].Substring(1);
+                await _storageClient.DeleteObjectAsync(
+                                    bucketName,
+                                    fileName
+                                    );                
+                return true;
+            } catch {
+                return false;
+            }                       
+        }
+
         public async Task<string> UploadFile(IFormFile file, string fileName, string saveFolder, string bucketName)
         {                  
             //Set public read action
@@ -35,6 +53,7 @@ namespace AppService.Implementation
                 PredefinedAcl = PredefinedObjectAcl.PublicRead
             };
             var fileSavePath = $@"{saveFolder}/{fileName}";
+            
             using (var fileStream = file.OpenReadStream())
             {
                 var task = _storageClient.UploadObjectAsync(
