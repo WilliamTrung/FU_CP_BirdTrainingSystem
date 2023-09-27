@@ -11,8 +11,9 @@ namespace Models.Entities
         }
 
         public int Id { get; set; }
-        public int? TotalTime { get; set; }
+        public int? TotalSlot { get; set; }
         public decimal? TotalPrice { get; set; }
+        public int? Status { get; set; }
 
         public virtual ICollection<Appointment> Appointments { get; set; }
     }

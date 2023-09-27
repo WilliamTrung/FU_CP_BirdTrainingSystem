@@ -14,7 +14,7 @@ namespace AppCore.Models
 
         public int Id { get; set; }
         public string? Name { get; set; }
-        public string? ShortDetailing { get; set; }
+        public string? ShortDetail { get; set; }
 
         public virtual ICollection<Bird> Birds { get; set; }
         public virtual ICollection<TrainingCourse> TrainingCourses { get; set; }

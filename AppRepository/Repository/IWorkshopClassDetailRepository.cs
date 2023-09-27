@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AppRepository.Repository
 {
-    public interface IWorkShopCategoryRepository : IGenericRepository<WorkShopCategory>
+    public interface IWorkshopClassDetailRepository : IGenericRepository<WorkshopClassDetail>
     {
     }
 }

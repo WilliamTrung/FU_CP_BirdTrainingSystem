@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace AppRepository.Repository.Implement
 {
-    public class TrainerWorkshopRepository : GenericRepository<TrainerWorkshop>, ITrainerWorkshopRepository
+    public class WorkshopRefundPolicyRepository : GenericRepository<WorkshopRefundPolicy>, IWorkshopRefundPolicyRepository
     {
-        public TrainerWorkshopRepository(BirdTrainingCenterSystemContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
+        public WorkshopRefundPolicyRepository(BirdTrainingCenterSystemContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
         {
         }
     }

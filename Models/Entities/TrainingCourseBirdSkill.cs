@@ -7,7 +7,7 @@ namespace Models.Entities
     {
         public TrainingCourseBirdSkill()
         {
-            BirdTrainingProgressDetails = new HashSet<BirdTrainingProgressDetail>();
+            BirdTrainingProgresses = new HashSet<BirdTrainingProgress>();
         }
 
         public int TrainingCourseId { get; set; }
@@ -16,6 +16,6 @@ namespace Models.Entities
 
         public virtual BirdSkill BirdSkill { get; set; } = null!;
         public virtual TrainingCourse TrainingCourse { get; set; } = null!;
-        public virtual ICollection<BirdTrainingProgressDetail> BirdTrainingProgressDetails { get; set; }
+        public virtual ICollection<BirdTrainingProgress> BirdTrainingProgresses { get; set; }
     }
 }

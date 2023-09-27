@@ -6,11 +6,12 @@ namespace AppCore.Models
     public partial class WorkshopAttendance
     {
         public int Id { get; set; }
+        public int TrainerId { get; set; }
+        public int WorkshopClassId { get; set; }
+        public int SlotId { get; set; }
         public int CustomerId { get; set; }
-        public int WorkshopId { get; set; }
-        public DateTime? AttendDate { get; set; }
         public bool? Attendance { get; set; }
 
-        public virtual CustomerWorkshopPayment CustomerWorkshopPayment { get; set; } = null!;
+        public virtual WorkshopClassDetail WorkshopClassDetail { get; set; } = null!;
     }
 }

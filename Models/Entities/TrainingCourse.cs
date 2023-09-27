@@ -16,8 +16,8 @@ namespace Models.Entities
         public int BirdSpeciesId { get; set; }
         public string? Title { get; set; }
         public string? Description { get; set; }
-        public float? Rating { get; set; }
-        public int? TotalTrainingDay { get; set; }
+        public string? Picture { get; set; }
+        public int? TotalSlot { get; set; }
         public decimal? TotalPrice { get; set; }
 
         public virtual BirdSpecies BirdSpecies { get; set; } = null!;

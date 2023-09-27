@@ -7,7 +7,7 @@ namespace AppCore.Models
     {
         public BirdCertificate()
         {
-            UserBirdBirdCertificates = new HashSet<BirdCertificateDetail>();
+            BirdBirdCertificateDetails = new HashSet<BirdCertificateDetail>();
         }
 
         public int Id { get; set; }
@@ -16,8 +16,9 @@ namespace AppCore.Models
         public string? ShortDescrption { get; set; }
         public string? BirdCenterName { get; set; }
         public int? Picture { get; set; }
+        public int? TrainerId { get; set; }
 
         public virtual TrainingCourse TrainingCourse { get; set; } = null!;
-        public virtual ICollection<BirdCertificateDetail> UserBirdBirdCertificates { get; set; }
+        public virtual ICollection<BirdCertificateDetail> BirdBirdCertificateDetails { get; set; }
     }
 }

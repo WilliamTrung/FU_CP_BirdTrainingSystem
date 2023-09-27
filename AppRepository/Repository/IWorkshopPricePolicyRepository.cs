@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AppRepository.Repository
 {
-    public interface IBirdTrainingProgressDetailRepository : IGenericRepository<BirdTrainingProgressDetail>
+    public interface IWorkshopPricePolicyRepository : IGenericRepository<WorkshopPricePolicy>
     {
     }
 }

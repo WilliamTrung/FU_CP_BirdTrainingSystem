@@ -7,22 +7,22 @@ namespace AppCore.Models
     {
         public Workshop()
         {
-            CustomerWorkshopPayments = new HashSet<CustomerWorkshopPayment>();
-            TrainerWorkshops = new HashSet<TrainerWorkshop>();
+            WorkshopClasses = new HashSet<WorkshopClass>();
         }
 
         public int Id { get; set; }
-        public int WorkShopCategoryId { get; set; }
+        public int WorkshopPricePolicyId { get; set; }
+        public int WorkshopRefundPolicyId { get; set; }
         public string Title { get; set; } = null!;
         public string? Description { get; set; }
-        public DateTime? RegisterEndDate { get; set; }
-        public DateTime? StartTime { get; set; }
+        public string? Picture { get; set; }
+        public int? RegisterEnd { get; set; }
         public decimal? Price { get; set; }
-        public bool? WorkshopStatus { get; set; }
-        public int TrainerId { get; set; }
+        public int? TotalSlot { get; set; }
+        public int? Status { get; set; }
 
-        public virtual WorkShopCategory WorkShopCategory { get; set; } = null!;
-        public virtual ICollection<CustomerWorkshopPayment> CustomerWorkshopPayments { get; set; }
-        public virtual ICollection<TrainerWorkshop> TrainerWorkshops { get; set; }
+        public virtual WorkshopPricePolicy WorkshopPricePolicy { get; set; } = null!;
+        public virtual WorkshopRefundPolicy WorkshopRefundPolicy { get; set; } = null!;
+        public virtual ICollection<WorkshopClass> WorkshopClasses { get; set; }
     }
 }

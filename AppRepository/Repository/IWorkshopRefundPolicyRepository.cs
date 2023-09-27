@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AppRepository.Repository
 {
-    public interface ICustomerWorkshopPaymentRepository : IGenericRepository<CustomerWorkshopPayment>
+    public interface IWorkshopRefundPolicyRepository : IGenericRepository<WorkshopRefundPolicy>
     {
     }
 }
