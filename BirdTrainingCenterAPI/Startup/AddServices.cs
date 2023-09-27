@@ -6,6 +6,7 @@ using AuthSubsystem;
 using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Storage.V1;
 using Models.ConfigModels;
+using ApplicationService.MailSettings;
 
 namespace BirdTrainingCenterAPI.Startup
 {
@@ -21,6 +22,7 @@ namespace BirdTrainingCenterAPI.Startup
                 var credential = GoogleCredential.FromFile("birdtrainingcentersystem-firebase-adminsdk-9yolt-2b38d5f11c.json");
                 return StorageClient.Create(credential);
             });
+            builder.Services.Configure<MailSetting>(builder.Configuration.GetSection("MailSettings"));
             builder.Services.Configure<FirebaseConfig>(options =>
             {
                 options.Storage = builder.Configuration.GetRequiredSection("Firebase")["Storage"];
@@ -33,6 +35,7 @@ namespace BirdTrainingCenterAPI.Startup
 
             builder.Services.AddTransient<IFirebaseService, FirebaseService>();
             builder.Services.AddTransient<IAuthService, AuthService>();
+            builder.Services.AddTransient<IMailService, MailService>();
         }
         public static void ConfiguringCors(WebApplicationBuilder builder)
         {
