@@ -5,6 +5,7 @@ using AuthSubsystem.Implementation;
 using BirdTrainingCenterAPI.Startup;
 using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Storage.V1;
+using GoogleApi.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
@@ -59,6 +60,7 @@ builder.Services.AddControllers().AddOData(options => options
                );
 
 builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(SP_AutoMapperConfig.SP_AutoMapperAssembly)));
+builder.Services.AddGoogleApiClients();
 //Add json
 
 //Add service

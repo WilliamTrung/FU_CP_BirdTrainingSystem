@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Models.ServiceModels
+namespace AppService
 {
-    public class FirebaseConfig
+    public interface IGoogleMapService
     {
+        Task<float> CalculateDistance(string destination);
     }
 }
