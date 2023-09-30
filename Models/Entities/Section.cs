@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Models.Entities
+﻿namespace Models.Entities
 {
     public partial class Section
     {

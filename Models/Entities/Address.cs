@@ -1,16 +1,17 @@
 ﻿namespace Models.Entities
 {
-    public partial class ConsultingPricePolicy
+    public partial class Address
     {
-        public ConsultingPricePolicy()
+        public Address()
         {
             ConsultingTickets = new HashSet<ConsultingTicket>();
         }
 
         public int Id { get; set; }
-        public decimal? Price { get; set; }
-        public bool? OnlineOrOffline { get; set; }
+        public int CustomerId { get; set; }
+        public string? AddressDetail { get; set; }
 
+        public virtual Customer Customer { get; set; } = null!;
         public virtual ICollection<ConsultingTicket> ConsultingTickets { get; set; }
     }
 }

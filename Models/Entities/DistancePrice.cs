@@ -1,17 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Models.Entities
+﻿namespace Models.Entities
 {
     public partial class DistancePrice
     {
+        public DistancePrice()
+        {
+            ConsultingTickets = new HashSet<ConsultingTicket>();
+        }
+
         public int Id { get; set; }
         public int ConsultingPricePolicyId { get; set; }
-        public int? Distance { get; set; }
-        public int? FreeDistance { get; set; }
-        public decimal? BasePrice { get; set; }
+        public int? From { get; set; }
+        public int? To { get; set; }
         public decimal? PricePerKm { get; set; }
 
-        public virtual ConsultingPricePolicy ConsultingPricePolicy { get; set; } = null!;
+        public virtual ICollection<ConsultingTicket> ConsultingTickets { get; set; }
     }
 }
