@@ -13,11 +13,14 @@ namespace BirdTrainingCenterAPI.Controllers
     {
         private readonly IFirebaseService _firebaseService;
         private readonly IMailService _mailService;
+        private readonly IGoogleMapService _googleMapService;
         private readonly FirebaseBucket _bucket;
-        public TestServiceController(IFirebaseService firebaseService, IMailService mailService, IOptions<FirebaseBucket> bucket)
+        private readonly GoogleConfig _googleConfig;
+        public TestServiceController(IFirebaseService firebaseService, IMailService mailService, IGoogleMapService googleMapService, IOptions<FirebaseBucket> bucket)
         {
             _firebaseService = firebaseService;
             _mailService = mailService;
+            _googleMapService = googleMapService;
             _bucket = bucket.Value;
         }
         [HttpGet]
@@ -38,6 +41,18 @@ namespace BirdTrainingCenterAPI.Controllers
         {
             await _mailService.SendEmailAsync(receiverEmail, mailContent);
             return Ok();
+        }
+        [HttpGet("googlemap")]
+        public async Task<IActionResult> TestGoogleMap(string destination)
+        {
+            try
+            {
+                var result = await _googleMapService.CalculateDistance(destination);
+                return Ok(result);
+            } catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }                        
         }
         [HttpDelete]
         public async Task<IActionResult> DeleteFile(string fileUrl)

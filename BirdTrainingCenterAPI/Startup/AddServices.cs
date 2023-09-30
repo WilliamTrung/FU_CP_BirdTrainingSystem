@@ -8,6 +8,7 @@ using Google.Cloud.Storage.V1;
 using Models.ConfigModels;
 using ApplicationService.MailSettings;
 
+
 namespace BirdTrainingCenterAPI.Startup
 {
     public class AddServices
@@ -23,6 +24,18 @@ namespace BirdTrainingCenterAPI.Startup
                 return StorageClient.Create(credential);
             });
             builder.Services.Configure<MailSetting>(builder.Configuration.GetSection("MailSettings"));
+            builder.Services.Configure<CenterGeocode>(config =>
+            {
+                config.Latitude = Double.Parse(builder.Configuration.GetRequiredSection("CenterGeocode")["Latitude"]);
+                config.Longitude = Double.Parse(builder.Configuration.GetRequiredSection("CenterGeocode")["Longtitude"]);
+            });
+            builder.Services.Configure<GoogleConfig>(config =>
+            {
+                config.API_KEY = builder.Configuration.GetRequiredSection("GoogleConfig")["ApiKey"];
+                config.SEARCH_ENGINE_ID = builder.Configuration.GetRequiredSection("GoogleConfig")["SearchEngineId"];
+                config.CLIENT_SECRET = builder.Configuration.GetRequiredSection("GoogleConfig")["ClientSecret"];
+                config.CLIENT_ID = builder.Configuration.GetRequiredSection("GoogleConfig")["ClientId"];
+            });
             builder.Services.Configure<FirebaseConfig>(options =>
             {
                 options.Storage = builder.Configuration.GetRequiredSection("Firebase")["Storage"];
@@ -32,7 +45,7 @@ namespace BirdTrainingCenterAPI.Startup
             {
                 options.General = builder.Configuration.GetRequiredSection("Firebase")["GeneralBucket"];
             });
-
+            builder.Services.AddTransient<IGoogleMapService, GoogleMapService>();
             builder.Services.AddTransient<IFirebaseService, FirebaseService>();
             builder.Services.AddTransient<IAuthService, AuthService>();
             builder.Services.AddTransient<IMailService, MailService>();
