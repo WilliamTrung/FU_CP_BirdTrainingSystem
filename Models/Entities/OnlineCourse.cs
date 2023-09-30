@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Models.Entities
+﻿namespace Models.Entities
 {
     public partial class OnlineCourse
     {
@@ -15,8 +12,9 @@ namespace Models.Entities
         public int Id { get; set; }
         public string? Title { get; set; }
         public string? ShortDescription { get; set; }
+        public string? Picture { get; set; }
         public decimal? Price { get; set; }
-        public string? Status { get; set; }
+        public int? Status { get; set; }
 
         public virtual ICollection<Certificate> Certificates { get; set; }
         public virtual ICollection<CustomerOnlineCourseDetail> CustomerOnlineCourseDetails { get; set; }
