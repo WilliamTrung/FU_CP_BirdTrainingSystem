@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace AppCore.Models
+﻿namespace AppCore.Models
 {
     public partial class WorkshopClass
     {
         public WorkshopClass()
         {
             CustomerWorkshopClasses = new HashSet<CustomerWorkshopClass>();
+            WorkshopAttendances = new HashSet<WorkshopAttendance>();
             WorkshopClassDetails = new HashSet<WorkshopClassDetail>();
         }
 
@@ -19,6 +17,7 @@ namespace AppCore.Models
 
         public virtual Workshop Workshop { get; set; } = null!;
         public virtual ICollection<CustomerWorkshopClass> CustomerWorkshopClasses { get; set; }
+        public virtual ICollection<WorkshopAttendance> WorkshopAttendances { get; set; }
         public virtual ICollection<WorkshopClassDetail> WorkshopClassDetails { get; set; }
     }
 }

@@ -1,18 +1,17 @@
 ﻿namespace AppCore.Models
 {
-    public partial class DistancePrice
+    public partial class Address
     {
-        public DistancePrice()
+        public Address()
         {
             ConsultingTickets = new HashSet<ConsultingTicket>();
         }
 
         public int Id { get; set; }
-        public int ConsultingPricePolicyId { get; set; }
-        public int? From { get; set; }
-        public int? To { get; set; }
-        public decimal? PricePerKm { get; set; }
+        public int CustomerId { get; set; }
+        public string? AddressDetail { get; set; }
 
+        public virtual Customer Customer { get; set; } = null!;
         public virtual ICollection<ConsultingTicket> ConsultingTickets { get; set; }
     }
 }

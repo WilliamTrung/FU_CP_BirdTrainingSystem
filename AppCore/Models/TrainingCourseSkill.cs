@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace AppCore.Models
+﻿namespace AppCore.Models
 {
-    public partial class TrainingCourseBirdSkill
+    public partial class TrainingCourseSkill
     {
-        public TrainingCourseBirdSkill()
+        public TrainingCourseSkill()
         {
             BirdTrainingProgresses = new HashSet<BirdTrainingProgress>();
         }
