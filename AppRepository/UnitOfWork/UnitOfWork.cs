@@ -1,21 +1,24 @@
 ﻿using AppCore.Context;
 using AppRepository.Repository;
 using AppRepository.Repository.Implement;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AppRepository.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {
-        public IUserRepository UserRepository { get; private set; } = null!;
+        private readonly BirdTrainingCenterSystemContext _context;
 
-        public IAppointmentRepository AppointmentRepository { get; private set; } = null!;
+        public UnitOfWork(BirdTrainingCenterSystemContext context)
+        {
+            _context = context;
+            InitRepositories();
+        }
 
-        public IAppointmentBillRepository AppointmentBillRepository { get; private set; } = null!;
+        public IAcquirableSkillRepository AcquirableSkillRepository { get; private set; } = null!;
+
+        public IAdditionalConsultingBillRepository AdditionalConsultingBillRepository { get; private set; } = null!;
+
+        public IAddressRepository AddressRepository { get; private set; } = null!;
 
         public IBirdRepository BirdRepository { get; private set; } = null!;
 
@@ -23,13 +26,23 @@ namespace AppRepository.UnitOfWork
 
         public IBirdCertificateDetailRepository BirdCertificateDetailRepository { get; private set; } = null!;
 
+        public IBirdCertificateSkillRepository BirdCertificateSkillRepository { get; private set; } = null!;
+
         public IBirdSkillRepository BirdSkillRepository { get; private set; } = null!;
 
         public IBirdSpeciesRepository BirdSpeciesRepository { get; private set; } = null!;
 
         public IBirdTrainingCourseRepository BirdTrainingCourseRepository { get; private set; } = null!;
 
+        public IBirdTrainingProgressRepository BirdTrainingProgressRepository { get; private set; } = null!;
+
+        public IBirdTrainingReportRepository BirdTrainingReportRepository { get; private set; } = null!;
+
+        public ICenterSlotRepository CenterSlotRepository { get; private set; } = null!;
+
         public ICertificateRepository CertificateRepository { get; private set; } = null!;
+
+        public IConsultingPricePolicyRepository ConsultingPricePolicyRepository { get; private set; } = null!;
 
         public IConsultingTicketRepository ConsultingTicketRepository { get; private set; } = null!;
 
@@ -45,7 +58,11 @@ namespace AppRepository.UnitOfWork
 
         public ICustomerSectionDetailRepository CustomerSectionDetailRepository { get; private set; } = null!;
 
-        public IDayRepository DayRepository { get; private set; } = null!;
+        public ICustomerWorkshopClassRepository CustomerWorkshopClassRepository { get; private set; } = null!;
+
+        public IDistancePriceRepository DistancePriceRepository { get; private set; } = null!;
+
+        public IEntityTypeRepository EntityTypeRepository { get; private set; } = null!;
 
         public IFeedbackRepository FeedbackRepository { get; private set; } = null!;
 
@@ -63,35 +80,25 @@ namespace AppRepository.UnitOfWork
 
         public ISlotRepository SlotRepository { get; private set; } = null!;
 
-        public IStaffBirdReceivedRepository StaffBirdReceivedRepository { get; private set; } = null!;
+        public ITrainableSkillRepository TrainableSkillRepository { get; private set; } = null!;
 
         public ITrainerRepository TrainerRepository { get; private set; } = null!;
 
+        public ITrainerSkillRepository TrainerSkillRepository { get; private set; } = null!;
+
+        public ITrainerSlotRepository TrainerSlotRepository { get; private set; } = null!;
+
         public ITrainingCourseRepository TrainingCourseRepository { get; private set; } = null!;
 
-        public ITrainingCourseBirdSkillRepository TrainingCourseBirdSkillRepository { get; private set; } = null!;
+        public ITrainingCourseSkillRepository TrainingCourseSkillRepository { get; private set; } = null!;
 
-        public IWeekRepository WeekRepository { get; private set; } = null!;
+        public ITransactionRepository TransactionRepository { get; private set; } = null!;
+
+        public IUserRepository UserRepository { get; private set; } = null!;
 
         public IWorkshopRepository WorkshopRepository { get; private set; } = null!;
 
         public IWorkshopAttendanceRepository WorkshopAttendanceRepository { get; private set; } = null!;
-
-        public IBirdCaringPricePolicyRepository BirdCaringPricePolicyRepository { get; private set; } = null!;
-
-        public IBirdReceiveSheetRepository BirdReceiveSheetRepository { get; private set; } = null!;
-
-        public IBirdReturnSheetRepository BirdReturnSheetRepository { get; private set; } = null!;
-
-        public IBirdTrainingDetailRepository BirdTrainingDetailRepository { get; private set; } = null!;
-
-        public IBirdTrainingProgressRepository BirdTrainingProgressRepository { get; private set; } = null!;
-
-        public IConsultingPricePolicyRepository ConsultingPricePolicyRepository { get; private set; } = null!;
-
-        public ICustomerWorkshopClassRepository CustomerWorkshopClassRepository { get; private set; } = null!;
-
-        public IDistancePriceRepository DistancePriceRepository { get; private set; } = null!;
 
         public IWorkshopClassRepository WorkshopClassRepository { get; private set; } = null!;
 
@@ -101,29 +108,21 @@ namespace AppRepository.UnitOfWork
 
         public IWorkshopRefundPolicyRepository WorkshopRefundPolicyRepository { get; private set; } = null!;
 
-        private readonly BirdTrainingCenterSystemContext _context;
-
-        public UnitOfWork(BirdTrainingCenterSystemContext context)
-        {
-            _context = context;
-            InitRepositories();
-        }
-
         private void InitRepositories()
         {
-            AppointmentRepository = new AppointmentRepository(_context, this);
-            AppointmentBillRepository = new AppointmentBillRepository(_context, this);
+            AcquirableSkillRepository = new AcquirableSkillRepository(_context, this);
+            AdditionalConsultingBillRepository = new AdditionalConsultingBillRepository(_context, this);
+            AddressRepository = new AddressRepository(_context, this);
             BirdRepository = new BirdRepository(_context, this);
-            BirdCaringPricePolicyRepository = new BirdCaringPricePolicyRepository(_context, this);
             BirdCertificateRepository = new BirdCertificateRepository(_context, this);
             BirdCertificateDetailRepository = new BirdCertificateDetailRepository(_context, this);
-            BirdReceiveSheetRepository = new BirdReceiveSheetRepository(_context, this);
-            BirdReturnSheetRepository = new BirdReturnSheetRepository(_context, this);
+            BirdCertificateSkillRepository = new BirdCertificateSkillRepository(_context, this);
             BirdSkillRepository = new BirdSkillRepository(_context, this);
             BirdSpeciesRepository = new BirdSpeciesRepository(_context, this);
             BirdTrainingCourseRepository = new BirdTrainingCourseRepository(_context, this);
-            BirdTrainingDetailRepository = new BirdTrainingDetailRepository(_context, this);
             BirdTrainingProgressRepository = new BirdTrainingProgressRepository(_context, this);
+            BirdTrainingReportRepository = new BirdTrainingReportRepository(_context, this);
+            CenterSlotRepository = new CenterSlotRepository(_context, this);
             CertificateRepository = new CertificateRepository(_context, this);
             ConsultingPricePolicyRepository = new ConsultingPricePolicyRepository(_context, this);
             ConsultingTicketRepository = new ConsultingTicketRepository(_context, this);
@@ -134,8 +133,8 @@ namespace AppRepository.UnitOfWork
             CustomerOnlineCourseDetailRepository = new CustomerOnlineCourseDetailRepository(_context, this);
             CustomerSectionDetailRepository = new CustomerSectionDetailRepository(_context, this);
             CustomerWorkshopClassRepository = new CustomerWorkshopClassRepository(_context, this);
-            DayRepository = new DayRepository(_context, this);
             DistancePriceRepository = new DistancePriceRepository(_context, this);
+            EntityTypeRepository = new EntityTypeRepository(_context, this);
             FeedbackRepository = new FeedbackRepository(_context, this);
             FeedbackTypeRepository = new FeedbackTypeRepository(_context, this);
             LessonRepository = new LessonRepository(_context, this);
@@ -144,12 +143,14 @@ namespace AppRepository.UnitOfWork
             SectionRepository = new SectionRepository(_context, this);
             SkillRepository = new SkillRepository(_context, this);
             SlotRepository = new SlotRepository(_context, this);
-            StaffBirdReceivedRepository = new StaffBirdReceivedRepository(_context, this);
+            TrainableSkillRepository = new TrainableSkillRepository(_context, this);
             TrainerRepository = new TrainerRepository(_context, this);
+            TrainerSkillRepository = new TrainerSkillRepository(_context, this);
+            TrainerSlotRepository = new TrainerSlotRepository(_context, this);
             TrainingCourseRepository = new TrainingCourseRepository(_context, this);
-            TrainingCourseBirdSkillRepository = new TrainingCourseBirdSkillRepository(_context, this);
+            TrainingCourseSkillRepository = new TrainingCourseSkillRepository(_context, this);
+            TransactionRepository = new TransactionRepository(_context, this);
             UserRepository = new UserRepository(_context, this);
-            WeekRepository = new WeekRepository(_context, this);
             WorkshopRepository = new WorkshopRepository(_context, this);
             WorkshopAttendanceRepository = new WorkshopAttendanceRepository(_context, this);
             WorkshopClassRepository = new WorkshopClassRepository(_context, this);
