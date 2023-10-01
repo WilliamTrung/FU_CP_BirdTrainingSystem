@@ -21,7 +21,7 @@ namespace Models.Entities
         public virtual DbSet<BirdCertificateDetail> BirdCertificateDetails { get; set; } = null!;
         public virtual DbSet<BirdCertificateSkill> BirdCertificateSkills { get; set; } = null!;
         public virtual DbSet<BirdSkill> BirdSkills { get; set; } = null!;
-        public virtual DbSet<BirdSpecy> BirdSpecies { get; set; } = null!;
+        public virtual DbSet<BirdSpecies> BirdSpecies { get; set; } = null!;
         public virtual DbSet<BirdTrainingCourse> BirdTrainingCourses { get; set; } = null!;
         public virtual DbSet<BirdTrainingProgress> BirdTrainingProgresses { get; set; } = null!;
         public virtual DbSet<BirdTrainingReport> BirdTrainingReports { get; set; } = null!;
@@ -245,7 +245,7 @@ namespace Models.Entities
                     .IsUnicode(false);
             });
 
-            modelBuilder.Entity<BirdSpecy>(entity =>
+            modelBuilder.Entity<BirdSpecies>(entity =>
             {
                 entity.Property(e => e.Name)
                     .HasMaxLength(50)
