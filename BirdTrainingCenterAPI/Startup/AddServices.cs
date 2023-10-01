@@ -13,6 +13,13 @@ namespace BirdTrainingCenterAPI.Startup
 {
     public class AddServices
     {
+        public static void ConfiguringBusinessRules(WebApplicationBuilder builder)
+        {
+            builder.Services.Configure<BR_WorkshopConstant>(option =>
+            {
+                option.StartDateDeadlineAfterRegistrationEnd = Int32.Parse(builder.Configuration.GetSection("BusinessRuleSet")["StartDateDeadlineAfterRegistrationEnd"]);
+            });
+        }
         public static void ConfiguringServices(WebApplicationBuilder builder)
         {
             builder.Services.AddTransient<IAuthFeature, AuthFeature>();

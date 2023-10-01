@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Models.ServiceModels.WorkshopModels
 {
-    public class WorshopPricePolicy
+    public class WorkshopPricePolicy
     {
         public int TotalWorkshop { get; set; }
         public float Discount { get; set; }

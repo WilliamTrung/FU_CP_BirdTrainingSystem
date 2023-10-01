@@ -10,7 +10,9 @@ namespace WorkshopSubsystem
     public interface IFeatureManager : IFeatureStaff
     {
         //[Manager] manage [Workshop] - explore, create, edit, archive [Workshop]
-        Task AddWorkshop(Workshop workshop);
+        Task<IEnumerable<WorkshopRefundPolicy>> GetWorkshopRefundPoliciesAsync();
+        Task<IEnumerable<WorkshopPricePolicy>> GetWorshopPricePoliciesAsync();
+        Task AddWorkshop(WorkshopAddModel workshop);
         Task EditWorkshop(Workshop workshop);
         Task ChangeWorkshopStatus(int workshopId);       
 
