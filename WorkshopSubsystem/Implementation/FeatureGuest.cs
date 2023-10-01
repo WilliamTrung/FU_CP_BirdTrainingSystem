@@ -9,14 +9,12 @@ using System.Threading.Tasks;
 
 namespace WorkshopSubsystem.Implementation
 {
-    public class FeatureGuest : IFeatureGuest
+    public class FeatureGuest : FeatureUser, IFeatureGuest
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-        public FeatureGuest(IUnitOfWork unitOfWork, IMapper mapper) { 
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
+        public FeatureGuest(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
+        {
         }
+
         public async Task<IEnumerable<Workshop>> GetWorkshopGeneralInformation()
         {            
             var entities = await _unitOfWork.WorkshopRepository.Get(expression: null, "WorkshopPricePolicy", "WorkshopRefundPolicy");
