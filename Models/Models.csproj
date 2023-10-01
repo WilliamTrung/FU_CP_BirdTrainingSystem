@@ -9,7 +9,6 @@
   <ItemGroup>
     <Folder Include="ServiceModels\AdviceConsultantModels\" />
     <Folder Include="ServiceModels\OnlineCourseModels\" />
-    <Folder Include="ServiceModels\WorkshopModels\" />
     <Folder Include="ServiceModels\TrainingCourseModels\" />
   </ItemGroup>
 
