@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using AppCore.Models;
 
-namespace AppCore.Context
+namespace Models.Entities
 {
     public partial class BirdTrainingCenterSystemContext : DbContext
     {

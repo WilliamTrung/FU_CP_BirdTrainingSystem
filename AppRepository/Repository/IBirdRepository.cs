@@ -1,4 +1,4 @@
-﻿using AppCore.Models;
+﻿using Models.Entities;
 using AppRepository.Generic;
 
 namespace AppRepository.Repository
