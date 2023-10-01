@@ -1,5 +1,4 @@
-﻿using AppCore.Context;
-using AppCore.Models;
+﻿using Models.Entities;
 using AppRepository.Generic;
 using AppRepository.UnitOfWork;
 

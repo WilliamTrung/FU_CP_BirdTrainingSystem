@@ -19,7 +19,7 @@ namespace SP_AutoMapperConfig
                 .ForMember(src => src.RoleId, opt => opt.Ignore())
                 .ForMember(src => src.Role, opt => opt.Ignore())
                 .ForMember(src => src.Customers, opt => opt.Ignore())
-                .ForMember(src => src.StaffBirdReceiveds, opt => opt.Ignore())
+                //.ForMember(src => src.StaffBirdReceiveds, opt => opt.Ignore())
                 .ForMember(src => src.Trainers, opt => opt.Ignore())
                 ;
         }
