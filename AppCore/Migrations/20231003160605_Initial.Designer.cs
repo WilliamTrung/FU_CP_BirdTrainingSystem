@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AppCore.Migrations
 {
     [DbContext(typeof(BirdTrainingCenterSystemContext))]
-    [Migration("20231003131855_adjust-table-workshopclassdetail")]
-    partial class adjusttableworkshopclassdetail
+    [Migration("20231003160605_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -2023,7 +2023,7 @@ namespace AppCore.Migrations
                         .WithMany("WorkshopClassDetails")
                         .HasForeignKey("DaySlotId");
 
-                    b.HasOne("Models.Entities.Trainer", null)
+                    b.HasOne("Models.Entities.Trainer", "Trainer")
                         .WithMany("WorkshopClassDetails")
                         .HasForeignKey("TrainerId");
 
@@ -2033,6 +2033,8 @@ namespace AppCore.Migrations
                         .IsRequired();
 
                     b.Navigation("DaySlot");
+
+                    b.Navigation("Trainer");
 
                     b.Navigation("WorkshopClass");
                 });

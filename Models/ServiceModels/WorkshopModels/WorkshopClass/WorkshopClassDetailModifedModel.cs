@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Models.ServiceModels.WorkshopModels.WorkshopClass
 {
-    public class ClassSlotModifedModel : ClassSlot
+    public class WorkshopClassDetailModifedModel : ClassSlot
     {
         // change detail (optional)
         public string? Detail { get; set; }
-        // change trainer --> change trainerId
-        public int? TrainerId { get; set; } 
+        //if want to change trainer --> specified new DaySlot
+        
 
     }    
 }

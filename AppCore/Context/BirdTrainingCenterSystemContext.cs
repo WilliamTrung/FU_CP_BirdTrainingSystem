@@ -1016,7 +1016,10 @@ namespace AppCore.Context
                 entity.Property(e => e.Detail)
                     .HasMaxLength(500)
                     .IsUnicode(true);
-
+                entity.HasOne(d => d.Trainer)
+                    .WithMany(p => p.WorkshopClassDetails)
+                    .HasForeignKey(d => d.TrainerId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
                 entity.HasOne(d => d.DaySlot)
                     .WithMany(p => p.WorkshopClassDetails)
                     .HasForeignKey(d => d.DaySlotId)

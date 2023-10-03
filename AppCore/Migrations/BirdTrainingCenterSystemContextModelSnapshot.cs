@@ -2021,7 +2021,7 @@ namespace AppCore.Migrations
                         .WithMany("WorkshopClassDetails")
                         .HasForeignKey("DaySlotId");
 
-                    b.HasOne("Models.Entities.Trainer", null)
+                    b.HasOne("Models.Entities.Trainer", "Trainer")
                         .WithMany("WorkshopClassDetails")
                         .HasForeignKey("TrainerId");
 
@@ -2031,6 +2031,8 @@ namespace AppCore.Migrations
                         .IsRequired();
 
                     b.Navigation("DaySlot");
+
+                    b.Navigation("Trainer");
 
                     b.Navigation("WorkshopClass");
                 });
