@@ -1005,14 +1005,13 @@ namespace Models.Entities
 
             modelBuilder.Entity<WorkshopClassDetail>(entity =>
             {
-                entity.HasKey(e => new { e.WorkshopClassId, e.TrainerId, e.DaySlotId })
-                    .HasName("PK__Workshop__BD2FA1E21C455CA1");
+                entity.HasKey(e => new { e.Id });
 
                 entity.ToTable("WorkshopClassDetail");
 
                 entity.Property(e => e.Detail)
                     .HasMaxLength(500)
-                    .IsUnicode(false);
+                    .IsUnicode(true);
 
                 entity.HasOne(d => d.DaySlot)
                     .WithMany(p => p.WorkshopClassDetails)
@@ -1020,11 +1019,6 @@ namespace Models.Entities
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKWorkshopCl467642");
 
-                entity.HasOne(d => d.Trainer)
-                    .WithMany(p => p.WorkshopClassDetails)
-                    .HasForeignKey(d => d.TrainerId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FKWorkshopCl747155");
 
                 entity.HasOne(d => d.WorkshopClass)
                     .WithMany(p => p.WorkshopClassDetails)

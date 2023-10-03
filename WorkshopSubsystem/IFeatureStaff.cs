@@ -17,5 +17,7 @@ namespace WorkshopSubsystem
         Task<IEnumerable<Workshop>> GetWorkshops();
         Task<IEnumerable<ClassViewModel>> GetClassByWorkshopId(int workshopId);
         Task CreateWorkshopClass(ClassAddModel classAddModel);
+        Task ModifyWorkshopClassSlot();
+        Task ModifyWorkshopClass(ClassModifiedModel @class);
     }
 }

@@ -31,6 +31,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test_AutoMapperConfig", "Te
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SP_Middleware", "SP_Middleware\SP_Middleware.csproj", "{6F556E5F-FC8D-4C87-A408-1F719D93FE01}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TrainingSkillSubsystem", "TrainingSkillSubsystem\TrainingSkillSubsystem.csproj", "{9C38B378-E075-4148-8C25-803CC05AD330}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SP_Extension", "SP_Extension\SP_Extension.csproj", "{CE0BF70C-2520-4014-8FFE-9013574ED940}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -93,6 +97,14 @@ Global
 		{6F556E5F-FC8D-4C87-A408-1F719D93FE01}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F556E5F-FC8D-4C87-A408-1F719D93FE01}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F556E5F-FC8D-4C87-A408-1F719D93FE01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C38B378-E075-4148-8C25-803CC05AD330}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C38B378-E075-4148-8C25-803CC05AD330}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C38B378-E075-4148-8C25-803CC05AD330}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C38B378-E075-4148-8C25-803CC05AD330}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE0BF70C-2520-4014-8FFE-9013574ED940}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE0BF70C-2520-4014-8FFE-9013574ED940}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE0BF70C-2520-4014-8FFE-9013574ED940}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE0BF70C-2520-4014-8FFE-9013574ED940}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

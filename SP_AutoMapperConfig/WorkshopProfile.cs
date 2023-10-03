@@ -15,12 +15,16 @@ namespace SP_AutoMapperConfig
             SetClassMapping();
         }
         private void SetClassMapping()
-        {
+        {            
             CreateMap<Models.Entities.WorkshopClass, Models.ServiceModels.WorkshopModels.WorkshopClass.ClassViewModel>()
                 .ForMember(model => model.Status, option => option.MapFrom(entity => entity.Status.HasValue ? entity.Status : 0))
                 .ForMember(model => model.Title, option => option.MapFrom(entity => entity.Workshop.Title))
                 .ForMember(model => model.Description, option => option.MapFrom(entity => entity.Workshop.Description))
-                .ForMember(model => model.Picture, option => option.MapFrom(entity => entity.Workshop.Picture));
+                .ForMember(model => model.Picture, option => option.MapFrom(entity => entity.Workshop.Picture))
+                .ForMember(model => model.ClassSlots, opt => {
+                    opt.PreCondition(e => e.WorkshopClassDetails != null);
+                    opt.MapFrom(entity => entity.WorkshopClassDetails);
+                });
             CreateMap<Models.ServiceModels.WorkshopModels.WorkshopClass.ClassAddModel, Models.Entities.WorkshopClass>();                
         }
         private void SetWorkshopMapping()
