@@ -1,5 +1,7 @@
 ﻿using AppRepository.UnitOfWork;
 using AutoMapper;
+using Microsoft.Extensions.Options;
+using Models.ConfigModels;
 using Models.ServiceModels.WorkshopModels;
 using System;
 using System.Collections.Generic;
@@ -11,9 +13,10 @@ namespace WorkshopSubsystem.Implementation
 {
     public class FeatureManager : FeatureStaff, IFeatureManager
     {
-        public FeatureManager(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
+        public FeatureManager(IUnitOfWork unitOfWork, IMapper mapper, IOptions<BR_WorkshopConstant> br) : base(unitOfWork, mapper, br)
         {
         }
+
         private async Task<int> GetWorkshopPricePolicyId(WorkshopPricePolicy pricePolicy)
         {          
             try

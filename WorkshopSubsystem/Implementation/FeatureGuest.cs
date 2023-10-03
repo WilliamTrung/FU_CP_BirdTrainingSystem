@@ -1,6 +1,7 @@
 ﻿using AppRepository.UnitOfWork;
 using AutoMapper;
 using Models.ServiceModels.WorkshopModels;
+using Models.ServiceModels.WorkshopModels.WorkshopClass;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,11 @@ namespace WorkshopSubsystem.Implementation
     {
         public FeatureGuest(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {
+        }
+
+        public Task<IEnumerable<ClassViewModel>> GetClassByWorkshopId(int workshopId)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<IEnumerable<Workshop>> GetWorkshopGeneralInformation()

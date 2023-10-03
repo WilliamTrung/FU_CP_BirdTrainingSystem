@@ -15,7 +15,6 @@ namespace BirdTrainingCenterAPI.Controllers
         private readonly IMailService _mailService;
         private readonly IGoogleMapService _googleMapService;
         private readonly FirebaseBucket _bucket;
-        private readonly GoogleConfig _googleConfig;
         public TestServiceController(IFirebaseService firebaseService, IMailService mailService, IGoogleMapService googleMapService, IOptions<FirebaseBucket> bucket)
         {
             _firebaseService = firebaseService;

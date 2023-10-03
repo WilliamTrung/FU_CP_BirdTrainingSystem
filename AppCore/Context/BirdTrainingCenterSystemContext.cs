@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using AppCore.Models;
+using Models.Entities;
 
 namespace AppCore.Context
 {
@@ -67,12 +67,15 @@ namespace AppCore.Context
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=(local);uid=sa;pwd=1234567890;database= BirdTrainingCenterSystem;TrustServerCertificate=True;");
+                //optionsBuilder.UseSqlServer("Server=(local);uid=sa;pwd=1234567890;database= BirdTrainingCenterSystem;TrustServerCertificate=True;");
+                optionsBuilder.UseNpgsql("Server=ls-2eb8bdc55d5c38710618386494d215e09f82ac4c.cx06lhnsjnr9.ap-southeast-1.rds.amazonaws.com;Port=5432;Database=<your_database_name>;User Id=dbmasteruser;Password=TLH!5~L#Zycu?GyT!F?op&+&{47kof0C;SSL Mode=Require;Trust Server Certificate=True;\r\n");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            AddCustomFunction.AddMinimalCompareString(modelBuilder);
+
             modelBuilder.Entity<AcquirableSkill>(entity =>
             {
                 entity.HasKey(e => new { e.BirdSpeciesId, e.BirdSkillId })
@@ -1006,32 +1009,23 @@ namespace AppCore.Context
 
             modelBuilder.Entity<WorkshopClassDetail>(entity =>
             {
-                entity.HasKey(e => new { e.WorkshopClassId, e.TrainerId, e.DaySlotId })
-                    .HasName("PK__Workshop__BD2FA1E21C455CA1");
+                entity.HasKey(e => new { e.Id });
 
                 entity.ToTable("WorkshopClassDetail");
 
                 entity.Property(e => e.Detail)
                     .HasMaxLength(500)
-                    .IsUnicode(false);
+                    .IsUnicode(true);
 
                 entity.HasOne(d => d.DaySlot)
                     .WithMany(p => p.WorkshopClassDetails)
                     .HasForeignKey(d => d.DaySlotId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FKWorkshopCl467642");
-
-                entity.HasOne(d => d.Trainer)
-                    .WithMany(p => p.WorkshopClassDetails)
-                    .HasForeignKey(d => d.TrainerId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FKWorkshopCl747155");
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
                 entity.HasOne(d => d.WorkshopClass)
                     .WithMany(p => p.WorkshopClassDetails)
                     .HasForeignKey(d => d.WorkshopClassId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FKWorkshopCl141743");
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
             modelBuilder.Entity<WorkshopPricePolicy>(entity =>
