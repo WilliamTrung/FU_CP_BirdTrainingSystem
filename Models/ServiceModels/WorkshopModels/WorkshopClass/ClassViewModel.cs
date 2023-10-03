@@ -16,5 +16,7 @@ namespace Models.ServiceModels.WorkshopModels.WorkshopClass
         public string Title { get; set; } = null!;
         public string Description { get; set; } = null!;
         public string Picture { get; set; } = null!;
+
+        public List<ClassSlotViewModel> ClassSlots { get; set; } = null!;
     }
 }

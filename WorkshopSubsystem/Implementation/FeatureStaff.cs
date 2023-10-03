@@ -24,8 +24,7 @@ namespace WorkshopSubsystem.Implementation
             //classAddModel with given WorkshopId and StartTime
             try
             {
-                var starttime = classAddModel.StartTime;                
-
+                var starttime = classAddModel.StartTime;         
                 var workshop = await _unitOfWork.WorkshopRepository.GetFirst(c => c.Id == classAddModel.WorkshopId);
                 if (workshop == null)
                 {
@@ -47,12 +46,50 @@ namespace WorkshopSubsystem.Implementation
 
         public async Task<IEnumerable<ClassViewModel>> GetClassByWorkshopId(int workshopId)
         {
-            var entities = await _unitOfWork.WorkshopClassRepository.Get(c => c.WorkshopId == workshopId);
-
+            var entities = await _unitOfWork.WorkshopClassRepository.Get(c => c.WorkshopId == workshopId, "Workshop");
+            entities = entities.OrderBy(c => c.Status).ToList();
+            var models = _mapper.Map<IEnumerable<ClassViewModel>>(entities);
+            return models;
         }
 
-        public Task<IEnumerable<Workshop>> GetWorkshops()
+        public async Task<IEnumerable<Workshop>> GetWorkshops()
         {
+            var entities = await _unitOfWork.WorkshopRepository.Get(expression: null, "WorkshopPricePolicy", "WorkshopRefundPolucy");
+            var models = _mapper.Map<IEnumerable<Workshop>>(entities);
+            return models;
+        }
+
+        public async Task ModifyWorkshopClass(ClassModifiedModel @class)
+        {
+            try
+            {
+                var starttime = @class.StartTime;
+                var workshopClass = await _unitOfWork.WorkshopClassRepository.GetFirst(c => c.Id == @class.Id);
+                if (workshopClass == null)
+                {
+                    throw new TaskCanceledException("Workshop Class is not found for ID: " + @class.Id);
+                }
+                var workshop = await _unitOfWork.WorkshopRepository.GetFirst(c => c.Id == workshopClass.WorkshopId);
+                if(workshop == null)
+                {
+                    throw new TaskCanceledException("Workshop is not found for ID: " + workshopClass.WorkshopId);
+                }
+                int daySumToRegistrationEnd = workshop.RegisterEnd == null ? _br.StartDateDeadlineAfterRegistrationEnd : workshop.RegisterEnd.Value;
+
+                workshopClass.Status = (int)Models.Enum.Workshop.Class.Status.Registration;
+                workshopClass.RegisterEndDate = starttime.AddDays(daySumToRegistrationEnd);
+                await _unitOfWork.WorkshopClassRepository.Update(workshopClass);
+            }
+            catch (Exception ex)
+            {
+                throw new TaskCanceledException($"{ex.Message} at {ex.StackTrace}");
+            }
+        }
+
+        public Task ModifyWorkshopClassSlot()
+        {
+            //Modify data in entity WorkshopClassDetail
+            
             throw new NotImplementedException();
         }
     }
