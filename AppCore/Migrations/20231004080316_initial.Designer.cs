@@ -3,6 +3,7 @@ using System;
 using AppCore.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AppCore.Migrations
 {
     [DbContext(typeof(BirdTrainingCenterSystemContext))]
-    partial class BirdTrainingCenterSystemContextModelSnapshot : ModelSnapshot
+    [Migration("20231004080316_initial")]
+    partial class initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -2048,7 +2050,7 @@ namespace AppCore.Migrations
                         .WithMany("WorkshopClassDetails")
                         .HasForeignKey("DaySlotId");
 
-                    b.HasOne("Models.Entities.Trainer", "Trainer")
+                    b.HasOne("Models.Entities.Trainer", null)
                         .WithMany("WorkshopClassDetails")
                         .HasForeignKey("TrainerId");
 
@@ -2058,8 +2060,6 @@ namespace AppCore.Migrations
                         .IsRequired();
 
                     b.Navigation("DaySlot");
-
-                    b.Navigation("Trainer");
 
                     b.Navigation("WorkshopClass");
                 });
