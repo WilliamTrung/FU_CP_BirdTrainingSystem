@@ -3,6 +3,7 @@ using System;
 using AppCore.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AppCore.Migrations
 {
     [DbContext(typeof(BirdTrainingCenterSystemContext))]
-    partial class BirdTrainingCenterSystemContextModelSnapshot : ModelSnapshot
+    [Migration("20231003160605_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -764,33 +766,6 @@ namespace AppCore.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("EntityType", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Others"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Advice Consulting"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Workshop class"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Online Course"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "Training Course"
-                        });
                 });
 
             modelBuilder.Entity("Models.Entities.Feedback", b =>
