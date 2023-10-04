@@ -764,6 +764,33 @@ namespace AppCore.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("EntityType", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Others"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Advice Consulting"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Workshop class"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Online Course"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Training Course"
+                        });
                 });
 
             modelBuilder.Entity("Models.Entities.Feedback", b =>

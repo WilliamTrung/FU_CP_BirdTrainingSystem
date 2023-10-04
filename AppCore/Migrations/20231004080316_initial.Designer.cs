@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AppCore.Migrations
 {
     [DbContext(typeof(BirdTrainingCenterSystemContext))]
-    [Migration("20231003131855_adjust-table-workshopclassdetail")]
-    partial class adjusttableworkshopclassdetail
+    [Migration("20231004080316_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -766,6 +766,33 @@ namespace AppCore.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("EntityType", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Others"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Advice Consulting"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Workshop class"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Online Course"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Training Course"
+                        });
                 });
 
             modelBuilder.Entity("Models.Entities.Feedback", b =>

@@ -24,4 +24,8 @@
     <ProjectReference Include="..\SP_Extension\SP_Extension.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
+
 </Project>

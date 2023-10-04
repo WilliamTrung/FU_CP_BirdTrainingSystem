@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace AppCore.Migrations
 {
-    public partial class adjusttableworkshopclassdetail : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -1079,6 +1079,18 @@ namespace AppCore.Migrations
                         columns: x => new { x.BirdId, x.TrainingCourseId },
                         principalTable: "Bird_TrainingCourse",
                         principalColumns: new[] { "BirdId", "TrainingCourseId" });
+                });
+
+            migrationBuilder.InsertData(
+                table: "EntityType",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "Others" },
+                    { 2, "Advice Consulting" },
+                    { 3, "Workshop class" },
+                    { 4, "Online Course" },
+                    { 5, "Training Course" }
                 });
 
             migrationBuilder.CreateIndex(
