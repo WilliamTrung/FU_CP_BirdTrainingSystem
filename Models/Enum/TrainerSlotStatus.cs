@@ -8,7 +8,7 @@ namespace Models.Enum
 {
     public enum TrainerSlotStatus
     {
-        enabled = 1,
-        disabled = 0        
+        Enabled = 1,
+        Disabled = 0        
     }
 }

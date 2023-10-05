@@ -94,7 +94,7 @@ namespace WorkshopSubsystem.Implementation
                 {
                     detail.TrainerId = null;
                     detail.DaySlotId = null;
-                    detail.DaySlot.Status = (int)Models.Enum.TrainerSlotStatus.disabled;                    
+                    detail.DaySlot.Status = (int)Models.Enum.TrainerSlotStatus.Disabled;                    
                 }
                 await _unitOfWork.WorkshopClassRepository.Update(workshopClass);
             }
