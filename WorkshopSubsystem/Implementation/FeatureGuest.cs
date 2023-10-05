@@ -21,10 +21,10 @@ namespace WorkshopSubsystem.Implementation
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<Workshop>> GetWorkshopGeneralInformation()
+        public async Task<IEnumerable<WorkshopModel>> GetWorkshopGeneralInformation()
         {            
             var entities = await _unitOfWork.WorkshopRepository.Get(expression: null, "WorkshopPricePolicy", "WorkshopRefundPolicy");
-            var models = _mapper.Map<IEnumerable<Workshop>>(entities);
+            var models = _mapper.Map<IEnumerable<WorkshopModel>>(entities);
             return models;
         }
     }

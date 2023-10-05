@@ -115,7 +115,7 @@ namespace WorkshopSubsystem.Implementation
             
         }
 
-        public async Task EditWorkshop(Workshop workshop)
+        public async Task EditWorkshop(WorkshopModel workshop)
         {
             try
             {

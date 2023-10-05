@@ -11,14 +11,17 @@ namespace Models.ServiceModels.WorkshopModels.WorkshopClass
         public int TrainerId { get; set; }
         public int SlotId { get; set; }
         public DateTime Date { get; set; }
-        public string Reason = "Host workshop class";
+        public string Reason { get; private set; }
         public int EntityId { get; private set; }
-        public int EntityTypeId { get; private set; }
+        public Models.Enum.EntityType EntityTypeId { get; private set; }
+        public Models.Enum.TrainerSlotStatus Status { get; private set; }
 
         public WorkshopTrainerSlotAddModel(int workshopClassId)
         {
             EntityId = workshopClassId;
-            EntityTypeId = (int)Models.Enum.EntityType.WorkshopClass;
+            EntityTypeId = Models.Enum.EntityType.WorkshopClass;
+            Reason = "Host workshop class";
+            Status = Models.Enum.TrainerSlotStatus.enabled;
         }
     }
 }
