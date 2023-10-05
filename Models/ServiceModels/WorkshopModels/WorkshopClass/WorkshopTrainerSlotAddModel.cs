@@ -21,7 +21,7 @@ namespace Models.ServiceModels.WorkshopModels.WorkshopClass
             EntityId = workshopClassId;
             EntityTypeId = Models.Enum.EntityType.WorkshopClass;
             Reason = "Host workshop class";
-            Status = Models.Enum.TrainerSlotStatus.enabled;
+            Status = Models.Enum.TrainerSlotStatus.Enabled;
         }
     }
 }
