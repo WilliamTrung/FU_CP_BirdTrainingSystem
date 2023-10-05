@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Models.ServiceModels.WorkshopModels
 {
-    public class Workshop
+    public class WorkshopModel
     {
         public int Id { get; set; }
         public WorkshopPricePolicy PricePolicy { get; set; } = null!;

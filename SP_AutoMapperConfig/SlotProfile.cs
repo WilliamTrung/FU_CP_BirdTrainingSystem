@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Models.Entities;
+using Models.ServiceModels.WorkshopModels.WorkshopClass;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +14,11 @@ namespace SP_AutoMapperConfig
         public SlotProfile()
         {
             Set_TrainerSlot_ClassSlotViewModel();
+        }
+        private void Set_WorkshopTrainerSlotAddModel_TrainerSlot()
+        {
+            CreateMap<WorkshopTrainerSlotAddModel, TrainerSlot>()
+                .ForMember(e => e.Id, opt => opt.Ignore());
         }
         private void Set_TrainerSlot_ClassSlotViewModel()
         {

@@ -36,11 +36,11 @@ namespace SP_AutoMapperConfig
             CreateMap<Models.ServiceModels.WorkshopModels.WorkshopRefundPolicy, Models.Entities.WorkshopRefundPolicy>()
                 .ForMember(entity => entity.Id, option => option.Ignore());
 
-            CreateMap<Models.Entities.Workshop, Models.ServiceModels.WorkshopModels.Workshop>()
+            CreateMap<Models.Entities.Workshop, Models.ServiceModels.WorkshopModels.WorkshopModel>()
                 .ForMember(model => model.Status, modelStatus => modelStatus.MapFrom(entityModel => entityModel.Status.HasValue ? entityModel.Status.Value : 0))
                 .ForMember(model => model.Description, modelDescription => modelDescription.MapFrom(entityModel => entityModel.Description == null ? string.Empty : entityModel.Description))
                 .ForMember(model => model.Price, modelPrice => modelPrice.MapFrom(entityModel => entityModel.Price == null ? 0 : entityModel.Price));
-            CreateMap<Models.ServiceModels.WorkshopModels.Workshop, Models.Entities.Workshop>()
+            CreateMap<Models.ServiceModels.WorkshopModels.WorkshopModel, Models.Entities.Workshop>()
                 .ForMember(entity => entity.WorkshopClasses, option => option.Ignore())
                 .ForMember(entity => entity.WorkshopRefundPolicyId, option => option.Ignore())
                 .ForMember(entity => entity.WorkshopPricePolicyId, option => option.Ignore())

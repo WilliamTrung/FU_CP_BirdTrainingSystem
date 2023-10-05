@@ -14,10 +14,11 @@ namespace WorkshopSubsystem
         //[Staff] create [Class] for selected [Workshop]
         //[Staff] assign[Trainer] to[Slot] in [Class] - [Trainer] will be the guide of the[Workshop] for [Customer]       
         //[Staff] check attendance of[Customer] for the[Workshop] - [Customer] can only be checked if [Customer] has already been charged for joining[Workshop]
-        Task<IEnumerable<Workshop>> GetWorkshops();
+        Task<IEnumerable<WorkshopModel>> GetWorkshops();
         Task<IEnumerable<ClassViewModel>> GetClassByWorkshopId(int workshopId);
         Task CreateWorkshopClass(ClassAddModel classAddModel);
-        Task ModifyWorkshopClassSlot();
+        Task ModifyWorkshopClassSlot_ChangeTrainer(int workshopClassId, WorkshopTrainerSlotAddModel workshopTrainerSlotAddModel);
+        Task ModifyWorkshopClassSlot_ChangeSlot(int workshopClassId);
         Task ModifyWorkshopClass(ClassModifiedModel @class);
     }
 }

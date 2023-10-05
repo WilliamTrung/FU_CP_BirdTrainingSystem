@@ -11,7 +11,7 @@ namespace WorkshopSubsystem
     public interface IFeatureGuest
     {
         //[Customer] explore[Workshop] on center website - specified price must be detailed for each[Workshop]
-        Task<IEnumerable<Workshop>> GetWorkshopGeneralInformation();
+        Task<IEnumerable<WorkshopModel>> GetWorkshopGeneralInformation();
         Task<IEnumerable<ClassViewModel>> GetClassByWorkshopId(int workshopId);
     }
 }

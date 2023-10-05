@@ -13,7 +13,7 @@ namespace WorkshopSubsystem
         Task<IEnumerable<WorkshopRefundPolicy>> GetWorkshopRefundPoliciesAsync();
         Task<IEnumerable<WorkshopPricePolicy>> GetWorshopPricePoliciesAsync();
         Task AddWorkshop(WorkshopAddModel workshop);
-        Task EditWorkshop(Workshop workshop);
+        Task EditWorkshop(WorkshopModel workshop);
         Task ChangeWorkshopStatus(int workshopId);       
 
     }
