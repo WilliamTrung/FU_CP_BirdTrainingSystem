@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace Models.ServiceModels.SlotModels
 {
-    public class SlotModel : ISlotModel
+    public interface ISlotModel
     {
-        public int Id { get; set; }
-        public TimeSpan StartTime { get; set; }
-        public TimeSpan EndTime { get; set; }
+        TimeSpan StartTime { get; set; }
+        TimeSpan EndTime { get; set; }
     }
 }
