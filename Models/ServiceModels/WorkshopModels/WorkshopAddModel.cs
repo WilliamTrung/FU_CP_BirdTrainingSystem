@@ -9,14 +9,20 @@ namespace Models.ServiceModels.WorkshopModels
 {
     public class WorkshopAddModel
     {
-        public WorkshopPricePolicy PricePolicy { get; set; } = null!;
-        public WorkshopRefundPolicy RefundPolicy { get; set; } = null!;
+//        [WorkshopAdd]:
+//+ title : string
+//+ description : string
+//+ picture : image(1)
+//+ registerEnd : int
+//+ Price : money
+//+ totalSlot : int
+       
         public string Title { get; set; } = null!;
+        public int WorkshopRefundPolicyId { get; set; }
         public string Description { get; set; } = null!;
         public string Picture { get; set; } = null!;
         public int? RegisterEnd { get; set; }
         public decimal Price { get; set; }
         public int TotalSlot { get; set; }
-        public Enum.Workshop.Status Status { get; set; }
     }
 }

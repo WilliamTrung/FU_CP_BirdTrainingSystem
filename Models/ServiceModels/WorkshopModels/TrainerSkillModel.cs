@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace Models.ServiceModels.WorkshopModels
 {
-    public class WorkshopPricePolicy
+    public class TrainerSkillModel
     {
-        public int TotalWorkshop { get; set; }
-        public float Discount { get; set; }
+        int Id { get; set; }
+        public string Name { get; set; } = null!;
+        public string Description { get; set; } = null!;
     }
 }

@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Models.ServiceModels.SlotModels
 {
-    public class ClassSlot : SlotModel
+    public interface IClassSlot : ISlotModel
     {
-        public DateTime Date { get; set; }
+        DateTime Date { get; set; }
     }
 }

@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 
 namespace Models.ServiceModels.WorkshopModels
 {
-    public class WorkshopRefundPolicy
+    public class WorkshopStatusModifyModel
     {
-        public int TotalDayBeforeStart { get; set; }
-        public float RefundRate { get; set; }
+//+ id : int
+//+ status : int
+        public int Id { get; set; }
+        public int Status { get; set; }
     }
 }

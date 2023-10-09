@@ -5,11 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WorkshopSubsystem
+namespace EntityQuerySubsystem
 {
-    public interface IFeatureTrainer
+    public interface IEntityQueryFeature
     {
-        Task ModifyWorkshopClassSlotDetail(WorkshopClassDetailModifyModel workshopClass);
-
+        public Task<WorkshopClassDetailViewModel> GetWorkshopClassSlotDetail(int entityId);
     }
 }
