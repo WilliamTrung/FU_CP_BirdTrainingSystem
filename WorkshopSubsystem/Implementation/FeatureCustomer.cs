@@ -42,12 +42,15 @@ namespace WorkshopSubsystem.Implementation
             {
                 throw new KeyNotFoundException($"{nameof(customer)} at {customerId}");
             }
+            var workshopPrice = workshopClass.Workshop.Price;
+            var discount = customer.MembershipRank.Discount.HasValue?customer.MembershipRank.Discount.Value:0;
+            var discountedPrice = workshopPrice - workshopPrice * (decimal)discount;
             var customerWorkshopClass = new CustomerWorkshopClass()
             {
                 CustomerId = customerId,
                 WorkshopClassId = workshopClassId,
-                Price = workshopClass.Workshop.Price,
-                Discount = customer.MembershipRank.Discount,
+                Price = workshopPrice,
+                DiscountedPrice = discountedPrice,
             };
         }
     }
