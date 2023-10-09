@@ -15,10 +15,10 @@ namespace TrainingCourseSubsystem.Implementation
         {
         }
 
-        public async Task<IEnumerable<BirdTrainingProgress>> GetBirdTrainingProgressByTrainerId(int trainerId)
+        public async Task<IEnumerable<BirdTrainingProgressModel>> GetBirdTrainingProgressByTrainerId(int trainerId)
         {
             var entities = await _unitOfWork.BirdTrainingProgressRepository.Get(e => e.TrainerId == trainerId);
-            var models = _mapper.Map<IEnumerable<Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress>>(entities);
+            var models = _mapper.Map<IEnumerable<BirdTrainingProgressModel>>(entities);
             return models;
         }
     }

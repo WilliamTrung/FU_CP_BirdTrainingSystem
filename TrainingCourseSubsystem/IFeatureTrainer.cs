@@ -17,6 +17,6 @@ namespace TrainingCourseSubsystem
         //FE33[Trainer] submit progression to[Training Course Detail] - for each training[Slot]
         //=> 
 
-        Task<IEnumerable<BirdTrainingProgress>> GetBirdTrainingProgressByTrainerId(int trainerId);
+        Task<IEnumerable<BirdTrainingProgressModel>> GetBirdTrainingProgressByTrainerId(int trainerId);
     }
 }
