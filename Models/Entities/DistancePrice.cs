@@ -1,4 +1,7 @@
-﻿namespace Models.Entities
+﻿using System;
+using System.Collections.Generic;
+
+namespace Models.Entities
 {
     public partial class DistancePrice
     {

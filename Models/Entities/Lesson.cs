@@ -1,4 +1,7 @@
-﻿namespace Models.Entities
+﻿using System;
+using System.Collections.Generic;
+
+namespace Models.Entities
 {
     public partial class Lesson
     {
@@ -9,7 +12,7 @@
 
         public int Id { get; set; }
         public int SectionId { get; set; }
-        public string? Title { get; set; }
+        public string Title { get; set; } = null!;
         public string? Description { get; set; }
         public string? Detail { get; set; }
         public string? Video { get; set; }

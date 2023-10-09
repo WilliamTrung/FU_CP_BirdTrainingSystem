@@ -1,4 +1,7 @@
-﻿namespace Models.Entities
+﻿using System;
+using System.Collections.Generic;
+
+namespace Models.Entities
 {
     public partial class ConsultingTicket
     {
@@ -17,13 +20,15 @@
         public int? ExpectedSlotEnd { get; set; }
         public string? ConsultingDetail { get; set; }
         public int? Distance { get; set; }
-        public bool? OnlineOrOffline { get; set; }
+        public bool OnlineOrOffline { get; set; }
         public string? GgMeetLink { get; set; }
         public DateTime? AppointmentDate { get; set; }
         public int? ActualSlotStart { get; set; }
         public int? ActualEndSlot { get; set; }
+        public string? Evidence { get; set; }
         public decimal? Price { get; set; }
-        public int? Status { get; set; }
+        public decimal? DiscountedPrice { get; set; }
+        public int Status { get; set; }
         public int ConsultingPricePolicyId { get; set; }
         public int DistancePriceId { get; set; }
 

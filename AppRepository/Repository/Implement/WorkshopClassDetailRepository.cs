@@ -1,6 +1,6 @@
-﻿using Models.Entities;
-using AppRepository.Generic;
+﻿using AppRepository.Generic;
 using AppRepository.UnitOfWork;
+using Models.Entities;
 
 namespace AppRepository.Repository.Implement
 {
