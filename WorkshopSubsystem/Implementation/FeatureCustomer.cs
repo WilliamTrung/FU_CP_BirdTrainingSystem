@@ -48,7 +48,16 @@ namespace WorkshopSubsystem.Implementation
                 WorkshopClassId = workshopClassId,
                 Price = workshopClass.Workshop.Price,
                 Discount = customer.MembershipRank.Discount,
+                Status = (int)Models.Enum.Workshop.Transaction.Status.Unpaid
             };
+            try
+            {
+                await _unitOfWork.CustomerWorkshopClassRepository.Add(customerWorkshopClass);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }
