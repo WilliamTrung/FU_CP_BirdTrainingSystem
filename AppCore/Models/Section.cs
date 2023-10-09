@@ -1,4 +1,7 @@
-﻿namespace AppCore.Models
+﻿using System;
+using System.Collections.Generic;
+
+namespace AppCore.Models
 {
     public partial class Section
     {
@@ -10,7 +13,7 @@
 
         public int Id { get; set; }
         public int OnlineCourseId { get; set; }
-        public string? Title { get; set; }
+        public string Title { get; set; } = null!;
 
         public virtual OnlineCourse OnlineCourse { get; set; } = null!;
         public virtual ICollection<CustomerSectionDetail> CustomerSectionDetails { get; set; }

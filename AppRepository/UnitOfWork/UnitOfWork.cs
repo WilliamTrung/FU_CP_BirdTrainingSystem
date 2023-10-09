@@ -1,6 +1,6 @@
-﻿using Models.Entities;
-using AppRepository.Repository;
+﻿using AppRepository.Repository;
 using AppRepository.Repository.Implement;
+using Models.Entities;
 
 namespace AppRepository.UnitOfWork
 {
@@ -62,17 +62,14 @@ namespace AppRepository.UnitOfWork
 
         public IDistancePriceRepository DistancePriceRepository { get; private set; } = null!;
 
-        public IEntityTypeRepository EntityTypeRepository { get; private set; } = null!;
-
         public IFeedbackRepository FeedbackRepository { get; private set; } = null!;
 
         public IFeedbackTypeRepository FeedbackTypeRepository { get; private set; } = null!;
 
         public ILessonRepository LessonRepository { get; private set; } = null!;
+        public IMembershipRankRepository MembershipRankRepository { get; private set; } = null!;
 
         public IOnlineCourseRepository OnlineCourseRepository { get; private set; } = null!;
-
-        public IRoleRepository RoleRepository { get; private set; } = null!;
 
         public ISectionRepository SectionRepository { get; private set; } = null!;
 
@@ -104,8 +101,6 @@ namespace AppRepository.UnitOfWork
 
         public IWorkshopClassDetailRepository WorkshopClassDetailRepository { get; private set; } = null!;
 
-        public IWorkshopPricePolicyRepository WorkshopPricePolicyRepository { get; private set; } = null!;
-
         public IWorkshopRefundPolicyRepository WorkshopRefundPolicyRepository { get; private set; } = null!;
 
         private void InitRepositories()
@@ -134,12 +129,11 @@ namespace AppRepository.UnitOfWork
             CustomerSectionDetailRepository = new CustomerSectionDetailRepository(_context, this);
             CustomerWorkshopClassRepository = new CustomerWorkshopClassRepository(_context, this);
             DistancePriceRepository = new DistancePriceRepository(_context, this);
-            EntityTypeRepository = new EntityTypeRepository(_context, this);
             FeedbackRepository = new FeedbackRepository(_context, this);
             FeedbackTypeRepository = new FeedbackTypeRepository(_context, this);
             LessonRepository = new LessonRepository(_context, this);
+            MembershipRankRepository = new MembershipRankRepository(_context, this);
             OnlineCourseRepository = new OnlineCourseRepository(_context, this);
-            RoleRepository = new RoleRepository(_context, this);
             SectionRepository = new SectionRepository(_context, this);
             SkillRepository = new SkillRepository(_context, this);
             SlotRepository = new SlotRepository(_context, this);
@@ -155,7 +149,6 @@ namespace AppRepository.UnitOfWork
             WorkshopAttendanceRepository = new WorkshopAttendanceRepository(_context, this);
             WorkshopClassRepository = new WorkshopClassRepository(_context, this);
             WorkshopClassDetailRepository = new WorkshopClassDetailRepository(_context, this);
-            WorkshopPricePolicyRepository = new WorkshopPricePolicyRepository(_context, this);
             WorkshopRefundPolicyRepository = new WorkshopRefundPolicyRepository(_context, this);
         }
     }

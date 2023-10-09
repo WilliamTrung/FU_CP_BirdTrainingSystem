@@ -1,4 +1,7 @@
-﻿namespace AppCore.Models
+﻿using System;
+using System.Collections.Generic;
+
+namespace AppCore.Models
 {
     public partial class Lesson
     {
@@ -9,7 +12,7 @@
 
         public int Id { get; set; }
         public int SectionId { get; set; }
-        public string? Title { get; set; }
+        public string Title { get; set; } = null!;
         public string? Description { get; set; }
         public string? Detail { get; set; }
         public string? Video { get; set; }

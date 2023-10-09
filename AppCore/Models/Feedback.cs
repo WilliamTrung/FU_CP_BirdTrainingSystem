@@ -1,4 +1,7 @@
-﻿namespace AppCore.Models
+﻿using System;
+using System.Collections.Generic;
+
+namespace AppCore.Models
 {
     public partial class Feedback
     {
@@ -10,7 +13,6 @@
         public string? FeedbackDetail { get; set; }
 
         public virtual Customer Customer { get; set; } = null!;
-        public virtual EntityType EntityType { get; set; } = null!;
         public virtual FeedbackType FeedbackType { get; set; } = null!;
     }
 }

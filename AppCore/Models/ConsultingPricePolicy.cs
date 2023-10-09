@@ -1,4 +1,7 @@
-﻿namespace AppCore.Models
+﻿using System;
+using System.Collections.Generic;
+
+namespace AppCore.Models
 {
     public partial class ConsultingPricePolicy
     {
@@ -8,8 +11,8 @@
         }
 
         public int Id { get; set; }
-        public decimal? Price { get; set; }
-        public bool? OnlineOrOffline { get; set; }
+        public decimal Price { get; set; }
+        public bool OnlineOrOffline { get; set; }
 
         public virtual ICollection<ConsultingTicket> ConsultingTickets { get; set; }
     }

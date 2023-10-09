@@ -1,4 +1,7 @@
-﻿namespace Models.Entities
+﻿using System;
+using System.Collections.Generic;
+
+namespace Models.Entities
 {
     public partial class WorkshopRefundPolicy
     {
@@ -8,7 +11,7 @@
         }
 
         public int Id { get; set; }
-        public int? TotalDayBeforeStart { get; set; }
+        public int TotalDayBeforeStart { get; set; }
         public float? RefundRate { get; set; }
 
         public virtual ICollection<Workshop> Workshops { get; set; }

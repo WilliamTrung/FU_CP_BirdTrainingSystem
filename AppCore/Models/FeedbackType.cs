@@ -1,4 +1,7 @@
-﻿namespace AppCore.Models
+﻿using System;
+using System.Collections.Generic;
+
+namespace AppCore.Models
 {
     public partial class FeedbackType
     {
@@ -8,7 +11,7 @@
         }
 
         public int Id { get; set; }
-        public string? Name { get; set; }
+        public string Name { get; set; } = null!;
 
         public virtual ICollection<Feedback> Feedbacks { get; set; }
     }

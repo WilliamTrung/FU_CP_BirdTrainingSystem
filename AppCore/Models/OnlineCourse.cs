@@ -1,4 +1,7 @@
-﻿namespace AppCore.Models
+﻿using System;
+using System.Collections.Generic;
+
+namespace AppCore.Models
 {
     public partial class OnlineCourse
     {
@@ -14,7 +17,7 @@
         public string? ShortDescription { get; set; }
         public string? Picture { get; set; }
         public decimal? Price { get; set; }
-        public int? Status { get; set; }
+        public int Status { get; set; }
 
         public virtual ICollection<Certificate> Certificates { get; set; }
         public virtual ICollection<CustomerOnlineCourseDetail> CustomerOnlineCourseDetails { get; set; }

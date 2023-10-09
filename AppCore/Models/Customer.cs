@@ -1,4 +1,7 @@
-﻿namespace AppCore.Models
+﻿using System;
+using System.Collections.Generic;
+
+namespace AppCore.Models
 {
     public partial class Customer
     {
@@ -19,10 +22,13 @@
 
         public int Id { get; set; }
         public int UserId { get; set; }
+        public int MembershipRankId { get; set; }
         public DateTime? BirthDay { get; set; }
         public bool? Gender { get; set; }
-        public int? Status { get; set; }
+        public decimal? TotalPayment { get; set; }
+        public int Status { get; set; }
 
+        public virtual MembershipRank MembershipRank { get; set; } = null!;
         public virtual User User { get; set; } = null!;
         public virtual ICollection<Address> Addresses { get; set; }
         public virtual ICollection<Bird> Birds { get; set; }

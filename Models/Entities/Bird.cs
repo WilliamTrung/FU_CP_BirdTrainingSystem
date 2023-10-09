@@ -1,4 +1,7 @@
-﻿namespace Models.Entities
+﻿using System;
+using System.Collections.Generic;
+
+namespace Models.Entities
 {
     public partial class Bird
     {
@@ -15,6 +18,7 @@
         public string? Color { get; set; }
         public string? Picture { get; set; }
         public string? Description { get; set; }
+        public bool? IsDefault { get; set; }
 
         public virtual BirdSpecies BirdSpecies { get; set; } = null!;
         public virtual Customer Customer { get; set; } = null!;

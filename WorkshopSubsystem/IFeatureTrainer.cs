@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Models.ServiceModels.WorkshopModels.WorkshopClass;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +9,7 @@ namespace WorkshopSubsystem
 {
     public interface IFeatureTrainer
     {
-        //[Trainer] check assigned [Slot] in [Class] 
-        //[Trainer] prepare detail for assigned[Slot]        
+        Task ModifyWorkshopClassSlotDetail(WorkshopClassDetailModifyModel workshopClass);
 
     }
 }

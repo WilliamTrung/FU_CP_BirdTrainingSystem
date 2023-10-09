@@ -1,4 +1,7 @@
-﻿namespace AppCore.Models
+﻿using System;
+using System.Collections.Generic;
+
+namespace AppCore.Models
 {
     public partial class BirdCertificate
     {
@@ -11,7 +14,7 @@
         public int Id { get; set; }
         public int TrainingCourseId { get; set; }
         public string? BirdCenterName { get; set; }
-        public string? Title { get; set; }
+        public string Title { get; set; } = null!;
         public string? ShortDescrption { get; set; }
         public string? Picture { get; set; }
 

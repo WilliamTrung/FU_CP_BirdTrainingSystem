@@ -1,5 +1,5 @@
-﻿using Models.Entities;
-using AppRepository.Generic;
+﻿using AppRepository.Generic;
+using Models.Entities;
 
 namespace AppRepository.Repository
 {

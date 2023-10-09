@@ -1,4 +1,5 @@
 ﻿using AppRepository.Repository;
+using AppRepository.Repository.Implement;
 
 namespace AppRepository.UnitOfWork
 {
@@ -28,12 +29,11 @@ namespace AppRepository.UnitOfWork
         public ICustomerSectionDetailRepository CustomerSectionDetailRepository { get; }
         public ICustomerWorkshopClassRepository CustomerWorkshopClassRepository { get; }
         public IDistancePriceRepository DistancePriceRepository { get; }
-        public IEntityTypeRepository EntityTypeRepository { get; }
         public IFeedbackRepository FeedbackRepository { get; }
         public IFeedbackTypeRepository FeedbackTypeRepository { get; }
         public ILessonRepository LessonRepository { get; }
+        public IMembershipRankRepository MembershipRankRepository { get; }
         public IOnlineCourseRepository OnlineCourseRepository { get; }
-        public IRoleRepository RoleRepository { get; }
         public ISectionRepository SectionRepository { get; }
         public ISkillRepository SkillRepository { get; }
         public ISlotRepository SlotRepository { get; }
@@ -49,7 +49,6 @@ namespace AppRepository.UnitOfWork
         public IWorkshopAttendanceRepository WorkshopAttendanceRepository { get; }
         public IWorkshopClassRepository WorkshopClassRepository { get; }
         public IWorkshopClassDetailRepository WorkshopClassDetailRepository { get; }
-        public IWorkshopPricePolicyRepository WorkshopPricePolicyRepository { get; }
         public IWorkshopRefundPolicyRepository WorkshopRefundPolicyRepository { get; }
     }
 }
