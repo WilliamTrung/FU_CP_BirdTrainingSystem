@@ -9,7 +9,7 @@ namespace Models.ServiceModels.WorkshopModels
 {
     public class WorkshopAddModel
     {
-//        [WorkshopAdd]:
+//[WorkshopAdd]:
 //+ title : string
 //+ description : string
 //+ picture : image(1)

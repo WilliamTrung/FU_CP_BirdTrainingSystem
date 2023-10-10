@@ -66,13 +66,14 @@ namespace AppCore.Context
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
                 //optionsBuilder.UseSqlServer("Server=(local);uid=sa;pwd=1234567890;database= BirdTrainingCenterSystem;TrustServerCertificate=True;");
-                optionsBuilder.UseNpgsql("Server=ls-8a42d368ac244e992608a08f0bf067ee13a56ba1.cx06lhnsjnr9.ap-southeast-1.rds.amazonaws.com;Port=5432;Database=birdtrainingsystemdb;User Id=dbmasteruser;Password=:~vG&b*o]18MMstuIO5ARfIe973l!2q|;SSL Mode=Require;Trust Server Certificate=True;\r\n");
+                optionsBuilder.UseNpgsql($"Server={Connection.Server};Port={Connection.Port};Database={Connection.Database};User Id={Connection.UID};Password={Connection.Password};SSL Mode=Require;Trust Server Certificate=True;\r\n");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             AddCustomFunction.AddMinimalCompareString(modelBuilder);
+            AddModels.AddMembershipModels(modelBuilder);
             modelBuilder.Entity<AcquirableSkill>(entity =>
             {
                 entity.HasKey(e => new { e.BirdSpeciesId, e.BirdSkillId })

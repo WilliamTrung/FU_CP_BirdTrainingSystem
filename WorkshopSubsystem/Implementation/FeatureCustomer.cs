@@ -32,6 +32,11 @@ namespace WorkshopSubsystem.Implementation
         public async Task Register(int customerId, int workshopClassId)
         {
             //add new entity to CustomerWorkshopClass
+            var customerRegistered = await _unitOfWork.CustomerWorkshopClassRepository.GetFirst(c => c.WorkshopClassId == workshopClassId && c.CustomerId == customerId);
+            if(customerRegistered != null && customerRegistered.Status == (int)Models.Enum.Workshop.Transaction.Status.Paid)
+            {
+                throw new InvalidOperationException($"{customerRegistered.Customer.User.Email} has paid for this workshop class!");
+            }
             var workshopClass = await _unitOfWork.WorkshopClassRepository.GetFirst(c => c.Id == workshopClassId, nameof(WorkshopClass.Workshop));
             if(workshopClass == null)
             {
@@ -42,16 +47,30 @@ namespace WorkshopSubsystem.Implementation
             {
                 throw new KeyNotFoundException($"{nameof(customer)} at {customerId}");
             }
+            
             var workshopPrice = workshopClass.Workshop.Price;
             var discount = customer.MembershipRank.Discount.HasValue?customer.MembershipRank.Discount.Value:0;
             var discountedPrice = workshopPrice - workshopPrice * (decimal)discount;
-            var customerWorkshopClass = new CustomerWorkshopClass()
+
+            
+            if(customerRegistered == null)
             {
-                CustomerId = customerId,
-                WorkshopClassId = workshopClassId,
-                Price = workshopPrice,
-                DiscountedPrice = discountedPrice,
-            };
+                var customerWorkshopClass = new CustomerWorkshopClass()
+                {
+                    CustomerId = customerId,
+                    WorkshopClassId = workshopClassId,
+                    Price = workshopPrice,
+                    DiscountedPrice = discountedPrice,
+                    Status = (int)Models.Enum.Workshop.Transaction.Status.Unpaid
+                };
+                await _unitOfWork.CustomerWorkshopClassRepository.Add(customerWorkshopClass);
+            } else
+            {
+                customerRegistered.Status = (int)Models.Enum.Workshop.Transaction.Status.Unpaid;
+                customerRegistered.Price = workshopPrice;
+                customerRegistered.DiscountedPrice = discountedPrice;
+                await _unitOfWork.CustomerWorkshopClassRepository.Update(customerRegistered);
+            }            
         }
     }
 }
