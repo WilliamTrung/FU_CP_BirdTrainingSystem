@@ -11,7 +11,7 @@ namespace Models.ServiceModels.WorkshopModels.WorkshopClass
 //+ startTime : date
     public class WorkshopClassAddModel
     {
-        public int Id { get; set; }
+        public int WorkshopId { get; set; }
         [SP_Validator.ClassStartTimeValidator]
         public DateTime StartTime { get; set; }
     }
