@@ -63,9 +63,13 @@ namespace WorkshopSubsystem.Implementation
             await _unitOfWork.WorkshopRepository.Update(entity);
         }
 
-        public Task ModifyWorkshopStatus(WorkshopStatusModifyModel workshop)
+        public async Task ModifyWorkshopStatus(WorkshopStatusModifyModel workshop)
         {
-            throw new NotImplementedException();
+            var entity = await _unitOfWork.WorkshopRepository.GetFirst(c => c.Id == workshop.Id);
+            if(entity == null) {
+                throw new KeyNotFoundException($"{typeof(Workshop)} is not found at id: {workshop.Id}");
+            }
+            entity.Status = workshop.Status;
         }
     }
 }
