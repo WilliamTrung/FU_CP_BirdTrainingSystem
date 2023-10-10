@@ -23,6 +23,10 @@ namespace WorkshopSubsystem.Implementation
             {
                 throw new KeyNotFoundException($"{nameof(workshop)} not found at id: {workshopClass.WorkshopId}");
             }
+            if(workshop.Status != (int)Models.Enum.Workshop.Status.Active)
+            {
+                throw new InvalidOperationException($"{typeof(Workshop)} is inactive");
+            }
             var entity = _mapper.Map<WorkshopClass>(workshopClass);
             
             await _unitOfWork.WorkshopClassRepository.Add(entity);
