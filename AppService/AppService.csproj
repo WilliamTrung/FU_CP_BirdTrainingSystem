@@ -23,4 +23,8 @@
     <ProjectReference Include="..\TrainingCourseSubsystem\TrainingCourseSubsystem.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="WorkshopService\Implementation\" />
+  </ItemGroup>
+
 </Project>
