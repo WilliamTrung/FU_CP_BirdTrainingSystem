@@ -10,6 +10,29 @@ namespace AppCore.Context
 {
     public static class AddModels
     {
+        public static void AddSlots(this ModelBuilder modelBuilder)
+        {
+            var slots = new List<Slot>();
+            for(int i = 0; i < 4; i++)
+            {
+                slots.Add(new Slot
+                {
+                    Id = i+1,
+                    StartTime = new TimeSpan(i+8, 0,0),
+                    EndTime = new TimeSpan(i+8, 45, 0)
+                });
+            }
+            for (int i = 0; i < 4; i++)
+            {
+                slots.Add(new Slot
+                {
+                    Id = i + 5,
+                    StartTime = new TimeSpan(i + 13, 0, 0),
+                    EndTime = new TimeSpan(i + 13, 45, 0)
+                });
+            }
+            modelBuilder.Entity<Slot>().HasData(slots);
+        }
         public static void AddMembershipModels(this ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<MembershipRank>().HasData(
