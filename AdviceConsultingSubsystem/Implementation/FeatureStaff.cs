@@ -1,5 +1,6 @@
 ﻿using AppRepository.UnitOfWork;
 using AutoMapper;
+using Models.Entities;
 using Models.ServiceModels.AdviceConsultantModels;
 using System;
 using System.Collections.Generic;
@@ -21,45 +22,66 @@ namespace AdviceConsultingSubsystem.Implementation
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<ConsultingTicket>> GetListConsultingTicket()
+        public async Task<IEnumerable<ConsultingTicketServiceModel>> GetListConsultingTicket()
         {
-            var entities = await _unitOfWork.ConsultingTicketRepository.Get(expression: null, "ConsultingType", "Customer");
-            var models = _mapper.Map<IEnumerable<ConsultingTicket>>(entities);
+            var entities = await _unitOfWork.ConsultingTicketRepository.Get();
+            var models = new List<ConsultingTicketServiceModel>();
+            foreach (var entity in entities) 
+            {
+                var model = _mapper.Map<ConsultingTicketServiceModel>(entity);
+                models.Add(model);
+            }
+
             return models;
         }
 
-        public async Task<IEnumerable<ConsultingTicket>> GetListConsultingTicketsByCustomerID(int customerID)
+        public async Task<IEnumerable<ConsultingTicketServiceModel>> GetListConsultingTicketsByCustomerID(int customerID)
         {
-            var entities = await _unitOfWork.ConsultingTicketRepository.Get(expression: x => x.CustomerId == customerID);
-            var models = _mapper.Map<IEnumerable<ConsultingTicket>>(entities);
+            var entities = await _unitOfWork.ConsultingTicketRepository.Get(x => x.CustomerId == customerID);
+            var models = new List<ConsultingTicketServiceModel>();
+            foreach (var entity in entities)
+            {
+                var model = _mapper.Map<ConsultingTicketServiceModel>(entity);
+                models.Add(model);
+            }
+
             return models;
         }
 
-        public void ReplyCustomerConsultingTicket (ConsultingTicket consultingTicket)
+        public async Task CreateAppointment (ConsultingTicketServiceModel consultingTicket)
         {
-            throw new NotImplementedException();
-        } 
+            var entity = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id.Equals(consultingTicket.Id));
+            if (entity == null)
+            {
+                throw new KeyNotFoundException($"{nameof(entity)} not found for id: {consultingTicket.Id}");
+            }
 
-        public async Task<ConsultingTicket> CreateAppointment (ConsultingTicket consultingTicket, DateTime appointmentDate,
-            int actualSlotStart, int actualEndSlot, Trainer trainer)
-        {
-            throw new NotImplementedException();
-
-            //consultingTicket.AppointmentDate = appointmentDate;
-            //consultingTicket.ActualSlotStart = actualSlotStart;
-            //consultingTicket.ActualEndSlot = actualEndSlot;
-            //consultingTicket.Trainer = trainer;
-
-            //var entities = _unitOfWork.ConsultingTicketRepository.Update();
-            //var models = _mapper.Map<IEnumerable<ConsultingTicket>>(entities);
-            //return models;
+            if (entity.AppointmentDate == null)
+            {
+                var appointmentDate = await _unitOfWork.TrainerSlotRepository.GetFirst(x => x.Date.Equals(entity.AppointmentDate));
+                if (appointmentDate == null)
+                {
+                    throw new KeyNotFoundException($"{nameof(appointmentDate)} not found for Date: {entity.AppointmentDate}");
+                }
+                appointmentDate.Date = consultingTicket.AppointmentDate;
+                await _unitOfWork.TrainerSlotRepository.Update(appointmentDate);
+            }
+            else
+            {
+                entity.AppointmentDate = consultingTicket.AppointmentDate;
+                await _unitOfWork.ConsultingTicketRepository.Update(entity);
+            }
         }
 
-        public void SetConsultingTicketStatus(ConsultingTicket consultingTicket, int status)
+        public async void SetConsultingTicketStatus(ConsultingTicketServiceModel consultingTicket)
         {
-            consultingTicket.Status = status;
-        }
+            var entity = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id.Equals(consultingTicket.Id));
+            if (entity == null)
+            {
+                throw new KeyNotFoundException($"{nameof(entity)} not found for id: {consultingTicket.Id}");
+            }
 
-        //Staff chon trainer ranh -> Co nen lam 1 function rieng trong day hay tao 1 file rieng cho slot ranh
+            //Convert   
+        }
     }
 }

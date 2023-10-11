@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Models.ServiceModels.AdviceConsultantModels
 {
-    public class Customer
+    public class ConsultingTypeServiceModel
     {
         public int Id { get; set; }
-        public int UserId { get; set; }
+        public string? Name { get; set; }
     }
 }

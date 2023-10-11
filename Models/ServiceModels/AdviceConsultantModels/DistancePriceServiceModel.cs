@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Models.ServiceModels.AdviceConsultantModels
 {
-    public class DistancePrice
+    public class DistancePriceServiceModel
     {
         public int Id { get; set; }
         public int ConsultingPricePolicyId { get; set; }

@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace Models.ServiceModels.AdviceConsultantModels
 {
-    public class Trainer
+    public class ConsultingPricePolicyServiceModel
     {
         public int Id { get; set; }
-        public int UserId { get; set; }
+        public decimal? Price { get; set; }
+        public Enum.ConsultingTicket.OnlineOrOffline OnlineOrOffline { get; set; }
     }
 }

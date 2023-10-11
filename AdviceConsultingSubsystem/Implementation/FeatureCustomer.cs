@@ -1,5 +1,6 @@
 ﻿using AppRepository.UnitOfWork;
 using AutoMapper;
+using Models.Entities;
 using Models.ServiceModels.AdviceConsultantModels;
 using System;
 using System.Collections.Generic;
@@ -19,17 +20,24 @@ namespace AdviceConsultingSubsystem.Implementation
             _mapper = mapper;
         }
 
-        public async Task SendConsultingTicket(ConsultingTicket consultingTicket)
+        public async Task SendConsultingTicket(ConsultingTicketServiceModel consultingTicket)
         {
-            throw new NotImplementedException();
+            var entity = _mapper.Map<ConsultingTicket>(consultingTicket);
+            await _unitOfWork.ConsultingTicketRepository.Add(entity);
+            //Add new Consulting Ticket
+        }
 
-            try
+        public async Task<IEnumerable<ConsultingTicketServiceModel>> GetListConsultingTicket(int customerId)
+        {
+            var entites = await _unitOfWork.ConsultingTicketRepository.Get(x => x.CustomerId == customerId);
+            var models = new List<ConsultingTicketServiceModel>();
+            foreach (var entity in entites)
             {
+                var model = _mapper.Map<ConsultingTicketServiceModel>(entity);
+                models.Add(model);
             }
-            catch (Exception ex)
-            {
-                throw new TaskCanceledException($"{ex.Message} at {ex.StackTrace}");
-            }
+
+            return models;
         }
     }
 }

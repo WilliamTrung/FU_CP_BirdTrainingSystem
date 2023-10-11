@@ -19,10 +19,10 @@ namespace AdviceConsultingSubsystem.Implementation
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<ConsultingTicket>> ViewAssignedAppointment (int id)
+        public async Task<IEnumerable<ConsultingTicketServiceModel>> ViewAssignedAppointment (int id)
         {
             var entities = await _unitOfWork.ConsultingTicketRepository.Get(expression: x => x.Trainer.Id == id, "Customer");
-            var models = _mapper.Map<IEnumerable<ConsultingTicket>>(entities);
+            var models = _mapper.Map<IEnumerable<ConsultingTicketServiceModel>>(entities);
             return models;
         }
 
