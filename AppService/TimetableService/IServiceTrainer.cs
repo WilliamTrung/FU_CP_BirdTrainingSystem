@@ -1,14 +1,14 @@
-﻿using Models.ServiceModels.WorkshopModels.WorkshopClass;
+﻿using Models.ServiceModels.WorkshopModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AppService.WorkshopService
+namespace AppService.TimetableService
 {
     public interface IServiceTrainer : IServiceAll
     {
-        Task ModifyWorkshopClassDetail(WorkshopClassDetailModifyModel model);
+        Task<IEnumerable<TrainerSlotModel>> GetTrainerSlotDetail(DateTime from, DateTime to);
     }
 }
