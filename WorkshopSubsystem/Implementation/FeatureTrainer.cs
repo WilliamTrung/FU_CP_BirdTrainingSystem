@@ -23,7 +23,7 @@ namespace WorkshopSubsystem.Implementation
             var entities = await _unitOfWork.WorkshopClassDetailRepository.Get(c => c.WorkshopClassId == workshopClassId 
                                                                                  && c.DaySlot.TrainerId == trainerId 
                                                                                  && c.DaySlot.Status == (int)Models.Enum.TrainerSlotStatus.Enabled
-                                                                                 && c.WorkshopClass.Workshop.Status != (int)Models.Enum.Workshop.Status.Inactive
+                                                                                 && c.WorkshopClass.Status != (int)Models.Enum.Workshop.Class.Status.Cancel
                                                                                  , nameof(WorkshopClassDetail.DaySlot)
                                                                                  , nameof(WorkshopClassDetail.WorkshopClass));
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
@@ -36,7 +36,6 @@ namespace WorkshopSubsystem.Implementation
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
             var details = await _unitOfWork.WorkshopClassDetailRepository.Get(c => c.DaySlot.TrainerId == trainerId 
                                                                                 && c.WorkshopClass.Status != (int)Models.Enum.Workshop.Class.Status.Cancel
-                                                                                && c.WorkshopClass.Workshop.Status != (int) Models.Enum.Workshop.Status.Inactive
                                                                                 , nameof(WorkshopClassDetail.DaySlot)
                                                                                 , nameof(WorkshopClassDetail.WorkshopClass));
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
@@ -52,7 +51,6 @@ namespace WorkshopSubsystem.Implementation
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
             var details = await _unitOfWork.WorkshopClassDetailRepository.Get(c => c.DaySlot.TrainerId == trainerId
                                                                                 && c.WorkshopClass.Status != (int)Models.Enum.Workshop.Class.Status.Cancel
-                                                                                && c.WorkshopClass.Workshop.Status != (int)Models.Enum.Workshop.Status.Inactive
                                                                                 , nameof(WorkshopClassDetail.DaySlot)
                                                                                 , nameof(WorkshopClassDetail.WorkshopClass));
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
@@ -65,7 +63,9 @@ namespace WorkshopSubsystem.Implementation
 
         public async Task ModifyWorkshopClassSlotDetail(WorkshopClassDetailModifyModel workshopClass)
         {
-            var entity = await _unitOfWork.WorkshopClassDetailRepository.GetFirst(c => c.Id == workshopClass.Id);
+            var entity = await _unitOfWork.WorkshopClassDetailRepository.GetFirst(c => c.Id == workshopClass.Id
+                                                                                    && c.WorkshopClass.Status != (int)Models.Enum.Workshop.Class.Status.Cancel
+                                                                                    , nameof(WorkshopClassDetail.WorkshopClass));
             if (entity == null)
             {
                 throw new KeyNotFoundException($"{nameof(workshopClass)} is not found at id: {workshopClass.Id}");
