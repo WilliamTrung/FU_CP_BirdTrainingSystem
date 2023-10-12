@@ -73,7 +73,10 @@ namespace AppCore.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             AddCustomFunction.AddMinimalCompareString(modelBuilder);
+            AddCustomFunction.AddDateEquallyCompare(modelBuilder);
+            AddCustomFunction.AddDateCompare(modelBuilder);
             AddModels.AddMembershipModels(modelBuilder);
+            AddModels.AddSlots(modelBuilder);
             modelBuilder.Entity<AcquirableSkill>(entity =>
             {
                 entity.HasKey(e => new { e.BirdSpeciesId, e.BirdSkillId })
