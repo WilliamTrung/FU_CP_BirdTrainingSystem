@@ -18,7 +18,6 @@ namespace Models.ServiceModels.WorkshopModels
 //+ totalSlot : int
        
         public string Title { get; set; } = null!;
-        public int WorkshopRefundPolicyId { get; set; }
         public string Description { get; set; } = null!;
         public string Picture { get; set; } = null!;
         public int? RegisterEnd { get; set; }

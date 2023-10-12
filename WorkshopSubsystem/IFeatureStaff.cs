@@ -11,7 +11,9 @@ namespace WorkshopSubsystem
     public interface IFeatureStaff : IFeatureAll
     {
         Task CreateWorkshopClass(WorkshopClassAddModel workshopClass);
-        Task ModifyWorkshopClassSlotDetail(WorkshopClassDetailModifyModel workshopClass);
+        Task<IEnumerable<WorkshopClassAdminViewModel>> GetWorkshopClassAdminViewModels(int workshopId);
+        Task<IEnumerable<WorkshopClassDetailViewModel>> GetWorkshopClassDetailViewModels(int workshopClassId);
+        
         Task ModifyWorkshopClassDetailTrainerSlot(WorkshopClassDetailTrainerSlotModifyModel workshopClass);
         Task ModifyWorkshopClassDetailSlotOnly(WorkshopClassDetailTrainerSlotOnlyModifyModel workshopClass);
         

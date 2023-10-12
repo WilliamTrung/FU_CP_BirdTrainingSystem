@@ -18,6 +18,7 @@ namespace SP_AutoMapperConfig
             Map_WorkshopClassDetail_WorkshopDetailViewModel();
             Map_WorkshopAddModel_Workshop();
             Map_WorkshopRefundPolicy_WorkshopRefundPolicyModel();
+            Map_WorkshopClass_WorkshopClassAdminViewModel();
         }
         private void Map_WorkshopRefundPolicy_WorkshopRefundPolicyModel()
         {
@@ -27,6 +28,10 @@ namespace SP_AutoMapperConfig
         {
 
         }        
+        private void Map_WorkshopClass_WorkshopClassAdminViewModel()
+        {
+            CreateMap<WorkshopClass, WorkshopClassAdminViewModel>();                
+        }
         private void Map_WorkshopClassAddModel_WorkshopClass()
         {
             CreateMap<WorkshopClassAddModel, WorkshopClass>()
@@ -68,7 +73,7 @@ namespace SP_AutoMapperConfig
         {
             destination.Picture = source.Picture;
             destination.Status = (int)Models.Enum.Workshop.Status.Active;
-            destination.WorkshopRefundPolicyId = source.WorkshopRefundPolicyId;
+            destination.WorkshopRefundPolicyId = 1;
             destination.Description = source.Description;
             destination.Price = source.Price;
             destination.Title = source.Title;

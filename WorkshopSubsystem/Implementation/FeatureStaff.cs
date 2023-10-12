@@ -46,6 +46,20 @@ namespace WorkshopSubsystem.Implementation
             await _unitOfWork.WorkshopClassRepository.Update(entity);
         }
 
+        public async Task<IEnumerable<WorkshopClassAdminViewModel>> GetWorkshopClassAdminViewModels(int workshopId)
+        {
+            var entities = await _unitOfWork.WorkshopClassRepository.Get(c => c.WorkshopId == workshopId && c.Status != (int)Models.Enum.Workshop.Class.Status.Cancel);
+            var models = _mapper.Map<List<WorkshopClassAdminViewModel>>(entities);
+            return models;
+        }
+
+        public async Task<IEnumerable<WorkshopClassDetailViewModel>> GetWorkshopClassDetailViewModels(int workshopClassId)
+        {
+            var entities = await _unitOfWork.WorkshopClassDetailRepository.Get(c => c.WorkshopClassId == workshopClassId && c.WorkshopClass.Status != (int)Models.Enum.Workshop.Class.Status.Cancel, nameof(WorkshopClassDetail.DaySlot), nameof(WorkshopClassDetail.WorkshopClass));
+            var models = _mapper.Map<List<WorkshopClassDetailViewModel>>(entities);
+            return models;
+        }
+
         public async Task ModifyWorkshopClassDetailSlotOnly(WorkshopClassDetailTrainerSlotOnlyModifyModel workshopClass)
         {
             var entity = await _unitOfWork.WorkshopClassDetailRepository.GetFirst(c => c.Id == workshopClass.Id, nameof(WorkshopClassDetail.DaySlot));
@@ -89,15 +103,6 @@ namespace WorkshopSubsystem.Implementation
             await _unitOfWork.WorkshopClassDetailRepository.Update(entity);
         }
 
-        public async Task ModifyWorkshopClassSlotDetail(WorkshopClassDetailModifyModel workshopClass)
-        {
-            var entity = await _unitOfWork.WorkshopClassDetailRepository.GetFirst(c => c.Id == workshopClass.Id);
-            if(entity == null)
-            {
-                throw new KeyNotFoundException($"{typeof(WorkshopClassDetail)} is not found at {workshopClass.Id}");
-            }
-            entity.Detail = workshopClass.Detail;
-            await _unitOfWork.WorkshopClassDetailRepository.Update(entity);
-        }
+        
     }
 }

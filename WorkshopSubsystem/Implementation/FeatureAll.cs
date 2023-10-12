@@ -48,5 +48,11 @@ namespace WorkshopSubsystem.Implementation
             var models = _mapper.Map<IEnumerable<WorkshopModel>>(entities);
             return models;
         }
+        public async Task<WorkshopRefundPolicyModel> GetRefundPolicy()
+        {
+            var entity = await _unitOfWork.WorkshopRefundPolicyRepository.GetFirst();
+            var model = _mapper.Map<WorkshopRefundPolicyModel>(entity);
+            return model;
+        }
     }
 }

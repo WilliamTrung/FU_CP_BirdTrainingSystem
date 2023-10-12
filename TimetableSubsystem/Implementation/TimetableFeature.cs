@@ -3,7 +3,6 @@ using AutoMapper;
 using Models.Entities;
 using Models.ServiceModels;
 using Models.ServiceModels.SlotModels;
-using Models.ServiceModels.WorkshopModels;
 using SP_Extension;
 using System;
 using System.Collections.Generic;
