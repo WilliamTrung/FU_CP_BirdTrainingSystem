@@ -30,7 +30,8 @@ namespace TimetableSubsystem.Implementation
 
         public async Task<IEnumerable<TrainerModel>> GetTrainerFreeOnDate(DateTime date)
         {
-            var trainers = await _unitOfWork.TrainerRepository.Get(c => !c.TrainerSlots.Any(slot => CustomDateFunctions.IsEqualToDate(slot.Date,date)), nameof(Trainer.TrainerSlots));
+            var trainers = await _unitOfWork.TrainerRepository.Get(c => !c.TrainerSlots.Any(slot => CustomDateFunctions.IsEqualToDate(slot.Date,date))
+                                                                     , nameof(Trainer.TrainerSlots));
             //var trainerSlots = await _unitOfWork.TrainerSlotRepository.Get(c => CustomDateFunctions.IsEqualToDate(c.Date, date));
             var trainerModels = _mapper.Map<List<TrainerModel>>(trainers);
             return trainerModels;
@@ -38,7 +39,10 @@ namespace TimetableSubsystem.Implementation
 
         public async Task<IEnumerable<SlotModel>> GetTrainerFreeSlotOnDate(DateOnly date, int trainerId)
         {
-            var trainerSlots = await _unitOfWork.TrainerSlotRepository.Get(c => CustomDateFunctions.IsEqualToDate(c.Date, date.ToDateTime(new TimeOnly(0,0,0))) && c.TrainerId == trainerId, nameof(TrainerSlot.Slot));
+            var trainerSlots = await _unitOfWork.TrainerSlotRepository.Get(c => CustomDateFunctions.IsEqualToDate(c.Date, date.ToDateTime(new TimeOnly(0,0,0))) 
+                                                                             && c.TrainerId == trainerId
+                                                                             && c.Status != (int)Models.Enum.TrainerSlotStatus.Disabled
+                                                                             , nameof(TrainerSlot.Slot));
             var ocuppiedSlots = _mapper.Map<List<SlotModel>>(trainerSlots);
             var slots = await GetSlotData();
             var freeSlots = slots.Except(ocuppiedSlots);
@@ -49,14 +53,18 @@ namespace TimetableSubsystem.Implementation
         {
             var trainerSlots = await _unitOfWork.TrainerSlotRepository.Get(c => CustomDateFunctions.CompareDate(c.Date, from.ToDateTime(new TimeOnly(0, 0, 0))) >= 0 
                                                                              && CustomDateFunctions.CompareDate(c.Date, to.ToDateTime(new TimeOnly(0, 0, 0))) <= 0
-                                                                             && c.TrainerId == trainerId, nameof(TrainerSlot.Slot));
+                                                                             && c.TrainerId == trainerId
+                                                                             && c.Status != (int)Models.Enum.TrainerSlotStatus.Disabled
+                                                                             , nameof(TrainerSlot.Slot));
             var slots = _mapper.Map<List<TrainerSlotModel>>(trainerSlots);
             return slots;
         }
 
         public async Task<TrainerSlotDetailModel> GetTrainerSlotDetail(int trainerSlotId)
         {
-            var trainerSlot = await _unitOfWork.TrainerSlotRepository.GetFirst(c => c.Id == trainerSlotId, nameof(TrainerSlot.Slot));
+            var trainerSlot = await _unitOfWork.TrainerSlotRepository.GetFirst(c => c.Id == trainerSlotId 
+                                                                                 && c.Status != (int) Models.Enum.TrainerSlotStatus.Disabled
+                                                                                 , nameof(TrainerSlot.Slot));
             var model = _mapper.Map<TrainerSlotDetailModel>(trainerSlot);
             return model;
         }
