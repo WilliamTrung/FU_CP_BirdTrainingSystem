@@ -12,7 +12,7 @@ namespace WorkshopSubsystem
         //create workshop
         Task CreateWorkshop(WorkshopAddModel workshop);
         
-        Task ModifyWorkshop(WorkshopModifyModel workshop);
+        //Task ModifyWorkshop(WorkshopModifyModel workshop);
         Task ModifyWorkshopStatus(WorkshopStatusModifyModel workshop);
         IEnumerable<WorkshopStatusModel> GetWorkshopStatuses() => WorkshopStatusModel.All();
     }

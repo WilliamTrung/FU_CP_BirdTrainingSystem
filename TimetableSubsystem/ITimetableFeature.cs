@@ -16,5 +16,6 @@ namespace TimetableSubsystem
         Task<IEnumerable<SlotModel>> GetTrainerFreeSlotOnDate(DateOnly date, int trainerId);
         Task<IEnumerable<TrainerSlotModel>> GetTrainerOccupiedSlots(DateOnly from, DateOnly to, int trainerId);
         Task<TrainerSlotDetailModel> GetTrainerSlotDetail(int trainerSlotId); 
+        
     }
 }
