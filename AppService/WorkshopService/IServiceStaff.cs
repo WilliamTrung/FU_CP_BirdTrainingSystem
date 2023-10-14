@@ -10,9 +10,11 @@ namespace AppService.WorkshopService
     public interface IServiceStaff : IServiceAll
     {
         Task CreateWorkshopClass(WorkshopClassAddModel workshopClass);
-        Task ModifyWorkshopClassDetail(WorkshopClassDetailModifyModel model);
-        Task ModifyWorkshopClassDetailTrainer(WorkshopClassDetailTrainerSlotModifyModel model);
-        Task ModifyWorkshopClassDetailTrainerSlotOnlu(WorkshopClassDetailTrainerSlotOnlyModifyModel model);
+        Task<IEnumerable<WorkshopClassAdminViewModel>> GetWorkshopClassAdminViewModels(int workshopId);
+        Task<IEnumerable<WorkshopClassDetailViewModel>> GetWorkshopClassDetailViewModels(int workshopClassId);
+
+        Task ModifyWorkshopClassDetailTrainerSlot(WorkshopClassDetailTrainerSlotModifyModel workshopClass);
+        Task ModifyWorkshopClassDetailSlotOnly(WorkshopClassDetailTrainerSlotOnlyModifyModel workshopClass);
 
     }
 }

@@ -8,6 +8,7 @@ namespace AppService.WorkshopService
 {
     public interface IWorkshopService
     {
+        IServiceAll AllRoleService { get; }
         IServiceCustomer CustomerService { get; }
         IServiceStaff StaffService { get; }
         IServiceManager ManagerService { get; }
