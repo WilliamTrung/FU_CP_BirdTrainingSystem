@@ -19,29 +19,29 @@ namespace AppService.WorkshopService.Implementation
             _timetable = timetable;
             _workshop = workshop;
         }
-        public Task<WorkshopRefundPolicyModel> GetRefundPolicy()
+        public async Task<WorkshopRefundPolicyModel> GetRefundPolicy()
         {
-            throw new NotImplementedException();
+            return await _workshop.All.GetRefundPolicy();
         }
 
-        public Task<WorkshopClassDetailViewModel> GetWorkshopClassDetailById(int workshopClassDetailId)
+        public async Task<WorkshopClassDetailViewModel> GetWorkshopClassDetailById(int workshopClassDetailId)
         {
-            throw new NotImplementedException();
+            return await _workshop.All.GetWorkshopClassDetail(workshopClassDetailId);
         }
 
-        public Task<IEnumerable<WorkshopClassDetailViewModel>> GetWorkshopClassDetailByWorkshopClassId(int workshopClassId)
+        public async Task<IEnumerable<WorkshopClassDetailViewModel>> GetWorkshopClassDetailByWorkshopClassId(int workshopClassId)
         {
-            throw new NotImplementedException();
+            return await _workshop.All.GetWorkshopClassDetailOnWorkshopClass(workshopClassId);
         }
 
-        public Task<IEnumerable<WorkshopClassViewModel>> GetWorkshopClassesByWorkshopId(int workshopId)
+        public async Task<IEnumerable<WorkshopClassViewModel>> GetWorkshopClassesByWorkshopId(int workshopId)
         {
-            throw new NotImplementedException();
+            return await _workshop.All.GetClassesByWorkshopId(workshopId);
         }
 
-        public Task<IEnumerable<WorkshopModel>> GetWorkshopsGeneralInformation()
+        public async Task<IEnumerable<WorkshopModel>> GetWorkshopsGeneralInformation()
         {
-            throw new NotImplementedException();
+            return await _workshop.All.GetWorkshopGeneralInformation();
         }
     }
 }
