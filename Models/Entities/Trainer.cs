@@ -12,6 +12,7 @@ namespace Models.Entities
             ConsultingTickets = new HashSet<ConsultingTicket>();
             TrainerSkills = new HashSet<TrainerSkill>();
             TrainerSlots = new HashSet<TrainerSlot>();
+            TrainingCourseSkills = new HashSet<TrainingCourseSkill>();
         }
 
         public int Id { get; set; }
@@ -27,5 +28,6 @@ namespace Models.Entities
         public virtual ICollection<ConsultingTicket> ConsultingTickets { get; set; }
         public virtual ICollection<TrainerSkill> TrainerSkills { get; set; }
         public virtual ICollection<TrainerSlot> TrainerSlots { get; set; }
+        public virtual ICollection<TrainingCourseSkill> TrainingCourseSkills { get; set; }
     }
 }

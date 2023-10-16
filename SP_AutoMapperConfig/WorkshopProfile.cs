@@ -15,11 +15,23 @@ namespace SP_AutoMapperConfig
     {        
         public WorkshopProfile() {
             Map_WorkshopAddModel_Workshop();
-            Map_WorkshopClassDetail_WorkshopDetailViewModel();            
+            Map_WorkshopClassDetail_WorkshopDetailViewModel();
+            Map_WorkshopAddModel_Workshop();
+            Map_WorkshopRefundPolicy_WorkshopRefundPolicyModel();
+        }
+        private void Map_WorkshopRefundPolicy_WorkshopRefundPolicyModel()
+        {
+            CreateMap<WorkshopRefundPolicy, WorkshopRefundPolicyModel>();
         }
         private void Map_WorkshopClass_WorkshopClassViewModel()
         {
 
+        }        
+        private void Map_WorkshopClassAddModel_WorkshopClass()
+        {
+            CreateMap<WorkshopClassAddModel, WorkshopClass>()
+                .ForMember(e => e.StartTime, opt => opt.MapFrom(c => c.StartTime))
+                .ForMember(e => e.WorkshopId, opt => opt.MapFrom(c => c.WorkshopId));
         }
         private void Map_WorkshopClassDetail_WorkshopDetailViewModel()
         {
@@ -47,10 +59,25 @@ namespace SP_AutoMapperConfig
         private void Map_WorkshopAddModel_Workshop()
         {
             CreateMap<WorkshopAddModel, Workshop>()
-                .ForMember(e => e.Status, opt => opt.MapFrom(src => Models.Enum.Workshop.Status.Active));                
+                .ForMember(e => e, opt => opt.MapFrom<Map_WorkshopAddModel_Workshop_Resolver>());                
         }
     }
-    
+    public class Map_WorkshopAddModel_Workshop_Resolver : IValueResolver<WorkshopAddModel, Workshop, Workshop>
+    {
+        public Workshop Resolve(WorkshopAddModel source, Workshop destination, Workshop destMember, ResolutionContext context)
+        {
+            destination.Picture = source.Picture;
+            destination.Status = (int)Models.Enum.Workshop.Status.Active;
+            destination.WorkshopRefundPolicyId = source.WorkshopRefundPolicyId;
+            destination.Description = source.Description;
+            destination.Price = source.Price;
+            destination.Title = source.Title;
+            destination.TotalSlot = source.TotalSlot;
+            destination.RegisterEnd = source.RegisterEnd;
+            return destination;
+        }
+    }
+
     public class Map_WorkshopClassDetail_WorkshopClassDetailViewModel_Resolver : IValueResolver<WorkshopClassDetail, WorkshopClassDetailViewModel, WorkshopClassDetailViewModel>
     {
         private readonly IMapper _mapper;

@@ -24,6 +24,7 @@ namespace AppCore.Models
         public string? ReceiveNote { get; set; }
         public string? ReceivePicture { get; set; }
         public DateTime? ExpectedDateReturn { get; set; }
+        public DateTime? ExpectedTrainingDoneDate { get; set; }
         public DateTime? TrainingDoneDate { get; set; }
         public DateTime? ActualDateReturn { get; set; }
         public string? ReturnNote { get; set; }
@@ -32,6 +33,7 @@ namespace AppCore.Models
         public int Status { get; set; }
 
         public virtual Bird Bird { get; set; } = null!;
+        public virtual Customer Customer { get; set; } = null!;
         public virtual User Staff { get; set; } = null!;
         public virtual TrainingCourse TrainingCourse { get; set; } = null!;
         public virtual ICollection<BirdTrainingProgress> BirdTrainingProgresses { get; set; }

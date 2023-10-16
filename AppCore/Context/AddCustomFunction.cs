@@ -13,6 +13,15 @@ namespace AppCore.Context
         public static void AddMinimalCompareString(this ModelBuilder modelBuilder)
         {
             modelBuilder.HasDbFunction(() => CustomStringFunctions.CompareStringsIgnoreCaseAndWhitespace(default, default));
+            
+        }
+        public static void AddDateEquallyCompare(this ModelBuilder modelBuilder)
+        {
+            modelBuilder.HasDbFunction(() => CustomDateFunctions.IsEqualToDate(default, default));
+        }
+        public static void AddDateCompare(this ModelBuilder modelBuilder)
+        {
+            modelBuilder.HasDbFunction(() => CustomDateFunctions.CompareDate(default, default));
         }
     }
 }

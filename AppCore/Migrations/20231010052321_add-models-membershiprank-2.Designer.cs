@@ -3,6 +3,7 @@ using System;
 using AppCore.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AppCore.Migrations
 {
     [DbContext(typeof(BirdTrainingCenterSystemContext))]
-    partial class BirdTrainingCenterSystemContextModelSnapshot : ModelSnapshot
+    [Migration("20231010052321_add-models-membershiprank-2")]
+    partial class addmodelsmembershiprank2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1022,56 +1024,6 @@ namespace AppCore.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Slot", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            EndTime = new TimeSpan(0, 8, 45, 0, 0),
-                            StartTime = new TimeSpan(0, 8, 0, 0, 0)
-                        },
-                        new
-                        {
-                            Id = 2,
-                            EndTime = new TimeSpan(0, 9, 45, 0, 0),
-                            StartTime = new TimeSpan(0, 9, 0, 0, 0)
-                        },
-                        new
-                        {
-                            Id = 3,
-                            EndTime = new TimeSpan(0, 10, 45, 0, 0),
-                            StartTime = new TimeSpan(0, 10, 0, 0, 0)
-                        },
-                        new
-                        {
-                            Id = 4,
-                            EndTime = new TimeSpan(0, 11, 45, 0, 0),
-                            StartTime = new TimeSpan(0, 11, 0, 0, 0)
-                        },
-                        new
-                        {
-                            Id = 5,
-                            EndTime = new TimeSpan(0, 13, 45, 0, 0),
-                            StartTime = new TimeSpan(0, 13, 0, 0, 0)
-                        },
-                        new
-                        {
-                            Id = 6,
-                            EndTime = new TimeSpan(0, 14, 45, 0, 0),
-                            StartTime = new TimeSpan(0, 14, 0, 0, 0)
-                        },
-                        new
-                        {
-                            Id = 7,
-                            EndTime = new TimeSpan(0, 15, 45, 0, 0),
-                            StartTime = new TimeSpan(0, 15, 0, 0, 0)
-                        },
-                        new
-                        {
-                            Id = 8,
-                            EndTime = new TimeSpan(0, 16, 45, 0, 0),
-                            StartTime = new TimeSpan(0, 16, 0, 0, 0)
-                        });
                 });
 
             modelBuilder.Entity("Models.Entities.TrainableSkill", b =>
