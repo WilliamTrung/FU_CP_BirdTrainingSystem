@@ -16,7 +16,9 @@ namespace TrainingCourseSubsystem
     {
         Task RegisterBird(BirdModel bird);
         Task UpdateBirdProfile(BirdModel bird);
+        Task<IEnumerable<BirdModel>> GetBirdByCustomerId(int customerId);
         Task<IEnumerable<TrainingCourseModel>> GetTrainingCourse();
+        Task<IEnumerable<TrainingCourseModel>> GetTrainingCourseBySpeciesId(int birdSpeciesId);
         Task<TrainingCourseModel> GetTrainingCourseById(int trainingCourseId);
         Task RegisterTrainingCourse(BirdTrainingCourseRegister birdTrainingCourseRegister);
     }

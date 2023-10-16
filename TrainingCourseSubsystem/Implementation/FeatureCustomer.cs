@@ -75,5 +75,19 @@ namespace TrainingCourseSubsystem.Implementation
                 await _unitOfWork.BirdTrainingCourseRepository.Add(entity);
             }
         }
+
+        public async Task<IEnumerable<TrainingCourseModel>> GetTrainingCourseBySpeciesId(int birdSpeciesId)
+        {
+            var entities = await _unitOfWork.TrainingCourseRepository.GetFirst(e => e.BirdSpeciesId == birdSpeciesId);
+            var models = _mapper.Map<IEnumerable<TrainingCourseModel>>(entities);
+            return models;
+        }
+
+        public async Task<IEnumerable<BirdModel>> GetBirdByCustomerId(int customerId)
+        {
+            var entities = await _unitOfWork.BirdRepository.GetFirst(e => e.CustomerId == customerId);
+            var models = _mapper.Map<IEnumerable<BirdModel>>(entities);
+            return models;
+        }
     }
 }
