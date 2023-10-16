@@ -8,6 +8,7 @@ namespace Models.Entities
         public Customer()
         {
             Addresses = new HashSet<Address>();
+            BirdTrainingCourses = new HashSet<BirdTrainingCourse>();
             Birds = new HashSet<Bird>();
             ConsultingTickets = new HashSet<ConsultingTicket>();
             CustomerCertificateDetails = new HashSet<CustomerCertificateDetail>();
@@ -31,6 +32,7 @@ namespace Models.Entities
         public virtual MembershipRank MembershipRank { get; set; } = null!;
         public virtual User User { get; set; } = null!;
         public virtual ICollection<Address> Addresses { get; set; }
+        public virtual ICollection<BirdTrainingCourse> BirdTrainingCourses { get; set; }
         public virtual ICollection<Bird> Birds { get; set; }
         public virtual ICollection<ConsultingTicket> ConsultingTickets { get; set; }
         public virtual ICollection<CustomerCertificateDetail> CustomerCertificateDetails { get; set; }

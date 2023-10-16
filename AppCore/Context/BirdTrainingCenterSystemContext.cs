@@ -1,5 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Models.Entities;
+﻿using System;
+using System.Collections.Generic;
+using AppCore.Models;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace AppCore.Context
 {
@@ -65,6 +68,7 @@ namespace AppCore.Context
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+
                 //optionsBuilder.UseSqlServer("Server=(local);uid=sa;pwd=1234567890;database= BirdTrainingCenterSystem;TrustServerCertificate=True;");
                 optionsBuilder.UseNpgsql($"Server={Connection.Server};Port={Connection.Port};Database={Connection.Database};User Id={Connection.UID};Password={Connection.Password};SSL Mode=Require;Trust Server Certificate=True;\r\n");
             }
@@ -80,7 +84,7 @@ namespace AppCore.Context
             modelBuilder.Entity<AcquirableSkill>(entity =>
             {
                 entity.HasKey(e => new { e.BirdSpeciesId, e.BirdSkillId })
-                    .HasName("PK__Acquirab__4802579ED65DE48A");
+                    .HasName("PK__Acquirab__4802579EFA801BDC");
 
                 entity.ToTable("AcquirableSkill");
 
@@ -198,7 +202,7 @@ namespace AppCore.Context
             modelBuilder.Entity<BirdCertificateDetail>(entity =>
             {
                 entity.HasKey(e => new { e.BirdId, e.BirdCertificateId })
-                    .HasName("PK__BirdCert__CB94077C4F80D508");
+                    .HasName("PK__BirdCert__CB94077CF837ECD8");
 
                 entity.ToTable("BirdCertificateDetail");
 
@@ -220,7 +224,7 @@ namespace AppCore.Context
             modelBuilder.Entity<BirdCertificateSkill>(entity =>
             {
                 entity.HasKey(e => new { e.BirdSkillId, e.BirdCertificateId })
-                    .HasName("PK__BirdCert__A080D86A13A8CDEA");
+                    .HasName("PK__BirdCert__A080D86A68CAAD2B");
 
                 entity.ToTable("BirdCertificateSkill");
 
@@ -279,6 +283,8 @@ namespace AppCore.Context
 
                 entity.Property(e => e.ExpectedStartDate).HasColumnType("date");
 
+                entity.Property(e => e.ExpectedTrainingDoneDate).HasColumnType("date");
+
                 entity.Property(e => e.LastestUpdate).HasColumnType("date");
 
                 entity.Property(e => e.ReceiveNote)
@@ -307,6 +313,12 @@ namespace AppCore.Context
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKBird_Train718139");
 
+                entity.HasOne(d => d.Customer)
+                    .WithMany(p => p.BirdTrainingCourses)
+                    .HasForeignKey(d => d.CustomerId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FKBird_Train678526");
+
                 entity.HasOne(d => d.Staff)
                     .WithMany(p => p.BirdTrainingCourses)
                     .HasForeignKey(d => d.StaffId)
@@ -325,6 +337,10 @@ namespace AppCore.Context
                 entity.ToTable("Bird_TrainingProgress");
 
                 entity.Property(e => e.BirdTrainingCourseId).HasColumnName("Bird_TrainingCourseId");
+
+                entity.Property(e => e.Evidence)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.TrainingCourseSkillId).HasColumnName("TrainingCourse_SkillId");
 
@@ -360,6 +376,10 @@ namespace AppCore.Context
                     .IsUnicode(false);
 
                 entity.Property(e => e.DateCreate).HasColumnType("date");
+
+                entity.Property(e => e.Evidence)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
                 entity.HasOne(d => d.BirdTrainingCourse)
                     .WithMany(p => p.BirdTrainingReports)
@@ -515,7 +535,7 @@ namespace AppCore.Context
             modelBuilder.Entity<CustomerCertificateDetail>(entity =>
             {
                 entity.HasKey(e => new { e.CustomerId, e.CertificateId })
-                    .HasName("PK__Customer__AF11EEA4285B300D");
+                    .HasName("PK__Customer__AF11EEA46EA93024");
 
                 entity.ToTable("Customer_CertificateDetail");
 
@@ -537,7 +557,7 @@ namespace AppCore.Context
             modelBuilder.Entity<CustomerLessonDetail>(entity =>
             {
                 entity.HasKey(e => new { e.CustomerId, e.LessionId })
-                    .HasName("PK__Customer__304EA374D2BD3A0D");
+                    .HasName("PK__Customer__304EA374D6F3596B");
 
                 entity.ToTable("Customer_LessonDetail");
 
@@ -557,7 +577,7 @@ namespace AppCore.Context
             modelBuilder.Entity<CustomerOnlineCourseDetail>(entity =>
             {
                 entity.HasKey(e => new { e.CustomerId, e.OnlineCourseId })
-                    .HasName("PK__Customer__FFA1E3B752290968");
+                    .HasName("PK__Customer__FFA1E3B77D5EF0E0");
 
                 entity.ToTable("Customer_OnlineCourseDetail");
 
@@ -581,7 +601,7 @@ namespace AppCore.Context
             modelBuilder.Entity<CustomerSectionDetail>(entity =>
             {
                 entity.HasKey(e => new { e.CustomerId, e.SectionId })
-                    .HasName("PK__Customer__9CA0945FD7808FAD");
+                    .HasName("PK__Customer__9CA0945F88AE5284");
 
                 entity.ToTable("Customer_SectionDetail");
 
@@ -601,7 +621,7 @@ namespace AppCore.Context
             modelBuilder.Entity<CustomerWorkshopClass>(entity =>
             {
                 entity.HasKey(e => new { e.CustomerId, e.WorkshopClassId })
-                    .HasName("PK__Customer__7EEF8348F780826E");
+                    .HasName("PK__Customer__7EEF83483302BD45");
 
                 entity.ToTable("Customer_WorkshopClass");
 
@@ -752,7 +772,7 @@ namespace AppCore.Context
             modelBuilder.Entity<TrainableSkill>(entity =>
             {
                 entity.HasKey(e => new { e.BirdSkillId, e.SkillId })
-                    .HasName("PK__Trainabl__707AE500702FFB55");
+                    .HasName("PK__Trainabl__707AE50029313271");
 
                 entity.ToTable("TrainableSkill");
 
@@ -789,7 +809,7 @@ namespace AppCore.Context
             modelBuilder.Entity<TrainerSkill>(entity =>
             {
                 entity.HasKey(e => new { e.TrainerId, e.SkillId })
-                    .HasName("PK__Trainer___5B9013647216435F");
+                    .HasName("PK__Trainer___5B901364097D80E3");
 
                 entity.ToTable("Trainer_Skill");
 
@@ -861,7 +881,7 @@ namespace AppCore.Context
             modelBuilder.Entity<TrainingCourseSkill>(entity =>
             {
                 entity.HasKey(e => e.BirdSkillId)
-                    .HasName("PK__Training__1D80EC1800FBBDDE");
+                    .HasName("PK__Training__1D80EC18196D23C3");
 
                 entity.ToTable("TrainingCourseSkill");
 
@@ -872,6 +892,11 @@ namespace AppCore.Context
                     .HasForeignKey<TrainingCourseSkill>(d => d.BirdSkillId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKTrainingCo551235");
+
+                entity.HasOne(d => d.Trainer)
+                    .WithMany(p => p.TrainingCourseSkills)
+                    .HasForeignKey(d => d.TrainerId)
+                    .HasConstraintName("FKTrainingCo4785");
 
                 entity.HasOne(d => d.TrainingCourse)
                     .WithMany(p => p.TrainingCourseSkills)
@@ -913,10 +938,10 @@ namespace AppCore.Context
             {
                 entity.ToTable("User");
 
-                entity.HasIndex(e => e.PhoneNumber, "UQ__User__85FB4E38D8923EE1")
+                entity.HasIndex(e => e.PhoneNumber, "UQ__User__85FB4E382800E8D7")
                     .IsUnique();
 
-                entity.HasIndex(e => e.Email, "UQ__User__A9D1053429005A0E")
+                entity.HasIndex(e => e.Email, "UQ__User__A9D105345B4021CD")
                     .IsUnique();
 
                 entity.Property(e => e.Avatar)
