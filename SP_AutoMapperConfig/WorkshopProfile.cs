@@ -96,12 +96,10 @@ namespace SP_AutoMapperConfig
             destination.Detail = source.Detail;
             destination.Id = source.Id;
 #pragma warning disable CS8629 // Nullable value type may be null.
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
             destination.Trainer = _mapper.Map<TrainerWorkshopModel>(source.DaySlot.Trainer);
             destination.Date = (DateTime)source.DaySlot.Date;
             destination.StartTime = (TimeSpan)source.DaySlot.Slot.StartTime;
             destination.EndTime = (TimeSpan)source.DaySlot.Slot.EndTime;
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
 #pragma warning restore CS8629 // Nullable value type may be null.
             return destination;
         }
