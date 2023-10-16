@@ -15,19 +15,19 @@ namespace AppService.WorkshopService.Implementation
         {
         }
 
-        public Task CreateWorkshop(WorkshopAddModel workshop)
+        public async Task CreateWorkshop(WorkshopAddModel workshop)
         {
-            throw new NotImplementedException();
+            await _workshop.Manager.CreateWorkshop(workshop);
         }
 
-        public Task<IEnumerable<WorkshopStatusModel>> GetWorkshopStatuses()
+        public async Task<IEnumerable<WorkshopStatusModel>> GetWorkshopStatuses()
         {
-            throw new NotImplementedException();
+            return await _workshop.Manager.GetWorkshopStatuses();
         }
 
-        public Task ModifyWorkshopStatus(WorkshopStatusModifyModel workshop)
+        public async Task ModifyWorkshopStatus(WorkshopStatusModifyModel workshop)
         {
-            throw new NotImplementedException();
+            await _workshop.Manager.ModifyWorkshopStatus(workshop);
         }
     }
 }

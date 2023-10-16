@@ -2,6 +2,7 @@
 using AutoMapper;
 using Models.Entities;
 using Models.ServiceModels.WorkshopModels.WorkshopClass;
+using SP_Extension;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,6 +47,35 @@ namespace WorkshopSubsystem.Implementation
             await _unitOfWork.WorkshopClassRepository.Update(entity);
         }
 
+        public async Task<WorkshopClassDetailViewModel?> GetPreviousWorkshopClassDetail(int workshopClassDetailId)
+        {
+            var current = await _unitOfWork.WorkshopClassDetailRepository.GetFirst(c => c.Id==workshopClassDetailId, nameof(WorkshopClassDetail.DaySlot));
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+            var entities = await _unitOfWork.WorkshopClassDetailRepository.Get(c => c.Id == workshopClassDetailId
+                                                                                && CustomDateFunctions.CompareDate(c.DaySlot.Date, current.DaySlot.Date) <= 0                                                                                
+                                                                                , nameof(WorkshopClassDetail.DaySlot));
+            var minDate = entities.Min(c => c.DaySlot.Date);
+            var minRecords = entities.Where(c => c.DaySlot.Date == minDate);
+            minRecords = minRecords.Where(c => c.DaySlot.SlotId > current.DaySlot.SlotId);
+            var result = minRecords.OrderBy(c => c.DaySlot.SlotId).First();
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+            return _mapper.Map<WorkshopClassDetailViewModel>(result);
+        }
+        public async Task<WorkshopClassDetailViewModel?> GetFollowingWorkshopClassDetail(int workshopClassDetailId)
+        {
+            var current = await _unitOfWork.WorkshopClassDetailRepository.GetFirst(c => c.Id == workshopClassDetailId, nameof(WorkshopClassDetail.DaySlot));
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+            var entities = await _unitOfWork.WorkshopClassDetailRepository.Get(c => c.Id == workshopClassDetailId
+                                                                                && CustomDateFunctions.CompareDate(c.DaySlot.Date, current.DaySlot.Date) >= 0
+                                                                                , nameof(WorkshopClassDetail.DaySlot));
+            var maxDate = entities.Max(c => c.DaySlot.Date);
+            var minRecords = entities.Where(c => c.DaySlot.Date == maxDate);
+            minRecords = minRecords.Where(c => c.DaySlot.SlotId < current.DaySlot.SlotId);
+            var result = minRecords.OrderByDescending(c => c.DaySlot.SlotId).First();
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+            return _mapper.Map<WorkshopClassDetailViewModel>(result);
+        }
+
         public async Task<IEnumerable<WorkshopClassAdminViewModel>> GetWorkshopClassAdminViewModels(int workshopId)
         {
             var entities = await _unitOfWork.WorkshopClassRepository.Get(c => c.WorkshopId == workshopId 
@@ -68,7 +98,7 @@ namespace WorkshopSubsystem.Implementation
             var entity = await _unitOfWork.WorkshopClassDetailRepository.GetFirst(c => c.Id == workshopClass.Id
                                                                                     && c.WorkshopClass.Status != (int)Models.Enum.Workshop.Class.Status.Cancel
                                                                                     , nameof(WorkshopClassDetail.DaySlot)
-                                                                                    , nameof(WorkshopClassDetail.WorkshopClass);
+                                                                                    , nameof(WorkshopClassDetail.WorkshopClass));
             if(entity == null)
             {
                 throw new KeyNotFoundException($"{nameof(entity)} not found for id: {workshopClass.Id}");

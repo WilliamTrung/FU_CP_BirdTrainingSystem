@@ -15,10 +15,10 @@ namespace BirdTrainingCenterAPI.Startup
     {
         public static void ConfiguringBusinessRules(WebApplicationBuilder builder)
         {
-            builder.Services.Configure<BR_WorkshopConstant>(option =>
-            {
-                option.StartDateDeadlineAfterRegistrationEnd = Int32.Parse(builder.Configuration.GetSection("BusinessRuleSet")["StartDateDeadlineAfterRegistrationEnd"]);
-            });
+            //builder.Services.Configure<BR_WorkshopConstant>(option =>
+            //{
+            //    option.StartDateDeadlineAfterRegistrationEnd = Int32.Parse(builder.Configuration.GetSection("BusinessRuleSet")["StartDateDeadlineAfterRegistrationEnd"]);
+            //});
         }
         public static void ConfiguringServices(WebApplicationBuilder builder)
         {

@@ -20,9 +20,9 @@ namespace AppService.WorkshopService.Implementation
             return await _workshop.Customer.GetRegisteredWorkshopClasses(customerId);
         }
 
-        public Task Regsiter(int customerId, int workshopClassId)
+        public async Task Regsiter(int customerId, int workshopClassId)
         {
-            throw new NotImplementedException();
+            await _workshop.Customer.Register(customerId, workshopClassId);
         }
     }
 }

@@ -21,6 +21,30 @@ namespace TimetableSubsystem.Implementation
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
+
+        public async Task<bool> CheckTrainerFree(int trainerId, DateTime date, int slotId)
+        {
+            var freeTrainers = await this.GetTrainerFreeOnDate(date);
+            if (freeTrainers == null || !freeTrainers.Any())
+            {
+                return false;
+            }
+            if(!freeTrainers.Any(c => c.Id == trainerId)) { 
+                return false;
+            }
+            DateOnly dateOnly = new DateOnly(date.Year, date.Month, date.Day);
+            var freeSlots = await this.GetTrainerFreeSlotOnDate(dateOnly, trainerId);
+            if(freeSlots == null || !freeSlots.Any())
+            {
+                return false;
+            }
+            if (!freeSlots.Any(c => c.Id == slotId))
+            {
+                return false;
+            }            
+            return true;
+        }
+
         public async Task<IEnumerable<SlotModel>> GetSlotData()
         {
             var entities = await _unitOfWork.SlotRepository.Get();
@@ -42,10 +66,10 @@ namespace TimetableSubsystem.Implementation
             var trainerSlots = await _unitOfWork.TrainerSlotRepository.Get(c => CustomDateFunctions.IsEqualToDate(c.Date, date.ToDateTime(new TimeOnly(0,0,0))) 
                                                                              && c.TrainerId == trainerId
                                                                              && c.Status != (int)Models.Enum.TrainerSlotStatus.Disabled
-                                                                             , nameof(TrainerSlot.Slot));
-            var ocuppiedSlots = _mapper.Map<List<SlotModel>>(trainerSlots);
+                                                                             , nameof(TrainerSlot.Slot));            
+            var occuppiedSlots = _mapper.Map<List<SlotModel>>(trainerSlots);
             var slots = await GetSlotData();
-            var freeSlots = slots.Except(ocuppiedSlots);
+            var freeSlots = slots.Where(c => !occuppiedSlots.Any(e => e.Id == c.Id));
             return freeSlots;
         }
 
