@@ -18,7 +18,6 @@ namespace TrainingCourseSubsystem
         //FE31[Staff] assign[Trainer] by[Slot] - to train the[Bird] for each[Skill] in [Training Course] - [Trainer] must have relevant[Skill] to train
         //FE34[Staff] confirm[Bird] completing the[Training Course] - by checking all the progression in each[Training Course Detail]
         //FE36[Staff] notify[Customer] - to receive[Bird] - [Customer] must be at the center to receive[Bird]
-        Task Add(BirdTrainingCourseModel birdTrainingCourse);
         Task Add(BirdTrainingProgressModel birdTrainingProgress);
         Task Update(BirdTrainingCourseModel birdTrainingCourse);
         Task Update(BirdTrainingProgressModel birdTrainingProgress);
@@ -26,5 +25,7 @@ namespace TrainingCourseSubsystem
         Task<IEnumerable<BirdTrainingCourseModel>> GetBirdTrainingCourseByBirdId(int birdId);
         Task<IEnumerable<TrainerModel>> GetTrainer();
         Task<TrainerModel> GetTrainerById(int trainerId);
+        Task<IEnumerable<TrainerModel>> GetTrainerByBirdSkillId(int birdSkillId);
+        Task<IEnumerable<TrainerModel>> GetTrainerByTrainerSkillId(int trainerSkillId);
     }
 }

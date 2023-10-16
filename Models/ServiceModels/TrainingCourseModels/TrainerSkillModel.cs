@@ -8,8 +8,11 @@ namespace Models.ServiceModels.TrainingCourseModels
 {
     public class TrainerSkillModel
     {
-        int Id { get; set; }
-        public string Name { get; set; } = null!;
-        public string Description { get; set; } = null!;
+        public int TrainerId { get; set; }
+        public int SkillId { get; set; }
+        public string? Description { get; set; }
+
+        public virtual SkillModel Skill { get; set; } = null!;
+        public virtual TrainerModel Trainer { get; set; } = null!;
     }
 }

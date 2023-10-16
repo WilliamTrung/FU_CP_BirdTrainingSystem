@@ -18,20 +18,6 @@ namespace TrainingCourseSubsystem.Implementation
         {
         }
 
-        public async Task Add(BirdTrainingCourseModel birdTrainingCourse)
-        {
-            if (birdTrainingCourse == null)
-            {
-                throw new Exception("Client send null model.");
-            }
-            var entity = _mapper.Map<BirdTrainingCourse>(birdTrainingCourse);
-            if (entity == null)
-            {
-                throw new Exception("Entity is null.");
-            }
-            await _unitOfWork.BirdTrainingCourseRepository.Add(entity);
-        }
-
         public async Task Add(BirdTrainingProgressModel birdTrainingProgress)
         {
             if (birdTrainingProgress == null)
@@ -121,6 +107,41 @@ namespace TrainingCourseSubsystem.Implementation
                 throw new Exception("Entity is null.");
             }
             await _unitOfWork.BirdTrainingProgressRepository.Update(entity);
+        }
+
+        public async Task<IEnumerable<TrainerModel>> GetTrainerByTrainerSkillId(int trainerSkillId)
+        {
+            var trainerSkills = await _unitOfWork.TrainerSkillRepository.Get(e => e.SkillId == trainerSkillId, nameof(Trainer));
+            List<Trainer> trainerEntities = new List<Trainer>();
+            foreach (var trainerSkill in trainerSkills)
+            {
+                if(trainerSkill.Trainer != null)
+                {
+                    trainerEntities.Add(trainerSkill.Trainer);
+                }
+            }
+            var models = _mapper.Map<IEnumerable<TrainerModel>>(trainerEntities);
+            return models;
+        }
+
+        public async Task<IEnumerable<TrainerModel>> GetTrainerByBirdSkillId(int birdSkillId)
+        {
+            var trainableSkills = await _unitOfWork.TrainableSkillRepository.Get(e => e.BirdSkillId == birdSkillId);
+            List<TrainerModel> models = new List<TrainerModel>();
+            foreach(var trainableSkill in trainableSkills)
+            {
+                var trainerSkillId = trainableSkill.SkillId;
+                List<TrainerModel> trainers = GetTrainerByTrainerSkillId(trainerSkillId).Result.ToList();
+                foreach (var trainer in trainers)
+                {
+                    if(trainer != null)
+                    {
+                        models.Add(trainer);
+                    }
+                }
+            }
+            models.DistinctBy(m => m.Id).ToList();
+            return models;
         }
     }
 }

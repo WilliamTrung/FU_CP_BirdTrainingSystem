@@ -27,7 +27,7 @@ namespace Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse
         public int Status { get; set; }
 
         public virtual BirdModel Bird { get; set; } = null!;
-        //public virtual UserModel Staff { get; set; } = null!;
+        public virtual UserModel Staff { get; set; } = null!;
         public virtual TrainingCourseModel TrainingCourse { get; set; } = null!;
         public virtual ICollection<BirdTrainingProgressModel> BirdTrainingProgresses { get; set; }
         public virtual ICollection<BirdTrainingReportModel> BirdTrainingReports { get; set; }

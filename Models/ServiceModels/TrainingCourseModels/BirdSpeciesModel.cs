@@ -10,7 +10,7 @@ namespace Models.ServiceModels.TrainingCourseModels
         public string Name { get; set; } = null!;
         public string? ShortDetail { get; set; }
 
-        public virtual ICollection<AcquirableSkill> AcquirableSkills { get; set; }
+        public virtual ICollection<AcquirableSkillModel> AcquirableSkills { get; set; }
         public virtual ICollection<BirdModel> Birds { get; set; }
         public virtual ICollection<TrainingCourseModel> TrainingCourses { get; set; }
     }

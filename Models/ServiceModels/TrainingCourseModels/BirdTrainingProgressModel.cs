@@ -16,6 +16,6 @@ namespace Models.ServiceModels.TrainingCourseModels
 
         public virtual BirdTrainingCourseModel BirdTrainingCourse { get; set; } = null!;
         public virtual Trainer Trainer { get; set; } = null!;
-        public virtual TrainingCourseSkill TrainingCourseSkill { get; set; } = null!;
+        public virtual TrainingCourseSkillModel TrainingCourseSkill { get; set; } = null!;
     }
 }
