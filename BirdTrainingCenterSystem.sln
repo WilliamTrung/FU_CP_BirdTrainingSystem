@@ -37,7 +37,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SP_Extension", "SP_Extensio
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TimetableSubsystem", "TimetableSubsystem\TimetableSubsystem.csproj", "{3A621DF9-B6A7-4FCA-A458-E31301F63A26}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EntityQuerySubsystem", "EntityQuerySubsystem\EntityQuerySubsystem.csproj", "{BEBBBE5B-F1C2-4167-85F8-777BD41533D0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EntityQuerySubsystem", "EntityQuerySubsystem\EntityQuerySubsystem.csproj", "{BEBBBE5B-F1C2-4167-85F8-777BD41533D0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
