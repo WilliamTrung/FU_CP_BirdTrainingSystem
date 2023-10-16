@@ -9,7 +9,7 @@ namespace Models.Entities
         public int BirdTrainingCourseId { get; set; }
         public int TrainerId { get; set; }
         public string? Comment { get; set; }
-        public float? Progress { get; set; }
+        public string? Evidence { get; set; }
         public DateTime DateCreate { get; set; }
 
         public virtual BirdTrainingCourse BirdTrainingCourse { get; set; } = null!;
