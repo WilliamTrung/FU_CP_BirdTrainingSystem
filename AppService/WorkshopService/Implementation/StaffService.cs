@@ -68,10 +68,7 @@ namespace AppService.WorkshopService.Implementation
                 Task comparePreviousSlot = ComparePreviousSlotDetail(previous_slot, workshopClassDetail.Date, changedSlot.StartTime);
                 validatedTasks.Add(comparePreviousSlot);
             }
-            validatedTasks.ForEach(async task =>
-            {
-                await task;
-            });
+            await Task.WhenAll(validatedTasks);
             //end validating
             await _workshop.Staff.ModifyWorkshopClassDetailSlotOnly(workshopClassDetail);
         }
@@ -112,10 +109,7 @@ namespace AppService.WorkshopService.Implementation
                 Task comparePreviousSlot = ComparePreviousSlotDetail(previous_slot, workshopClassDetail.Date, changedSlot.StartTime);
                 validatedTasks.Add(comparePreviousSlot);
             }
-            validatedTasks.ForEach(async task =>
-            {
-                await task;
-            });
+            await Task.WhenAll(validatedTasks);
             //end validating
             await _workshop.Staff.ModifyWorkshopClassDetailTrainerSlot(workshopClassDetail);
         }
