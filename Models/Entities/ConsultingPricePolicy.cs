@@ -12,7 +12,7 @@ namespace Models.Entities
 
         public int Id { get; set; }
         public decimal Price { get; set; }
-        public bool OnlineOrOffline { get; set; }
+        public int OnlineOrOffline { get; set; }
 
         public virtual ICollection<ConsultingTicket> ConsultingTickets { get; set; }
     }

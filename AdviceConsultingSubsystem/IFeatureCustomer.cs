@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Models.ServiceModels.AdviceConsultantModels;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -9,6 +10,8 @@ namespace AdviceConsultingSubsystem
 {
     public interface IFeatureCustomer
     {
+        Task SendConsultingTicket(ConsultingTicketServiceModel consultingTicket);
+        Task<IEnumerable<ConsultingTicketServiceModel>> GetListConsultingTicket(int customerId);
         //FE09[Customer] send[Help ticket] to the center
         //FE12[Customer] send[Advice ticket] to center
         //- [Advice ticket] must be select offline or online appointment;

@@ -20,7 +20,7 @@ namespace Models.Entities
         public int? ExpectedSlotEnd { get; set; }
         public string? ConsultingDetail { get; set; }
         public int? Distance { get; set; }
-        public bool OnlineOrOffline { get; set; }
+        public int OnlineOrOffline { get; set; }
         public string? GgMeetLink { get; set; }
         public DateTime? AppointmentDate { get; set; }
         public int? ActualSlotStart { get; set; }

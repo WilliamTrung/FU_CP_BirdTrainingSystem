@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Models.ServiceModels.AdviceConsultantModels;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
 using System.Linq;
@@ -9,6 +10,8 @@ namespace AdviceConsultingSubsystem
 {
     public interface IFeatureTrainer
     {
+        Task<IEnumerable<ConsultingTicketServiceModel>> ViewAssignedAppointment(int id);
+        Task FillOutBillingForm(ConsultingTicketServiceModel consultingTicket, int actualSlotStart, int actualEndSlot);
         //FE16[Trainer] view assigned[Appointment] by[Staff]
         //FE17[Trainer] decide on planning a[Training Plan] for [Appointment] - optional
         //FE18[Trainer] fill out [Billing Form] from the advice appointment - after completing the appointment

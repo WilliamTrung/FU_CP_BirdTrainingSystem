@@ -48,6 +48,14 @@ namespace AdviceConsultingSubsystem.Implementation
             return models;
         }
 
+
+        public async Task<ConsultingTicketServiceModel> GetConsultingTicketByID(int id)
+        {
+            var entity = await _unitOfWork.ConsultingTicketRepository.Get(x => x.Id == id);
+            var model = _mapper.Map<ConsultingTicketServiceModel>(entity);
+            return model;
+        }
+
         public async Task CreateAppointment (ConsultingTicketServiceModel consultingTicket)
         {
             var entity = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id.Equals(consultingTicket.Id));

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Models.ServiceModels.AdviceConsultantModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,10 @@ namespace AdviceConsultingSubsystem
 {
     public interface IFeatureStaff
     {
+        Task<IEnumerable<ConsultingTicketServiceModel>> GetListConsultingTicket();
+        Task<IEnumerable<ConsultingTicketServiceModel>> GetListConsultingTicketsByCustomerID(int customerID);
+        Task GetConsultingTicketByID(int id);
+        Task CreateAppointment(ConsultingTicketServiceModel consultingTicket);
         //FE10[Staff] view[Help ticket] from[Customer]
         //FE11[Staff] reply[Help ticket] to[Customer]
         //FE13	[Staff] view [Advice ticket] from [Customer]
