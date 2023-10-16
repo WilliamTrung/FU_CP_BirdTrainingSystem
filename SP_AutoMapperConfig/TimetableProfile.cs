@@ -2,7 +2,6 @@
 using Models.Entities;
 using Models.ServiceModels;
 using Models.ServiceModels.SlotModels;
-using Models.ServiceModels.WorkshopModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -10,10 +10,10 @@ namespace AppService.WorkshopService
 {
     public interface IServiceAll
     {
-        Task<IEnumerable<WorkshopModel>> GetWorkshops();
+        Task<IEnumerable<WorkshopModel>> GetWorkshopsGeneralInformation();
         Task<IEnumerable<WorkshopClassViewModel>> GetWorkshopClassesByWorkshopId(int workshopId);
-        Task<IEnumerable<WorkshopClassDetailViewModel>> GetWorkshopClassSlotsByWorkshopClassId(int workshopClassId);
-        Task<WorkshopClassDetailViewModel> GetWorkshopClassSlotById(int workshopClassDetailId);
-
+        Task<IEnumerable<WorkshopClassDetailViewModel>> GetWorkshopClassDetailByWorkshopClassId(int workshopClassId);
+        Task<WorkshopClassDetailViewModel> GetWorkshopClassDetailById(int workshopClassDetailId);
+        Task<WorkshopRefundPolicyModel> GetRefundPolicy();
     }
 }

@@ -1,4 +1,4 @@
-﻿using Models.ServiceModels.WorkshopModels;
+﻿using Models.ServiceModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
