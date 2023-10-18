@@ -81,6 +81,7 @@ namespace AppCore.Context
             AddCustomFunction.AddDateCompare(modelBuilder);
             AddModels.AddMembershipModels(modelBuilder);
             AddModels.AddSlots(modelBuilder);
+            AddModels.AddTrainerSkills(modelBuilder);
             modelBuilder.Entity<AcquirableSkill>(entity =>
             {
                 entity.HasKey(e => new { e.BirdSpeciesId, e.BirdSkillId })
