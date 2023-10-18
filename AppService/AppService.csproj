@@ -25,4 +25,8 @@
     <ProjectReference Include="..\WorkshopSubsystem\WorkshopSubsystem.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="TimetableService\Implementation\" />
+  </ItemGroup>
+
 </Project>
