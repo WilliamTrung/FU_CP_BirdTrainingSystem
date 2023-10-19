@@ -11,7 +11,7 @@ namespace SP_AutoMapperConfig
     {
         public TrainerSkillProfile() { 
         }
-        private void SetTrainerSkillMapping()
+        private void SetTrainerMapping()
         {
            
         }
