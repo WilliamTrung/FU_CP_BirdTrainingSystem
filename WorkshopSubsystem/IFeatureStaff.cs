@@ -1,4 +1,5 @@
-﻿using Models.ServiceModels.WorkshopModels;
+﻿using Models.Entities;
+using Models.ServiceModels.WorkshopModels;
 using Models.ServiceModels.WorkshopModels.WorkshopClass;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,12 @@ namespace WorkshopSubsystem
     public interface IFeatureStaff : IFeatureAll
     {
         Task CreateWorkshopClass(WorkshopClassAddModel workshopClass);
-        Task ModifyWorkshopClassSlotDetail(WorkshopClassDetailModifyModel workshopClass);
+        Task<IEnumerable<WorkshopClassAdminViewModel>> GetWorkshopClassAdminViewModels(int workshopId);
+        Task<IEnumerable<WorkshopClassDetailViewModel>> GetWorkshopClassDetailViewModels(int workshopClassId);
+        
         Task ModifyWorkshopClassDetailTrainerSlot(WorkshopClassDetailTrainerSlotModifyModel workshopClass);
         Task ModifyWorkshopClassDetailSlotOnly(WorkshopClassDetailTrainerSlotOnlyModifyModel workshopClass);
-        
+        Task<WorkshopClassDetailViewModel?> GetPreviousWorkshopClassDetail(int workshopClassDetailId);
+        Task<WorkshopClassDetailViewModel?> GetFollowingWorkshopClassDetail(int workshopClassDetailId);
     }
 }

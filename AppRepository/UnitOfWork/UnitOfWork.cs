@@ -16,8 +16,6 @@ namespace AppRepository.UnitOfWork
 
         public IAcquirableSkillRepository AcquirableSkillRepository { get; private set; } = null!;
 
-        public IAdditionalConsultingBillRepository AdditionalConsultingBillRepository { get; private set; } = null!;
-
         public IAddressRepository AddressRepository { get; private set; } = null!;
 
         public IBirdRepository BirdRepository { get; private set; } = null!;
@@ -100,13 +98,12 @@ namespace AppRepository.UnitOfWork
         public IWorkshopClassRepository WorkshopClassRepository { get; private set; } = null!;
 
         public IWorkshopClassDetailRepository WorkshopClassDetailRepository { get; private set; } = null!;
-
+        public IWorkshopDetailTemplateRepository WorkshopDetailTemplateRepository { get; private set; } = null!;
         public IWorkshopRefundPolicyRepository WorkshopRefundPolicyRepository { get; private set; } = null!;
 
         private void InitRepositories()
         {
             AcquirableSkillRepository = new AcquirableSkillRepository(_context, this);
-            AdditionalConsultingBillRepository = new AdditionalConsultingBillRepository(_context, this);
             AddressRepository = new AddressRepository(_context, this);
             BirdRepository = new BirdRepository(_context, this);
             BirdCertificateRepository = new BirdCertificateRepository(_context, this);
@@ -149,6 +146,7 @@ namespace AppRepository.UnitOfWork
             WorkshopAttendanceRepository = new WorkshopAttendanceRepository(_context, this);
             WorkshopClassRepository = new WorkshopClassRepository(_context, this);
             WorkshopClassDetailRepository = new WorkshopClassDetailRepository(_context, this);
+            WorkshopDetailTemplateRepository = new WorkshopDetailTemplateRepository(_context, this);
             WorkshopRefundPolicyRepository = new WorkshopRefundPolicyRepository(_context, this);
         }
     }

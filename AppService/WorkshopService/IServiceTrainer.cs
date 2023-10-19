@@ -1,4 +1,5 @@
-﻿using Models.ServiceModels.WorkshopModels.WorkshopClass;
+﻿using Models.ServiceModels.WorkshopModels;
+using Models.ServiceModels.WorkshopModels.WorkshopClass;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,9 @@ namespace AppService.WorkshopService
 {
     public interface IServiceTrainer : IServiceAll
     {
-        Task ModifyWorkshopClassDetail(WorkshopClassDetailModifyModel model);
+        //Task ModifyWorkshopClassSlotDetail(int trainerId, WorkshopClassDetailModifyModel workshopClassDetail);
+        Task<IEnumerable<WorkshopModel>> GetAssignedWorkshops(int trainerId);
+        Task<IEnumerable<WorkshopClassAdminViewModel>> GetAssignedWorkshopClasses(int trainerId, int workshopId);
+        Task<IEnumerable<WorkshopClassDetailViewModel>> GetAssignedWorkshopClassDetails(int trainerId, int workshopClassId);
     }
 }

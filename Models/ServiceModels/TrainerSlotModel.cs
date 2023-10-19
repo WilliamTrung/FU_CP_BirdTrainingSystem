@@ -5,14 +5,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Models.ServiceModels.WorkshopModels
+namespace Models.ServiceModels
 {
-//[TrainerSlot]:
-//+ id : int
-//+ startTime : time
-//+ endTime : time
-//+ date : date
-//+ reason : string
+    //[TrainerSlot]:
+    //+ id : int
+    //+ startTime : time
+    //+ endTime : time
+    //+ date : date
+    //+ reason : string
     public class TrainerSlotModel : IClassSlot
     {
         public int Id { get; set; }

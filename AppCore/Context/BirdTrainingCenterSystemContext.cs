@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using AppCore.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Models.Entities;
 
 namespace AppCore.Context
 {
@@ -18,7 +18,6 @@ namespace AppCore.Context
         }
 
         public virtual DbSet<AcquirableSkill> AcquirableSkills { get; set; } = null!;
-        public virtual DbSet<AdditionalConsultingBill> AdditionalConsultingBills { get; set; } = null!;
         public virtual DbSet<Address> Addresses { get; set; } = null!;
         public virtual DbSet<Bird> Birds { get; set; } = null!;
         public virtual DbSet<BirdCertificate> BirdCertificates { get; set; } = null!;
@@ -61,6 +60,7 @@ namespace AppCore.Context
         public virtual DbSet<WorkshopAttendance> WorkshopAttendances { get; set; } = null!;
         public virtual DbSet<WorkshopClass> WorkshopClasses { get; set; } = null!;
         public virtual DbSet<WorkshopClassDetail> WorkshopClassDetails { get; set; } = null!;
+        public virtual DbSet<WorkshopDetailTemplate> WorkshopDetailTemplates { get; set; } = null!;
         public virtual DbSet<WorkshopRefundPolicy> WorkshopRefundPolicies { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -68,23 +68,16 @@ namespace AppCore.Context
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-
-                //optionsBuilder.UseSqlServer("Server=(local);uid=sa;pwd=1234567890;database= BirdTrainingCenterSystem;TrustServerCertificate=True;");
-                optionsBuilder.UseNpgsql($"Server={Connection.Server};Port={Connection.Port};Database={Connection.Database};User Id={Connection.UID};Password={Connection.Password};SSL Mode=Require;Trust Server Certificate=True;\r\n");
+                optionsBuilder.UseSqlServer("Server=(local);uid=sa;pwd=1234567890;database= BirdTrainingCenterSystem;TrustServerCertificate=True;");
             }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            AddCustomFunction.AddMinimalCompareString(modelBuilder);
-            AddCustomFunction.AddDateEquallyCompare(modelBuilder);
-            AddCustomFunction.AddDateCompare(modelBuilder);
-            AddModels.AddMembershipModels(modelBuilder);
-            AddModels.AddSlots(modelBuilder);
             modelBuilder.Entity<AcquirableSkill>(entity =>
             {
                 entity.HasKey(e => new { e.BirdSpeciesId, e.BirdSkillId })
-                    .HasName("PK__Acquirab__4802579EFA801BDC");
+                    .HasName("PK__Acquirab__4802579EB257E655");
 
                 entity.ToTable("AcquirableSkill");
 
@@ -103,25 +96,6 @@ namespace AppCore.Context
                     .HasForeignKey(d => d.BirdSpeciesId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKAcquirable80836");
-            });
-
-            modelBuilder.Entity<AdditionalConsultingBill>(entity =>
-            {
-                entity.ToTable("AdditionalConsultingBill");
-
-                entity.Property(e => e.DiscountedPrice).HasColumnType("money");
-
-                entity.Property(e => e.Evidence)
-                    .HasMaxLength(50)
-                    .IsUnicode(false);
-
-                entity.Property(e => e.TotalPrice).HasColumnType("money");
-
-                entity.HasOne(d => d.ConsultingTicket)
-                    .WithMany(p => p.AdditionalConsultingBills)
-                    .HasForeignKey(d => d.ConsultingTicketId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FKAdditional256950");
             });
 
             modelBuilder.Entity<Address>(entity =>
@@ -202,7 +176,7 @@ namespace AppCore.Context
             modelBuilder.Entity<BirdCertificateDetail>(entity =>
             {
                 entity.HasKey(e => new { e.BirdId, e.BirdCertificateId })
-                    .HasName("PK__BirdCert__CB94077CF837ECD8");
+                    .HasName("PK__BirdCert__CB94077CD6544A76");
 
                 entity.ToTable("BirdCertificateDetail");
 
@@ -224,7 +198,7 @@ namespace AppCore.Context
             modelBuilder.Entity<BirdCertificateSkill>(entity =>
             {
                 entity.HasKey(e => new { e.BirdSkillId, e.BirdCertificateId })
-                    .HasName("PK__BirdCert__A080D86A68CAAD2B");
+                    .HasName("PK__BirdCert__A080D86A58420E37");
 
                 entity.ToTable("BirdCertificateSkill");
 
@@ -369,7 +343,7 @@ namespace AppCore.Context
             {
                 entity.ToTable("BirdTrainingReport");
 
-                entity.Property(e => e.BirdTrainingCourseId).HasColumnName("Bird_TrainingCourseId");
+                entity.Property(e => e.BirdTrainingProgressId).HasColumnName("Bird_TrainingProgressId");
 
                 entity.Property(e => e.Comment)
                     .HasMaxLength(200)
@@ -381,17 +355,23 @@ namespace AppCore.Context
                     .HasMaxLength(50)
                     .IsUnicode(false);
 
-                entity.HasOne(d => d.BirdTrainingCourse)
+                entity.HasOne(d => d.BirdTrainingProgress)
                     .WithMany(p => p.BirdTrainingReports)
-                    .HasForeignKey(d => d.BirdTrainingCourseId)
+                    .HasForeignKey(d => d.BirdTrainingProgressId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FKBirdTraini11695");
+                    .HasConstraintName("FKBirdTraini259515");
 
                 entity.HasOne(d => d.Trainer)
                     .WithMany(p => p.BirdTrainingReports)
                     .HasForeignKey(d => d.TrainerId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKBirdTraini332709");
+
+                entity.HasOne(d => d.TrainerSlot)
+                    .WithMany(p => p.BirdTrainingReports)
+                    .HasForeignKey(d => d.TrainerSlotId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FKBirdTraini696869");
             });
 
             modelBuilder.Entity<CenterSlot>(entity =>
@@ -456,8 +436,6 @@ namespace AppCore.Context
                 entity.Property(e => e.Evidence)
                     .HasMaxLength(50)
                     .IsUnicode(false);
-
-                entity.Property(e => e.ExpectedDate).HasColumnType("date");
 
                 entity.Property(e => e.GgMeetLink)
                     .HasMaxLength(20)
@@ -535,7 +513,7 @@ namespace AppCore.Context
             modelBuilder.Entity<CustomerCertificateDetail>(entity =>
             {
                 entity.HasKey(e => new { e.CustomerId, e.CertificateId })
-                    .HasName("PK__Customer__AF11EEA46EA93024");
+                    .HasName("PK__Customer__AF11EEA4FDA02E2A");
 
                 entity.ToTable("Customer_CertificateDetail");
 
@@ -557,7 +535,7 @@ namespace AppCore.Context
             modelBuilder.Entity<CustomerLessonDetail>(entity =>
             {
                 entity.HasKey(e => new { e.CustomerId, e.LessionId })
-                    .HasName("PK__Customer__304EA374D6F3596B");
+                    .HasName("PK__Customer__304EA374D16199C5");
 
                 entity.ToTable("Customer_LessonDetail");
 
@@ -577,7 +555,7 @@ namespace AppCore.Context
             modelBuilder.Entity<CustomerOnlineCourseDetail>(entity =>
             {
                 entity.HasKey(e => new { e.CustomerId, e.OnlineCourseId })
-                    .HasName("PK__Customer__FFA1E3B77D5EF0E0");
+                    .HasName("PK__Customer__FFA1E3B76AF51E89");
 
                 entity.ToTable("Customer_OnlineCourseDetail");
 
@@ -601,7 +579,7 @@ namespace AppCore.Context
             modelBuilder.Entity<CustomerSectionDetail>(entity =>
             {
                 entity.HasKey(e => new { e.CustomerId, e.SectionId })
-                    .HasName("PK__Customer__9CA0945F88AE5284");
+                    .HasName("PK__Customer__9CA0945F8CBB2D34");
 
                 entity.ToTable("Customer_SectionDetail");
 
@@ -621,7 +599,7 @@ namespace AppCore.Context
             modelBuilder.Entity<CustomerWorkshopClass>(entity =>
             {
                 entity.HasKey(e => new { e.CustomerId, e.WorkshopClassId })
-                    .HasName("PK__Customer__7EEF83483302BD45");
+                    .HasName("PK__Customer__7EEF8348DE684159");
 
                 entity.ToTable("Customer_WorkshopClass");
 
@@ -772,7 +750,7 @@ namespace AppCore.Context
             modelBuilder.Entity<TrainableSkill>(entity =>
             {
                 entity.HasKey(e => new { e.BirdSkillId, e.SkillId })
-                    .HasName("PK__Trainabl__707AE50029313271");
+                    .HasName("PK__Trainabl__707AE50061373685");
 
                 entity.ToTable("TrainableSkill");
 
@@ -809,7 +787,7 @@ namespace AppCore.Context
             modelBuilder.Entity<TrainerSkill>(entity =>
             {
                 entity.HasKey(e => new { e.TrainerId, e.SkillId })
-                    .HasName("PK__Trainer___5B901364097D80E3");
+                    .HasName("PK__Trainer___5B90136408FD50B7");
 
                 entity.ToTable("Trainer_Skill");
 
@@ -881,7 +859,7 @@ namespace AppCore.Context
             modelBuilder.Entity<TrainingCourseSkill>(entity =>
             {
                 entity.HasKey(e => e.BirdSkillId)
-                    .HasName("PK__Training__1D80EC18196D23C3");
+                    .HasName("PK__Training__1D80EC183F24C734");
 
                 entity.ToTable("TrainingCourseSkill");
 
@@ -892,11 +870,6 @@ namespace AppCore.Context
                     .HasForeignKey<TrainingCourseSkill>(d => d.BirdSkillId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKTrainingCo551235");
-
-                entity.HasOne(d => d.Trainer)
-                    .WithMany(p => p.TrainingCourseSkills)
-                    .HasForeignKey(d => d.TrainerId)
-                    .HasConstraintName("FKTrainingCo4785");
 
                 entity.HasOne(d => d.TrainingCourse)
                     .WithMany(p => p.TrainingCourseSkills)
@@ -938,10 +911,10 @@ namespace AppCore.Context
             {
                 entity.ToTable("User");
 
-                entity.HasIndex(e => e.PhoneNumber, "UQ__User__85FB4E382800E8D7")
+                entity.HasIndex(e => e.PhoneNumber, "UQ__User__85FB4E386F560942")
                     .IsUnique();
 
-                entity.HasIndex(e => e.Email, "UQ__User__A9D105345B4021CD")
+                entity.HasIndex(e => e.Email, "UQ__User__A9D10534EE377C20")
                     .IsUnique();
 
                 entity.Property(e => e.Avatar)
@@ -980,7 +953,9 @@ namespace AppCore.Context
                 entity.Property(e => e.Title)
                     .HasMaxLength(300)
                     .IsUnicode(false);
-
+                entity.HasMany(d => d.WorkshopDetailTemplates)
+                    .WithOne(p => p.Workshop)
+                    .OnDelete(DeleteBehavior.Cascade);
                 entity.HasOne(d => d.WorkshopRefundPolicy)
                     .WithMany(p => p.Workshops)
                     .HasForeignKey(d => d.WorkshopRefundPolicyId)
@@ -1011,6 +986,8 @@ namespace AppCore.Context
             {
                 entity.ToTable("WorkshopClass");
 
+                entity.Property(e => e.CreateDate).HasColumnType("date");
+
                 entity.Property(e => e.RegisterEndDate).HasColumnType("date");
 
                 entity.Property(e => e.StartTime).HasColumnType("date");
@@ -1026,14 +1003,18 @@ namespace AppCore.Context
             {
                 entity.ToTable("WorkshopClassDetail");
 
-                entity.Property(e => e.Detail)
-                    .HasMaxLength(500)
-                    .IsUnicode(false);
+                entity.Property(e => e.UpdateDate).HasColumnType("date");
+
+                entity.HasOne(d => d.Detail)
+                    .WithMany(p => p.WorkshopClassDetails)
+                    .HasForeignKey(d => d.DetailId)
+                    .OnDelete(DeleteBehavior.NoAction)
+                    .HasConstraintName("FKWorkshopCl957106");
 
                 entity.HasOne(d => d.DaySlot)
                     .WithMany(p => p.WorkshopClassDetails)
                     .HasForeignKey(d => d.DaySlotId)
-                    .HasConstraintName("FKWorkshopCl467642");
+                    .HasConstraintName("FKWorkshopCl382995");
 
                 entity.HasOne(d => d.WorkshopClass)
                     .WithMany(p => p.WorkshopClassDetails)
@@ -1041,15 +1022,13 @@ namespace AppCore.Context
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKWorkshopCl141743");
             });
-
             modelBuilder.Entity<WorkshopRefundPolicy>(entity =>
             {
                 entity.ToTable("WorkshopRefundPolicy");
             });
-
+            modelBuilder.AddWorkshopDetailTemplate();
             OnModelCreatingPartial(modelBuilder);
         }
-
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

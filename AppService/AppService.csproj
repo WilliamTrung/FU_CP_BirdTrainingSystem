@@ -20,11 +20,9 @@
     <ProjectReference Include="..\AppCore\AppCore.csproj" />
     <ProjectReference Include="..\AppRepository\AppRepository.csproj" />
     <ProjectReference Include="..\AuthSubsystem\AuthSubsystem.csproj" />
+    <ProjectReference Include="..\TimetableSubsystem\TimetableSubsystem.csproj" />
     <ProjectReference Include="..\TrainingCourseSubsystem\TrainingCourseSubsystem.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="WorkshopService\Implementation\" />
+    <ProjectReference Include="..\WorkshopSubsystem\WorkshopSubsystem.csproj" />
   </ItemGroup>
 
 </Project>

@@ -16,8 +16,9 @@ namespace SP_AutoMapperConfig
         public WorkshopProfile() {
             Map_WorkshopAddModel_Workshop();
             Map_WorkshopClassDetail_WorkshopDetailViewModel();
-            Map_WorkshopAddModel_Workshop();
+            Map_WorkshopDetailTemplateAddModel_WorkshopDetailTemplate();
             Map_WorkshopRefundPolicy_WorkshopRefundPolicyModel();
+            Map_WorkshopClass_WorkshopClassAdminViewModel();
         }
         private void Map_WorkshopRefundPolicy_WorkshopRefundPolicyModel()
         {
@@ -27,11 +28,19 @@ namespace SP_AutoMapperConfig
         {
 
         }        
+        private void Map_WorkshopClass_WorkshopClassAdminViewModel()
+        {
+            CreateMap<WorkshopClass, WorkshopClassAdminViewModel>();                
+        }
         private void Map_WorkshopClassAddModel_WorkshopClass()
         {
             CreateMap<WorkshopClassAddModel, WorkshopClass>()
                 .ForMember(e => e.StartTime, opt => opt.MapFrom(c => c.StartTime))
                 .ForMember(e => e.WorkshopId, opt => opt.MapFrom(c => c.WorkshopId));
+        }
+        private void Map_WorkshopDetailTemplateAddModel_WorkshopDetailTemplate()
+        {
+            CreateMap<WorkshopDetailTemplateAddModel, WorkshopDetailTemplate>();
         }
         private void Map_WorkshopClassDetail_WorkshopDetailViewModel()
         {
@@ -52,7 +61,7 @@ namespace SP_AutoMapperConfig
             CreateMap<WorkshopClassDetail, WorkshopClassDetailViewModel>()
                 .ForMember(m => m, opt =>
                 {
-                    opt.PreCondition(e => e.DaySlot != null);
+                    opt.PreCondition(e => e.DaySlot != null && e.WorkshopDetailTemplate != null);
                     opt.MapFrom<Map_WorkshopClassDetail_WorkshopClassDetailViewModel_Resolver>();
                 });
         }
@@ -68,7 +77,7 @@ namespace SP_AutoMapperConfig
         {
             destination.Picture = source.Picture;
             destination.Status = (int)Models.Enum.Workshop.Status.Active;
-            destination.WorkshopRefundPolicyId = source.WorkshopRefundPolicyId;
+            destination.WorkshopRefundPolicyId = 1;
             destination.Description = source.Description;
             destination.Price = source.Price;
             destination.Title = source.Title;
@@ -88,15 +97,13 @@ namespace SP_AutoMapperConfig
         public WorkshopClassDetailViewModel Resolve(WorkshopClassDetail source, WorkshopClassDetailViewModel destination, WorkshopClassDetailViewModel destMember, ResolutionContext context)
         {
             
-            destination.Detail = source.Detail;
+            destination.Detail = source.WorkshopDetailTemplate.Detail;
             destination.Id = source.Id;
 #pragma warning disable CS8629 // Nullable value type may be null.
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
             destination.Trainer = _mapper.Map<TrainerWorkshopModel>(source.DaySlot.Trainer);
             destination.Date = (DateTime)source.DaySlot.Date;
             destination.StartTime = (TimeSpan)source.DaySlot.Slot.StartTime;
             destination.EndTime = (TimeSpan)source.DaySlot.Slot.EndTime;
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
 #pragma warning restore CS8629 // Nullable value type may be null.
             return destination;
         }
