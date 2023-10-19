@@ -1,4 +1,5 @@
 ﻿using Models.ServiceModels.WorkshopModels;
+using Models.ServiceModels.WorkshopModels.WorkshopClass;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,9 @@ namespace WorkshopSubsystem
     {
         //create workshop
         Task CreateWorkshop(WorkshopAddModel workshop);
-        
+
         //Task ModifyWorkshop(WorkshopModifyModel workshop);
+        Task ModifyWorkshopDetailTemplate(WorkshopDetailTemplateModiyModel workshopDetail);
         Task ModifyWorkshopStatus(WorkshopStatusModifyModel workshop);
         Task<IEnumerable<WorkshopStatusModel>> GetWorkshopStatuses() => Task.FromResult(WorkshopStatusModel.All());
     }
