@@ -25,6 +25,11 @@ namespace AppService.WorkshopService.Implementation
             return await _workshop.Manager.GetWorkshopStatuses();
         }
 
+        public async Task ModifyWorkshopDetailTemplate(WorkshopDetailTemplateModiyModel workshopDetail)
+        {
+            await _workshop.Manager.ModifyWorkshopDetailTemplate(workshopDetail);
+        }
+
         public async Task ModifyWorkshopStatus(WorkshopStatusModifyModel workshop)
         {
             await _workshop.Manager.ModifyWorkshopStatus(workshop);

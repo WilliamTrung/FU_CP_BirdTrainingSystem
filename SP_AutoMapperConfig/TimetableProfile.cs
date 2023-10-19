@@ -2,6 +2,7 @@
 using Models.Entities;
 using Models.ServiceModels;
 using Models.ServiceModels.SlotModels;
+using Models.ServiceModels.TimetableModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,7 @@ namespace SP_AutoMapperConfig
             Map_TrainerSlot_SlotModel();
             Map_TrainerSlot_TrainerSlotModel();
             Map_TrainerSlot_TrainerSlotDetailModel();
+            Map_TrainerSlot_TimetableModel();
         }
         private void Map_TrainerSlot_TrainerSlotDetailModel()
         {
@@ -30,6 +32,30 @@ namespace SP_AutoMapperConfig
                 {
                     opt.PreCondition(e => e.Slot != null);
                     opt.MapFrom(e => e.Slot.EndTime);
+                });
+        }
+        private void Map_TrainerSlot_TimetableModel()
+        {
+            CreateMap<TrainerSlot, TimetableModel>()
+                .ForMember(m => m.Id, opt =>
+                {
+                    opt.MapFrom(e => e.Id);
+                })
+                .ForMember(m => m.SlotId, opt =>
+                {
+                    opt.MapFrom(e => e.SlotId);
+                })
+                .ForMember(m => m.Date, opt =>
+                {
+                    opt.MapFrom(e => e.Date);
+                })
+                .ForMember(m => m.Reason, opt =>
+                {
+                    opt.MapFrom(e => e.Reason);
+                })
+                .ForMember(m => m.Type, opt =>
+                {
+                    opt.MapFrom(e => e.EntityTypeId);
                 });
         }
         private void Map_Slot_SlotModel()

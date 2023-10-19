@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using AppCore.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Models.Entities;
 
 namespace AppCore.Context
 {
@@ -981,7 +981,9 @@ namespace AppCore.Context
                 entity.Property(e => e.Title)
                     .HasMaxLength(300)
                     .IsUnicode(false);
-
+                entity.HasMany(d => d.WorkshopDetailTemplates)
+                    .WithOne(p => p.Workshop)                    
+                    .OnDelete(DeleteBehavior.Cascade);
                 entity.HasOne(d => d.WorkshopRefundPolicy)
                     .WithMany(p => p.Workshops)
                     .HasForeignKey(d => d.WorkshopRefundPolicyId)
@@ -1027,9 +1029,9 @@ namespace AppCore.Context
             {
                 entity.ToTable("WorkshopClassDetail");
 
-                entity.Property(e => e.Detail)
-                    .HasMaxLength(500)
-                    .IsUnicode(false);
+                //entity.Property(e => e.Detail)
+                //    .HasMaxLength(500)
+                //    .IsUnicode(false);
 
                 entity.HasOne(d => d.DaySlot)
                     .WithMany(p => p.WorkshopClassDetails)
@@ -1041,13 +1043,18 @@ namespace AppCore.Context
                     .HasForeignKey(d => d.WorkshopClassId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKWorkshopCl141743");
-            });
 
+                entity.HasOne(d => d.WorkshopDetailTemplate)
+                    .WithMany(p => p.WorkshopClassDetails)
+                    .HasForeignKey(d => d.DetailId)
+                    .OnDelete(DeleteBehavior.NoAction);
+            });
+            
             modelBuilder.Entity<WorkshopRefundPolicy>(entity =>
             {
                 entity.ToTable("WorkshopRefundPolicy");
             });
-
+            modelBuilder.AddWorkshopDetailTemplate();
             OnModelCreatingPartial(modelBuilder);
         }
 

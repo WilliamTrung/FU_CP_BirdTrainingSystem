@@ -3,6 +3,7 @@ using AutoMapper;
 using Models.Entities;
 using Models.ServiceModels;
 using Models.ServiceModels.SlotModels;
+using Models.ServiceModels.TimetableModels;
 using SP_Extension;
 using System;
 using System.Collections.Generic;
@@ -91,6 +92,16 @@ namespace TimetableSubsystem.Implementation
                                                                                  , nameof(TrainerSlot.Slot));
             var model = _mapper.Map<TrainerSlotDetailModel>(trainerSlot);
             return model;
+        }
+
+        public async Task<IEnumerable<TimetableModel>> GetTrainerTimetable(DateOnly from, DateOnly to, int trainerId)
+        {
+            var trainerSlots = await _unitOfWork.TrainerSlotRepository.Get(c => CustomDateFunctions.CompareDate(c.Date, from.ToDateTime(new TimeOnly(0, 0, 0))) >= 0
+                                                                             && CustomDateFunctions.CompareDate(c.Date, to.ToDateTime(new TimeOnly(0, 0, 0))) <= 0
+                                                                             && c.TrainerId == trainerId
+                                                                             && c.Status != (int)Models.Enum.TrainerSlotStatus.Disabled);
+            var slots = _mapper.Map<List<TimetableModel>>(trainerSlots);
+            return slots;
         }
     }
 }

@@ -100,7 +100,7 @@ namespace AppRepository.UnitOfWork
         public IWorkshopClassRepository WorkshopClassRepository { get; private set; } = null!;
 
         public IWorkshopClassDetailRepository WorkshopClassDetailRepository { get; private set; } = null!;
-
+        public IWorkshopDetailTemplateRepository WorkshopDetailTemplateRepository { get; private set; } = null!;
         public IWorkshopRefundPolicyRepository WorkshopRefundPolicyRepository { get; private set; } = null!;
 
         private void InitRepositories()
@@ -149,6 +149,7 @@ namespace AppRepository.UnitOfWork
             WorkshopAttendanceRepository = new WorkshopAttendanceRepository(_context, this);
             WorkshopClassRepository = new WorkshopClassRepository(_context, this);
             WorkshopClassDetailRepository = new WorkshopClassDetailRepository(_context, this);
+            WorkshopDetailTemplateRepository = new WorkshopDetailTemplateRepository(_context, this);
             WorkshopRefundPolicyRepository = new WorkshopRefundPolicyRepository(_context, this);
         }
     }

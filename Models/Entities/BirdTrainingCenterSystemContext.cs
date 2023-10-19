@@ -1018,9 +1018,9 @@ namespace Models.Entities
             {
                 entity.ToTable("WorkshopClassDetail");
 
-                entity.Property(e => e.Detail)
-                    .HasMaxLength(500)
-                    .IsUnicode(false);
+                //entity.Property(e => e.Detail)
+                //    .HasMaxLength(500)
+                //    .IsUnicode(false);
 
                 entity.HasOne(d => d.DaySlot)
                     .WithMany(p => p.WorkshopClassDetails)

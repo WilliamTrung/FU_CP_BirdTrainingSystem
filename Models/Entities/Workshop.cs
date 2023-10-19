@@ -22,5 +22,6 @@ namespace Models.Entities
 
         public virtual WorkshopRefundPolicy WorkshopRefundPolicy { get; set; } = null!;
         public virtual ICollection<WorkshopClass> WorkshopClasses { get; set; }
+        public virtual ICollection<WorkshopDetailTemplate> WorkshopDetailTemplates { get; set;}
     }
 }
