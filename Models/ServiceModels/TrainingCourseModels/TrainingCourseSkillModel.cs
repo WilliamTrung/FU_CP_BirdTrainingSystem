@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Models.Entities;
+using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
+using System;
 using System.Collections.Generic;
 
 namespace Models.ServiceModels.TrainingCourseModels
@@ -7,11 +9,10 @@ namespace Models.ServiceModels.TrainingCourseModels
     {
         public int BirdSkillId { get; set; }
         public int TrainingCourseId { get; set; }
-        public int? TrainerId { get; set; }
-        public int Status { get; set; }
+        public int TotalSlot { get; set; }
 
-        public virtual BirdSkillModel BirdSkill { get; set; } = null!;
-        public virtual TrainerModel? Trainer { get; set; }
-        public virtual TrainingCourseModel TrainingCourse { get; set; } = null!;
+        public virtual BirdSkill BirdSkill { get; set; } = null!;
+        public virtual TrainingCourse TrainingCourse { get; set; } = null!;
+        public virtual ICollection<BirdTrainingProgressModel> BirdTrainingProgresses { get; set; }
     }
 }

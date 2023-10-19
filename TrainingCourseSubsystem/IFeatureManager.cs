@@ -15,6 +15,8 @@ namespace TrainingCourseSubsystem
         //Can archive training course
         Task CreateCourse(TrainingCourseModel trainingCourse);
         Task EditCourse(TrainingCourseModel trainingCourse);
-        Task ArchiveCourse(TrainingCourseModel trainingCourse);
+        Task DisableTrainingCourse(int trainingCourseId);
+        Task AddSkill(TrainingCourseSkillModel trainingCourseSkill);
+        Task ActiveTrainingCourse(int trainingCourseId);
     }
 }

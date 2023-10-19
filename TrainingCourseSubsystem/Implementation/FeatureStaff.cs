@@ -16,26 +16,9 @@ namespace TrainingCourseSubsystem.Implementation
 {
     public class FeatureStaff : FeatureUser, IFeatureStaff
     {
-        internal readonly ITimetableFeature _timetable;
         public FeatureStaff(IUnitOfWork unitOfWork, IMapper mapper, ITimetableFeature timetable) : base(unitOfWork, mapper)
         {
-            _timetable = timetable;
         }
-
-        public async Task Add(BirdTrainingProgressModel birdTrainingProgress)
-        {
-            if (birdTrainingProgress == null)
-            {
-                throw new Exception("Client send null model.");
-            }
-            var entity = _mapper.Map<BirdTrainingProgress>(birdTrainingProgress);
-            if (entity == null)
-            {
-                throw new Exception("Entity is null.");
-            }
-            await _unitOfWork.BirdTrainingProgressRepository.Add(entity);
-        }
-
         public async Task<IEnumerable<BirdTrainingCourseModel>> GetBirdTrainingCourse()
         {
             var entities = await _unitOfWork.BirdTrainingCourseRepository.Get();
@@ -52,7 +35,7 @@ namespace TrainingCourseSubsystem.Implementation
 
         public async Task<IEnumerable<TrainerModel>> GetTrainer()
         {
-            var entities = await _unitOfWork.TrainerRepository.Get(expression:null, "User", "Skill");
+            var entities = await _unitOfWork.TrainerRepository.Get(expression:null, nameof(User), nameof(TrainerSkill));
             List<TrainerModel> models = new List<TrainerModel>();
             foreach(Models.Entities.Trainer entity in entities)
             {
@@ -80,7 +63,7 @@ namespace TrainingCourseSubsystem.Implementation
                 Name = entity.User.Name,
                 Email = entity.User.Email,
                 Avatar = entity.User.Avatar,
-                Skills = skills
+                TrainerSkillModels = skills
             };
             return model;
         }

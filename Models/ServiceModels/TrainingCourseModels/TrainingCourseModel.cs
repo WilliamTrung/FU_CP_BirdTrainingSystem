@@ -1,5 +1,4 @@
-﻿using Models.Entities;
-using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
+﻿using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
 using System;
 using System.Collections.Generic;
 
@@ -16,7 +15,7 @@ namespace Models.ServiceModels.TrainingCourseModels
         public decimal TotalPrice { get; set; }
 
         public virtual BirdSpeciesModel BirdSpecies { get; set; } = null!;
-        public virtual ICollection<BirdCertificate> BirdCertificates { get; set; }
+        //public virtual ICollection<BirdCertificateModel> BirdCertificates { get; set; }
         public virtual ICollection<BirdTrainingCourseModel> BirdTrainingCourses { get; set; }
         public virtual ICollection<TrainingCourseSkillModel> TrainingCourseSkills { get; set; }
     }
