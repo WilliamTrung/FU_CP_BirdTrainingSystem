@@ -5,19 +5,11 @@ namespace Models.Entities
 {
     public partial class ConsultingTicket
     {
-        public ConsultingTicket()
-        {
-            AdditionalConsultingBills = new HashSet<AdditionalConsultingBill>();
-        }
-
         public int Id { get; set; }
         public int CustomerId { get; set; }
+        public int TrainerId { get; set; }
         public int AddressId { get; set; }
         public int ConsultingTypeId { get; set; }
-        public int TrainerId { get; set; }
-        public DateTime? ExpectedDate { get; set; }
-        public int? ExpectedSlotStart { get; set; }
-        public int? ExpectedSlotEnd { get; set; }
         public string? ConsultingDetail { get; set; }
         public int? Distance { get; set; }
         public bool OnlineOrOffline { get; set; }
@@ -38,6 +30,5 @@ namespace Models.Entities
         public virtual Customer Customer { get; set; } = null!;
         public virtual DistancePrice DistancePrice { get; set; } = null!;
         public virtual Trainer Trainer { get; set; } = null!;
-        public virtual ICollection<AdditionalConsultingBill> AdditionalConsultingBills { get; set; }
     }
 }

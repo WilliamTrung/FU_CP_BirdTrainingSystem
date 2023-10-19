@@ -7,6 +7,7 @@ namespace Models.Entities
     {
         public TrainerSlot()
         {
+            BirdTrainingReports = new HashSet<BirdTrainingReport>();
             WorkshopClassDetails = new HashSet<WorkshopClassDetail>();
         }
 
@@ -21,6 +22,7 @@ namespace Models.Entities
 
         public virtual Slot Slot { get; set; } = null!;
         public virtual Trainer Trainer { get; set; } = null!;
+        public virtual ICollection<BirdTrainingReport> BirdTrainingReports { get; set; }
         public virtual ICollection<WorkshopClassDetail> WorkshopClassDetails { get; set; }
     }
 }
