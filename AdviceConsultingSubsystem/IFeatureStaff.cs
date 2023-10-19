@@ -10,10 +10,12 @@ namespace AdviceConsultingSubsystem
 {
     public interface IFeatureStaff
     {
-        Task<IEnumerable<ConsultingTicketListViewModel>> GetListConsultingTicket();
+        //Task<IEnumerable<ConsultingTicketListViewModel>> GetListConsultingTicket();
         Task<IEnumerable<ConsultingTicketListViewModel>> GetListConsultingTicketsByCustomerID(int customerID);
+        Task<IEnumerable<ConsultingTicketListViewModel>> GetListConsultingTicketsByStatus(int status);
         Task<ConsultingTicketDetailViewModel> GetConsultingTicketByID(int id);
-        Task UpdateConsultingTicket(ConsultingTicketUpdateModel consultingTicket);
-        Task DenyConsultingTicket(ConsultingTicketUpdateModel consultingTicket);
+        Task AssignTrainer(ConsultingTicketUpdateModel consultingTicket);
+        Task ApproveConsultingTicket(ConsultingTicketUpdateStatusModel consultingTicket);
+        Task CancelConsultingTicket(ConsultingTicketUpdateModel consultingTicket);
     }
 }

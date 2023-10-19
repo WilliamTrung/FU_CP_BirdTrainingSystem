@@ -13,7 +13,7 @@ namespace AdviceConsultingSubsystem
     {
         Task SendConsultingTicket(ConsultingTicketCreateNewModel consultingTicket);
         Task<IEnumerable<ConsultingTicketListViewModel>> GetListConsultingTicketByCustomerID(int customerId);
-        Task<ConsultingTicketDetailViewModel> GetConsultingTicketByCustomerID(int id);
+        Task<ConsultingTicketDetailViewModel> GetConsultingTicketByID(int id);
 
         //- [Advice ticket] must be select offline or online appointment;
         //- datetime must be within[Slot] provided by the center, specified price must be detailed on center website

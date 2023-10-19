@@ -14,9 +14,6 @@ namespace Models.ServiceModels.AdviceConsultantModels
         public AddressServiceModel Address { get; set; } = null!;
         public ConsultingTypeServiceModel ConsultingType { get; set; } = null!;
         public TrainerServiceModel Trainer { get; set; } = null!;
-        public DateTime? ExpectedDate { get; set; }
-        public int? ExpectedSlotStart { get; set; }
-        public int? ExpectedSlotEnd { get; set; }
         public string ConsultingDetail { get; set; }
         public int Distance { get; set; }
         public bool OnlineOrOffline { get; set; }
@@ -24,8 +21,10 @@ namespace Models.ServiceModels.AdviceConsultantModels
         public DateTime AppointmentDate { get; set; }
         public int ActualSlotStart { get; set; }
         public int ActualEndSlot { get; set; }
+        public string? Evidence { get; set; }
         public decimal Price { get; set; }
-        public Enum.ConsultingTicket.Status Status { get; set; }
+        public decimal? DiscountedPrice { get; set; }
+        public int Status { get; set; }
         public ConsultingPricePolicyServiceModel ConsultingPricePolicy { get; set; } = null!;
         public DistancePriceServiceModel DistancePrice { get; set; } = null!;
     }

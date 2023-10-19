@@ -10,9 +10,11 @@ namespace Models.ServiceModels.AdviceConsultantModels.ConsultingTicket
     {
         public int Id { get; set; }
         public CustomerServiceModel customer { get; set; } = null!;
-        public DateTime? ExpectedDate { get; set; }
-        public int? ExpectedSlotStart { get; set; }
-        public int? ExpectedSlotEnd { get; set; }
-        public Enum.ConsultingTicket.Status Status { get; set; }
+        public TrainerServiceModel Trainer { get; set; } = null!;
+        public bool OnlineOrOffline { get; set; }
+        public DateTime AppointmentDate { get; set; }
+        public int ActualSlotStart { get; set; }
+        public int ActualEndSlot { get; set; }
+        public int Status { get; set; }
     }
 }

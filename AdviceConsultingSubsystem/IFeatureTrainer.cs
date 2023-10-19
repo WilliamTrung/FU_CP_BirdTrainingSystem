@@ -13,6 +13,7 @@ namespace AdviceConsultingSubsystem
     {
         Task<IEnumerable<ConsultingTicketListViewModel>> ViewAssignedAppointment(int id);
         Task UpdateAppointment(ConsultingTicketUpdateModel consultingTicket);
+        Task FinishAppointment(ConsultingTicketUpdateStatusModel consultingTicket);
         Task FillOutBillingForm(ConsultingTicketUpdateModel consultingTicket);
     }
 }

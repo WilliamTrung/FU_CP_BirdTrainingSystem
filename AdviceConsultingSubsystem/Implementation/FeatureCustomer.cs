@@ -23,6 +23,15 @@ namespace AdviceConsultingSubsystem.Implementation
 
         public async Task SendConsultingTicket(ConsultingTicketCreateNewModel consultingTicket)
         {
+            if (consultingTicket.Trainer == null)
+            {
+                consultingTicket.Status = 1;
+            }
+            else
+            {
+                consultingTicket.Status = 2;
+            }
+
             var entity = _mapper.Map<ConsultingTicket>(consultingTicket);
             await _unitOfWork.ConsultingTicketRepository.Add(entity);
             //Add new Consulting Ticket
@@ -40,9 +49,9 @@ namespace AdviceConsultingSubsystem.Implementation
             return models;
         }
 
-        public async Task<ConsultingTicketDetailViewModel> GetConsultingTicketByCustomerID(int id)
+        public async Task<ConsultingTicketDetailViewModel> GetConsultingTicketByID(int id)
         {
-            var entity = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.CustomerId == id);
+            var entity = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id == id);
             var model = _mapper.Map<ConsultingTicketDetailViewModel>(entity);
             return model;
         }

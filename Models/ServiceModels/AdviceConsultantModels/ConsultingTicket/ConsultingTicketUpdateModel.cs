@@ -15,6 +15,7 @@ namespace Models.ServiceModels.AdviceConsultantModels.ConsultingTicket
         public int ActualSlotStart { get; set; }
         public int ActualEndSlot { get; set; }
         public decimal Price { get; set; }
-        public Enum.ConsultingTicket.Status Status { get; set; }
+        public decimal? DiscountedPrice { get; set; }
+        public int Status { get; set; }
     }
 }

@@ -9,6 +9,6 @@ namespace Models.ServiceModels.AdviceConsultantModels.ConsultingTicket
     public class ConsultingTicketUpdateStatusModel
     {
         public int Id { get; set; }
-        public Enum.ConsultingTicket.Status Status { get; set; }
+        public int Status { get; set; }
     }
 }
