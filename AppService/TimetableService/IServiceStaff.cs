@@ -1,5 +1,5 @@
-﻿using Models.ServiceModels.SlotModels;
-using Models.ServiceModels.WorkshopModels;
+﻿using Models.ServiceModels;
+using Models.ServiceModels.SlotModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,8 +10,8 @@ namespace AppService.TimetableService
 {
     public interface IServiceStaff : IServiceAll
     {
-        Task<TrainerModel> GetFreeTrainerOnSelectedDate(DateTime date);
-        Task<SlotModel> GetFreeSlotOnSelectedDateOfTrainer(int trainerId, DateTime date);
+        Task<IEnumerable<TrainerModel>> GetFreeTrainerOnSelectedDate(DateTime date);
+        Task<IEnumerable<SlotModel>> GetFreeSlotOnSelectedDateOfTrainer(int trainerId, DateTime date);
         Task<IEnumerable<TrainerSlotModel>> GetTrainerSlotTimetableByTrainer(int trainerId, DateTime from, DateTime to);
     }
 }

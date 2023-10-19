@@ -9,6 +9,7 @@
   <ItemGroup>
     <ProjectReference Include="..\AppRepository\AppRepository.csproj" />
     <ProjectReference Include="..\Models\Models.csproj" />
+    <ProjectReference Include="..\SP_Extension\SP_Extension.csproj" />
   </ItemGroup>
 
 </Project>

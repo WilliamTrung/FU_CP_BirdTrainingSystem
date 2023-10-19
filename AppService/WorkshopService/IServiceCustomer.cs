@@ -9,7 +9,7 @@ namespace AppService.WorkshopService
 {
     public interface IServiceCustomer : IServiceAll
     {
-        Task Regsiter(int workshopClassId, int customerId);
+        Task Regsiter(int customerId, int workshopClassId);
         Task<IEnumerable<WorkshopClassViewModel>> GetRegisteredClasses(int customerId);
 
     }

@@ -11,9 +11,9 @@ namespace WorkshopSubsystem
     {
         //create workshop
         Task CreateWorkshop(WorkshopAddModel workshop);
-        Task<IEnumerable<WorkshopRefundPolicyModel>> GetRefundPolicies();
-        Task ModifyWorkshop(WorkshopModifyModel workshop);
+        
+        //Task ModifyWorkshop(WorkshopModifyModel workshop);
         Task ModifyWorkshopStatus(WorkshopStatusModifyModel workshop);
-        IEnumerable<WorkshopStatusModel> GetWorkshopStatuses() => WorkshopStatusModel.All();
+        Task<IEnumerable<WorkshopStatusModel>> GetWorkshopStatuses() => Task.FromResult(WorkshopStatusModel.All());
     }
 }

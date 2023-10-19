@@ -1,4 +1,5 @@
-﻿using Models.ServiceModels.WorkshopModels.WorkshopClass;
+﻿using Models.ServiceModels.WorkshopModels;
+using Models.ServiceModels.WorkshopModels.WorkshopClass;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,8 @@ namespace WorkshopSubsystem
     public interface IFeatureTrainer
     {
         Task ModifyWorkshopClassSlotDetail(WorkshopClassDetailModifyModel workshopClass);
-
+        Task<IEnumerable<WorkshopModel>> GetAssignedWorkshops(int trainerId);
+        Task<IEnumerable<WorkshopClassAdminViewModel>> GetAssignedWorkshopClasses(int trainerId, int workshopId);
+        Task<IEnumerable<WorkshopClassDetailViewModel>> GetAssignedWorkshopClassDetails(int trainerId, int workshopClassId);
     }
 }

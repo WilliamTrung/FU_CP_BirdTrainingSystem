@@ -22,12 +22,7 @@ namespace WorkshopSubsystem.Implementation
             await _unitOfWork.WorkshopRepository.Add(entity);
         }
 
-        public async Task<IEnumerable<WorkshopRefundPolicyModel>> GetRefundPolicies()
-        {
-            var entities = await _unitOfWork.WorkshopRefundPolicyRepository.Get();
-            var models = _mapper.Map<List<WorkshopRefundPolicyModel>>(entities);
-            return models;
-        }
+       
 
         public async Task ModifyWorkshop(WorkshopModifyModel workshop)
         {

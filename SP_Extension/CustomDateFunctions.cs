@@ -21,5 +21,8 @@ namespace SP_Extension
             int result = date1.Date.CompareTo(date2.Date);
             return result;
         }
+        public static DateOnly ToDateOnly(this DateTime date) { 
+            return new DateOnly(year: date.Year, month: date.Month, day: date.Day);
+        }
     }
 }
