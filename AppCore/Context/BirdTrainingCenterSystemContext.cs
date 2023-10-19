@@ -954,7 +954,7 @@ namespace AppCore.Context
                     .HasMaxLength(300)
                     .IsUnicode(false);
                 entity.HasMany(d => d.WorkshopDetailTemplates)
-                    .WithOne(p => p.Workshop)                    
+                    .WithOne(p => p.Workshop)
                     .OnDelete(DeleteBehavior.Cascade);
                 entity.HasOne(d => d.WorkshopRefundPolicy)
                     .WithMany(p => p.Workshops)
@@ -1002,7 +1002,7 @@ namespace AppCore.Context
             modelBuilder.Entity<WorkshopClassDetail>(entity =>
             {
                 entity.ToTable("WorkshopClassDetail");
-                
+
                 entity.Property(e => e.UpdateDate).HasColumnType("date");
 
                 entity.HasOne(d => d.Detail)
@@ -1021,7 +1021,7 @@ namespace AppCore.Context
                     .HasForeignKey(d => d.WorkshopClassId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKWorkshopCl141743");
-
+            });
             modelBuilder.Entity<WorkshopRefundPolicy>(entity =>
             {
                 entity.ToTable("WorkshopRefundPolicy");
@@ -1029,7 +1029,6 @@ namespace AppCore.Context
             modelBuilder.AddWorkshopDetailTemplate();
             OnModelCreatingPartial(modelBuilder);
         }
-
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

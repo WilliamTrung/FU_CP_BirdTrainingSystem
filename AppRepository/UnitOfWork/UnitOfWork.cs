@@ -101,8 +101,6 @@ namespace AppRepository.UnitOfWork
         public IWorkshopDetailTemplateRepository WorkshopDetailTemplateRepository { get; private set; } = null!;
         public IWorkshopRefundPolicyRepository WorkshopRefundPolicyRepository { get; private set; } = null!;
 
-        public IWorkshopDetailTemplateRepository WorkshopDetailTemplateRepository { get; private set; } = null!;
-
         private void InitRepositories()
         {
             AcquirableSkillRepository = new AcquirableSkillRepository(_context, this);
