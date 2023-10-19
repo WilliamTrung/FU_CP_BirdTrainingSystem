@@ -8,6 +8,7 @@ namespace Models.Entities
         public Workshop()
         {
             WorkshopClasses = new HashSet<WorkshopClass>();
+            WorkshopDetailTemplates = new HashSet<WorkshopDetailTemplate>();
         }
 
         public int Id { get; set; }
@@ -22,5 +23,6 @@ namespace Models.Entities
 
         public virtual WorkshopRefundPolicy WorkshopRefundPolicy { get; set; } = null!;
         public virtual ICollection<WorkshopClass> WorkshopClasses { get; set; }
+        public virtual ICollection<WorkshopDetailTemplate> WorkshopDetailTemplates { get; set; }
     }
 }

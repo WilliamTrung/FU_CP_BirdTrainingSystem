@@ -12,11 +12,9 @@ namespace Models.Entities
 
         public int BirdSkillId { get; set; }
         public int TrainingCourseId { get; set; }
-        public int? TrainerId { get; set; }
-        public int Status { get; set; }
+        public int? TotalSlot { get; set; }
 
         public virtual BirdSkill BirdSkill { get; set; } = null!;
-        public virtual Trainer? Trainer { get; set; }
         public virtual TrainingCourse TrainingCourse { get; set; } = null!;
         public virtual ICollection<BirdTrainingProgress> BirdTrainingProgresses { get; set; }
     }

@@ -14,9 +14,9 @@ namespace Models.Entities
 
         public int Id { get; set; }
         public int WorkshopId { get; set; }
+        public DateTime? CreateDate { get; set; }
         public DateTime? RegisterEndDate { get; set; }
         public DateTime? StartTime { get; set; }
-        public DateTime CreateDate { get; set; }
         public int Status { get; set; }
 
         public virtual Workshop Workshop { get; set; } = null!;

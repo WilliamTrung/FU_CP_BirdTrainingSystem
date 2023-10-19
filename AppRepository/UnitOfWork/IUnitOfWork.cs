@@ -6,7 +6,6 @@ namespace AppRepository.UnitOfWork
     public interface IUnitOfWork
     {
         public IAcquirableSkillRepository AcquirableSkillRepository { get; }
-        public IAdditionalConsultingBillRepository AdditionalConsultingBillRepository { get; }
         public IAddressRepository AddressRepository { get; }
         public IBirdRepository BirdRepository { get; }
         public IBirdCertificateRepository BirdCertificateRepository { get; }
@@ -49,6 +48,7 @@ namespace AppRepository.UnitOfWork
         public IWorkshopAttendanceRepository WorkshopAttendanceRepository { get; }
         public IWorkshopClassRepository WorkshopClassRepository { get; }
         public IWorkshopClassDetailRepository WorkshopClassDetailRepository { get; }
+        public IWorkshopDetailTemplateRepository WorkshopDetailTemplateRepository { get; }
         public IWorkshopRefundPolicyRepository WorkshopRefundPolicyRepository { get; }
     }
 }
