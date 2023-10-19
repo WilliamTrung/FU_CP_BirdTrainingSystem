@@ -10,6 +10,6 @@ namespace Models.ServiceModels.AdviceConsultantModels
     {
         public int Id { get; set; }
         public decimal? Price { get; set; }
-        public Enum.ConsultingTicket.OnlineOrOffline OnlineOrOffline { get; set; }
+        public bool OnlineOrOffline { get; set; }
     }
 }

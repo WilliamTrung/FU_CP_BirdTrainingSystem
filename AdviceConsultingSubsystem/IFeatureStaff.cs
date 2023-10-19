@@ -1,4 +1,5 @@
 ﻿using Models.ServiceModels.AdviceConsultantModels;
+using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,15 +10,10 @@ namespace AdviceConsultingSubsystem
 {
     public interface IFeatureStaff
     {
-        Task<IEnumerable<ConsultingTicketServiceModel>> GetListConsultingTicket();
-        Task<IEnumerable<ConsultingTicketServiceModel>> GetListConsultingTicketsByCustomerID(int customerID);
-        Task GetConsultingTicketByID(int id);
-        Task CreateAppointment(ConsultingTicketServiceModel consultingTicket);
-        //FE10[Staff] view[Help ticket] from[Customer]
-        //FE11[Staff] reply[Help ticket] to[Customer]
-        //FE13	[Staff] view [Advice ticket] from [Customer]
-        //FE14[Staff] create[Appointment] from[Advice ticket]
-        //FE15[Staff] choose free[Trainer] to assign to[Appointment]
-        //FE20[Staff] set the[Advice ticket] status to "Completed" - by confirming the[Trainer] has completed the[Advice ticket]
+        Task<IEnumerable<ConsultingTicketListViewModel>> GetListConsultingTicket();
+        Task<IEnumerable<ConsultingTicketListViewModel>> GetListConsultingTicketsByCustomerID(int customerID);
+        Task<ConsultingTicketDetailViewModel> GetConsultingTicketByID(int id);
+        Task UpdateConsultingTicket(ConsultingTicketUpdateModel consultingTicket);
+        Task DenyConsultingTicket(ConsultingTicketUpdateModel consultingTicket);
     }
 }

@@ -1,13 +1,12 @@
-﻿using Models.Enum.ConsultingTicket;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Models.ServiceModels.AdviceConsultantModels
+namespace Models.ServiceModels.AdviceConsultantModels.ConsultingTicket
 {
-    public class ConsultingTicketServiceModel
+    public class ConsultingTicketDetailViewModel
     {
         public int Id { get; set; }
         public CustomerServiceModel customer { get; set; } = null!;
@@ -26,7 +25,5 @@ namespace Models.ServiceModels.AdviceConsultantModels
         public int ActualEndSlot { get; set; }
         public decimal Price { get; set; }
         public Enum.ConsultingTicket.Status Status { get; set; }
-        public ConsultingPricePolicyServiceModel ConsultingPricePolicy { get; set; } = null!;
-        public DistancePriceServiceModel DistancePrice { get; set; } = null!;
     }
 }

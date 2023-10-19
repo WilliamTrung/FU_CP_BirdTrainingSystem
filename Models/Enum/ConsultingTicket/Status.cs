@@ -8,10 +8,11 @@ namespace Models.Enum.ConsultingTicket
 {
     public enum Status
     {
-        WaitForApprove = 0,
-        Scheduled = 1,
-        IsHappening = 2,
-        NotPaidFull = 3,
-        PaidFull = 4
+        UnAssigned = 0,
+        Denied = 1,
+        IsAssginedAndIsNotPaid = 2,
+        IsAssginedAndIsPaid = 3,
+        IsHappening = 4,
+        IsFinished = 5,
     }
 }

@@ -1,7 +1,9 @@
-﻿using AppRepository.UnitOfWork;
+﻿using AppRepository.Repository.Implement;
+using AppRepository.UnitOfWork;
 using AutoMapper;
 using Models.Entities;
 using Models.ServiceModels.AdviceConsultantModels;
+using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
 using System;
 using System.Collections.Generic;
 using System.Formats.Asn1;
@@ -22,26 +24,26 @@ namespace AdviceConsultingSubsystem.Implementation
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<ConsultingTicketServiceModel>> GetListConsultingTicket()
+        public async Task<IEnumerable<ConsultingTicketListViewModel>> GetListConsultingTicket()
         {
             var entities = await _unitOfWork.ConsultingTicketRepository.Get();
-            var models = new List<ConsultingTicketServiceModel>();
+            var models = new List<ConsultingTicketListViewModel>();
             foreach (var entity in entities) 
             {
-                var model = _mapper.Map<ConsultingTicketServiceModel>(entity);
+                var model = _mapper.Map<ConsultingTicketListViewModel>(entity);
                 models.Add(model);
             }
 
             return models;
         }
 
-        public async Task<IEnumerable<ConsultingTicketServiceModel>> GetListConsultingTicketsByCustomerID(int customerID)
+        public async Task<IEnumerable<ConsultingTicketListViewModel>> GetListConsultingTicketsByCustomerID(int customerID)
         {
             var entities = await _unitOfWork.ConsultingTicketRepository.Get(x => x.CustomerId == customerID);
-            var models = new List<ConsultingTicketServiceModel>();
+            var models = new List<ConsultingTicketListViewModel>();
             foreach (var entity in entities)
             {
-                var model = _mapper.Map<ConsultingTicketServiceModel>(entity);
+                var model = _mapper.Map<ConsultingTicketListViewModel>(entity);
                 models.Add(model);
             }
 
@@ -49,39 +51,39 @@ namespace AdviceConsultingSubsystem.Implementation
         }
 
 
-        public async Task<ConsultingTicketServiceModel> GetConsultingTicketByID(int id)
+        public async Task<ConsultingTicketDetailViewModel> GetConsultingTicketByID(int id)
         {
             var entity = await _unitOfWork.ConsultingTicketRepository.Get(x => x.Id == id);
-            var model = _mapper.Map<ConsultingTicketServiceModel>(entity);
+            var model = _mapper.Map<ConsultingTicketDetailViewModel>(entity);
             return model;
         }
 
-        public async Task CreateAppointment (ConsultingTicketServiceModel consultingTicket)
+        public async Task UpdateConsultingTicket(ConsultingTicketUpdateModel consultingTicket)
         {
             var entity = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id.Equals(consultingTicket.Id));
             if (entity == null)
             {
                 throw new KeyNotFoundException($"{nameof(entity)} not found for id: {consultingTicket.Id}");
             }
-
-            if (entity.AppointmentDate == null)
+            if (entity.Trainer == null)
             {
-                var appointmentDate = await _unitOfWork.TrainerSlotRepository.GetFirst(x => x.Date.Equals(entity.AppointmentDate));
-                if (appointmentDate == null)
+                var trainer = await _unitOfWork.TrainerRepository.GetFirst(x => x.Id == consultingTicket.Trainer.Id);
+                if (trainer == null)
                 {
-                    throw new KeyNotFoundException($"{nameof(appointmentDate)} not found for Date: {entity.AppointmentDate}");
+                    throw new KeyNotFoundException($"{nameof(trainer)} not fount for Trainer: {entity.Trainer}");
                 }
-                appointmentDate.Date = consultingTicket.AppointmentDate;
-                await _unitOfWork.TrainerSlotRepository.Update(appointmentDate);
-            }
-            else
-            {
+
+                entity.Trainer = trainer;
+
                 entity.AppointmentDate = consultingTicket.AppointmentDate;
-                await _unitOfWork.ConsultingTicketRepository.Update(entity);
+
+                entity.Status = 2;
             }
+
+            await _unitOfWork.ConsultingTicketRepository.Update(entity);
         }
 
-        public async void SetConsultingTicketStatus(ConsultingTicketServiceModel consultingTicket)
+        public async Task DenyConsultingTicket(ConsultingTicketUpdateModel consultingTicket)
         {
             var entity = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id.Equals(consultingTicket.Id));
             if (entity == null)
@@ -89,7 +91,8 @@ namespace AdviceConsultingSubsystem.Implementation
                 throw new KeyNotFoundException($"{nameof(entity)} not found for id: {consultingTicket.Id}");
             }
 
-            //Convert   
+            entity.Status = 1;
+            await _unitOfWork.ConsultingTicketRepository.Update(entity);
         }
     }
 }
