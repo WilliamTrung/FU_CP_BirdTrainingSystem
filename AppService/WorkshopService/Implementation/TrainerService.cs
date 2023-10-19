@@ -34,17 +34,17 @@ namespace AppService.WorkshopService.Implementation
             return result;
         }
 
-        public async Task ModifyWorkshopClassSlotDetail(int trainerId, WorkshopClassDetailModifyModel workshopClassDetail)
-        {
-            var current_slot = await _workshop.Staff.GetWorkshopClassDetail(workshopClassDetail.Id);
-            if(current_slot == null)
-            {
-                throw new KeyNotFoundException($"{nameof(workshopClassDetail)} is not found at id: {workshopClassDetail.Id}");
-            }
-            if(current_slot.Trainer.Id != trainerId) {
-                throw new InvalidOperationException("This trainer is not authorized to modify!");
-            }
-            await _workshop.Trainer.ModifyWorkshopClassSlotDetail(workshopClassDetail);
-        }
+        //public async Task ModifyWorkshopClassSlotDetail(int trainerId, WorkshopClassDetailModifyModel workshopClassDetail)
+        //{
+        //    var current_slot = await _workshop.Staff.GetWorkshopClassDetail(workshopClassDetail.Id);
+        //    if(current_slot == null)
+        //    {
+        //        throw new KeyNotFoundException($"{nameof(workshopClassDetail)} is not found at id: {workshopClassDetail.Id}");
+        //    }
+        //    if(current_slot.Trainer.Id != trainerId) {
+        //        throw new InvalidOperationException("This trainer is not authorized to modify!");
+        //    }
+        //    await _workshop.Trainer.ModifyWorkshopClassSlotDetail(workshopClassDetail);
+        //}
     }
 }

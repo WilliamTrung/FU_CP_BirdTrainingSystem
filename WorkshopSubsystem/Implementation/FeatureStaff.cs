@@ -32,14 +32,15 @@ namespace WorkshopSubsystem.Implementation
             
             await _unitOfWork.WorkshopClassRepository.Add(entity);
             //add workshop class details to class
-            
+            var workshopDetails = await _unitOfWork.WorkshopDetailTemplateRepository.Get(c => c.WorkshopId == workshop.Id);
+            workshopDetails = workshopDetails.OrderBy(c => c.Id);
             var classDetails = new List<WorkshopClassDetail>();
             for (int i = 0; i < workshop.TotalSlot; i++)
             {
                 classDetails.Add(new WorkshopClassDetail
                 {                    
                     DaySlotId = null,
-                    Detail = null,
+                    DetailId = workshopDetails.ElementAt(i).Id,
                     WorkshopClassId = entity.Id,
                 });
             }

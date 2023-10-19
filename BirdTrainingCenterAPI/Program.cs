@@ -64,8 +64,11 @@ builder.Services.AddGoogleApiClients();
 //Add json
 
 //Add service
-AddServices.ConfiguringServices(builder);
-AddServices.ConfiguringCors(builder);
+builder.ConfiguringServices();
+builder.ConfiguringCors();
+builder.AddUOW();
+builder.AddTimetableFeature();
+builder.AddWorkshopFeature();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

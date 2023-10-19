@@ -5,6 +5,7 @@ namespace AppRepository.UnitOfWork
 {
     public interface IUnitOfWork
     {
+        
         public IAcquirableSkillRepository AcquirableSkillRepository { get; }
         public IAddressRepository AddressRepository { get; }
         public IBirdRepository BirdRepository { get; }

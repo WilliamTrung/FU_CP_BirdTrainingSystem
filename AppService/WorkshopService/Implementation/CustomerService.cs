@@ -9,7 +9,7 @@ using WorkshopSubsystem;
 
 namespace AppService.WorkshopService.Implementation
 {
-    internal class CustomerService : AllService, IServiceCustomer
+    public class CustomerService : AllService, IServiceCustomer
     {
         public CustomerService(IWorkshopFeature workshop, ITimetableFeature timetable) : base(workshop, timetable)
         {

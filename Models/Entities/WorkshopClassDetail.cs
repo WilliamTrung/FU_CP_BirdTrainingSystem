@@ -14,5 +14,6 @@ namespace Models.Entities
         public virtual WorkshopDetailTemplate Detail { get; set; } = null!;
         public virtual TrainerSlot? DaySlot { get; set; }
         public virtual WorkshopClass WorkshopClass { get; set; } = null!;
+        public virtual WorkshopDetailTemplate WorkshopDetailTemplate { get; set; } = null!;
     }
 }

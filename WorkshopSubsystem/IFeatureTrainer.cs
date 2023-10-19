@@ -10,7 +10,7 @@ namespace WorkshopSubsystem
 {
     public interface IFeatureTrainer
     {
-        Task ModifyWorkshopClassSlotDetail(WorkshopClassDetailModifyModel workshopClass);
+        //Task ModifyWorkshopClassSlotDetail(WorkshopClassDetailModifyModel workshopClass);
         Task<IEnumerable<WorkshopModel>> GetAssignedWorkshops(int trainerId);
         Task<IEnumerable<WorkshopClassAdminViewModel>> GetAssignedWorkshopClasses(int trainerId, int workshopId);
         Task<IEnumerable<WorkshopClassDetailViewModel>> GetAssignedWorkshopClassDetails(int trainerId, int workshopClassId);

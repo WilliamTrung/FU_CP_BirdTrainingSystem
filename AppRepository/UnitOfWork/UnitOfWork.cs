@@ -98,7 +98,7 @@ namespace AppRepository.UnitOfWork
         public IWorkshopClassRepository WorkshopClassRepository { get; private set; } = null!;
 
         public IWorkshopClassDetailRepository WorkshopClassDetailRepository { get; private set; } = null!;
-
+        public IWorkshopDetailTemplateRepository WorkshopDetailTemplateRepository { get; private set; } = null!;
         public IWorkshopRefundPolicyRepository WorkshopRefundPolicyRepository { get; private set; } = null!;
 
         public IWorkshopDetailTemplateRepository WorkshopDetailTemplateRepository { get; private set; } = null!;

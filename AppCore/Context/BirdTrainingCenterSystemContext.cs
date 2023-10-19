@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using AppCore.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Models.Entities;
 
 namespace AppCore.Context
 {
@@ -953,7 +953,9 @@ namespace AppCore.Context
                 entity.Property(e => e.Title)
                     .HasMaxLength(300)
                     .IsUnicode(false);
-
+                entity.HasMany(d => d.WorkshopDetailTemplates)
+                    .WithOne(p => p.Workshop)                    
+                    .OnDelete(DeleteBehavior.Cascade);
                 entity.HasOne(d => d.WorkshopRefundPolicy)
                     .WithMany(p => p.Workshops)
                     .HasForeignKey(d => d.WorkshopRefundPolicyId)
@@ -1000,13 +1002,13 @@ namespace AppCore.Context
             modelBuilder.Entity<WorkshopClassDetail>(entity =>
             {
                 entity.ToTable("WorkshopClassDetail");
-
+                
                 entity.Property(e => e.UpdateDate).HasColumnType("date");
 
                 entity.HasOne(d => d.Detail)
                     .WithMany(p => p.WorkshopClassDetails)
                     .HasForeignKey(d => d.DetailId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .OnDelete(DeleteBehavior.NoAction)
                     .HasConstraintName("FKWorkshopCl957106");
 
                 entity.HasOne(d => d.DaySlot)
@@ -1019,28 +1021,12 @@ namespace AppCore.Context
                     .HasForeignKey(d => d.WorkshopClassId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKWorkshopCl141743");
-            });
-
-            modelBuilder.Entity<WorkshopDetailTemplate>(entity =>
-            {
-                entity.ToTable("WorkshopDetailTemplate");
-
-                entity.Property(e => e.Detail)
-                    .HasMaxLength(500)
-                    .IsUnicode(false);
-
-                entity.HasOne(d => d.Workshop)
-                    .WithMany(p => p.WorkshopDetailTemplates)
-                    .HasForeignKey(d => d.WorkshopId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FKWorkshopDe173513");
-            });
 
             modelBuilder.Entity<WorkshopRefundPolicy>(entity =>
             {
                 entity.ToTable("WorkshopRefundPolicy");
             });
-
+            modelBuilder.AddWorkshopDetailTemplate();
             OnModelCreatingPartial(modelBuilder);
         }
 
