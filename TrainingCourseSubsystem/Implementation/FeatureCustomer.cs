@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Models.Entities;
 using Models.ServiceModels.TrainingCourseModels;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
+using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
+using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -87,6 +89,42 @@ namespace TrainingCourseSubsystem.Implementation
         {
             var entities = await _unitOfWork.BirdRepository.GetFirst(e => e.CustomerId == customerId);
             var models = _mapper.Map<IEnumerable<BirdModel>>(entities);
+            return models;
+        }
+
+        public async Task<IEnumerable<BirdTrainingCourseViewModel>> ViewRegisteredTrainingCourse(int birdId, int customerId)
+        {
+            var entities = await _unitOfWork.BirdTrainingCourseRepository.Get(expression:e => e.CustomerId == customerId && e.BirdId == birdId, nameof(TrainingCourse));
+            List<BirdTrainingCourseViewModel> models = new List<BirdTrainingCourseViewModel>();
+            foreach(var entity in entities)
+            {
+                var model = _mapper.Map<BirdTrainingCourseViewModel>(entity);
+                models.Add(model);
+            }
+            return models;
+        }
+
+        public async Task<IEnumerable<BirdTrainingProgressViewModel>> ViewBirdTrainingCourseProgress(int birdTrainingCourseId)
+        {
+            var entities = await _unitOfWork.BirdTrainingProgressRepository.Get(expression: e => e.BirdTrainingCourseId == birdTrainingCourseId);
+            List<BirdTrainingProgressViewModel> models = new List<BirdTrainingProgressViewModel>();
+            foreach (var entity in entities)
+            {
+                var model = _mapper.Map<BirdTrainingProgressViewModel>(entity);
+                models.Add(model);
+            }
+            return models;
+        }
+
+        public async Task<IEnumerable<BirdTrainingReportViewModel>> ViewBirdTrainingCourseReport(int birdTrainingProgressId)
+        {
+            var entities = await _unitOfWork.BirdTrainingReportRepository.Get(expression: e => e.BirdTrainingProgressId == birdTrainingProgressId);
+            List<BirdTrainingReportViewModel> models = new List<BirdTrainingReportViewModel>();
+            foreach (var entity in entities)
+            {
+                var model = _mapper.Map<BirdTrainingReportViewModel>(entity);
+                models.Add(model);
+            }
             return models;
         }
     }
