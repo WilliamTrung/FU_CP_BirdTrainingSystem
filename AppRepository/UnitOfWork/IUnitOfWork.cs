@@ -7,7 +7,6 @@ namespace AppRepository.UnitOfWork
     {
         
         public IAcquirableSkillRepository AcquirableSkillRepository { get; }
-        public IAdditionalConsultingBillRepository AdditionalConsultingBillRepository { get; }
         public IAddressRepository AddressRepository { get; }
         public IBirdRepository BirdRepository { get; }
         public IBirdCertificateRepository BirdCertificateRepository { get; }
