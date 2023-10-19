@@ -2,8 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
 
 namespace TrainingCourseSubsystem
 {
@@ -14,7 +16,7 @@ namespace TrainingCourseSubsystem
         //=> Return 
         //FE33[Trainer] submit progression to[Training Course Detail] - for each training[Slot]
         //=> 
-        
 
+        Task<IEnumerable<BirdTrainingProgressModel>> GetBirdTrainingProgressByTrainerId(int trainerId);
     }
 }

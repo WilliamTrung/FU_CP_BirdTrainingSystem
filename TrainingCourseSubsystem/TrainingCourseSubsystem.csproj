@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Implementation\" />
+    <ProjectReference Include="..\AppRepository\AppRepository.csproj" />
+    <ProjectReference Include="..\Models\Models.csproj" />
+    <ProjectReference Include="..\TimetableSubsystem\TimetableSubsystem.csproj" />
   </ItemGroup>
 
 </Project>
