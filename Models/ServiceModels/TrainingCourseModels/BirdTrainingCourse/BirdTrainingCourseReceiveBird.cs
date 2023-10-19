@@ -24,12 +24,12 @@ namespace Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse
         public int Id { get; set; }
         public int ReceiveStaffId { get; set; }
         public DateTime? ActualStartDate { get; set; }
-        public DateTime? ExpectedTrainingDoneDate { get; set; }
-        public DateTime? DateReceivedBird { get; set; }
+        public DateTime? ExpectedTrainingDoneDate { get; set; } //BE gen
+        public DateTime? DateReceivedBird { get; set; } //BE gen
         public string? ReceiveNote { get; set; }
         public string? ReceivePicture { get; set; }
-        public DateTime? LastestUpdate { get; set; }
-        public int Status { get; set; }
+        public DateTime? LastestUpdate { get; set; } //BE gen
+        public int Status { get; set; } //BE gen
 
         public virtual BirdModel Bird { get; set; } = null!;
         public virtual UserModel Staff { get; set; } = null!;
