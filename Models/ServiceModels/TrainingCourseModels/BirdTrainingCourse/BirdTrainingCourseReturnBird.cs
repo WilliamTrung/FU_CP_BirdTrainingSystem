@@ -22,11 +22,11 @@ namespace Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse
     {
         public int Id { get; set; }
         public int ReturnStaffId { get; set; }
-        public DateTime? ActualDateReturn { get; set; }
+        public DateTime? ActualDateReturn { get; set; } //BE gen
         public string? ReturnNote { get; set; }
         public string? ReturnPicture { get; set; }
-        public DateTime? LastestUpdate { get; set; }
-        public int Status { get; set; }
+        public DateTime? LastestUpdate { get; set; } //BE gen
+        public int Status { get; set; } //BE gen
 
         public virtual BirdModel Bird { get; set; } = null!;
         public virtual UserModel Staff { get; set; } = null!;
