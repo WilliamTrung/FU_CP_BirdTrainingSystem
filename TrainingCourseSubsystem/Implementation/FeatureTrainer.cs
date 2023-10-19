@@ -1,6 +1,6 @@
 ﻿using AppRepository.UnitOfWork;
 using AutoMapper;
-using Models.ServiceModels.TrainingCourseModels;
+using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
 using System;
 using System.Collections.Generic;
 using System.Linq;

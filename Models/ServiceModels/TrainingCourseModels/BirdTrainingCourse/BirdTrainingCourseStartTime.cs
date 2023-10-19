@@ -19,6 +19,7 @@ namespace Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse
         public int Id { get; set; }
         public int StaffId { get; set; }
         public DateTime? ExpectedStartDate { get; set; }
+        public DateTime? ExpectedTrainingDoneDate { get; set; }
         public DateTime? ExpectedDateReturn { get; set; }
         public DateTime? LastestUpdate { get; set; }
         public int Status { get; set; }

@@ -3,7 +3,7 @@ using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
 using System;
 using System.Collections.Generic;
 
-namespace Models.ServiceModels.TrainingCourseModels
+namespace Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress
 {
     public partial class BirdTrainingProgressModel
     {

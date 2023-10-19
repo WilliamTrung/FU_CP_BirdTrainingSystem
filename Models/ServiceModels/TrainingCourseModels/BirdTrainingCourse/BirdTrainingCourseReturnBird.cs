@@ -21,9 +21,7 @@ namespace Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse
     public class BirdTrainingCourseReturnBird
     {
         public int Id { get; set; }
-        public int BirdId { get; set; }
-        public int StaffId { get; set; }
-        public int CustomerId { get; set; }
+        public int ReturnStaffId { get; set; }
         public DateTime? ActualDateReturn { get; set; }
         public string? ReturnNote { get; set; }
         public string? ReturnPicture { get; set; }

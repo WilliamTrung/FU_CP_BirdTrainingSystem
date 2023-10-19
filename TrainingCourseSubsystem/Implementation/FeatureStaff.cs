@@ -3,19 +3,23 @@ using AutoMapper;
 using Models.Entities;
 using Models.ServiceModels.TrainingCourseModels;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
+using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using TimetableSubsystem;
 
 namespace TrainingCourseSubsystem.Implementation
 {
     public class FeatureStaff : FeatureUser, IFeatureStaff
     {
-        public FeatureStaff(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
+        internal readonly ITimetableFeature _timetable;
+        public FeatureStaff(IUnitOfWork unitOfWork, IMapper mapper, ITimetableFeature timetable) : base(unitOfWork, mapper)
         {
+            _timetable = timetable;
         }
 
         public async Task Add(BirdTrainingProgressModel birdTrainingProgress)
@@ -142,6 +146,96 @@ namespace TrainingCourseSubsystem.Implementation
             }
             models.DistinctBy(m => m.Id).ToList();
             return models;
+        }
+
+        public async Task InitStartTime(BirdTrainingCourseStartTime birdTrainingCourse)
+        {
+            if(birdTrainingCourse == null)
+            {
+                throw new Exception("Client send null param");
+            }
+            else
+            {
+                var entity = await _unitOfWork.BirdTrainingCourseRepository.GetFirst(e => e.Id == birdTrainingCourse.Id);
+                if (entity == null)
+                {
+                    throw new Exception("Entity not found");
+                }
+                else
+                {
+                    entity.StaffId = birdTrainingCourse.StaffId;
+                    entity.ExpectedStartDate = birdTrainingCourse.ExpectedStartDate;
+                    entity.ExpectedTrainingDoneDate = birdTrainingCourse.ExpectedTrainingDoneDate;
+                    entity.ExpectedDateReturn = birdTrainingCourse.ExpectedDateReturn;
+                    entity.LastestUpdate = DateTime.Now;
+                    entity.Status = birdTrainingCourse.Status;
+                    await _unitOfWork.BirdTrainingCourseRepository.Update(entity);
+                }
+            }
+        }
+
+        public async Task ReceiveBird(BirdTrainingCourseReceiveBird birdTrainingCourse)
+        {
+            if (birdTrainingCourse == null)
+            {
+                throw new Exception("Client send null param");
+            }
+            else
+            {
+                var entity = await _unitOfWork.BirdTrainingCourseRepository.GetFirst(e => e.Id == birdTrainingCourse.Id);
+                if (entity == null)
+                {
+                    throw new Exception("Entity not found");
+                }
+                else
+                {
+                    //entity.ReceiveStaffId = birdTrainingCourse.ReceiveStaffId;
+                    entity.DateReceivedBird = birdTrainingCourse.DateReceivedBird;
+                    entity.ReceiveNote = birdTrainingCourse.ReceiveNote;
+                    entity.ReceivePicture = birdTrainingCourse.ReceivePicture;
+                    entity.LastestUpdate = DateTime.Now;
+                    entity.Status = birdTrainingCourse.Status; //enum birdtrainingcourse status
+                    await _unitOfWork.BirdTrainingCourseRepository.Update(entity);
+                }
+            }
+        }
+
+        public async Task ReturnBird(BirdTrainingCourseReturnBird birdTrainingCourse)
+        {
+            if (birdTrainingCourse == null)
+            {
+                throw new Exception("Client send null param");
+            }
+            else
+            {
+                var entity = await _unitOfWork.BirdTrainingCourseRepository.GetFirst(e => e.Id == birdTrainingCourse.Id);
+                if (entity == null)
+                {
+                    throw new Exception("Entity not found");
+                }
+                else
+                {
+                    //entity.StaffId = birdTrainingCourse.StaffId;
+                    //entity.ExpectedStartDate = birdTrainingCourse.ExpectedStartDate;
+                    //entity.ExpectedDateReturn = birdTrainingCourse.ExpectedDateReturn;
+                    //entity.LastestUpdate = DateTime.Now;
+                    //entity.Status = birdTrainingCourse.Status;
+                    await _unitOfWork.BirdTrainingCourseRepository.Update(entity);
+                }
+            }
+        }
+
+        public async Task AssignTrainer(AssignTrainerToCourse assignTrainer)
+        {
+            if(assignTrainer == null)
+            {
+                throw new Exception("Client send null models");
+            }
+            else
+            {
+                var entity = _mapper.Map<BirdTrainingProgress>(assignTrainer);
+                await _unitOfWork.BirdTrainingProgressRepository.Add(entity);
+            }
         }
     }
 }

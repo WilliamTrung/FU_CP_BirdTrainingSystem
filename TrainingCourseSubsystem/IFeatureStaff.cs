@@ -1,5 +1,6 @@
 ﻿using Models.ServiceModels.TrainingCourseModels;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
+using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,9 @@ namespace TrainingCourseSubsystem
         //FE36[Staff] notify[Customer] - to receive[Bird] - [Customer] must be at the center to receive[Bird]
         Task Add(BirdTrainingProgressModel birdTrainingProgress);
         Task Update(BirdTrainingCourseModel birdTrainingCourse);
+        Task InitStartTime(BirdTrainingCourseStartTime birdTrainingCourse);
+        Task ReceiveBird(BirdTrainingCourseReceiveBird birdTrainingCourse);
+        Task ReturnBird(BirdTrainingCourseReturnBird birdTrainingCourse);
         Task Update(BirdTrainingProgressModel birdTrainingProgress);
         Task<IEnumerable<BirdTrainingCourseModel>> GetBirdTrainingCourse();
         Task<IEnumerable<BirdTrainingCourseModel>> GetBirdTrainingCourseByBirdId(int birdId);
@@ -27,5 +31,6 @@ namespace TrainingCourseSubsystem
         Task<TrainerModel> GetTrainerById(int trainerId);
         Task<IEnumerable<TrainerModel>> GetTrainerByBirdSkillId(int birdSkillId);
         Task<IEnumerable<TrainerModel>> GetTrainerByTrainerSkillId(int trainerSkillId);
+        Task AssignTrainer(AssignTrainerToCourse assignTrainer);
     }
 }
