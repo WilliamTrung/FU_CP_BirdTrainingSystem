@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,8 @@ namespace TrainingCourseSubsystem
         //=> Return 
         //FE33[Trainer] submit progression to[Training Course Detail] - for each training[Slot]
         //=> 
-        
 
+        Task<IEnumerable<BirdTrainingProgressModel>> GetBirdTrainingProgressByTrainerId(int trainerId);
+        Task MarkTrainingSkillDone(int birdTrainingProgressId);
     }
 }

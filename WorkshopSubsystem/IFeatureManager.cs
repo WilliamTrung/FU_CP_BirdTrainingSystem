@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Models.ServiceModels.WorkshopModels;
+using Models.ServiceModels.WorkshopModels.WorkshopClass;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,9 +8,14 @@ using System.Threading.Tasks;
 
 namespace WorkshopSubsystem
 {
-    public interface IFeatureManager
+    public interface IFeatureManager : IFeatureStaff
     {
-        //[Manager] manage [Workshop] - explore, create, edit, archive [Workshop]
+        //create workshop
+        Task CreateWorkshop(WorkshopAddModel workshop);
 
+        //Task ModifyWorkshop(WorkshopModifyModel workshop);
+        Task ModifyWorkshopDetailTemplate(WorkshopDetailTemplateModiyModel workshopDetail);
+        Task ModifyWorkshopStatus(WorkshopStatusModifyModel workshop);
+        Task<IEnumerable<WorkshopStatusModel>> GetWorkshopStatuses() => Task.FromResult(WorkshopStatusModel.All());
     }
 }

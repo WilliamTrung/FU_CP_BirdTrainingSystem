@@ -13,7 +13,7 @@ namespace AppCore.Models
 
         public int Id { get; set; }
         public int OnlineCourseId { get; set; }
-        public string? Title { get; set; }
+        public string Title { get; set; } = null!;
 
         public virtual OnlineCourse OnlineCourse { get; set; } = null!;
         public virtual ICollection<CustomerSectionDetail> CustomerSectionDetails { get; set; }

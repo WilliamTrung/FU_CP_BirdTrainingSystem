@@ -7,18 +7,17 @@ namespace AppCore.Models
     {
         public BirdSpecies()
         {
+            AcquirableSkills = new HashSet<AcquirableSkill>();
             Birds = new HashSet<Bird>();
             TrainingCourses = new HashSet<TrainingCourse>();
-            BirdSkills = new HashSet<BirdSkill>();
         }
 
         public int Id { get; set; }
-        public string? Name { get; set; }
-        public string? ShortDetailing { get; set; }
+        public string Name { get; set; } = null!;
+        public string? ShortDetail { get; set; }
 
+        public virtual ICollection<AcquirableSkill> AcquirableSkills { get; set; }
         public virtual ICollection<Bird> Birds { get; set; }
         public virtual ICollection<TrainingCourse> TrainingCourses { get; set; }
-
-        public virtual ICollection<BirdSkill> BirdSkills { get; set; }
     }
 }

@@ -8,7 +8,8 @@ namespace AppCore.Models
         public int Id { get; set; }
         public int FeedbackTypeId { get; set; }
         public int CustomerId { get; set; }
-        public int? FeedbackEntityId { get; set; }
+        public int EntityTypeId { get; set; }
+        public int? EntityId { get; set; }
         public string? FeedbackDetail { get; set; }
 
         public virtual Customer Customer { get; set; } = null!;

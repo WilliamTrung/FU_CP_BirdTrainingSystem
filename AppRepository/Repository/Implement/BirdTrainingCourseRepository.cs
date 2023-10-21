@@ -1,12 +1,6 @@
-﻿using AppCore.Context;
-using AppCore.Models;
-using AppRepository.Generic;
+﻿using AppRepository.Generic;
 using AppRepository.UnitOfWork;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Models.Entities;
 
 namespace AppRepository.Repository.Implement
 {
@@ -14,6 +8,21 @@ namespace AppRepository.Repository.Implement
     {
         public BirdTrainingCourseRepository(BirdTrainingCenterSystemContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
         {
+        }
+        public override Task Add(BirdTrainingCourse entity)
+        {
+            entity.LastestUpdate = DateTime.Now;
+            return base.Add(entity);
+        }
+        public override Task Update(BirdTrainingCourse entity)
+        {
+            entity.LastestUpdate = DateTime.Now;
+            return base.Add(entity);
+        }
+        public override Task Delete(BirdTrainingCourse entity)
+        {
+            entity.LastestUpdate = DateTime.Now;
+            return base.Add(entity);
         }
     }
 }

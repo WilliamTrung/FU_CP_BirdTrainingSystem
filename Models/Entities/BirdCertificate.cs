@@ -7,17 +7,19 @@ namespace Models.Entities
     {
         public BirdCertificate()
         {
-            UserBirdBirdCertificates = new HashSet<BirdCertificateDetail>();
+            BirdCertificateDetails = new HashSet<BirdCertificateDetail>();
+            BirdCertificateSkills = new HashSet<BirdCertificateSkill>();
         }
 
         public int Id { get; set; }
         public int TrainingCourseId { get; set; }
-        public string? Title { get; set; }
-        public string? ShortDescrption { get; set; }
         public string? BirdCenterName { get; set; }
-        public int? Picture { get; set; }
+        public string Title { get; set; } = null!;
+        public string? ShortDescrption { get; set; }
+        public string? Picture { get; set; }
 
         public virtual TrainingCourse TrainingCourse { get; set; } = null!;
-        public virtual ICollection<BirdCertificateDetail> UserBirdBirdCertificates { get; set; }
+        public virtual ICollection<BirdCertificateDetail> BirdCertificateDetails { get; set; }
+        public virtual ICollection<BirdCertificateSkill> BirdCertificateSkills { get; set; }
     }
 }

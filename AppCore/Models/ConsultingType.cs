@@ -11,7 +11,7 @@ namespace AppCore.Models
         }
 
         public int Id { get; set; }
-        public string? Name { get; set; }
+        public string Name { get; set; } = null!;
 
         public virtual ICollection<ConsultingTicket> ConsultingTickets { get; set; }
     }

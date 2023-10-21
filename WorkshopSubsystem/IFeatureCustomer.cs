@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using Models.ServiceModels.WorkshopModels.WorkshopClass;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,10 +8,15 @@ using System.Threading.Tasks;
 
 namespace WorkshopSubsystem
 {
-    public interface IFeatureCustomer
+    public interface IFeatureCustomer : IFeatureAll
     {
-        
-        //[Customer] register joining[Class] for specified[Workshop] - then pay for the charge amount of the[Workshop] to the center
+
+        //Register workshop class
+        //param: 
+        //"customerId : int
+        //WorkshopClassId : int
+        Task Register(int customerId, int workshopClassId);
+        Task<IEnumerable<WorkshopClassViewModel>> GetRegisteredWorkshopClasses(int customerId);
 
 
     }

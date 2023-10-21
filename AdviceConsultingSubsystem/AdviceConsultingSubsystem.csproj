@@ -10,4 +10,8 @@
     <Folder Include="Implementation\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AppRepository\AppRepository.csproj" />
+  </ItemGroup>
+
 </Project>

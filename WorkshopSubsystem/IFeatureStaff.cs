@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Models.Entities;
+using Models.ServiceModels.WorkshopModels;
+using Models.ServiceModels.WorkshopModels.WorkshopClass;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,11 +9,15 @@ using System.Threading.Tasks;
 
 namespace WorkshopSubsystem
 {
-    public interface IFeatureStaff
+    public interface IFeatureStaff : IFeatureAll
     {
-        //[Staff] create [Class] for selected [Workshop]
-        //[Staff] assign[Trainer] to[Slot] in [Class] - [Trainer] will be the guide of the[Workshop] for [Customer]       
-        //[Staff] check attendance of[Customer] for the[Workshop] - [Customer] can only be checked if [Customer] has already been charged for joining[Workshop]
-
+        Task CreateWorkshopClass(WorkshopClassAddModel workshopClass);
+        Task<IEnumerable<WorkshopClassAdminViewModel>> GetWorkshopClassAdminViewModels(int workshopId);
+        Task<IEnumerable<WorkshopClassDetailViewModel>> GetWorkshopClassDetailViewModels(int workshopClassId);
+        
+        Task ModifyWorkshopClassDetailTrainerSlot(WorkshopClassDetailTrainerSlotModifyModel workshopClass);
+        Task ModifyWorkshopClassDetailSlotOnly(WorkshopClassDetailTrainerSlotOnlyModifyModel workshopClass);
+        Task<WorkshopClassDetailViewModel?> GetPreviousWorkshopClassDetail(int workshopClassDetailId);
+        Task<WorkshopClassDetailViewModel?> GetFollowingWorkshopClassDetail(int workshopClassDetailId);
     }
 }

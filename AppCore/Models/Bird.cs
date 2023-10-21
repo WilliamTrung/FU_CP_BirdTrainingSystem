@@ -7,22 +7,22 @@ namespace AppCore.Models
     {
         public Bird()
         {
+            BirdCertificateDetails = new HashSet<BirdCertificateDetail>();
             BirdTrainingCourses = new HashSet<BirdTrainingCourse>();
-            StaffBirdReceiveds = new HashSet<StaffBirdReceived>();
-            UserBirdBirdCertificates = new HashSet<BirdCertificateDetail>();
         }
 
         public int Id { get; set; }
         public int CustomerId { get; set; }
-        public int SystemBirdSpeciesId { get; set; }
+        public int BirdSpeciesId { get; set; }
         public string? Name { get; set; }
         public string? Color { get; set; }
-        public string? OrtherDescription { get; set; }
+        public string? Picture { get; set; }
+        public string? Description { get; set; }
+        public bool? IsDefault { get; set; }
 
+        public virtual BirdSpecies BirdSpecies { get; set; } = null!;
         public virtual Customer Customer { get; set; } = null!;
-        public virtual BirdSpecies SystemBirdSpecies { get; set; } = null!;
+        public virtual ICollection<BirdCertificateDetail> BirdCertificateDetails { get; set; }
         public virtual ICollection<BirdTrainingCourse> BirdTrainingCourses { get; set; }
-        public virtual ICollection<StaffBirdReceived> StaffBirdReceiveds { get; set; }
-        public virtual ICollection<BirdCertificateDetail> UserBirdBirdCertificates { get; set; }
     }
 }

@@ -5,14 +5,17 @@ namespace Models.Entities
 {
     public partial class Slot
     {
-        public int Id { get; set; }
-        public int DayId { get; set; }
-        public DateTime? StartTime { get; set; }
-        public DateTime? EndTime { get; set; }
-        public string? Reason { get; set; }
-        public int? ReasonEntityId { get; set; }
-        public bool? IsFree { get; set; }
+        public Slot()
+        {
+            CenterSlots = new HashSet<CenterSlot>();
+            TrainerSlots = new HashSet<TrainerSlot>();
+        }
 
-        public virtual Day Day { get; set; } = null!;
+        public int Id { get; set; }
+        public TimeSpan? StartTime { get; set; }
+        public TimeSpan? EndTime { get; set; }
+
+        public virtual ICollection<CenterSlot> CenterSlots { get; set; }
+        public virtual ICollection<TrainerSlot> TrainerSlots { get; set; }
     }
 }
