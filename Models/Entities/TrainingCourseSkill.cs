@@ -12,7 +12,7 @@ namespace Models.Entities
 
         public int BirdSkillId { get; set; }
         public int TrainingCourseId { get; set; }
-        public int? TotalSlot { get; set; }
+        public int TotalSlot { get; set; }
 
         public virtual BirdSkill BirdSkill { get; set; } = null!;
         public virtual TrainingCourse TrainingCourse { get; set; } = null!;

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Models.ServiceModels.AdviceConsultantModels;
+using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
 using System.Linq;
@@ -9,9 +11,9 @@ namespace AdviceConsultingSubsystem
 {
     public interface IFeatureTrainer
     {
-        //FE16[Trainer] view assigned[Appointment] by[Staff]
-        //FE17[Trainer] decide on planning a[Training Plan] for [Appointment] - optional
-        //FE18[Trainer] fill out [Billing Form] from the advice appointment - after completing the appointment
-        //FE19[Trainer] confirm getting paid from[Customer] by given information from[Billing Form]
+        Task<IEnumerable<ConsultingTicketListViewModel>> ViewAssignedAppointment(int id);
+        Task UpdateAppointment(ConsultingTicketUpdateModel consultingTicket);
+        Task FinishAppointment(ConsultingTicketUpdateStatusModel consultingTicket);
+        Task FillOutBillingForm(ConsultingTicketUpdateModel consultingTicket);
     }
 }
