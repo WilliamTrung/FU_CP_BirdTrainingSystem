@@ -16,8 +16,8 @@ namespace AppService.Implementation
         {
             _authFeature = authFeature;
         }
-        public Task Login(LoginModel login_user) => _authFeature.Login(login_user);
+        public Task Login(LoginRequestModel login_user) => _authFeature.Login(login_user);
 
-        public Task Register(RegisterModel register_user) => _authFeature.Register(register_user);
+        public Task Register(RegisterRequestModel register_user) => _authFeature.Register(register_user);
     }
 }
