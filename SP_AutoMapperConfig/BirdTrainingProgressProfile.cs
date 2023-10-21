@@ -18,7 +18,7 @@ namespace SP_AutoMapperConfig
         private void Map_BirdTrainingProgress_AssignTrainerToCourse()
         {
             CreateMap<BirdTrainingProgress, AssignTrainerToCourse>()
-                .ForMember(m => m.Id, opt => opt.MapFrom(e => e.Id))
+                //.ForMember(m => m.Id, opt => opt.MapFrom(e => e.Id))
                 .ForMember(m => m.BirdTrainingCourseId, opt => opt.MapFrom(e => e.BirdTrainingCourseId))
                 .ForMember(m => m.TrainingCourseSkillId, opt => opt.MapFrom(e => e.TrainingCourseSkillId))
                 .ForMember(m => m.TrainerId, opt => opt.MapFrom(e => e.TrainerId));
