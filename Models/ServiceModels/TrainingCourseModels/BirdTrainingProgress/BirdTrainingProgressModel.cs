@@ -1,4 +1,5 @@
 ﻿using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
+using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
 using System;
 using System.Collections.Generic;
 
@@ -11,10 +12,12 @@ namespace Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress
         public int TrainingCourseSkillId { get; set; }
         public int TrainerId { get; set; }
         public DateTime? TrainingDoneDate { get; set; }
+        public string? Evidence { get; set; }
         public bool? IsComplete { get; set; }
 
         public virtual BirdTrainingCourseModel BirdTrainingCourse { get; set; } = null!;
         public virtual TrainerModel Trainer { get; set; } = null!;
         public virtual TrainingCourseSkillModel TrainingCourseSkill { get; set; } = null!;
+        public virtual ICollection<BirdTrainingReportModel> BirdTrainingReports { get; set; }
     }
 }

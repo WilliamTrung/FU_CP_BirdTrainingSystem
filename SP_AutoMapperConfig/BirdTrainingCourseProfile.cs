@@ -14,6 +14,7 @@ namespace SP_AutoMapperConfig
         public BirdTrainingCourseProfile()
         {
             Map_BirdTrainingCourse_BirdTrainingCourseRegister();
+            Map_BirdTrainingCourse_BirdTrainingCourseViewModel();
         }
         private void Map_BirdTrainingCourse_BirdTrainingCourseRegister()
         {
@@ -32,6 +33,21 @@ namespace SP_AutoMapperConfig
                 .ForMember(m => m.TrainingCourse, opt => {
                     opt.PreCondition(e => e.TrainingCourse != null);
                     opt.MapFrom(e => e.TrainingCourse);
+                });
+        }
+        private void Map_BirdTrainingCourse_BirdTrainingCourseViewModel()
+        {
+            CreateMap<BirdTrainingCourse, BirdTrainingCourseViewModel>()
+                .ForMember(m => m.Id, opt => opt.MapFrom(e => e.BirdId))
+                .ForMember(m => m.TotalSlot, opt => opt.MapFrom(e => e.TrainingCourseId))
+                .ForMember(m => m.Status, opt => opt.MapFrom(e => e.Status))
+                .ForMember(m => m.TrainingCourseTitle, opt => {
+                    opt.PreCondition(e => e.TrainingCourse != null);
+                    opt.MapFrom(e => e.TrainingCourse.Title);
+                })
+                .ForMember(m => m.TrainingCoursePicture, opt => {
+                    opt.PreCondition(e => e.TrainingCourse != null);
+                    opt.MapFrom(e => e.TrainingCourse.Picture);
                 });
         }
     }
