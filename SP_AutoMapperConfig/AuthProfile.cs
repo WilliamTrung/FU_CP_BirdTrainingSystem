@@ -64,7 +64,7 @@ namespace SP_AutoMapperConfig
             CreateMap<User, TokenModel>()
                 .ForMember(m => m, opt =>
                 {
-                    opt.MapFrom<Map_User_TokenModel_Resolver>()
+                    opt.MapFrom<Map_User_TokenModel_Resolver>();
                 });
         }
     }
