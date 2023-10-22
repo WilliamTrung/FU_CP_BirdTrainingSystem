@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace BirdTrainingCenterAPI.Controllers.Endpoints
+namespace BirdTrainingCenterAPI.Controllers.Endpoints.Workshop
 {
-    public interface IWorkshopCustomerEnpoints
+    public interface IWorkshopCustomer
     {
         [HttpPost]
         [Route("register")]
-        Task<IActionResult> Register([FromQuery]int workshopClassId);
+        Task<IActionResult> Register([FromQuery] int workshopClassId);
 
         [HttpGet]
         [Route("customer-registered")]
