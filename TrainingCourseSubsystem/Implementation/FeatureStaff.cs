@@ -81,19 +81,19 @@ namespace TrainingCourseSubsystem.Implementation
         //    await _unitOfWork.BirdTrainingCourseRepository.Update(entity);
         //}
 
-        public async Task Update(BirdTrainingProgressModel birdTrainingProgress)
-        {
-            if (birdTrainingProgress == null)
-            {
-                throw new Exception("Client send null model.");
-            }
-            var entity = _mapper.Map<BirdTrainingProgress>(birdTrainingProgress);
-            if (entity == null)
-            {
-                throw new Exception("Entity is null.");
-            }
-            await _unitOfWork.BirdTrainingProgressRepository.Update(entity);
-        }
+        //public async Task Update(BirdTrainingProgressModel birdTrainingProgress)
+        //{
+        //    if (birdTrainingProgress == null)
+        //    {
+        //        throw new Exception("Client send null model.");
+        //    }
+        //    var entity = _mapper.Map<BirdTrainingProgress>(birdTrainingProgress);
+        //    if (entity == null)
+        //    {
+        //        throw new Exception("Entity is null.");
+        //    }
+        //    await _unitOfWork.BirdTrainingProgressRepository.Update(entity);
+        //}
 
         public async Task<IEnumerable<TrainerModel>> GetTrainerByTrainerSkillId(int trainerSkillId)
         {
@@ -138,7 +138,7 @@ namespace TrainingCourseSubsystem.Implementation
             }
             else
             {
-                var entity = await _unitOfWork.BirdTrainingCourseRepository.GetFirst(e => e.Id == birdTrainingCourse.Id);
+                var entity = await _unitOfWork.BirdTrainingCourseRepository.GetFirst(e => e.Id == birdTrainingCourse.Id, nameof(TrainingCourse));
                 if (entity == null)
                 {
                     throw new Exception("Entity not found");
@@ -146,9 +146,10 @@ namespace TrainingCourseSubsystem.Implementation
                 else
                 {
                     entity.StaffId = birdTrainingCourse.StaffId;
-                    entity.ExpectedStartDate = birdTrainingCourse.ExpectedStartDate;
-                    entity.ExpectedTrainingDoneDate = birdTrainingCourse.ExpectedTrainingDoneDate;
-                    entity.ExpectedDateReturn = birdTrainingCourse.ExpectedDateReturn;
+                    entity.ExpectedStartDate = DateTime.Now;
+                    DateTime expectDoneDate = DateTime.Now.AddDays(entity.TrainingCourse.TotalSlot);
+                    entity.ExpectedTrainingDoneDate = expectDoneDate;
+                    entity.ExpectedDateReturn = expectDoneDate;
                     entity.LastestUpdate = DateTime.Now;
 
                     var assignedSkills = _unitOfWork.BirdTrainingProgressRepository.Get(e => e.BirdTrainingCourseId == entity.Id).Result.ToList();

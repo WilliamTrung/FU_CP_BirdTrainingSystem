@@ -5,45 +5,45 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TimetableSubsystem;
 using TrainingCourseSubsystem;
 
 namespace AppService.TrainingCourseService.Implement
 {
-    public class ServiceCustomer : IServiceCustomer
+    public class ServiceCustomer : ServiceAll, IServiceCustomer
     {
-        IFeatureCustomer _featureCustomer;
-        public ServiceCustomer(IFeatureCustomer featureCustomer)
+        public ServiceCustomer(ITrainingCourseFeature trainingCourse, ITimetableFeature timetable) : base(trainingCourse, timetable)
         {
-            _featureCustomer = featureCustomer;
         }
+
         public async Task<IEnumerable<BirdModel>> GetBirdByCustomerId(int customerId)
         {
-            return await _featureCustomer.GetBirdByCustomerId(customerId);
+            return await _trainingCourse.Customer.GetBirdByCustomerId(customerId);
         }
 
         public async Task<IEnumerable<TrainingCourseModel>> GetTrainingCourse()
         {
-            return await _featureCustomer.GetTrainingCourse();
+            return await _trainingCourse.Customer.GetTrainingCourse();
         }
 
         public async Task<TrainingCourseModel> GetTrainingCourseById(int trainingCourseId)
         {
-            return await _featureCustomer.GetTrainingCourseById(trainingCourseId);
+            return await _trainingCourse.Customer.GetTrainingCourseById(trainingCourseId);
         }
 
         public async Task<IEnumerable<TrainingCourseModel>> GetTrainingCourseBySpeciesId(int birdSpeciesId)
         {
-            return await _featureCustomer.GetTrainingCourseBySpeciesId(birdSpeciesId);
+            return await _trainingCourse.Customer.GetTrainingCourseBySpeciesId(birdSpeciesId);
         }
 
         public async Task RegisterBird(BirdModel bird)
         {
-            await _featureCustomer.RegisterBird(bird);
+            await _trainingCourse.Customer.RegisterBird(bird);
         }
 
         public async Task RegisterTrainingCourse(BirdTrainingCourseRegister birdTrainingCourseRegister)
         {
-            await _featureCustomer.RegisterTrainingCourse(birdTrainingCourseRegister);
+            await _trainingCourse.Customer.RegisterTrainingCourse(birdTrainingCourseRegister);
         }
 
         public async Task UpdateBirdProfile(BirdModel bird)

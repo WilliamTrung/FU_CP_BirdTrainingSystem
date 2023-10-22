@@ -27,7 +27,7 @@ namespace TrainingCourseSubsystem
         Task InitStartTime(BirdTrainingCourseStartTime birdTrainingCourse);
         Task ReceiveBird(BirdTrainingCourseReceiveBird birdTrainingCourse);
         Task ReturnBird(BirdTrainingCourseReturnBird birdTrainingCourse);
-        Task Update(BirdTrainingProgressModel birdTrainingProgress);
+        //Task Update(BirdTrainingProgressModel birdTrainingProgress);
         Task<IEnumerable<BirdTrainingCourseModel>> GetBirdTrainingCourseByBirdId(int birdId);
         Task<IEnumerable<TrainerModel>> GetTrainer();
         Task<TrainerModel> GetTrainerById(int trainerId);
