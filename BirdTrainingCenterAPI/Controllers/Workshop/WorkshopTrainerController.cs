@@ -3,6 +3,7 @@ using AppService.WorkshopService;
 using BirdTrainingCenterAPI.Controllers.Endpoints.Workshop;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace BirdTrainingCenterAPI.Controllers.Workshop
 {
@@ -12,19 +13,61 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
         {
         }
 
-        public Task<IActionResult> GetAssignedClasses([FromQuery] int workshopId)
+        public async Task<IActionResult> GetAssignedClasses([FromQuery] int workshopId)
         {
-            throw new NotImplementedException();
+            var accessToken = DeserializeToken();
+            if (accessToken == null)
+            {
+                return Unauthorized();
+            }
+            var trainerId = accessToken.First(c => c.Type == ClaimTypes.NameIdentifier);
+            try
+            {
+                var result = await _workshopService.Trainer.GetAssignedWorkshopClasses(trainerId: Int32.Parse(trainerId.Value), workshopId: workshopId);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
-        public Task<IActionResult> GetAssignedSlots([FromQuery] int workshopClassId)
+        public async Task<IActionResult> GetAssignedSlots([FromQuery] int workshopClassId)
         {
-            throw new NotImplementedException();
+            var accessToken = DeserializeToken();
+            if (accessToken == null)
+            {
+                return Unauthorized();
+            }
+            var trainerId = accessToken.First(c => c.Type == ClaimTypes.NameIdentifier);
+            try
+            {
+                var result = await _workshopService.Trainer.GetAssignedWorkshopClassDetails(trainerId: Int32.Parse(trainerId.Value), workshopClassId: workshopClassId);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
-        public Task<IActionResult> GetAssignedWorkshops()
+        public async Task<IActionResult> GetAssignedWorkshops()
         {
-            throw new NotImplementedException();
+            var accessToken = DeserializeToken();
+            if (accessToken == null)
+            {
+                return Unauthorized();
+            }
+            var trainerId = accessToken.First(c => c.Type == ClaimTypes.NameIdentifier);
+            try
+            {
+                var result = await _workshopService.Trainer.GetAssignedWorkshops(trainerId: Int32.Parse(trainerId.Value));
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
     }
 }
