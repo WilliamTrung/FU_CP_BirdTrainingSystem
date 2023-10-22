@@ -14,6 +14,7 @@ namespace Models.ServiceModels.TrainingCourseModels
         public string? Picture { get; set; }
         public string? Description { get; set; }
         public bool? IsDefault { get; set; }
+        public int Status { get; set; }
 
         public virtual BirdSpeciesModel BirdSpecies { get; set; } = null!;
         //public virtual Customer Customer { get; set; } = null!;

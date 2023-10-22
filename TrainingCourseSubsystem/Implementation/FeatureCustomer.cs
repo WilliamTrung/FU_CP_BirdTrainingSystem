@@ -55,11 +55,18 @@ namespace TrainingCourseSubsystem.Implementation
             {
                 throw new Exception("Client send null model.");
             }
-            var entity = _mapper.Map<Bird>(bird);
+            var entity = _unitOfWork.BirdRepository.GetFirst(e => e.Id == bird.Id).Result;
             if (entity == null)
             {
                 throw new Exception("Entity is null.");
             }
+            entity.CustomerId = bird.CustomerId;
+            entity.BirdSpeciesId = bird.BirdSpeciesId;
+            entity.Name = bird.Name;
+            entity.Color = bird.Color;
+            entity.Picture = bird.Picture;
+            entity.Description = bird.Description;
+            entity.IsDefault = bird.IsDefault;
             await _unitOfWork.BirdRepository.Update(entity);
         }
 
@@ -118,7 +125,7 @@ namespace TrainingCourseSubsystem.Implementation
 
         public async Task<IEnumerable<BirdTrainingReportViewModel>> ViewBirdTrainingCourseReport(int birdTrainingProgressId)
         {
-            var entities = await _unitOfWork.BirdTrainingReportRepository.Get(expression: e => e.BirdTrainingProgressId == birdTrainingProgressId);
+            var entities = await _unitOfWork.BirdTrainingReportRepository.Get(expression: e => e.BirdTrainingProgressId == birdTrainingProgressId, nameof(TrainerSlot));
             List<BirdTrainingReportViewModel> models = new List<BirdTrainingReportViewModel>();
             foreach (var entity in entities)
             {
