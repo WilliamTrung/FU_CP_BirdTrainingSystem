@@ -19,8 +19,8 @@ namespace Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse
         public int CustomerId { get; set; }
         public decimal? TotalPrice { get; set; }
         public decimal? DiscountedPrice { get; set; }
-        public DateTime? LastestUpdate { get; set; }
-        public int Status { get; set; }
+        //public DateTime? LastestUpdate { get; set; }
+        //public int Status { get; set; }
 
         public virtual BirdModel Bird { get; set; } = null!;
         public virtual TrainingCourseModel TrainingCourse { get; set; } = null!;

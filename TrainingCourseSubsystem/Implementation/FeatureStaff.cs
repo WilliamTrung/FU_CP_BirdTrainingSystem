@@ -181,6 +181,7 @@ namespace TrainingCourseSubsystem.Implementation
                 else
                 {
                     entity.ReceiveStaffId = birdTrainingCourse.ReceiveStaffId;
+                    entity.ActualStartDate = DateTime.Now;
                     entity.DateReceivedBird = DateTime.Now;
                     entity.ReceiveNote = birdTrainingCourse.ReceiveNote;
                     entity.ReceivePicture = birdTrainingCourse.ReceivePicture;
@@ -208,6 +209,10 @@ namespace TrainingCourseSubsystem.Implementation
                 if (entity == null)
                 {
                     throw new Exception("Entity not found");
+                }
+                else if (entity.Status != (int)Models.Enum.BirdTrainingCourse.Status.TrainingDone)
+                {
+                    throw new Exception("Bird is training. Not ready to return");
                 }
                 else
                 {
