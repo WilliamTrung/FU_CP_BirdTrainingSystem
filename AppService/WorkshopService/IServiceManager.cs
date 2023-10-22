@@ -11,6 +11,7 @@ namespace AppService.WorkshopService
     {
         Task CreateWorkshop(WorkshopAddModel workshop);
         //Task ModifyWorkshop(WorkshopModifyModel workshop);
+        Task<IEnumerable<WorkshopDetailTemplateViewModel>> GetDetailTemplatesByWorkshopId(int workshopId);
         Task ModifyWorkshopDetailTemplate(WorkshopDetailTemplateModiyModel workshopDetail);
         Task ModifyWorkshopStatus(WorkshopStatusModifyModel workshop);
         Task<IEnumerable<WorkshopStatusModel>> GetWorkshopStatuses();

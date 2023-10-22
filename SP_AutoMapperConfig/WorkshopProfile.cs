@@ -19,6 +19,7 @@ namespace SP_AutoMapperConfig
             Map_WorkshopDetailTemplateAddModel_WorkshopDetailTemplate();
             Map_WorkshopRefundPolicy_WorkshopRefundPolicyModel();
             Map_WorkshopClass_WorkshopClassAdminViewModel();
+            Map_WorkshopClassDetailTemplate_WorkshopClassDetailTemplateViewModel();
         }
         private void Map_WorkshopRefundPolicy_WorkshopRefundPolicyModel()
         {
@@ -28,6 +29,10 @@ namespace SP_AutoMapperConfig
         {
 
         }        
+        private void Map_WorkshopClassDetailTemplate_WorkshopClassDetailTemplateViewModel()
+        {
+            CreateMap<WorkshopDetailTemplate, WorkshopDetailTemplateViewModel>();
+        }
         private void Map_WorkshopClass_WorkshopClassAdminViewModel()
         {
             CreateMap<WorkshopClass, WorkshopClassAdminViewModel>();                
