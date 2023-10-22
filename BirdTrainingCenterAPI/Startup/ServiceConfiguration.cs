@@ -11,16 +11,16 @@ using ApplicationService.MailSettings;
 
 namespace BirdTrainingCenterAPI.Startup
 {
-    public class AddServices
+    public static class ServiceConfiguration
     {
-        public static void ConfiguringBusinessRules(WebApplicationBuilder builder)
+        public static void ConfiguringBusinessRules(this WebApplicationBuilder builder)
         {
             //builder.Services.Configure<BR_WorkshopConstant>(option =>
             //{
             //    option.StartDateDeadlineAfterRegistrationEnd = Int32.Parse(builder.Configuration.GetSection("BusinessRuleSet")["StartDateDeadlineAfterRegistrationEnd"]);
             //});
         }
-        public static void ConfiguringServices(WebApplicationBuilder builder)
+        public static void ConfiguringServices(this WebApplicationBuilder builder)
         {
             builder.Services.AddTransient<IAuthFeature, AuthFeature>();
             //Add services
@@ -57,7 +57,7 @@ namespace BirdTrainingCenterAPI.Startup
             builder.Services.AddTransient<IAuthService, AuthService>();
             builder.Services.AddTransient<IMailService, MailService>();
         }
-        public static void ConfiguringCors(WebApplicationBuilder builder)
+        public static void ConfiguringCors(this WebApplicationBuilder builder)
         {
             builder.Services.AddCors(option =>
             {

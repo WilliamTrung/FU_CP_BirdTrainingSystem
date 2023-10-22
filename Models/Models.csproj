@@ -7,9 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="ServiceModels\AdviceConsultantModels\" />
     <Folder Include="ServiceModels\OnlineCourseModels\" />
-    <Folder Include="ServiceModels\TrainingCourseModels\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -61,18 +61,18 @@ namespace WorkshopSubsystem.Implementation
             return models;
         }
 
-        public async Task ModifyWorkshopClassSlotDetail(WorkshopClassDetailModifyModel workshopClass)
-        {
-            var entity = await _unitOfWork.WorkshopClassDetailRepository.GetFirst(c => c.Id == workshopClass.Id
-                                                                                    && c.WorkshopClass.Status != (int)Models.Enum.Workshop.Class.Status.Cancel
-                                                                                    , nameof(WorkshopClassDetail.WorkshopClass));
-            if (entity == null)
-            {
-                throw new KeyNotFoundException($"{nameof(workshopClass)} is not found at id: {workshopClass.Id}");
-            }
-            entity.Detail = workshopClass.Detail;
-            await _unitOfWork.WorkshopClassDetailRepository.Update(entity);
-        }
+        //public async Task ModifyWorkshopClassSlotDetail(WorkshopClassDetailModifyModel workshopClass)
+        //{
+        //    var entity = await _unitOfWork.WorkshopClassDetailRepository.GetFirst(c => c.Id == workshopClass.Id
+        //                                                                            && c.WorkshopClass.Status != (int)Models.Enum.Workshop.Class.Status.Cancel
+        //                                                                            , nameof(WorkshopClassDetail.WorkshopClass));
+        //    if (entity == null)
+        //    {
+        //        throw new KeyNotFoundException($"{nameof(workshopClass)} is not found at id: {workshopClass.Id}");
+        //    }
+        //    entity.Detail = workshopClass.Detail;
+        //    await _unitOfWork.WorkshopClassDetailRepository.Update(entity);
+        //}
 
     }
 }

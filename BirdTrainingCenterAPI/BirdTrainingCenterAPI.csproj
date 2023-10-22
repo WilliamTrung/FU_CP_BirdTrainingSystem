@@ -22,8 +22,4 @@
     <ProjectReference Include="..\SP_Middleware\SP_Middleware.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\Workshop\" />
-  </ItemGroup>
-
 </Project>

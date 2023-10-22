@@ -19,6 +19,7 @@ namespace Models.Entities
         public string? Picture { get; set; }
         public int TotalSlot { get; set; }
         public decimal TotalPrice { get; set; }
+        public int Status { get; set; }
 
         public virtual BirdSpecies BirdSpecies { get; set; } = null!;
         public virtual ICollection<BirdCertificate> BirdCertificates { get; set; }
