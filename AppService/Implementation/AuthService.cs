@@ -1,23 +1,24 @@
-﻿using AuthSubsystem;
+﻿using AppRepository.UnitOfWork;
+using AuthSubsystem;
+using AuthSubsystem.Implementation;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore.Query.Internal;
+using Microsoft.Extensions.Options;
 using Models.AuthModels;
+using Models.ConfigModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace AppService.Implementation
 {
-    public class AuthService : IAuthService
+    public class AuthService : AuthFeature, IAuthService
     {
-        private readonly IAuthFeature _authFeature;
-        public AuthService(IAuthFeature authFeature)
+        public AuthService(IUnitOfWork unitOfWork, IMapper mapper, IOptions<JwtConfig> jwtConfig) : base(unitOfWork, mapper, jwtConfig)
         {
-            _authFeature = authFeature;
         }
-        public Task Login(LoginModel login_user) => _authFeature.Login(login_user);
-
-        public Task Register(RegisterModel register_user) => _authFeature.Register(register_user);
     }
 }

@@ -12,30 +12,96 @@ namespace SP_AutoMapperConfig
     public class AuthProfile : Profile
     {
 
-        public AuthProfile() { 
-            CreateMap<User, LoginModel>();
-            CreateMap<RegisterModel, User>().ForMember(entity => entity.PhoneNumber, phonenumber => phonenumber.MapFrom(registerModel => decimal.Parse(registerModel.PhoneNumber)))
+        public AuthProfile() {
+
+            Map_RegisterModel_User();
+            Map_CustomerAddModel_Customer();
+            Map_TrainerAddModel_Trainer();
+            Map_Customer_TokenModel();
+            Map_Trainer_TokenModel();
+            Map_User_TokenModel();
+        }
+        private void Map_RegisterModel_User()
+        {
+            CreateMap<RegisterRequestModel, User>().ForMember(entity => entity.PhoneNumber, phonenumber => phonenumber.MapFrom(registerModel => decimal.Parse(registerModel.PhoneNumber)))
                 .ForMember(src => src.Id, opt => opt.Ignore())
-                .ForMember(src => src.RoleId, opt => opt.Ignore())
-                .ForMember(src => src.Customers, opt => opt.Ignore())
-                //.ForMember(src => src.StaffBirdReceiveds, opt => opt.Ignore())
+                .ForMember(src => src.RoleId, opt => opt.MapFrom(e => (int)Models.Enum.Role.Customer))
                 .ForMember(src => src.Trainers, opt => opt.Ignore())
+                .ForMember(src => src.Customers, opt => opt.Ignore())
+                .ForMember(src => src.BirdTrainingCourses, opt => opt.Ignore())
                 ;
         }
-        //public static MapperConfiguration AuthProfile()
-        //{
-        //    return new MapperConfiguration(config => {
-        //        config.CreateMap<User, LoginModel>();
-        //        config.CreateMap<RegisterModel, User>()
-        //            .ForMember(entity => entity.PhoneNumber, phonenumber => phonenumber.MapFrom(registerModel => decimal.Parse(registerModel.PhoneNumber)))
-        //            .ForMember(src => src.Id, opt => opt.Ignore())
-        //            .ForMember(src => src.RoleId, opt => opt.Ignore())
-        //            .ForMember(src => src.Role, opt => opt.Ignore())
-        //            .ForMember(src => src.Customers, opt => opt.Ignore())
-        //            .ForMember(src => src.StaffBirdReceiveds, opt => opt.Ignore())
-        //            .ForMember(src => src.Trainers, opt => opt.Ignore());
-        //    }
-        //    );
-        //}
+        private void Map_CustomerAddModel_Customer()
+        {
+            CreateMap<CustomerAddModel, Customer>()
+                .ForMember(e => e.Id, opt => opt.Ignore());
+        }
+        private void Map_TrainerAddModel_Trainer()
+        {
+            CreateMap<TrainerAddModel, Trainer>()
+                .ForMember(e => e.Id, opt => opt.Ignore());
+        }
+        private void Map_Customer_TokenModel()
+        {
+            CreateMap<Customer, TokenModel>()
+                .ForMember(m => m, opt =>
+                {
+                    opt.PreCondition(e => e.User != null);
+                    opt.MapFrom<Map_Customer_TokenModel_Resolver>();
+                });                
+        }
+        private void Map_Trainer_TokenModel()
+        {
+            CreateMap<Trainer, TokenModel>()
+                .ForMember(m => m, opt =>
+                {
+                    opt.PreCondition(e => e.User != null);
+                    opt.MapFrom<Map_Trainer_TokenModel_Resolver>();
+                });
+        }
+        private void Map_User_TokenModel()
+        {
+            CreateMap<User, TokenModel>()
+                .ForMember(m => m, opt =>
+                {
+                    opt.MapFrom<Map_User_TokenModel_Resolver>();
+                });
+        }
+    }
+    public class Map_Customer_TokenModel_Resolver : IValueResolver<Customer, TokenModel, TokenModel>
+    {
+        public TokenModel Resolve(Customer source, TokenModel destination, TokenModel destMember, ResolutionContext context)
+        {
+            destMember.Role = (Models.Enum.Role)source.User.RoleId;
+            destMember.Email = source.User.Email;
+            destMember.Avatar = source.User.Avatar;
+            destMember.Name = source.User.Name;
+            destMember.Id = source.Id;
+            return destMember;
+        }
+    }
+    public class Map_Trainer_TokenModel_Resolver : IValueResolver<Trainer, TokenModel, TokenModel>
+    {
+        public TokenModel Resolve(Trainer source, TokenModel destination, TokenModel destMember, ResolutionContext context)
+        {
+            destMember.Role = (Models.Enum.Role)source.User.RoleId;
+            destMember.Email = source.User.Email;
+            destMember.Avatar = source.User.Avatar;
+            destMember.Name = source.User.Name;
+            destMember.Id = source.Id;
+            return destMember;
+        }
+    }
+    public class Map_User_TokenModel_Resolver : IValueResolver<User, TokenModel, TokenModel>
+    {
+        public TokenModel Resolve(User source, TokenModel destination, TokenModel destMember, ResolutionContext context)
+        {
+            destMember.Role = (Models.Enum.Role)source.RoleId;
+            destMember.Email = source.Email;
+            destMember.Avatar = source.Avatar;
+            destMember.Name = source.Name;
+            destMember.Id = source.Id;
+            return destMember;
+        }
     }
 }
