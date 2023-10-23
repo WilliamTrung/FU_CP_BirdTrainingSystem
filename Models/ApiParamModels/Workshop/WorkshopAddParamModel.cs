@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Models.ServiceModels.WorkshopModels;
+using SP_Validator;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace Models.ApiParamModels.Workshop
     {
         public string Title { get; set; } = null!;
         public string Description { get; set; } = null!;
+        [FileImageValidator]
         public List<IFormFile> Pictures { get; set; } = null!;
         public int? RegisterEnd { get; set; }
         public decimal Price { get; set; }

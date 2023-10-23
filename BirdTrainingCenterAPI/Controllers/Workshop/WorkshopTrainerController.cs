@@ -4,6 +4,7 @@ using BirdTrainingCenterAPI.Controllers.Endpoints.Workshop;
 using BirdTrainingCenterAPI.Helper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Models.AuthModels;
 using System.Security.Claims;
 
 namespace BirdTrainingCenterAPI.Controllers.Workshop
@@ -27,7 +28,7 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             {
                 return Unauthorized();
             }
-            var trainerId = accessToken.First(c => c.Type == ClaimTypes.NameIdentifier);
+            var trainerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
             try
             {
                 var result = await _workshopService.Trainer.GetAssignedWorkshopClasses(trainerId: Int32.Parse(trainerId.Value), workshopId: workshopId);
@@ -52,7 +53,7 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             {
                 return Unauthorized();
             }
-            var trainerId = accessToken.First(c => c.Type == ClaimTypes.NameIdentifier);
+            var trainerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
             try
             {
                 var result = await _workshopService.Trainer.GetAssignedWorkshopClassDetails(trainerId: Int32.Parse(trainerId.Value), workshopClassId: workshopClassId);
@@ -77,7 +78,7 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             {
                 return Unauthorized();
             }
-            var trainerId = accessToken.First(c => c.Type == ClaimTypes.NameIdentifier);
+            var trainerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
             try
             {
                 var result = await _workshopService.Trainer.GetAssignedWorkshops(trainerId: Int32.Parse(trainerId.Value));

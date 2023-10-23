@@ -1,12 +1,15 @@
 ﻿using AppService;
 using AppService.WorkshopService;
 using BirdTrainingCenterAPI.Controllers.Endpoints.Workshop;
+using BirdTrainingCenterAPI.Helper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using MimeKit;
 using Models.ApiParamModels.Workshop;
 using Models.ConfigModels;
 using Models.ServiceModels.WorkshopModels;
+using System.Net.Mime;
 
 namespace BirdTrainingCenterAPI.Controllers.Workshop
 {
@@ -26,6 +29,9 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             try
             {
                 var pictures = string.Empty;
+                if(workshop.Pictures.Any(e => !e.IsImage())) {
+                    return BadRequest("Upload image only!");
+                }
                 foreach (var file in workshop.Pictures)
                 {
                     var temp = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.WOKRSHOP, _bucket.General);
