@@ -11,7 +11,6 @@ namespace Models.ServiceModels.AdviceConsultantModels.ConsultingTicket
         public int Id { get; set; }
         public TrainerServiceModel Trainer { get; set; } = null!;
         public string GgMeetLink { get; set; }
-        public DateTime AppointmentDate { get; set; }
         public int ActualSlotStart { get; set; }
         public int ActualEndSlot { get; set; }
         public decimal Price { get; set; }

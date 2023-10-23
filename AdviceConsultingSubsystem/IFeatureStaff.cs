@@ -16,6 +16,6 @@ namespace AdviceConsultingSubsystem
         Task<ConsultingTicketDetailViewModel> GetConsultingTicketByID(int id);
         Task AssignTrainer(ConsultingTicketUpdateModel consultingTicket);
         Task ApproveConsultingTicket(ConsultingTicketUpdateStatusModel consultingTicket);
-        Task CancelConsultingTicket(ConsultingTicketUpdateModel consultingTicket);
+        Task CancelConsultingTicket(ConsultingTicketUpdateStatusModel consultingTicket);
     }
 }

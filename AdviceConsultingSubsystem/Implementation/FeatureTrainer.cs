@@ -55,7 +55,7 @@ namespace AdviceConsultingSubsystem.Implementation
 
             await _unitOfWork.ConsultingTicketRepository.Update(entity);
         }
-        public async Task FillOutBillingForm(ConsultingTicketUpdateModel consultingTicket)
+        public async Task<ConsultingTicketBillModel> FillOutBillingForm(ConsultingTicketBillModel consultingTicket)
         {
             var entity = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id == consultingTicket.Id);
             if (entity == null)
@@ -63,16 +63,20 @@ namespace AdviceConsultingSubsystem.Implementation
                 throw new KeyNotFoundException($"{nameof(entity)} not found for id: {consultingTicket.Id}");
             }
 
-            var actualSlotStart = consultingTicket.ActualSlotStart;
-            var actualEndSlot = consultingTicket.ActualEndSlot;
+            entity.ActualSlotStart = consultingTicket.ActualSlotStart;
+            entity.ActualEndSlot = consultingTicket.ActualEndSlot;
+            entity.Evidence = consultingTicket.Evidence;
 
-            if (entity.Price == 0 && consultingTicket.Price > 0)
+            if (consultingTicket.Price > 0)
             {
                 entity.Price = consultingTicket.Price;
                 entity.DiscountedPrice = consultingTicket.DiscountedPrice;
             }
 
             await _unitOfWork.ConsultingTicketRepository.Update(entity);
+
+            var model = _mapper.Map<ConsultingTicketBillModel>(entity);
+            return model;
         }
     }
 }

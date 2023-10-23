@@ -24,7 +24,7 @@ namespace AppService.AdviceConsultingService.Implementation
             await _consulting.Staff.AssignTrainer (consultingTicket);
         }
 
-        public async Task CancelConsultingTicket(ConsultingTicketUpdateModel consultingTicket)
+        public async Task CancelConsultingTicket(ConsultingTicketUpdateStatusModel consultingTicket)
         {
             await _consulting.Staff.CancelConsultingTicket(consultingTicket);
         }

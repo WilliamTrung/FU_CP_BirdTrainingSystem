@@ -105,7 +105,7 @@ namespace AdviceConsultingSubsystem.Implementation
             await _unitOfWork.ConsultingTicketRepository.Update(entity);
         }
 
-        public async Task CancelConsultingTicket(ConsultingTicketUpdateModel consultingTicket)
+        public async Task CancelConsultingTicket(ConsultingTicketUpdateStatusModel consultingTicket)
         {
             var entity = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id.Equals(consultingTicket.Id));
             if (entity == null)
