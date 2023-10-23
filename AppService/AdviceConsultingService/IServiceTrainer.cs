@@ -10,7 +10,7 @@ namespace AppService.AdviceConsultingService
     public interface IServiceTrainer : IOtherService
     {
         Task<IEnumerable<ConsultingTicketListViewModel>> ViewAssignedAppointment(int id);
-        Task UpdateAppointment(ConsultingTicketUpdateModel consultingTicket);
+        Task UpdateAppointment(int ticketId, string ggmeetLink);
         Task FinishAppointment(ConsultingTicketUpdateStatusModel consultingTicket);
         Task<ConsultingTicketBillModel> FillOutBillingForm(ConsultingTicketBillModel consultingTicket);
     }

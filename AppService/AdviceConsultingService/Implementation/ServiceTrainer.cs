@@ -24,9 +24,9 @@ namespace AppService.AdviceConsultingService.Implementation
             await _consulting.Trainer.FinishAppointment(consultingTicket);
         }
 
-        public async Task UpdateAppointment(ConsultingTicketUpdateModel consultingTicket)
+        public async Task UpdateAppointment(int ticketId, string ggmeetLink)
         {
-            await _consulting.Trainer.UpdateAppointment(consultingTicket);
+            await _consulting.Trainer.UpdateAppointment(ticketId, ggmeetLink);
         }
 
         public async Task<IEnumerable<ConsultingTicketListViewModel>> ViewAssignedAppointment(int id)

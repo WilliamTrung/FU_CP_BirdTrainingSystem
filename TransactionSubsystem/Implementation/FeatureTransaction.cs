@@ -1,4 +1,5 @@
-﻿using AppRepository.UnitOfWork;
+﻿using AppCore.Models;
+using AppRepository.UnitOfWork;
 using AutoMapper;
 using Models.Entities;
 using System;
@@ -19,8 +20,36 @@ namespace TransactionSubsystem.Implementation
             _mapper = mapper;
         }
 
-        public async Task<decimal> CalculateDistancePrice(float distance)
+        public async Task<dynamic> CalculateConsultingTicketFinalPrice(int ticketId)
         {
+            var ticket = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id == ticketId);
+            if (ticket == null)
+            {
+                throw new KeyNotFoundException($"{nameof(ticket)} not found for id: {ticketId}");
+            }
+#pragma warning disable CS8629 // Nullable value type may be null.
+            int distance = (int)ticket.Distance;
+#pragma warning restore CS8629 // Nullable value type may be null.
+            var distancePrice = await CalculateDistancePrice(distance);
+
+            var pricePolicy = await _unitOfWork.ConsultingPricePolicyRepository.GetFirst(x => x.OnlineOrOffline == ticket.OnlineOrOffline);
+            var totalPrice = distancePrice + pricePolicy.Price;
+            var discountedPrice = await CalculateMemberShipDiscountedPrice(totalPrice, ticket.CustomerId);
+            var finalPrice = totalPrice - discountedPrice;
+            //return finalPrice;
+            return new
+            {
+                FinalPrice = finalPrice,
+                DiscountedPrice = discountedPrice
+            };
+        }
+
+        public async Task<decimal> CalculateDistancePrice(int distance)
+        {
+            if (distance == 0)
+            {
+                return 0;
+            }
             var DistancePricePolicy = await _unitOfWork.DistancePriceRepository.Get();
             List<decimal> listDistancePrice = new List<decimal>();
             foreach (var  distancePrice in DistancePricePolicy)
@@ -30,7 +59,7 @@ namespace TransactionSubsystem.Implementation
 #pragma warning restore CS8629 // Nullable value type may be null.
             }
 
-            decimal calculated = (decimal)distance;
+            decimal calculated = distance;
 
             int bachientai = 0;
             int khoangcachbac = Models.ConfigModels.TransactionConstant.KhoangCachBac;
@@ -66,9 +95,7 @@ namespace TransactionSubsystem.Implementation
                 throw new KeyNotFoundException($"{nameof(customer)} not found for id: {customerId}");
             }
 
-#pragma warning disable CS8629 // Nullable value type may be null.
             decimal discountRate = (decimal)customer.MembershipRank.Discount;
-#pragma warning restore CS8629 // Nullable value type may be null.
 
             decimal discountedAmount = price * discountRate;
 

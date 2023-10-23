@@ -16,25 +16,25 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         }
         [HttpPut]
         [Route("staff-approveConsultingTicket")]
-        public async Task<IActionResult> ApproveConsultingTicket(ConsultingTicketUpdateStatusModel consultingTicket)
+        public async Task<IActionResult> ApproveConsultingTicket(int ticketId)
         {
-            await _consultingService.Staff.ApproveConsultingTicket(consultingTicket);
+            await _consultingService.Staff.ApproveConsultingTicket(ticketId);
             return Ok();
         }
 
         [HttpPut]
         [Route("staff-assignTrainer")]
-        public async Task<IActionResult> AssignTrainer(ConsultingTicketUpdateModel consultingTicket)
+        public async Task<IActionResult> AssignTrainer(int trainerId, int ticketId)
         {
-            await _consultingService.Staff.AssignTrainer(consultingTicket);
+            await _consultingService.Staff.AssignTrainer(trainerId, ticketId);
             return Ok();
         }
 
         [HttpPut]
         [Route("staff-cancelConsultingTicket")]
-        public async Task<IActionResult> CancelConsultingTicket(ConsultingTicketUpdateStatusModel consultingTicket)
+        public async Task<IActionResult> CancelConsultingTicket(int ticketId)
         {
-            await _consultingService.Staff.CancelConsultingTicket(consultingTicket);
+            await _consultingService.Staff.CancelConsultingTicket(ticketId);
             return Ok();
         }
 

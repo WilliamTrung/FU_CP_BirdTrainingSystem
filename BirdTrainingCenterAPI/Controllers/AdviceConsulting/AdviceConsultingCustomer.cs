@@ -4,6 +4,7 @@ using BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting;
 using BirdTrainingCenterAPI.Helper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Models.AuthModels;
 using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
 using System.Security.Claims;
 
@@ -26,7 +27,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
             {
                 return Unauthorized();
             }
-            var customerId = accessToken.First(c => c.Type == ClaimTypes.NameIdentifier);
+            var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
 
             var result = await _consultingService.Customer.GetListConsultingTicketByCustomerID(Int32.Parse(customerId.Value));
 
@@ -36,7 +37,16 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         [HttpPost]
         [Route("sendConsultingTicket")]
         public async Task<IActionResult> SendConsultingTicket([FromBody] ConsultingTicketCreateNewModel ticket)
-        { 
+        {
+            var accessToken = Request.DeserializeToken(_authService);
+            if (accessToken == null)
+            {
+                return Unauthorized();
+            }
+            var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
+
+            ticket.CustomerId = Int32.Parse(customerId.Value);
+
             await _consultingService.Customer.SendConsultingTicket(ticket);
             return Ok();
         }

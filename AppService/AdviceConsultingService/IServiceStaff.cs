@@ -12,8 +12,8 @@ namespace AppService.AdviceConsultingService
         Task<IEnumerable<ConsultingTicketListViewModel>> GetListConsultingTicketsByCustomerID(int customerID);
         Task<IEnumerable<ConsultingTicketListViewModel>> GetListConsultingTicketsByStatus(int status);
         Task<ConsultingTicketDetailViewModel> GetConsultingTicketByID(int id);
-        Task AssignTrainer(ConsultingTicketUpdateModel consultingTicket);
-        Task ApproveConsultingTicket(ConsultingTicketUpdateStatusModel consultingTicket);
-        Task CancelConsultingTicket(ConsultingTicketUpdateStatusModel consultingTicket);
+        Task AssignTrainer(int trainerId, int ticketId);
+        Task ApproveConsultingTicket(int ticketId);
+        Task CancelConsultingTicket(int ticketId);
     }
 }

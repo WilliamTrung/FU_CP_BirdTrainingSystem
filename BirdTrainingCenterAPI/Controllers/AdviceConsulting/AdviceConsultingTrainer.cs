@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
 using BirdTrainingCenterAPI.Helper;
 using System.Security.Claims;
+using Models.AuthModels;
 
 namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
 {
@@ -35,9 +36,9 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
 
         [HttpPut]
         [Route("trainer-updateAppointment")]
-        public async Task<IActionResult> UpdateAppointment(ConsultingTicketUpdateModel consultingTicket)
+        public async Task<IActionResult> UpdateAppointment(int ticketId, string ggmeetLink)
         {
-            await _consultingService.Trainer.UpdateAppointment(consultingTicket);
+            await _consultingService.Trainer.UpdateAppointment(ticketId, ggmeetLink);
             return Ok();
         }
 
@@ -50,7 +51,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
             {
                 return Unauthorized();
             }
-            var trainerId = accessToken.First(c => c.Type == ClaimTypes.NameIdentifier);
+            var trainerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
             var result = await _consultingService.Trainer.ViewAssignedAppointment(Int32.Parse(trainerId.Value));
             
             return Ok(result);
