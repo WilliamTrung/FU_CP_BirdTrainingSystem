@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
+using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
 
 namespace AppService.TrainingCourseService
 {
@@ -17,5 +19,8 @@ namespace AppService.TrainingCourseService
         Task<IEnumerable<TrainingCourseModel>> GetTrainingCourseBySpeciesId(int birdSpeciesId);
         Task<TrainingCourseModel> GetTrainingCourseById(int trainingCourseId);
         Task RegisterTrainingCourse(BirdTrainingCourseRegister birdTrainingCourseRegister);
+        Task<IEnumerable<BirdTrainingCourseViewModel>> ViewRegisteredTrainingCourse(int birdId, int customerId);
+        Task<IEnumerable<BirdTrainingProgressViewModel>> ViewBirdTrainingCourseProgress(int birdTrainingCourseId);
+        Task<IEnumerable<BirdTrainingReportViewModel>> ViewBirdTrainingCourseReport(int birdTrainingProgressId);
     }
 }

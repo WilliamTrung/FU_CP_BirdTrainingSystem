@@ -1,6 +1,7 @@
 ﻿using Models.ServiceModels.TrainingCourseModels;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
+using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -70,6 +71,11 @@ namespace AppService.TrainingCourseService.Implement
         public async Task<IEnumerable<TrainerModel>> GetTrainerByTrainerSkillId(int trainerSkillId)
         {
             return await _trainingCourse.Staff.GetTrainerByTrainerSkillId(trainerSkillId);
+        }
+
+        public async Task GenerateTrainerTimetable(InitReportTrainerSlot report)
+        {
+            await _trainingCourse.Staff.GenerateTrainerTimetable(report);
         }
     }
 }

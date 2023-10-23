@@ -1,5 +1,7 @@
 ﻿using Models.ServiceModels.TrainingCourseModels;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
+using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
+using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,6 +51,21 @@ namespace AppService.TrainingCourseService.Implement
         public async Task UpdateBirdProfile(BirdModel bird)
         {
             await UpdateBirdProfile(bird);
+        }
+
+        public async Task<IEnumerable<BirdTrainingProgressViewModel>> ViewBirdTrainingCourseProgress(int birdTrainingCourseId)
+        {
+            return await _trainingCourse.Customer.ViewBirdTrainingCourseProgress(birdTrainingCourseId);
+        }
+
+        public async Task<IEnumerable<BirdTrainingReportViewModel>> ViewBirdTrainingCourseReport(int birdTrainingProgressId)
+        {
+            return await _trainingCourse.Customer.ViewBirdTrainingCourseReport(birdTrainingProgressId);
+        }
+
+        public async Task<IEnumerable<BirdTrainingCourseViewModel>> ViewRegisteredTrainingCourse(int birdId, int customerId)
+        {
+            return await _trainingCourse.Customer.ViewRegisteredTrainingCourse(birdId: birdId, customerId: customerId);
         }
     }
 }

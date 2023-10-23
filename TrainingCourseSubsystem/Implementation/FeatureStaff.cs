@@ -4,6 +4,7 @@ using Models.Entities;
 using Models.ServiceModels.TrainingCourseModels;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
+using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -255,6 +256,25 @@ namespace TrainingCourseSubsystem.Implementation
             var entities = await _unitOfWork.TrainingCourseSkillRepository.Get(e => e.TrainingCourseId == trainingCourseId);
             var models = _mapper.Map<IEnumerable<TrainingCourseSkillModel>>(entities);
             return models;
+        }
+
+        public async Task GenerateTrainerTimetable(InitReportTrainerSlot report)
+        {
+            if(report == null)
+            {
+                throw new Exception("Null param from client" + nameof(report));
+            }
+            var entity = _mapper.Map<BirdTrainingReport>(report);
+            if (entity == null)
+            {
+                throw new Exception("Mapping failed between " + nameof(InitReportTrainerSlot) + " and " + nameof(BirdTrainingReport));
+            }
+            else
+            {
+                entity.DateCreate = DateTime.Now;
+                entity.Status = (int)Models.Enum.BirdTrainingReport.Status.NotYet;
+                await _unitOfWork.BirdTrainingReportRepository.Add(entity);
+            }
         }
     }
 }

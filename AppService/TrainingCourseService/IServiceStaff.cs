@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
 
 namespace AppService.TrainingCourseService
 {
@@ -15,6 +16,7 @@ namespace AppService.TrainingCourseService
         Task<IEnumerable<TrainingCourseSkillModel>> GetTrainingCourseSkill(int trainingCourseId); //lay danh sach ki nang theo course
         Task<IEnumerable<TrainerModel>> GetTrainerByBirdSkillId(int birdSkillId); //lay danh sach trainer theo ki nang Bird
         Task AssignTrainer(AssignTrainerToCourse assignTrainer); //gan trainer vao ki nang can train
+        Task GenerateTrainerTimetable(InitReportTrainerSlot report);//gan lich
         Task InitStartTime(BirdTrainingCourseStartTime birdTrainingCourse); //set lich training
         Task ReceiveBird(BirdTrainingCourseReceiveBird birdTrainingCourse); //nhan chim => chim is not ready => ko the set lich moi
         Task ReturnBird(BirdTrainingCourseReturnBird birdTrainingCourse); //tra chim => chim ready => co the set lich moi neu muon
