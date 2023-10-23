@@ -33,6 +33,7 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
                 }
                 pictures = pictures.Substring(0, pictures.Length - 1);
                 var workshopAdd = workshop.ToWorkshopAddModel(pictures);
+
                 await _workshopService.Manager.CreateWorkshop(workshopAdd);
                 return Ok();
             } catch (Exception ex)

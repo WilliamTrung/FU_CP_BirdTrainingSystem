@@ -1,6 +1,7 @@
 using AppService;
 using AppService.Implementation;
 using AuthSubsystem;
+using Microsoft.AspNetCore.Builder;
 using AuthSubsystem.Implementation;
 using BirdTrainingCenterAPI.Startup;
 using Google.Apis.Auth.OAuth2;
@@ -45,8 +46,10 @@ builder.Services.AddControllers().AddOData(options => options
 
 builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(SP_AutoMapperConfig.SP_AutoMapperAssembly)));
 builder.Services.AddGoogleApiClients();
-//Add json
 
+builder.WebHost.ConfigureKestrel(options => {
+    options.Limits.MaxRequestBodySize = 524288000; // 500 MB
+});
 //Add service
 builder.JwtConfiguration();
 builder.ConfiguringServices();
@@ -66,7 +69,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
