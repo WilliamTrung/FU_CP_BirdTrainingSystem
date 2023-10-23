@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Models.ApiParamModels.Workshop;
 using Models.ServiceModels.WorkshopModels;
 
 namespace BirdTrainingCenterAPI.Controllers.Endpoints.Workshop
@@ -7,7 +8,7 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.Workshop
     {
         [HttpPost]
         [Route("create")]
-        Task<IActionResult> CreateWorkshop([FromForm] WorkshopAddModel workshop);
+        Task<IActionResult> CreateWorkshop([FromForm] WorkshopAddParamModel workshop);
 
         [HttpGet]
         [Route("detail-template")]

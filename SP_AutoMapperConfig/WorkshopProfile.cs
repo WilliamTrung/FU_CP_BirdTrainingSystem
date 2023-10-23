@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Models.ApiParamModels.Workshop;
 using Models.Entities;
 using Models.ServiceModels.WorkshopModels;
 using Models.ServiceModels.WorkshopModels.WorkshopClass;
@@ -21,6 +22,11 @@ namespace SP_AutoMapperConfig
             Map_WorkshopClass_WorkshopClassAdminViewModel();
             Map_WorkshopClassDetailTemplate_WorkshopClassDetailTemplateViewModel();
             Map_WorkshopClassAddModel_WorkshopClass();
+        }
+        private void Map_WorkshopAddParamModel_WorkshopAddModel()
+        {
+            CreateMap<WorkshopAddParamModel, WorkshopAddModel>()
+                .ForMember(d => d.Picture, opt => opt.Ignore());
         }
         private void Map_WorkshopRefundPolicy_WorkshopRefundPolicyModel()
         {
