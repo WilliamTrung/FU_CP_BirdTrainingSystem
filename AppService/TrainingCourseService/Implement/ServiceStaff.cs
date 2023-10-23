@@ -1,4 +1,5 @@
-﻿using Models.ServiceModels.TrainingCourseModels;
+﻿using Models.ServiceModels.SlotModels;
+using Models.ServiceModels.TrainingCourseModels;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
@@ -35,7 +36,36 @@ namespace AppService.TrainingCourseService.Implement
 
         public async Task AssignTrainer(AssignTrainerToCourse assignTrainer)
         {
-            await _trainingCourse.Staff.AssignTrainer(assignTrainer);
+            var progress = await _trainingCourse.Staff.AssignTrainer(assignTrainer);
+
+            var birdTrainingCourse = GetBirdTrainingCourse().Result.Where(m => m.Id == assignTrainer.BirdTrainingCourseId).First();
+            var listSkillInCourse = GetTrainingCourseSkill(birdTrainingCourse.TrainingCourseId);
+            var trainingSkill = listSkillInCourse.Result.FirstOrDefault(m => m.BirdSkillId == assignTrainer.TrainingCourseSkillId);
+            
+            
+            DateTime start= DateTime.Now.AddDays(2);
+            for(int i=0; i<trainingSkill.TotalSlot; i++)
+            {
+                DateTime current = start;
+                List<SlotModel> slotModels = _timetable.GetTrainerFreeSlotOnDate(DateOnly.FromDateTime(current), assignTrainer.TrainerId).Result.ToList();
+                SlotModel autoFill = slotModels.First();
+
+                //if(autoFill != null)
+                {
+                    TrainerSlotModel model = new TrainerSlotModel();
+                    model.SlotId = autoFill.Id;
+                    model.Date = current;
+                    model.EntityTypeId = (int)Models.Enum.EntityType.TrainingCourse;
+                    model.EntityId = progress.Id;
+                    await ConfirmTrainerSlot(model);
+                }
+                start = start.AddDays(1);
+            }
+        }
+
+        public async Task ConfirmTrainerSlot(TrainerSlotModel trainerSlotModel)
+        {
+            await _trainingCourse.Staff.ConfirmTrainerSlot(trainerSlotModel);
         }
 
         public async Task InitStartTime(BirdTrainingCourseStartTime birdTrainingCourse)
@@ -76,6 +106,16 @@ namespace AppService.TrainingCourseService.Implement
         public async Task GenerateTrainerTimetable(InitReportTrainerSlot report)
         {
             await _trainingCourse.Staff.GenerateTrainerTimetable(report);
+        }
+
+        public async Task ModifyActualStartTime(DateTime startDate, int birdTrainingCourseId)
+        {
+            await _trainingCourse.Staff.ModifyActualStartTime(startDate, birdTrainingCourseId);
+        }
+
+        public async Task ModifyTrainerSlot(ModifyTrainerSlot trainerSlot, int birdTrainingReportId)
+        {
+            await _trainingCourse.Staff.ModifyTrainerSlot(trainerSlot, birdTrainingReportId);
         }
     }
 }

@@ -18,6 +18,9 @@ namespace AppService.TrainingCourseService
         Task AssignTrainer(AssignTrainerToCourse assignTrainer); //gan trainer vao ki nang can train
         Task GenerateTrainerTimetable(InitReportTrainerSlot report);//gan lich
         Task InitStartTime(BirdTrainingCourseStartTime birdTrainingCourse); //set lich training
+        Task ConfirmTrainerSlot(TrainerSlotModel trainerSlotModel);
+        Task ModifyActualStartTime(DateTime startDate, int birdTrainingCourseId);
+        Task ModifyTrainerSlot(ModifyTrainerSlot trainerSlot, int birdTrainingReportId);
         Task ReceiveBird(BirdTrainingCourseReceiveBird birdTrainingCourse); //nhan chim => chim is not ready => ko the set lich moi
         Task ReturnBird(BirdTrainingCourseReturnBird birdTrainingCourse); //tra chim => chim ready => co the set lich moi neu muon
         Task<IEnumerable<BirdTrainingCourseModel>> GetBirdTrainingCourseByBirdId(int birdId); //xem request theo chim

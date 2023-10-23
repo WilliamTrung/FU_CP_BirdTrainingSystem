@@ -18,7 +18,6 @@ namespace Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse
         public DateTime? ExpectedTrainingDoneDate { get; set; }
         public DateTime? ExpectedDateReturn { get; set; }
         public int ReceiveStaffId { get; set; }
-        public DateTime? ActualStartDate { get; set; }
         public DateTime? DateReceivedBird { get; set; }
         public string? ReceiveNote { get; set; }
         public string? ReceivePicture { get; set; }
@@ -27,6 +26,7 @@ namespace Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse
         public string? ReturnNote { get; set; }
         public string? ReturnPicture { get; set; }
         public DateTime? LastestUpdate { get; set; }
+        public DateTime? ActualStartDate { get; set; }
         public DateTime? TrainingDoneDate { get; set; }
         public int Status { get; set; }
 
