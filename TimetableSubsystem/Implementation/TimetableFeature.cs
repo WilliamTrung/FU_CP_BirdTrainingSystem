@@ -80,11 +80,15 @@ namespace TimetableSubsystem.Implementation
 
         public async Task<IEnumerable<TrainerSlotModel>> GetTrainerOccupiedSlots(DateOnly from, DateOnly to, int trainerId)
         {
-            var trainerSlots = await _unitOfWork.TrainerSlotRepository.Get(c => CustomDateFunctions.CompareDate(c.Date, from.ToDateTime(new TimeOnly(0, 0, 0))) >= 0 
-                                                                             && CustomDateFunctions.CompareDate(c.Date, to.ToDateTime(new TimeOnly(0, 0, 0))) <= 0
-                                                                             && c.TrainerId == trainerId
+            var trainerSlots = await _unitOfWork.TrainerSlotRepository.Get(c => c.TrainerId == trainerId
                                                                              && c.Status != (int)Models.Enum.TrainerSlotStatus.Disabled
                                                                              , nameof(TrainerSlot.Slot));
+            trainerSlots = trainerSlots.Where(c => c.Date.Day >= from.Day
+                                                && c.Date.Month >= from.Month
+                                                && c.Date.Year >= from.Year
+                                                && c.Date.Day <= to.Day
+                                                && c.Date.Month <= to.Month
+                                                && c.Date.Year <= to.Year);
             var slots = _mapper.Map<List<TrainerSlotModel>>(trainerSlots);
             return slots;
         }
@@ -100,10 +104,14 @@ namespace TimetableSubsystem.Implementation
 
         public async Task<IEnumerable<TimetableModel>> GetTrainerTimetable(DateOnly from, DateOnly to, int trainerId)
         {
-            var trainerSlots = await _unitOfWork.TrainerSlotRepository.Get(c => CustomDateFunctions.CompareDate(c.Date, from.ToDateTime(new TimeOnly(0, 0, 0))) >= 0
-                                                                             && CustomDateFunctions.CompareDate(c.Date, to.ToDateTime(new TimeOnly(0, 0, 0))) <= 0
-                                                                             && c.TrainerId == trainerId
+            var trainerSlots = await _unitOfWork.TrainerSlotRepository.Get(c => c.TrainerId == trainerId
                                                                              && c.Status != (int)Models.Enum.TrainerSlotStatus.Disabled);
+            trainerSlots = trainerSlots.Where(c => c.Date.Day >= from.Day
+                                                && c.Date.Month >= from.Month
+                                                && c.Date.Year >= from.Year
+                                                && c.Date.Day <= to.Day
+                                                && c.Date.Month <= to.Month
+                                                && c.Date.Year <= to.Year);
             var slots = _mapper.Map<List<TimetableModel>>(trainerSlots);
             return slots;
         }

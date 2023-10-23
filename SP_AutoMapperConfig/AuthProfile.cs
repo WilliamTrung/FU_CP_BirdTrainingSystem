@@ -90,7 +90,7 @@ namespace SP_AutoMapperConfig
         {
             destination.Role = (Models.Enum.Role)source.User.RoleId;
             destination.Email = source.User.Email;
-            destination.Avatar = source.User.Avatar;
+            destination.Avatar = source.User.Avatar == null?String.Empty: source.User.Avatar;
             destination.Name = source.User.Name;
             destination.Id = source.Id;
         }
@@ -113,7 +113,7 @@ namespace SP_AutoMapperConfig
         {
             destination.Role = (Models.Enum.Role)source.User.RoleId;
             destination.Email = source.User.Email;
-            destination.Avatar = source.User.Avatar;
+            destination.Avatar = source.User.Avatar == null ? String.Empty : source.User.Avatar;
             destination.Name = source.User.Name;
             destination.Id = source.Id;
         }
@@ -136,7 +136,7 @@ namespace SP_AutoMapperConfig
         {
             destination.Role = (Models.Enum.Role)source.RoleId;
             destination.Email = source.Email;
-            destination.Avatar = source.Avatar;
+            destination.Avatar = source.Avatar == null ? string.Empty : source.Avatar;
             destination.Name = source.Name;
             destination.Id = source.Id;
         }

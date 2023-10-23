@@ -41,7 +41,7 @@ namespace AppService.WorkshopService.Implementation
             List<Task> validatedTasks = new List<Task>();
             //Modified date and modified slot must be free from current trainer timetable
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
-            var trainerCheck = await _timetable.CheckTrainerFree(current_slot.Trainer.Id, workshopClassDetail.Date, workshopClassDetail.SlotId);
+            var trainerCheck = await _timetable.CheckTrainerFree(current_slot.Trainer.Id, workshopClassDetail.Date.ToDateTime(new TimeOnly(0, 0, 0)), workshopClassDetail.SlotId);
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
             if (!trainerCheck)
             {
@@ -56,7 +56,7 @@ namespace AppService.WorkshopService.Implementation
             //if null --> current slot is the last slot of the workshop
             if (following_slot != null)
             {                
-                Task compareFollowingSlot = CompareFollowingSlotDetail(following_slot, workshopClassDetail.Date, changedSlot.StartTime);
+                Task compareFollowingSlot = CompareFollowingSlotDetail(following_slot, workshopClassDetail.Date.ToDateTime(new TimeOnly(0, 0, 0)), changedSlot.StartTime);
                 validatedTasks.Add(compareFollowingSlot);
             }            
             //changed date must be before the previous slot
@@ -65,7 +65,7 @@ namespace AppService.WorkshopService.Implementation
             //if null --> current slot is the first slot of the workshop
             if(previous_slot != null)
             {
-                Task comparePreviousSlot = ComparePreviousSlotDetail(previous_slot, workshopClassDetail.Date, changedSlot.StartTime);
+                Task comparePreviousSlot = ComparePreviousSlotDetail(previous_slot, workshopClassDetail.Date.ToDateTime(new TimeOnly(0, 0, 0)), changedSlot.StartTime);
                 validatedTasks.Add(comparePreviousSlot);
             }
             await Task.WhenAll(validatedTasks);
@@ -83,7 +83,7 @@ namespace AppService.WorkshopService.Implementation
 
             List<Task> validatedTasks = new List<Task>();
             //Modified date and modified slot must be free from current trainer timetable
-            var trainerCheck = await _timetable.CheckTrainerFree(workshopClassDetail.TrainerId, workshopClassDetail.Date, workshopClassDetail.SlotId);
+            var trainerCheck = await _timetable.CheckTrainerFree(workshopClassDetail.TrainerId, workshopClassDetail.Date.ToDateTime(new TimeOnly(0, 0, 0)), workshopClassDetail.SlotId);
             if (!trainerCheck)
             {
                 throw new InvalidOperationException("Trainer is not available for selected time!");
@@ -97,7 +97,7 @@ namespace AppService.WorkshopService.Implementation
             //if null --> current slot is the last slot of the workshop
             if (following_slot != null)
             {
-                Task compareFollowingSlot = CompareFollowingSlotDetail(following_slot, workshopClassDetail.Date, changedSlot.StartTime);
+                Task compareFollowingSlot = CompareFollowingSlotDetail(following_slot, workshopClassDetail.Date.ToDateTime(new TimeOnly(0, 0, 0)), changedSlot.StartTime);
                 validatedTasks.Add(compareFollowingSlot);
             }
             //changed date must be before the previous slot
@@ -106,7 +106,7 @@ namespace AppService.WorkshopService.Implementation
             //if null --> current slot is the first slot of the workshop
             if (previous_slot != null)
             {
-                Task comparePreviousSlot = ComparePreviousSlotDetail(previous_slot, workshopClassDetail.Date, changedSlot.StartTime);
+                Task comparePreviousSlot = ComparePreviousSlotDetail(previous_slot, workshopClassDetail.Date.ToDateTime(new TimeOnly(0, 0, 0)), changedSlot.StartTime);
                 validatedTasks.Add(comparePreviousSlot);
             }
             await Task.WhenAll(validatedTasks);
