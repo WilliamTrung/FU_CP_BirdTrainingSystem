@@ -9,7 +9,6 @@ namespace Models.ServiceModels.AdviceConsultantModels
     public class CustomerServiceModel
     {
         public int Id { get; set; }
-        public int UserId { get; set; }
         public int MembershipRankId { get; set; }
         public int Status { get; set; }
     }

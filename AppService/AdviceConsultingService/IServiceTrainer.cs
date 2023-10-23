@@ -12,6 +12,6 @@ namespace AppService.AdviceConsultingService
         Task<IEnumerable<ConsultingTicketListViewModel>> ViewAssignedAppointment(int id);
         Task UpdateAppointment(ConsultingTicketUpdateModel consultingTicket);
         Task FinishAppointment(ConsultingTicketUpdateStatusModel consultingTicket);
-        Task FillOutBillingForm(ConsultingTicketUpdateModel consultingTicket);
+        Task<ConsultingTicketBillModel> FillOutBillingForm(ConsultingTicketBillModel consultingTicket);
     }
 }

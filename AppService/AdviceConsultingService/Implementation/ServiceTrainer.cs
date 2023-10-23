@@ -14,9 +14,9 @@ namespace AppService.AdviceConsultingService.Implementation
         {
 
         }
-        public async Task FillOutBillingForm(ConsultingTicketUpdateModel consultingTicket)
+        public async Task<ConsultingTicketBillModel> FillOutBillingForm(ConsultingTicketBillModel consultingTicket)
         {
-            await _consulting.Trainer.FillOutBillingForm(consultingTicket);
+            return await _consulting.Trainer.FillOutBillingForm(consultingTicket);
         }
 
         public async Task FinishAppointment(ConsultingTicketUpdateStatusModel consultingTicket)

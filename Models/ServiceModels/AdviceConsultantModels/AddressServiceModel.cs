@@ -9,7 +9,6 @@ namespace Models.ServiceModels.AdviceConsultantModels
     public class AddressServiceModel
     {
         public int Id { get; set; }
-        public int CustomerId { get; set; }
         public string? AddressDetail { get; set; }
     }
 }
