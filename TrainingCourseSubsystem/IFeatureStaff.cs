@@ -1,6 +1,7 @@
 ﻿using Models.ServiceModels.TrainingCourseModels;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
+using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,10 +25,11 @@ namespace TrainingCourseSubsystem
         Task<IEnumerable<TrainingCourseSkillModel>> GetTrainingCourseSkill(int trainingCourseId);
         Task<IEnumerable<TrainerModel>> GetTrainerByBirdSkillId(int birdSkillId);
         Task AssignTrainer(AssignTrainerToCourse assignTrainer);
+        Task GenerateTrainerTimetable(InitReportTrainerSlot report);
         Task InitStartTime(BirdTrainingCourseStartTime birdTrainingCourse);
         Task ReceiveBird(BirdTrainingCourseReceiveBird birdTrainingCourse);
         Task ReturnBird(BirdTrainingCourseReturnBird birdTrainingCourse);
-        Task Update(BirdTrainingProgressModel birdTrainingProgress);
+        //Task Update(BirdTrainingProgressModel birdTrainingProgress);
         Task<IEnumerable<BirdTrainingCourseModel>> GetBirdTrainingCourseByBirdId(int birdId);
         Task<IEnumerable<TrainerModel>> GetTrainer();
         Task<TrainerModel> GetTrainerById(int trainerId);

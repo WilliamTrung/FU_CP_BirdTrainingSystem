@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Models.AuthModels;
 using Models.Entities;
 using Models.ServiceModels;
 using Models.ServiceModels.SlotModels;
@@ -65,11 +66,12 @@ namespace SP_AutoMapperConfig
         private void Map_TrainerSlot_SlotModel()
         {
             CreateMap<TrainerSlot, SlotModel>()
-                .ForMember(m => m, opt =>
-                {
-                    opt.PreCondition(e => e.Slot != null);
-                    opt.MapFrom(e => e.Slot);
-                });
+                //.ForMember(m => m, opt =>
+                //{
+                //    opt.PreCondition(e => e.Slot != null);
+                //    opt.MapFrom(e => e.Slot);
+                //});
+                .AfterMap<MappingAction_TrainerSlot_SlotModel>();
         }
         private void Map_TrainerSlot_TrainerSlotModel()
         {
@@ -84,6 +86,18 @@ namespace SP_AutoMapperConfig
                     opt.PreCondition(e => e.Slot != null);
                     opt.MapFrom(e => e.Slot.EndTime);
                 });
+        }
+    }
+    public class MappingAction_TrainerSlot_SlotModel : IMappingAction<TrainerSlot, SlotModel>
+    {
+        private readonly IMapper _mapper;
+        public MappingAction_TrainerSlot_SlotModel(IMapper mapper)
+        {
+            _mapper = mapper;
+        }
+        public void Process(TrainerSlot source, SlotModel destination, ResolutionContext context)
+        {
+            destination = _mapper.Map<SlotModel>(source.Slot);
         }
     }
 }

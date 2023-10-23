@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Models.ApiParamModels.Timetable;
 
 namespace BirdTrainingCenterAPI.Controllers.Endpoints.Timetable
 {
     public interface ITimetableTrainer
     {
-        [HttpGet]
+        [HttpPost]
         [Route("self")]
-        Task<IActionResult> GetOccupiedSlots([FromQuery] DateOnly from, [FromQuery] DateOnly to);
+        Task<IActionResult> GetOccupiedSlots([FromBody] GetOccupiedSlotsTrainerOnly param);
     }
 }

@@ -75,9 +75,9 @@ namespace AppCore.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.AddMinimalCompareString();
-            modelBuilder.AddDateEquallyCompare();
-            modelBuilder.AddDateCompare();
+            //modelBuilder.AddMinimalCompareString();
+            //modelBuilder.AddDateEquallyCompare();
+            //modelBuilder.AddDateCompare();
             modelBuilder.AddMembershipModels();
             modelBuilder.AddSlots();
             modelBuilder.AddTrainerSkills();
@@ -960,6 +960,9 @@ namespace AppCore.Context
                 entity.Property(e => e.Title)
                     .HasMaxLength(300)
                     .IsUnicode(false);
+                entity.HasMany(d => d.WorkshopClasses)
+                    .WithOne(p => p.Workshop)
+                    .OnDelete(DeleteBehavior.Cascade);
                 entity.HasMany(d => d.WorkshopDetailTemplates)
                     .WithOne(p => p.Workshop)
                     .OnDelete(DeleteBehavior.Cascade);
@@ -1012,7 +1015,7 @@ namespace AppCore.Context
 
                 entity.Property(e => e.UpdateDate).HasColumnType("date");
 
-                entity.HasOne(d => d.Detail)
+                entity.HasOne(d => d.WorkshopDetailTemplate)
                     .WithMany(p => p.WorkshopClassDetails)
                     .HasForeignKey(d => d.DetailId)
                     .OnDelete(DeleteBehavior.NoAction)

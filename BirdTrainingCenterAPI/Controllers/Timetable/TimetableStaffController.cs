@@ -3,6 +3,7 @@ using AppService.TimetableService;
 using BirdTrainingCenterAPI.Controllers.Endpoints.Timetable;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Models.ApiParamModels.Timetable;
 
 namespace BirdTrainingCenterAPI.Controllers.Timetable
 {
@@ -12,13 +13,13 @@ namespace BirdTrainingCenterAPI.Controllers.Timetable
         public TimetableStaffController(ITimetableService timetableService, IAuthService authService) : base(timetableService, authService)
         {
         }
-        [HttpGet]
+        [HttpPost]
         [Route("trainer")]
-        public async Task<IActionResult> GetOccupiedSlots([FromQuery] int trainerId, [FromQuery] DateOnly from, [FromQuery] DateOnly to)
+        public async Task<IActionResult> GetOccupiedSlots([FromBody] GetOccupiedSlotsParam param)
         {
             try
             {
-                var result = await _timetableService.Staff.GetTrainerSlotTimetableByTrainer(trainerId, from.ToDateTime(new TimeOnly()), to.ToDateTime(new TimeOnly()));
+                var result = await _timetableService.Staff.GetTrainerSlotTimetableByTrainer(param.TrainerId, param.From.ToDateTime(new TimeOnly()), param.To.ToDateTime(new TimeOnly()));
                 return Ok(result);
             }
             catch (Exception ex)

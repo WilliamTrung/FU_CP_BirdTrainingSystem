@@ -32,11 +32,11 @@ namespace AuthSubsystem.Implementation
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
             var claims = new[]
             {
-                new Claim(ClaimTypes.Email,user.Email),
-                new Claim(ClaimTypes.Role,user.Role.ToString()),
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Name, user.Name),
-                new Claim("Avatar", user.Avatar)
+                new Claim(CustomClaimTypes.Id, user.Id.ToString()),
+                new Claim(CustomClaimTypes.Email,user.Email),
+                new Claim(CustomClaimTypes.Role,user.Role.ToString()),                
+                new Claim(CustomClaimTypes.Name, user.Name),
+                new Claim(CustomClaimTypes.Avatar, user.Avatar)
             };
             var token = new JwtSecurityToken(
                 issuer: _jwtConfig.Issuer,

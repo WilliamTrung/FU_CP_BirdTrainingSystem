@@ -15,8 +15,8 @@ namespace BirdTrainingCenterAPI.Controllers.Timetable
             _timetableService = timetableService;
         }
         //staff
-        [HttpGet]
-        public async Task<IActionResult> GetFreeSlotOfTrainerByDate([FromQuery] int trainerId, [FromQuery] DateOnly date)
+        [HttpPost]
+        public async Task<IActionResult> GetFreeSlotOfTrainerByDate([FromQuery] int trainerId, [FromBody] DateOnly date)
         {
             try
             {
@@ -28,9 +28,9 @@ namespace BirdTrainingCenterAPI.Controllers.Timetable
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
-        [HttpGet]
+        [HttpPost]
         [Route("trainer")]
-        public async Task<IActionResult> GetFreeTrainersOnDate([FromQuery] DateOnly date)
+        public async Task<IActionResult> GetFreeTrainersOnDate([FromBody] DateOnly date)
         {
             try
             {

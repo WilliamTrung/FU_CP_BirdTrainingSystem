@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Models.ConfigModels;
+using SP_Middleware.CustomJsonConverter;
 using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -37,6 +38,8 @@ builder.Services.AddControllers().AddOData(options => options
                    {
                        x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
                        x.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+                       x.JsonSerializerOptions.Converters.Add(new TimeOnlyConverter());
+                       x.JsonSerializerOptions.Converters.Add(new DateOnlyConverter());
                    }
                );
 

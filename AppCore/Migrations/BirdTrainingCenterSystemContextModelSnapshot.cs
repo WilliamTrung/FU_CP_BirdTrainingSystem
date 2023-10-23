@@ -36,43 +36,11 @@ namespace AppCore.Migrations
                         .HasColumnType("character varying(30)");
 
                     b.HasKey("BirdSpeciesId", "BirdSkillId")
-                        .HasName("PK__Acquirab__4802579ED65DE48A");
+                        .HasName("PK__Acquirab__4802579EB257E655");
 
                     b.HasIndex("BirdSkillId");
 
                     b.ToTable("AcquirableSkill", (string)null);
-                });
-
-            modelBuilder.Entity("Models.Entities.AdditionalConsultingBill", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ConsultingTicketId")
-                        .HasColumnType("integer");
-
-                    b.Property<decimal?>("DiscountedPrice")
-                        .HasColumnType("money");
-
-                    b.Property<string>("Evidence")
-                        .HasMaxLength(50)
-                        .IsUnicode(false)
-                        .HasColumnType("character varying(50)");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
-
-                    b.Property<decimal?>("TotalPrice")
-                        .HasColumnType("money");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ConsultingTicketId");
-
-                    b.ToTable("AdditionalConsultingBill", (string)null);
                 });
 
             modelBuilder.Entity("Models.Entities.Address", b =>
@@ -136,6 +104,9 @@ namespace AppCore.Migrations
                         .IsUnicode(false)
                         .HasColumnType("character varying(50)");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
                     b.HasIndex("BirdSpeciesId");
@@ -196,7 +167,7 @@ namespace AppCore.Migrations
                         .HasColumnType("date");
 
                     b.HasKey("BirdId", "BirdCertificateId")
-                        .HasName("PK__BirdCert__CB94077C4F80D508");
+                        .HasName("PK__BirdCert__CB94077CD6544A76");
 
                     b.HasIndex("BirdCertificateId");
 
@@ -215,7 +186,7 @@ namespace AppCore.Migrations
                         .HasColumnType("date");
 
                     b.HasKey("BirdSkillId", "BirdCertificateId")
-                        .HasName("PK__BirdCert__A080D86A13A8CDEA");
+                        .HasName("PK__BirdCert__A080D86A58420E37");
 
                     b.HasIndex("BirdCertificateId");
 
@@ -244,6 +215,68 @@ namespace AppCore.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("BirdSkill", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Teaches controlled flight and landing",
+                            Name = "Flight training"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Develops vocabulary and mimicking",
+                            Name = "Speech training"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Modifies behaviors through positive reinforcement",
+                            Name = "Behavior training"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Description = "Imitates noises like doorbells and phones",
+                            Name = "Sound imitation"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Description = "Improves coordination through obstacle courses",
+                            Name = "Agility training"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Description = "Identifies colors when named",
+                            Name = "Color recognition"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Description = "Assumes specific poses on command",
+                            Name = "Pose training"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Description = "Learns dance routines to music",
+                            Name = "Choreographed dances"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Description = "Performs athletic tricks like hanging upside down",
+                            Name = "Acrobatics"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Description = "Plays games like basketball or bowling",
+                            Name = "Games"
+                        });
                 });
 
             modelBuilder.Entity("Models.Entities.BirdSpecies", b =>
@@ -302,6 +335,9 @@ namespace AppCore.Migrations
                     b.Property<DateTime?>("ExpectedStartDate")
                         .HasColumnType("date");
 
+                    b.Property<DateTime?>("ExpectedTrainingDoneDate")
+                        .HasColumnType("date");
+
                     b.Property<DateTime?>("LastestUpdate")
                         .HasColumnType("date");
 
@@ -315,6 +351,9 @@ namespace AppCore.Migrations
                         .IsUnicode(false)
                         .HasColumnType("character varying(20)");
 
+                    b.Property<int?>("ReceiveStaffId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("ReturnNote")
                         .HasMaxLength(255)
                         .IsUnicode(false)
@@ -324,6 +363,9 @@ namespace AppCore.Migrations
                         .HasMaxLength(20)
                         .IsUnicode(false)
                         .HasColumnType("character varying(20)");
+
+                    b.Property<int?>("ReturnStaffId")
+                        .HasColumnType("integer");
 
                     b.Property<int>("StaffId")
                         .HasColumnType("integer");
@@ -344,6 +386,8 @@ namespace AppCore.Migrations
 
                     b.HasIndex("BirdId");
 
+                    b.HasIndex("CustomerId");
+
                     b.HasIndex("StaffId");
 
                     b.HasIndex("TrainingCourseId");
@@ -362,6 +406,11 @@ namespace AppCore.Migrations
                     b.Property<int>("BirdTrainingCourseId")
                         .HasColumnType("integer")
                         .HasColumnName("Bird_TrainingCourseId");
+
+                    b.Property<string>("Evidence")
+                        .HasMaxLength(50)
+                        .IsUnicode(false)
+                        .HasColumnType("character varying(50)");
 
                     b.Property<bool?>("IsComplete")
                         .HasColumnType("boolean");
@@ -395,9 +444,9 @@ namespace AppCore.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("BirdTrainingCourseId")
+                    b.Property<int>("BirdTrainingProgressId")
                         .HasColumnType("integer")
-                        .HasColumnName("Bird_TrainingCourseId");
+                        .HasColumnName("Bird_TrainingProgressId");
 
                     b.Property<string>("Comment")
                         .HasMaxLength(200)
@@ -407,17 +456,27 @@ namespace AppCore.Migrations
                     b.Property<DateTime>("DateCreate")
                         .HasColumnType("date");
 
-                    b.Property<float?>("Progress")
-                        .HasColumnType("real");
+                    b.Property<string>("Evidence")
+                        .HasMaxLength(50)
+                        .IsUnicode(false)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<int?>("Status")
+                        .HasColumnType("integer");
 
                     b.Property<int>("TrainerId")
                         .HasColumnType("integer");
 
+                    b.Property<int>("TrainerSlotId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("BirdTrainingCourseId");
+                    b.HasIndex("BirdTrainingProgressId");
 
                     b.HasIndex("TrainerId");
+
+                    b.HasIndex("TrainerSlotId");
 
                     b.ToTable("BirdTrainingReport", (string)null);
                 });
@@ -552,15 +611,6 @@ namespace AppCore.Migrations
                         .IsUnicode(false)
                         .HasColumnType("character varying(50)");
 
-                    b.Property<DateTime?>("ExpectedDate")
-                        .HasColumnType("date");
-
-                    b.Property<int?>("ExpectedSlotEnd")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("ExpectedSlotStart")
-                        .HasColumnType("integer");
-
                     b.Property<string>("GgMeetLink")
                         .HasMaxLength(20)
                         .IsUnicode(false)
@@ -661,7 +711,7 @@ namespace AppCore.Migrations
                         .HasColumnType("date");
 
                     b.HasKey("CustomerId", "CertificateId")
-                        .HasName("PK__Customer__AF11EEA4285B300D");
+                        .HasName("PK__Customer__AF11EEA4FDA02E2A");
 
                     b.HasIndex("CertificateId");
 
@@ -680,7 +730,7 @@ namespace AppCore.Migrations
                         .HasColumnType("boolean");
 
                     b.HasKey("CustomerId", "LessionId")
-                        .HasName("PK__Customer__304EA374D2BD3A0D");
+                        .HasName("PK__Customer__304EA374D16199C5");
 
                     b.HasIndex("LessionId");
 
@@ -705,7 +755,7 @@ namespace AppCore.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("CustomerId", "OnlineCourseId")
-                        .HasName("PK__Customer__FFA1E3B752290968");
+                        .HasName("PK__Customer__FFA1E3B76AF51E89");
 
                     b.HasIndex("OnlineCourseId");
 
@@ -724,7 +774,7 @@ namespace AppCore.Migrations
                         .HasColumnType("boolean");
 
                     b.HasKey("CustomerId", "SectionId")
-                        .HasName("PK__Customer__9CA0945FD7808FAD");
+                        .HasName("PK__Customer__9CA0945F8CBB2D34");
 
                     b.HasIndex("SectionId");
 
@@ -752,7 +802,7 @@ namespace AppCore.Migrations
                         .HasColumnType("integer");
 
                     b.HasKey("CustomerId", "WorkshopClassId")
-                        .HasName("PK__Customer__7EEF8348F780826E");
+                        .HasName("PK__Customer__7EEF8348DE684159");
 
                     b.HasIndex("WorkshopClassId");
 
@@ -1003,6 +1053,38 @@ namespace AppCore.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Skill", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "Modifies bird behaviors through positive reinforcement",
+                            Name = "Behavioral Training"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Develops bird speech and imitation abilities",
+                            Name = "Vocal Training"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Prepares birds for stage performances",
+                            Name = "Showmanship"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Description = "Teaches birds to chain multiple behaviors",
+                            Name = "Complex Routines"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Description = "Provides proper bird nutrition, healthcare, etc.",
+                            Name = "Husbandry"
+                        });
                 });
 
             modelBuilder.Entity("Models.Entities.Slot", b =>
@@ -1088,11 +1170,73 @@ namespace AppCore.Migrations
                         .HasColumnType("character varying(100)");
 
                     b.HasKey("BirdSkillId", "SkillId")
-                        .HasName("PK__Trainabl__707AE500702FFB55");
+                        .HasName("PK__Trainabl__707AE50061373685");
 
                     b.HasIndex("SkillId");
 
                     b.ToTable("TrainableSkill", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            BirdSkillId = 3,
+                            SkillId = 1,
+                            ShortDescription = "Use positive reinforcement for behavior training"
+                        },
+                        new
+                        {
+                            BirdSkillId = 5,
+                            SkillId = 1,
+                            ShortDescription = "Build agility through positive reinforcement"
+                        },
+                        new
+                        {
+                            BirdSkillId = 2,
+                            SkillId = 2,
+                            ShortDescription = "Develop speech through vocal training"
+                        },
+                        new
+                        {
+                            BirdSkillId = 4,
+                            SkillId = 2,
+                            ShortDescription = "Imitate sounds through vocal training"
+                        },
+                        new
+                        {
+                            BirdSkillId = 8,
+                            SkillId = 3,
+                            ShortDescription = "Choreographed dances for shows"
+                        },
+                        new
+                        {
+                            BirdSkillId = 9,
+                            SkillId = 3,
+                            ShortDescription = "Acrobatic tricks for shows"
+                        },
+                        new
+                        {
+                            BirdSkillId = 10,
+                            SkillId = 3,
+                            ShortDescription = "Games and skits for shows"
+                        },
+                        new
+                        {
+                            BirdSkillId = 6,
+                            SkillId = 4,
+                            ShortDescription = "Chain behaviors for complex routines"
+                        },
+                        new
+                        {
+                            BirdSkillId = 7,
+                            SkillId = 4,
+                            ShortDescription = "Pose routines require chaining multiple behaviors"
+                        },
+                        new
+                        {
+                            BirdSkillId = 1,
+                            SkillId = 5,
+                            ShortDescription = "Proper flight training for exercise"
+                        });
                 });
 
             modelBuilder.Entity("Models.Entities.Trainer", b =>
@@ -1139,7 +1283,7 @@ namespace AppCore.Migrations
                         .HasColumnType("character varying(50)");
 
                     b.HasKey("TrainerId", "SkillId")
-                        .HasName("PK__Trainer___5B9013647216435F");
+                        .HasName("PK__Trainer___5B90136408FD50B7");
 
                     b.HasIndex("SkillId");
 
@@ -1207,6 +1351,9 @@ namespace AppCore.Migrations
                         .IsUnicode(false)
                         .HasColumnType("character varying(50)");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -1231,14 +1378,14 @@ namespace AppCore.Migrations
                     b.Property<int>("BirdSkillId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("Status")
+                    b.Property<int>("TotalSlot")
                         .HasColumnType("integer");
 
                     b.Property<int>("TrainingCourseId")
                         .HasColumnType("integer");
 
                     b.HasKey("BirdSkillId")
-                        .HasName("PK__Training__1D80EC1800FBBDDE");
+                        .HasName("PK__Training__1D80EC183F24C734");
 
                     b.HasIndex("TrainingCourseId");
 
@@ -1334,10 +1481,10 @@ namespace AppCore.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex(new[] { "PhoneNumber" }, "UQ__User__85FB4E38D8923EE1")
+                    b.HasIndex(new[] { "PhoneNumber" }, "UQ__User__85FB4E386F560942")
                         .IsUnique();
 
-                    b.HasIndex(new[] { "Email" }, "UQ__User__A9D1053429005A0E")
+                    b.HasIndex(new[] { "Email" }, "UQ__User__A9D10534EE377C20")
                         .IsUnique();
 
                     b.ToTable("User", (string)null);
@@ -1423,6 +1570,9 @@ namespace AppCore.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime?>("CreateDate")
+                        .HasColumnType("date");
+
                     b.Property<DateTime?>("RegisterEndDate")
                         .HasColumnType("date");
 
@@ -1453,10 +1603,11 @@ namespace AppCore.Migrations
                     b.Property<int?>("DaySlotId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Detail")
-                        .HasMaxLength(500)
-                        .IsUnicode(false)
-                        .HasColumnType("character varying(500)");
+                    b.Property<int>("DetailId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("UpdateDate")
+                        .HasColumnType("date");
 
                     b.Property<int>("WorkshopClassId")
                         .HasColumnType("integer");
@@ -1465,9 +1616,34 @@ namespace AppCore.Migrations
 
                     b.HasIndex("DaySlotId");
 
+                    b.HasIndex("DetailId");
+
                     b.HasIndex("WorkshopClassId");
 
                     b.ToTable("WorkshopClassDetail", (string)null);
+                });
+
+            modelBuilder.Entity("Models.Entities.WorkshopDetailTemplate", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Detail")
+                        .HasMaxLength(500)
+                        .IsUnicode(false)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<int>("WorkshopId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("WorkshopId");
+
+                    b.ToTable("WorkshopDetailTemplate", (string)null);
                 });
 
             modelBuilder.Entity("Models.Entities.WorkshopRefundPolicy", b =>
@@ -1506,17 +1682,6 @@ namespace AppCore.Migrations
                     b.Navigation("BirdSkill");
 
                     b.Navigation("BirdSpecies");
-                });
-
-            modelBuilder.Entity("Models.Entities.AdditionalConsultingBill", b =>
-                {
-                    b.HasOne("Models.Entities.ConsultingTicket", "ConsultingTicket")
-                        .WithMany("AdditionalConsultingBills")
-                        .HasForeignKey("ConsultingTicketId")
-                        .IsRequired()
-                        .HasConstraintName("FKAdditional256950");
-
-                    b.Navigation("ConsultingTicket");
                 });
 
             modelBuilder.Entity("Models.Entities.Address", b =>
@@ -1606,6 +1771,12 @@ namespace AppCore.Migrations
                         .IsRequired()
                         .HasConstraintName("FKBird_Train718139");
 
+                    b.HasOne("Models.Entities.Customer", "Customer")
+                        .WithMany("BirdTrainingCourses")
+                        .HasForeignKey("CustomerId")
+                        .IsRequired()
+                        .HasConstraintName("FKBird_Train678526");
+
                     b.HasOne("Models.Entities.User", "Staff")
                         .WithMany("BirdTrainingCourses")
                         .HasForeignKey("StaffId")
@@ -1619,6 +1790,8 @@ namespace AppCore.Migrations
                         .HasConstraintName("FKBird_Train368802");
 
                     b.Navigation("Bird");
+
+                    b.Navigation("Customer");
 
                     b.Navigation("Staff");
 
@@ -1654,11 +1827,11 @@ namespace AppCore.Migrations
 
             modelBuilder.Entity("Models.Entities.BirdTrainingReport", b =>
                 {
-                    b.HasOne("Models.Entities.BirdTrainingCourse", "BirdTrainingCourse")
+                    b.HasOne("Models.Entities.BirdTrainingProgress", "BirdTrainingProgress")
                         .WithMany("BirdTrainingReports")
-                        .HasForeignKey("BirdTrainingCourseId")
+                        .HasForeignKey("BirdTrainingProgressId")
                         .IsRequired()
-                        .HasConstraintName("FKBirdTraini11695");
+                        .HasConstraintName("FKBirdTraini259515");
 
                     b.HasOne("Models.Entities.Trainer", "Trainer")
                         .WithMany("BirdTrainingReports")
@@ -1666,9 +1839,17 @@ namespace AppCore.Migrations
                         .IsRequired()
                         .HasConstraintName("FKBirdTraini332709");
 
-                    b.Navigation("BirdTrainingCourse");
+                    b.HasOne("Models.Entities.TrainerSlot", "TrainerSlot")
+                        .WithMany("BirdTrainingReports")
+                        .HasForeignKey("TrainerSlotId")
+                        .IsRequired()
+                        .HasConstraintName("FKBirdTraini696869");
+
+                    b.Navigation("BirdTrainingProgress");
 
                     b.Navigation("Trainer");
+
+                    b.Navigation("TrainerSlot");
                 });
 
             modelBuilder.Entity("Models.Entities.CenterSlot", b =>
@@ -2054,7 +2235,14 @@ namespace AppCore.Migrations
                     b.HasOne("Models.Entities.TrainerSlot", "DaySlot")
                         .WithMany("WorkshopClassDetails")
                         .HasForeignKey("DaySlotId")
-                        .HasConstraintName("FKWorkshopCl467642");
+                        .HasConstraintName("FKWorkshopCl382995");
+
+                    b.HasOne("Models.Entities.WorkshopDetailTemplate", "WorkshopDetailTemplate")
+                        .WithMany("WorkshopClassDetails")
+                        .HasForeignKey("DetailId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FKWorkshopCl957106");
 
                     b.HasOne("Models.Entities.WorkshopClass", "WorkshopClass")
                         .WithMany("WorkshopClassDetails")
@@ -2065,6 +2253,19 @@ namespace AppCore.Migrations
                     b.Navigation("DaySlot");
 
                     b.Navigation("WorkshopClass");
+
+                    b.Navigation("WorkshopDetailTemplate");
+                });
+
+            modelBuilder.Entity("Models.Entities.WorkshopDetailTemplate", b =>
+                {
+                    b.HasOne("Models.Entities.Workshop", "Workshop")
+                        .WithMany("WorkshopDetailTemplates")
+                        .HasForeignKey("WorkshopId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Workshop");
                 });
 
             modelBuilder.Entity("Models.Entities.Address", b =>
@@ -2109,7 +2310,10 @@ namespace AppCore.Migrations
             modelBuilder.Entity("Models.Entities.BirdTrainingCourse", b =>
                 {
                     b.Navigation("BirdTrainingProgresses");
+                });
 
+            modelBuilder.Entity("Models.Entities.BirdTrainingProgress", b =>
+                {
                     b.Navigation("BirdTrainingReports");
                 });
 
@@ -2123,11 +2327,6 @@ namespace AppCore.Migrations
                     b.Navigation("ConsultingTickets");
                 });
 
-            modelBuilder.Entity("Models.Entities.ConsultingTicket", b =>
-                {
-                    b.Navigation("AdditionalConsultingBills");
-                });
-
             modelBuilder.Entity("Models.Entities.ConsultingType", b =>
                 {
                     b.Navigation("ConsultingTickets");
@@ -2136,6 +2335,8 @@ namespace AppCore.Migrations
             modelBuilder.Entity("Models.Entities.Customer", b =>
                 {
                     b.Navigation("Addresses");
+
+                    b.Navigation("BirdTrainingCourses");
 
                     b.Navigation("Birds");
 
@@ -2223,6 +2424,8 @@ namespace AppCore.Migrations
 
             modelBuilder.Entity("Models.Entities.TrainerSlot", b =>
                 {
+                    b.Navigation("BirdTrainingReports");
+
                     b.Navigation("WorkshopClassDetails");
                 });
 
@@ -2252,6 +2455,8 @@ namespace AppCore.Migrations
             modelBuilder.Entity("Models.Entities.Workshop", b =>
                 {
                     b.Navigation("WorkshopClasses");
+
+                    b.Navigation("WorkshopDetailTemplates");
                 });
 
             modelBuilder.Entity("Models.Entities.WorkshopClass", b =>
@@ -2260,6 +2465,11 @@ namespace AppCore.Migrations
 
                     b.Navigation("WorkshopAttendances");
 
+                    b.Navigation("WorkshopClassDetails");
+                });
+
+            modelBuilder.Entity("Models.Entities.WorkshopDetailTemplate", b =>
+                {
                     b.Navigation("WorkshopClassDetails");
                 });
 

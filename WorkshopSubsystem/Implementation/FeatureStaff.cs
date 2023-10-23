@@ -110,14 +110,14 @@ namespace WorkshopSubsystem.Implementation
                 if(entity_dayslot == null)
                 {
                     throw new KeyNotFoundException($"{nameof(entity_dayslot)} not found for id: {entity.DaySlotId}");
-                }
+                }                
                 entity_dayslot.SlotId = workshopClass.SlotId;
-                entity_dayslot.Date = workshopClass.Date;
+                entity_dayslot.Date = workshopClass.Date.ToDateTime(new TimeOnly(0, 0, 0));
                 await _unitOfWork.TrainerSlotRepository.Update(entity_dayslot);
             } else
             {
                 entity.DaySlot.SlotId = workshopClass.SlotId;
-                entity.DaySlot.Date = workshopClass.Date;
+                entity.DaySlot.Date = workshopClass.Date.ToDateTime(new TimeOnly(0, 0, 0));
                 await _unitOfWork.WorkshopClassDetailRepository.Update(entity);
             }
             
@@ -139,7 +139,7 @@ namespace WorkshopSubsystem.Implementation
             }
             entity.DaySlot.TrainerId = workshopClass.TrainerId;
             entity.DaySlot.SlotId = workshopClass.SlotId;
-            entity.DaySlot.Date = workshopClass.Date;
+            entity.DaySlot.Date = workshopClass.Date.ToDateTime(new TimeOnly(0,0,0));
             await _unitOfWork.WorkshopClassDetailRepository.Update(entity);
         }
 
