@@ -1002,7 +1002,7 @@ namespace Models.Entities
 
                 entity.Property(e => e.UpdateDate).HasColumnType("date");
 
-                entity.HasOne(d => d.Detail)
+                entity.HasOne(d => d.WorkshopDetailTemplate)
                     .WithMany(p => p.WorkshopClassDetails)
                     .HasForeignKey(d => d.DetailId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
