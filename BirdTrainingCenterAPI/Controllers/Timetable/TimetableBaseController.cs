@@ -1,21 +1,20 @@
 ﻿using AppService;
-using AppService.WorkshopService;
+using AppService.TimetableService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
-namespace BirdTrainingCenterAPI.Controllers.Workshop
+namespace BirdTrainingCenterAPI.Controllers.Timetable
 {
-    [Route("api/workshop")]
+    [Route("api/timetable")]
     [ApiController]
-    public class WorkshopBaseController : ControllerBase
+    public class TimetableBaseController : ControllerBase
     {
-        internal readonly IWorkshopService _workshopService;
+        internal readonly ITimetableService _timetableService;
         internal readonly IAuthService _authService;
-
-        public WorkshopBaseController(IWorkshopService workshopService, IAuthService authService)
+        public TimetableBaseController(ITimetableService timetableService, IAuthService authService)
         {
-            _workshopService = workshopService;
+            _timetableService = timetableService;
             _authService = authService;
         }
         internal List<Claim>? DeserializeToken()

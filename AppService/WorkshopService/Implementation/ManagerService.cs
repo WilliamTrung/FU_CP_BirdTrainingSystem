@@ -20,6 +20,11 @@ namespace AppService.WorkshopService.Implementation
             await _workshop.Manager.CreateWorkshop(workshop);
         }
 
+        public async Task<IEnumerable<WorkshopDetailTemplateViewModel>> GetDetailTemplatesByWorkshopId(int workshopId)
+        {
+            return await _workshop.Manager.GetDetailTemplatesByWorkshopId(workshopId);
+        }
+
         public async Task<IEnumerable<WorkshopStatusModel>> GetWorkshopStatuses()
         {
             return await _workshop.Manager.GetWorkshopStatuses();

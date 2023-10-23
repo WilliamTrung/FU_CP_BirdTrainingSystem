@@ -12,7 +12,7 @@ namespace BirdTrainingCenterAPI.Startup
     {
         public static void AddUOW(this WebApplicationBuilder builder)
         {
-            builder.Services.AddTransient<IUnitOfWork, IUnitOfWork>();
+            builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
         }
         public static void AddWorkshopFeature(this WebApplicationBuilder builder)
         {

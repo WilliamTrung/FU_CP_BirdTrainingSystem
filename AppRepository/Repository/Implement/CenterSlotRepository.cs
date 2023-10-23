@@ -6,7 +6,7 @@ namespace AppRepository.Repository.Implement
 {
     public class CenterSlotRepository : GenericRepository<CenterSlot>, ICenterSlotRepository
     {
-        public CenterSlotRepository(BirdTrainingCenterSystemContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
+        public CenterSlotRepository(AppCore.Context.BirdTrainingCenterSystemContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
         {
         }
     }

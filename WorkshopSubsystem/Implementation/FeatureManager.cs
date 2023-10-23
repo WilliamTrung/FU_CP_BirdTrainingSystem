@@ -29,7 +29,14 @@ namespace WorkshopSubsystem.Implementation
             }
         }
 
-       
+        public async Task<IEnumerable<WorkshopDetailTemplateViewModel>> GetDetailTemplatesByWorkshopId(int workshopId)
+        {
+            var entities = await _unitOfWork.WorkshopDetailTemplateRepository.Get(c => c.WorkshopId == workshopId);
+            var models = _mapper.Map<List<WorkshopDetailTemplateViewModel>>(entities);
+            return models;
+        }
+
+
 
         //public async Task ModifyWorkshop(WorkshopModifyModel workshop)
         //{

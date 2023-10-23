@@ -7,7 +7,7 @@ using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Storage.V1;
 using Models.ConfigModels;
 using ApplicationService.MailSettings;
-
+using AppCore.Context;
 
 namespace BirdTrainingCenterAPI.Startup
 {
@@ -24,7 +24,7 @@ namespace BirdTrainingCenterAPI.Startup
         {
             builder.Services.AddTransient<IAuthFeature, AuthFeature>();
             //Add services
-
+            builder.Services.AddDbContext<BirdTrainingCenterSystemContext>();
             builder.Services.AddSingleton(_ =>
             {
                 var credential = GoogleCredential.FromFile("birdtrainingcentersystem-firebase-adminsdk-9yolt-2b38d5f11c.json");

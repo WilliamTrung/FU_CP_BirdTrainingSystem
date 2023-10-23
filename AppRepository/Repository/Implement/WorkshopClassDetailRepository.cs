@@ -6,7 +6,7 @@ namespace AppRepository.Repository.Implement
 {
     public class WorkshopClassDetailRepository : GenericRepository<WorkshopClassDetail>, IWorkshopClassDetailRepository
     {
-        public WorkshopClassDetailRepository(BirdTrainingCenterSystemContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
+        public WorkshopClassDetailRepository(AppCore.Context.BirdTrainingCenterSystemContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
         {
         }
         public override Task Add(WorkshopClassDetail entity)

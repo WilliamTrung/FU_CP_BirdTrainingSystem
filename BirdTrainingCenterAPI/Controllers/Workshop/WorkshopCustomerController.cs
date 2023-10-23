@@ -1,26 +1,56 @@
-﻿using AppService.WorkshopService;
+﻿using AppService;
+using AppService.WorkshopService;
 using BirdTrainingCenterAPI.Controllers.Endpoints.Workshop;
+using BirdTrainingCenterAPI.Helper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace BirdTrainingCenterAPI.Controllers.Workshop
 {
     public class WorkshopCustomerController : WorkshopBaseController, IWorkshopCustomer
     {
-        public WorkshopCustomerController(IWorkshopService workshopService) : base(workshopService)
+        public WorkshopCustomerController(IWorkshopService workshopService, IAuthService authService) : base(workshopService, authService)
         {
         }
 
+        [HttpGet]
+        [Route("customer-registered")]
         public async Task<IActionResult> GetRegisteredClasses()
-        {            
-            var result = await _workshopService.Customer.GetRegisteredClasses(1);
+        {
+            //var accessToken = DeserializeToken();
+            //if(accessToken == null)
+            //{
+            //    return Unauthorized();
+            //}
+            var accessToken = Request.DeserializeToken(_authService);
+            if (accessToken == null)
+            {
+                return Unauthorized();
+            }
+            var customerId = accessToken.First(c => c.Type == ClaimTypes.NameIdentifier);
+
+            var result = await _workshopService.Customer.GetRegisteredClasses(Int32.Parse(customerId.Value));
             return Ok(result);
 
         }
-
-        public Task<IActionResult> Register([FromQuery] int workshopClassId)
+        [HttpPost]
+        [Route("register")]
+        public async Task<IActionResult> Register([FromQuery] int workshopClassId)
         {
-            throw new NotImplementedException();
+            //var accessToken = DeserializeToken();
+            //if (accessToken == null)
+            //{
+            //    return Unauthorized();
+            //}
+            var accessToken = Request.DeserializeToken(_authService);
+            if (accessToken == null)
+            {
+                return Unauthorized();
+            }
+            var customerId = accessToken.First(c => c.Type == ClaimTypes.NameIdentifier);
+            await _workshopService.Customer.Regsiter(Int32.Parse(customerId.Value), workshopClassId);
+            return Ok();
         }
     }
 }

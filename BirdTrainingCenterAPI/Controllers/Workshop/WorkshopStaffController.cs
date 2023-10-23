@@ -1,4 +1,5 @@
-﻿using AppService.WorkshopService;
+﻿using AppService;
+using AppService.WorkshopService;
 using BirdTrainingCenterAPI.Controllers.Endpoints.Workshop;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -8,33 +9,76 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
 {
     public class WorkshopStaffController : WorkshopBaseController, IWorkshopStaff
     {
-        public WorkshopStaffController(IWorkshopService workshopService) : base(workshopService)
+        public WorkshopStaffController(IWorkshopService workshopService, IAuthService authService) : base(workshopService, authService)
         {
         }
-
-        public Task<IActionResult> CreateWorkshopClass([FromBody] WorkshopClassAddModel workshopClass)
+        [HttpPost]
+        [Route("create-class")]
+        public async Task<IActionResult> CreateWorkshopClass([FromBody] WorkshopClassAddModel workshopClass)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await _workshopService.Staff.CreateWorkshopClass(workshopClass);
+            } catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }            
+            return Ok();
         }
-
-        public Task<IActionResult> GetClassesByWorkshop([FromQuery] int workshopId)
+        [HttpGet]
+        [Route("get-classes")]
+        public async Task<IActionResult> GetClassesByWorkshop([FromQuery] int workshopId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var result = await _workshopService.Staff.GetWorkshopClassesByWorkshopId(workshopId);
+                return Ok(result);
+            } catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
+        [HttpGet]
+        [Route("get-class-details")]
 
-        public Task<IActionResult> GetDetailsByClass([FromQuery] int workshopClassId)
+        public async Task<IActionResult> GetDetailsByClass([FromQuery] int workshopClassId)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var result = await _workshopService.Staff.GetWorkshopClassDetailByWorkshopClassId(workshopClassId);
+                return Ok(result);
+            } catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
-
-        public Task<IActionResult> ModifyTrainerForDetail([FromBody] WorkshopClassDetailTrainerSlotModifyModel workshopClassDetail)
+        [HttpPut]
+        [Route("modify-trainer")]
+        public async Task<IActionResult> ModifyTrainerForDetail([FromBody] WorkshopClassDetailTrainerSlotModifyModel workshopClassDetail)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await _workshopService.Staff.ModifyWorkshopClassDetailTrainerSlot(workshopClassDetail);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
-
-        public Task<IActionResult> ModifyTrainerForDetailSlot([FromBody] WorkshopClassDetailTrainerSlotOnlyModifyModel workshopClassDetail)
+        [HttpPut]
+        [Route("modify-slot")]
+        public async Task<IActionResult> ModifyTrainerForDetailSlot([FromBody] WorkshopClassDetailTrainerSlotOnlyModifyModel workshopClassDetail)
         {
-            throw new NotImplementedException();
+            try
+            {
+                await _workshopService.Staff.ModifyWorkshopClassDetailSlotOnly(workshopClassDetail);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

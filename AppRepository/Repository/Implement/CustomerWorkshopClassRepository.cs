@@ -6,7 +6,7 @@ namespace AppRepository.Repository.Implement
 {
     public class CustomerWorkshopClassRepository : GenericRepository<CustomerWorkshopClass>, ICustomerWorkshopClassRepository
     {
-        public CustomerWorkshopClassRepository(BirdTrainingCenterSystemContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
+        public CustomerWorkshopClassRepository(AppCore.Context.BirdTrainingCenterSystemContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
         {
         }
     }
