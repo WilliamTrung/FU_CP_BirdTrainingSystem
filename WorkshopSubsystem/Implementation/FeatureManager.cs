@@ -81,6 +81,8 @@ namespace WorkshopSubsystem.Implementation
             }
             entity.Detail = workshopDetail.Detail;
             await _unitOfWork.WorkshopDetailTemplateRepository.Update(entity);
+
+           
         }
 
         public async Task ModifyWorkshopStatus(WorkshopStatusModifyModel workshop)
@@ -89,7 +91,21 @@ namespace WorkshopSubsystem.Implementation
             if(entity == null) {
                 throw new KeyNotFoundException($"{typeof(Workshop)} is not found at id: {workshop.Id}");
             }
-            entity.Status = workshop.Status;
+            //entity.Status = workshop.Status;
+            var details = await _unitOfWork.WorkshopDetailTemplateRepository.Get(c => c.WorkshopId == workshop.Id);
+            if(workshop.Status == (int)Models.Enum.Workshop.Status.Inactive)
+            {
+                entity.Status = workshop.Status;
+                await _unitOfWork.WorkshopRepository.Update(entity);
+            } else if (details.All(c => c.Detail != string.Empty) && workshop.Status == (int)Models.Enum.Workshop.Status.Active)
+            {
+                //set workshop status to active
+                entity.Status = workshop.Status;
+                await _unitOfWork.WorkshopRepository.Update(entity);
+            } else
+            {
+                throw new InvalidOperationException("Detail templates are not fulfilled!");
+            }
         }
     }
 }

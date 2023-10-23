@@ -110,7 +110,7 @@ namespace SP_AutoMapperConfig
         public void Process(WorkshopAddModel source, Workshop destination, ResolutionContext context)
         {
             destination.Picture = source.Picture;
-            destination.Status = (int)Models.Enum.Workshop.Status.Active;
+            destination.Status = (int)Models.Enum.Workshop.Status.Inactive;
             destination.WorkshopRefundPolicyId = 1;
             destination.Description = source.Description;
             destination.Price = source.Price;
