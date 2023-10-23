@@ -24,6 +24,7 @@ namespace TrainingCourseSubsystem
         Task<IEnumerable<TrainingCourseSkillModel>> GetTrainingCourseSkill(int trainingCourseId);
         Task<IEnumerable<TrainerModel>> GetTrainerByBirdSkillId(int birdSkillId);
         Task AssignTrainer(AssignTrainerToCourse assignTrainer);
+
         Task InitStartTime(BirdTrainingCourseStartTime birdTrainingCourse);
         Task ReceiveBird(BirdTrainingCourseReceiveBird birdTrainingCourse);
         Task ReturnBird(BirdTrainingCourseReturnBird birdTrainingCourse);
