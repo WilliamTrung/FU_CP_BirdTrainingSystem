@@ -24,8 +24,8 @@ namespace SP_AutoMapperConfig
                 .ForMember(m => m.CustomerId, opt => opt.MapFrom(e => e.CustomerId))
                 .ForMember(m => m.TotalPrice, opt => opt.MapFrom(e => e.TotalPrice))
                 .ForMember(m => m.DiscountedPrice, opt => opt.MapFrom(e => e.DiscountedPrice))
-                .ForMember(m => m.LastestUpdate, opt => opt.MapFrom(e => DateTime.Now))
-                .ForMember(m => m.Status, opt => opt.MapFrom(e => e.Status))
+                //.ForMember(m => m.LastestUpdate, opt => opt.MapFrom(e => DateTime.Now))
+                //.ForMember(m => m.Status, opt => opt.MapFrom(e => e.Status))
                 .ForMember(m => m.Bird, opt => {
                     opt.PreCondition(e => e.Bird != null);
                     opt.MapFrom(e => e.Bird);

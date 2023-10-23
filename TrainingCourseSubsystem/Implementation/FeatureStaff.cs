@@ -4,6 +4,7 @@ using Models.Entities;
 using Models.ServiceModels.TrainingCourseModels;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
+using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -81,19 +82,19 @@ namespace TrainingCourseSubsystem.Implementation
         //    await _unitOfWork.BirdTrainingCourseRepository.Update(entity);
         //}
 
-        public async Task Update(BirdTrainingProgressModel birdTrainingProgress)
-        {
-            if (birdTrainingProgress == null)
-            {
-                throw new Exception("Client send null model.");
-            }
-            var entity = _mapper.Map<BirdTrainingProgress>(birdTrainingProgress);
-            if (entity == null)
-            {
-                throw new Exception("Entity is null.");
-            }
-            await _unitOfWork.BirdTrainingProgressRepository.Update(entity);
-        }
+        //public async Task Update(BirdTrainingProgressModel birdTrainingProgress)
+        //{
+        //    if (birdTrainingProgress == null)
+        //    {
+        //        throw new Exception("Client send null model.");
+        //    }
+        //    var entity = _mapper.Map<BirdTrainingProgress>(birdTrainingProgress);
+        //    if (entity == null)
+        //    {
+        //        throw new Exception("Entity is null.");
+        //    }
+        //    await _unitOfWork.BirdTrainingProgressRepository.Update(entity);
+        //}
 
         public async Task<IEnumerable<TrainerModel>> GetTrainerByTrainerSkillId(int trainerSkillId)
         {
@@ -138,7 +139,7 @@ namespace TrainingCourseSubsystem.Implementation
             }
             else
             {
-                var entity = await _unitOfWork.BirdTrainingCourseRepository.GetFirst(e => e.Id == birdTrainingCourse.Id);
+                var entity = await _unitOfWork.BirdTrainingCourseRepository.GetFirst(e => e.Id == birdTrainingCourse.Id, nameof(TrainingCourse));
                 if (entity == null)
                 {
                     throw new Exception("Entity not found");
@@ -146,9 +147,10 @@ namespace TrainingCourseSubsystem.Implementation
                 else
                 {
                     entity.StaffId = birdTrainingCourse.StaffId;
-                    entity.ExpectedStartDate = birdTrainingCourse.ExpectedStartDate;
-                    entity.ExpectedTrainingDoneDate = birdTrainingCourse.ExpectedTrainingDoneDate;
-                    entity.ExpectedDateReturn = birdTrainingCourse.ExpectedDateReturn;
+                    entity.ExpectedStartDate = DateTime.Now;
+                    DateTime expectDoneDate = DateTime.Now.AddDays(entity.TrainingCourse.TotalSlot);
+                    entity.ExpectedTrainingDoneDate = expectDoneDate;
+                    entity.ExpectedDateReturn = expectDoneDate;
                     entity.LastestUpdate = DateTime.Now;
 
                     var assignedSkills = _unitOfWork.BirdTrainingProgressRepository.Get(e => e.BirdTrainingCourseId == entity.Id).Result.ToList();
@@ -180,6 +182,7 @@ namespace TrainingCourseSubsystem.Implementation
                 else
                 {
                     entity.ReceiveStaffId = birdTrainingCourse.ReceiveStaffId;
+                    entity.ActualStartDate = DateTime.Now;
                     entity.DateReceivedBird = DateTime.Now;
                     entity.ReceiveNote = birdTrainingCourse.ReceiveNote;
                     entity.ReceivePicture = birdTrainingCourse.ReceivePicture;
@@ -207,6 +210,10 @@ namespace TrainingCourseSubsystem.Implementation
                 if (entity == null)
                 {
                     throw new Exception("Entity not found");
+                }
+                else if (entity.Status != (int)Models.Enum.BirdTrainingCourse.Status.TrainingDone)
+                {
+                    throw new Exception("Bird is training. Not ready to return");
                 }
                 else
                 {
@@ -249,6 +256,25 @@ namespace TrainingCourseSubsystem.Implementation
             var entities = await _unitOfWork.TrainingCourseSkillRepository.Get(e => e.TrainingCourseId == trainingCourseId);
             var models = _mapper.Map<IEnumerable<TrainingCourseSkillModel>>(entities);
             return models;
+        }
+
+        public async Task GenerateTrainerTimetable(InitReportTrainerSlot report)
+        {
+            if(report == null)
+            {
+                throw new Exception("Null param from client" + nameof(report));
+            }
+            var entity = _mapper.Map<BirdTrainingReport>(report);
+            if (entity == null)
+            {
+                throw new Exception("Mapping failed between " + nameof(InitReportTrainerSlot) + " and " + nameof(BirdTrainingReport));
+            }
+            else
+            {
+                entity.DateCreate = DateTime.Now;
+                entity.Status = (int)Models.Enum.BirdTrainingReport.Status.NotYet;
+                await _unitOfWork.BirdTrainingReportRepository.Add(entity);
+            }
         }
     }
 }

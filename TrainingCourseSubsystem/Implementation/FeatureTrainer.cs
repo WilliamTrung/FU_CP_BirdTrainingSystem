@@ -23,24 +23,25 @@ namespace TrainingCourseSubsystem.Implementation
             return models;
         }
 
-        public async Task MarkTrainingSkillDone(int birdTrainingProgressId)
+        public async Task MarkTrainingSkillDone(MarkSkillDone markDone)
         {
-            var entity = _unitOfWork.BirdTrainingProgressRepository.GetFirst(e => e.Id == birdTrainingProgressId).Result;
+            var entity = _unitOfWork.BirdTrainingProgressRepository.GetFirst(e => e.Id == markDone.Id).Result;
             if(entity == null)
             {
                 throw new Exception("Entity not found");
             }
             else
             {
+                entity.Evidence = markDone.Evidence;
                 entity.TrainingDoneDate = DateTime.Now;
                 entity.IsComplete = true;
                 await _unitOfWork.BirdTrainingProgressRepository.Update(entity);
 
                 var birdTrainingProgressAll = _unitOfWork.BirdTrainingProgressRepository.Get(e => e.BirdTrainingCourseId == entity.BirdTrainingCourseId).Result.ToList();
                 bool allDone = true;
-                foreach(BirdTrainingProgress progresss in birdTrainingProgressAll)
+                foreach(BirdTrainingProgress progress in birdTrainingProgressAll)
                 {
-                    if (progresss.IsComplete == false)
+                    if (progress.IsComplete == false)
                     {
                         allDone= false;
                     }
