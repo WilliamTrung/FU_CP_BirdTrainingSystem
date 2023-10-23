@@ -22,7 +22,5 @@ namespace Models.ServiceModels.AdviceConsultantModels.ConsultingTicket
         public decimal Price { get; set; }
         public decimal? DiscountedPrice { get; set; }
         public int Status { get; set; }
-        public ConsultingPricePolicyServiceModel ConsultingPricePolicy { get; set; } = null!;
-        public DistancePriceServiceModel DistancePrice { get; set; } = null!;
     }
 }

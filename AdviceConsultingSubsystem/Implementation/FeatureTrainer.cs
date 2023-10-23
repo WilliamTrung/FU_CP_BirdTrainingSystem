@@ -15,7 +15,7 @@ namespace AdviceConsultingSubsystem.Implementation
     {
         internal readonly IUnitOfWork _unitOfWork;
         internal readonly IMapper _mapper;
-        public FeatureTrainer(IUnitOfWork unitOfWork, IMapper mapper, ITransactionRepository transactionRepository)
+        public FeatureTrainer(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
@@ -66,7 +66,7 @@ namespace AdviceConsultingSubsystem.Implementation
             var actualSlotStart = consultingTicket.ActualSlotStart;
             var actualEndSlot = consultingTicket.ActualEndSlot;
 
-            if (entity.Price == 0 && consultingTicket.Price != 0)
+            if (entity.Price == 0 && consultingTicket.Price > 0)
             {
                 entity.Price = consultingTicket.Price;
                 entity.DiscountedPrice = consultingTicket.DiscountedPrice;
