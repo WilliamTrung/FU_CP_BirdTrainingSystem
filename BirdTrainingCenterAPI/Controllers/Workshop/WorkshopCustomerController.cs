@@ -1,6 +1,7 @@
 ﻿using AppService;
 using AppService.WorkshopService;
 using BirdTrainingCenterAPI.Controllers.Endpoints.Workshop;
+using BirdTrainingCenterAPI.Helper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -13,10 +14,17 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
         {
         }
 
+        [HttpGet]
+        [Route("customer-registered")]
         public async Task<IActionResult> GetRegisteredClasses()
         {
-            var accessToken = DeserializeToken();
-            if(accessToken == null)
+            //var accessToken = DeserializeToken();
+            //if(accessToken == null)
+            //{
+            //    return Unauthorized();
+            //}
+            var accessToken = Request.DeserializeToken(_authService);
+            if (accessToken == null)
             {
                 return Unauthorized();
             }
@@ -26,10 +34,16 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             return Ok(result);
 
         }
-
+        [HttpPost]
+        [Route("register")]
         public async Task<IActionResult> Register([FromQuery] int workshopClassId)
         {
-            var accessToken = DeserializeToken();
+            //var accessToken = DeserializeToken();
+            //if (accessToken == null)
+            //{
+            //    return Unauthorized();
+            //}
+            var accessToken = Request.DeserializeToken(_authService);
             if (accessToken == null)
             {
                 return Unauthorized();

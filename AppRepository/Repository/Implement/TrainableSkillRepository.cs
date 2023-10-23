@@ -6,7 +6,7 @@ namespace AppRepository.Repository.Implement
 {
     public class TrainableSkillRepository : GenericRepository<TrainableSkill>, ITrainableSkillRepository
     {
-        public TrainableSkillRepository(BirdTrainingCenterSystemContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
+        public TrainableSkillRepository(AppCore.Context.BirdTrainingCenterSystemContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
         {
         }
     }

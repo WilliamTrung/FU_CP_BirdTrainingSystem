@@ -12,7 +12,8 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
         public WorkshopStaffController(IWorkshopService workshopService, IAuthService authService) : base(workshopService, authService)
         {
         }
-
+        [HttpPost]
+        [Route("create-class")]
         public async Task<IActionResult> CreateWorkshopClass([FromBody] WorkshopClassAddModel workshopClass)
         {
             try
@@ -24,7 +25,8 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             }            
             return Ok();
         }
-
+        [HttpGet]
+        [Route("get-classes")]
         public async Task<IActionResult> GetClassesByWorkshop([FromQuery] int workshopId)
         {
             try
@@ -36,6 +38,8 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
                 return BadRequest(ex.Message);
             }
         }
+        [HttpGet]
+        [Route("get-class-details")]
 
         public async Task<IActionResult> GetDetailsByClass([FromQuery] int workshopClassId)
         {
@@ -48,7 +52,8 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
                 return BadRequest(ex.Message);
             }
         }
-
+        [HttpPut]
+        [Route("modify-trainer")]
         public async Task<IActionResult> ModifyTrainerForDetail([FromBody] WorkshopClassDetailTrainerSlotModifyModel workshopClassDetail)
         {
             try
@@ -61,7 +66,8 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
                 return BadRequest(ex.Message);
             }
         }
-
+        [HttpPut]
+        [Route("modify-slot")]
         public async Task<IActionResult> ModifyTrainerForDetailSlot([FromBody] WorkshopClassDetailTrainerSlotOnlyModifyModel workshopClassDetail)
         {
             try

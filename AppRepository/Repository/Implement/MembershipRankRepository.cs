@@ -11,7 +11,7 @@ namespace AppRepository.Repository.Implement
 {
     public class MembershipRankRepository : GenericRepository<MembershipRank>, IMembershipRankRepository
     {
-        public MembershipRankRepository(BirdTrainingCenterSystemContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
+        public MembershipRankRepository(AppCore.Context.BirdTrainingCenterSystemContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
         {
         }
     }

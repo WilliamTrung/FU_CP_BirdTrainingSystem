@@ -6,7 +6,7 @@ namespace AppRepository.Repository.Implement
 {
     public class UserRepository : GenericRepository<User>, IUserRepository
     {
-        public UserRepository(BirdTrainingCenterSystemContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
+        public UserRepository(AppCore.Context.BirdTrainingCenterSystemContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
         {
         }
     }

@@ -6,7 +6,7 @@ namespace AppRepository.Repository.Implement
 {
     public class TrainerSlotRepository : GenericRepository<TrainerSlot>, ITrainerSlotRepository
     {
-        public TrainerSlotRepository(BirdTrainingCenterSystemContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
+        public TrainerSlotRepository(AppCore.Context.BirdTrainingCenterSystemContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
         {
         }
     }

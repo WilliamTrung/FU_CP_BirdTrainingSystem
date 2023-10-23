@@ -6,9 +6,9 @@ namespace AppRepository.UnitOfWork
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly BirdTrainingCenterSystemContext _context;
+        private readonly AppCore.Context.BirdTrainingCenterSystemContext _context;
 
-        public UnitOfWork(BirdTrainingCenterSystemContext context)
+        public UnitOfWork(AppCore.Context.BirdTrainingCenterSystemContext context)
         {
             _context = context;
             InitRepositories();

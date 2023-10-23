@@ -7,12 +7,13 @@ using Models.ServiceModels.WorkshopModels;
 
 namespace BirdTrainingCenterAPI.Controllers.Workshop
 {
-    public class WorkshopManagerController : WorkshopStaffController, IWorkshopManager
+    public class WorkshopManagerController : WorkshopBaseController, IWorkshopManager
     {
         public WorkshopManagerController(IWorkshopService workshopService, IAuthService authService) : base(workshopService, authService)
         {
         }
-
+        [HttpPost]
+        [Route("create")]
         public async Task<IActionResult> CreateWorkshop([FromForm] WorkshopAddModel workshop)
         {
             try
@@ -24,7 +25,8 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }            
         }
-
+        [HttpGet]
+        [Route("detail-template")]
         public async Task<IActionResult> GetWorkshopDetailTemplate([FromQuery] int workshopId)
         {
             try
@@ -37,13 +39,16 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
-
+        
+        [HttpGet]
+        [Route("status")]
         public async Task<IActionResult> GetWorkshopStatuses()
         {
             var result = await _workshopService.Manager.GetWorkshopStatuses();
             return Ok(result);
         }
-
+        [HttpPut]
+        [Route("modify-detail-template")]
         public async Task<IActionResult> ModifyWorkshopDetail([FromBody] WorkshopDetailTemplateModiyModel workshopDetail)
         {
             try
@@ -57,7 +62,8 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
-
+        [HttpPut]
+        [Route("modify-status")]
         public async Task<IActionResult> ModifyWorkshopStatus([FromBody] WorkshopStatusModifyModel workshop)
         {
             try

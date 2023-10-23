@@ -11,7 +11,7 @@ namespace AppRepository.Repository.Implement
 {
     public class WorkshopDetailTemplateRepository : GenericRepository<WorkshopDetailTemplate>, IWorkshopDetailTemplateRepository
     {
-        public WorkshopDetailTemplateRepository(BirdTrainingCenterSystemContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
+        public WorkshopDetailTemplateRepository(AppCore.Context.BirdTrainingCenterSystemContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
         {
         }
     }
