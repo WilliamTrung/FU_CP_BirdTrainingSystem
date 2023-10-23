@@ -64,21 +64,43 @@ namespace SP_AutoMapperConfig
                     opt.MapFrom(e => e.User.Avatar);
                 });
             CreateMap<WorkshopClassDetail, WorkshopClassDetailViewModel>()
-                .ForMember(m => m, opt =>
-                {
-                    opt.PreCondition(e => e.DaySlot != null && e.WorkshopDetailTemplate != null);
-                    opt.MapFrom<Map_WorkshopClassDetail_WorkshopClassDetailViewModel_Resolver>();
-                });
+                //.ForMember(m => m, opt =>
+                //{
+                //    opt.PreCondition(e => e.DaySlot != null && e.WorkshopDetailTemplate != null);
+                //    opt.MapFrom<Map_WorkshopClassDetail_WorkshopClassDetailViewModel_Resolver>();
+                //})
+                .AfterMap<MappingAction_WorkshopClassDetail_WorkshopClassDetailViewModel>();
         }
         private void Map_WorkshopAddModel_Workshop()
         {
             CreateMap<WorkshopAddModel, Workshop>()
-                .ForMember(e => e, opt => opt.MapFrom<Map_WorkshopAddModel_Workshop_Resolver>());                
+                //.ForMember(e => e, opt => opt.MapFrom<Map_WorkshopAddModel_Workshop_Resolver>());                
+                .AfterMap<MappingAction_WorkshopAddModel_Workshop>();
         }
     }
-    public class Map_WorkshopAddModel_Workshop_Resolver : IValueResolver<WorkshopAddModel, Workshop, Workshop>
+    //public class Map_WorkshopAddModel_Workshop_Resolver : IValueResolver<WorkshopAddModel, Workshop, Workshop>
+    //{
+    //    public Workshop Resolve(WorkshopAddModel source, Workshop destination, Workshop destMember, ResolutionContext context)
+    //    {
+    //        destination.Picture = source.Picture;
+    //        destination.Status = (int)Models.Enum.Workshop.Status.Active;
+    //        destination.WorkshopRefundPolicyId = 1;
+    //        destination.Description = source.Description;
+    //        destination.Price = source.Price;
+    //        destination.Title = source.Title;
+    //        destination.TotalSlot = source.TotalSlot;
+    //        destination.RegisterEnd = source.RegisterEnd;
+    //        return destination;
+    //    }
+    //}
+    public class MappingAction_WorkshopAddModel_Workshop : IMappingAction<WorkshopAddModel, Workshop>
     {
-        public Workshop Resolve(WorkshopAddModel source, Workshop destination, Workshop destMember, ResolutionContext context)
+        private readonly IMapper _mapper;
+        public MappingAction_WorkshopAddModel_Workshop(IMapper mapper)
+        {
+            _mapper = mapper;
+        }
+        public void Process(WorkshopAddModel source, Workshop destination, ResolutionContext context)
         {
             destination.Picture = source.Picture;
             destination.Status = (int)Models.Enum.Workshop.Status.Active;
@@ -88,20 +110,39 @@ namespace SP_AutoMapperConfig
             destination.Title = source.Title;
             destination.TotalSlot = source.TotalSlot;
             destination.RegisterEnd = source.RegisterEnd;
-            return destination;
         }
     }
 
-    public class Map_WorkshopClassDetail_WorkshopClassDetailViewModel_Resolver : IValueResolver<WorkshopClassDetail, WorkshopClassDetailViewModel, WorkshopClassDetailViewModel>
+    //    public class Map_WorkshopClassDetail_WorkshopClassDetailViewModel_Resolver : IValueResolver<WorkshopClassDetail, WorkshopClassDetailViewModel, WorkshopClassDetailViewModel>
+    //    {
+    //        private readonly IMapper _mapper;
+    //        public Map_WorkshopClassDetail_WorkshopClassDetailViewModel_Resolver(IMapper mapper)
+    //        {
+    //            _mapper = mapper;
+    //        }
+    //        public WorkshopClassDetailViewModel Resolve(WorkshopClassDetail source, WorkshopClassDetailViewModel destination, WorkshopClassDetailViewModel destMember, ResolutionContext context)
+    //        {
+
+    //            destination.Detail = source.WorkshopDetailTemplate.Detail;
+    //            destination.Id = source.Id;
+    //#pragma warning disable CS8629 // Nullable value type may be null.
+    //            destination.Trainer = _mapper.Map<TrainerWorkshopModel>(source.DaySlot.Trainer);
+    //            destination.Date = (DateTime)source.DaySlot.Date;
+    //            destination.StartTime = (TimeSpan)source.DaySlot.Slot.StartTime;
+    //            destination.EndTime = (TimeSpan)source.DaySlot.Slot.EndTime;
+    //#pragma warning restore CS8629 // Nullable value type may be null.
+    //            return destination;
+    //        }
+    //    }
+    public class MappingAction_WorkshopClassDetail_WorkshopClassDetailViewModel : IMappingAction<WorkshopClassDetail, WorkshopClassDetailViewModel>
     {
         private readonly IMapper _mapper;
-        public Map_WorkshopClassDetail_WorkshopClassDetailViewModel_Resolver(IMapper mapper)
+        public MappingAction_WorkshopClassDetail_WorkshopClassDetailViewModel(IMapper mapper)
         {
             _mapper = mapper;
         }
-        public WorkshopClassDetailViewModel Resolve(WorkshopClassDetail source, WorkshopClassDetailViewModel destination, WorkshopClassDetailViewModel destMember, ResolutionContext context)
+        public void Process(WorkshopClassDetail source, WorkshopClassDetailViewModel destination, ResolutionContext context)
         {
-            
             destination.Detail = source.WorkshopDetailTemplate.Detail;
             destination.Id = source.Id;
 #pragma warning disable CS8629 // Nullable value type may be null.
@@ -110,7 +151,6 @@ namespace SP_AutoMapperConfig
             destination.StartTime = (TimeSpan)source.DaySlot.Slot.StartTime;
             destination.EndTime = (TimeSpan)source.DaySlot.Slot.EndTime;
 #pragma warning restore CS8629 // Nullable value type may be null.
-            return destination;
         }
     }
 }

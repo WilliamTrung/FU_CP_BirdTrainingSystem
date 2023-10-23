@@ -75,9 +75,9 @@ namespace AppCore.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.AddMinimalCompareString();
-            modelBuilder.AddDateEquallyCompare();
-            modelBuilder.AddDateCompare();
+            //modelBuilder.AddMinimalCompareString();
+            //modelBuilder.AddDateEquallyCompare();
+            //modelBuilder.AddDateCompare();
             modelBuilder.AddMembershipModels();
             modelBuilder.AddSlots();
             modelBuilder.AddTrainerSkills();
