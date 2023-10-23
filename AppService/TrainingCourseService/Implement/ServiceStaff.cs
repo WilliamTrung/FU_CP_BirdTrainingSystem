@@ -44,6 +44,7 @@ namespace AppService.TrainingCourseService.Implement
             
             
             DateTime start= DateTime.Now.AddDays(2);
+            await ModifyActualStartTime(start, assignTrainer.BirdTrainingCourseId);
             for(int i=0; i<trainingSkill.TotalSlot; i++)
             {
                 DateTime current = start;
@@ -113,9 +114,9 @@ namespace AppService.TrainingCourseService.Implement
             await _trainingCourse.Staff.ModifyActualStartTime(startDate, birdTrainingCourseId);
         }
 
-        public async Task ModifyTrainerSlot(ModifyTrainerSlot trainerSlot, int birdTrainingReportId)
+        public async Task ModifyTrainerSlot(ModifyTrainerSlot trainerSlot)
         {
-            await _trainingCourse.Staff.ModifyTrainerSlot(trainerSlot, birdTrainingReportId);
+            await _trainingCourse.Staff.ModifyTrainerSlot(trainerSlot);
         }
     }
 }

@@ -292,10 +292,10 @@ namespace TrainingCourseSubsystem.Implementation
             }
         }
 
-        public async Task ModifyTrainerSlot(ModifyTrainerSlot trainerSlot, int birdTrainingReportId)
+        public async Task ModifyTrainerSlot(ModifyTrainerSlot trainerSlot)
         {
-            var entity = await _unitOfWork.BirdTrainingReportRepository.GetFirst(e => e.Id == birdTrainingReportId
-                                                                                   , nameof(TrainerSlot));
+            var entity = await _unitOfWork.BirdTrainingReportRepository.GetFirst(e => e.Id == trainerSlot.BirdTrainingReportId
+                                                                                   , nameof(BirdTrainingReport.TrainerSlot));
             if (entity == null || entity.TrainerSlot == null)
             {
                 throw new Exception("Not found entity or trainer slot");
@@ -306,6 +306,14 @@ namespace TrainingCourseSubsystem.Implementation
                 entity.TrainerSlot.Date = trainerSlot.Date;
                 await _unitOfWork.BirdTrainingReportRepository.Update(entity);
             }
+
+            var trainingSkillSlot = await _unitOfWork.TrainerSlotRepository.Get(e => e.EntityTypeId == (int)Models.Enum.EntityType.TrainingCourse 
+                                                                                  && e.EntityId == entity.BirdTrainingProgressId);
+            trainingSkillSlot = trainingSkillSlot.OrderBy(e => e.Date);
+            DateTime startTraining = trainingSkillSlot.First().Date;
+
+            var birdTrainingProgress = await _unitOfWork.BirdTrainingProgressRepository.GetFirst(e => e.Id == entity.BirdTrainingProgressId);
+            await ModifyActualStartTime(startTraining, birdTrainingProgress.BirdTrainingCourseId);
         }
 
         public async Task ConfirmTrainerSlot(TrainerSlotModel trainerSlotModel)

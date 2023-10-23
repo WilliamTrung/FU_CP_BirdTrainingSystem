@@ -11,5 +11,6 @@ namespace Models.ServiceModels.TrainingCourseModels
         public int SlotId { get; set; }
         [SP_Validator.DateOnlyValidator]
         public DateTime Date { get; set; }
+        public int BirdTrainingReportId { get; set; }
     }
 }

@@ -29,7 +29,7 @@ namespace TrainingCourseSubsystem
         Task InitStartTime(BirdTrainingCourseStartTime birdTrainingCourse);
         Task ConfirmTrainerSlot(TrainerSlotModel trainerSlotModel);
         Task ModifyActualStartTime(DateTime startDate, int birdTrainingCourseId);
-        Task ModifyTrainerSlot(ModifyTrainerSlot trainerSlot, int birdTrainingReportId);
+        Task ModifyTrainerSlot(ModifyTrainerSlot trainerSlot);
         Task ReceiveBird(BirdTrainingCourseReceiveBird birdTrainingCourse);
         Task ReturnBird(BirdTrainingCourseReturnBird birdTrainingCourse);
         //Task Update(BirdTrainingProgressModel birdTrainingProgress);

@@ -20,7 +20,7 @@ namespace AppService.TrainingCourseService
         Task InitStartTime(BirdTrainingCourseStartTime birdTrainingCourse); //set lich training
         Task ConfirmTrainerSlot(TrainerSlotModel trainerSlotModel);
         Task ModifyActualStartTime(DateTime startDate, int birdTrainingCourseId);
-        Task ModifyTrainerSlot(ModifyTrainerSlot trainerSlot, int birdTrainingReportId);
+        Task ModifyTrainerSlot(ModifyTrainerSlot trainerSlot);
         Task ReceiveBird(BirdTrainingCourseReceiveBird birdTrainingCourse); //nhan chim => chim is not ready => ko the set lich moi
         Task ReturnBird(BirdTrainingCourseReturnBird birdTrainingCourse); //tra chim => chim ready => co the set lich moi neu muon
         Task<IEnumerable<BirdTrainingCourseModel>> GetBirdTrainingCourseByBirdId(int birdId); //xem request theo chim

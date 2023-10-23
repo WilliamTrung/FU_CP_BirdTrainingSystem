@@ -1,6 +1,7 @@
 ﻿using AppService.TrainingCourseService;
 using BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse;
 using Microsoft.AspNetCore.Mvc;
+using Models.ServiceModels.TrainingCourseModels;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
@@ -83,6 +84,13 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         public async Task<IActionResult> InitStartTime([FromBody] BirdTrainingCourseStartTime birdTrainingCourse)
         {
             await _trainingCourseService.Staff.InitStartTime(birdTrainingCourse);
+            return Ok();
+        }
+        [HttpPut]
+        [Route("modify-trainerslot")]
+        public async Task<IActionResult> ModifyTrainerSlot([FromBody] ModifyTrainerSlot trainerSlot)
+        {
+            await _trainingCourseService.Staff.ModifyTrainerSlot(trainerSlot);
             return Ok();
         }
         [HttpPut]
