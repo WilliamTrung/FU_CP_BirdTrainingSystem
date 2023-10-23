@@ -23,14 +23,14 @@ namespace TrainingCourseSubsystem.Implementation
         {
             var entities = await _unitOfWork.BirdTrainingCourseRepository.Get();
             var models = _mapper.Map<IEnumerable<BirdTrainingCourseModel>>(entities);
-            return models;
+            return models.OrderByDescending(e => e.Status);
         }
 
         public async Task<IEnumerable<BirdTrainingCourseModel>> GetBirdTrainingCourseByBirdId(int birdId)
         {
             var entities = await _unitOfWork.BirdTrainingCourseRepository.Get(e => e.BirdId == birdId);
             var models = _mapper.Map<IEnumerable<BirdTrainingCourseModel>>(entities);
-            return models;
+            return models.OrderByDescending(e => e.Status);
         }
 
         public async Task<IEnumerable<TrainerModel>> GetTrainer()
