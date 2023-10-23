@@ -4,6 +4,7 @@ using BirdTrainingCenterAPI.Controllers.Endpoints.Timetable;
 using BirdTrainingCenterAPI.Helper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Models.ApiParamModels.Timetable;
 using System.Security.Claims;
 
 namespace BirdTrainingCenterAPI.Controllers.Timetable
@@ -14,9 +15,9 @@ namespace BirdTrainingCenterAPI.Controllers.Timetable
         public TimetableTrainerController(ITimetableService timetableService, IAuthService authService) : base(timetableService, authService)
         {
         }
-        [HttpGet]
+        [HttpPost]
         [Route("self")]
-        public async Task<IActionResult> GetOccupiedSlots([FromQuery] DateOnly from, [FromQuery] DateOnly to)
+        public async Task<IActionResult> GetOccupiedSlots([FromBody] GetOccupiedSlotsTrainerOnly param)
         {
             //var accessToken = DeserializeToken();
             //if (accessToken == null)
@@ -31,7 +32,7 @@ namespace BirdTrainingCenterAPI.Controllers.Timetable
             var trainerId = accessToken.First(c => c.Type == ClaimTypes.NameIdentifier);
             try
             {
-                var result = await _timetableService.Trainer.GetTrainerTimetable(Int32.Parse(trainerId.Value), from.ToDateTime(new TimeOnly()), to.ToDateTime(new TimeOnly()));
+                var result = await _timetableService.Trainer.GetTrainerTimetable(Int32.Parse(trainerId.Value), param.From.ToDateTime(new TimeOnly()), param.To.ToDateTime(new TimeOnly()));
                 return Ok(result);
             }
             catch (Exception ex)

@@ -44,64 +44,101 @@ namespace SP_AutoMapperConfig
         private void Map_Customer_TokenModel()
         {
             CreateMap<Customer, TokenModel>()
-                .ForMember(m => m, opt =>
-                {
-                    opt.PreCondition(e => e.User != null);
-                    opt.MapFrom<Map_Customer_TokenModel_Resolver>();
-                });                
+                //.ConstructUsing(src => new TokenModel())
+                //.ForMember(m => m, opt =>
+                //{
+                //    opt.PreCondition(e => e.User != null);
+                //    opt.MapFrom<Map_Customer_TokenModel_Resolver>();
+                //});                
+                .AfterMap<MappingAction_Customer_TokenModel>();
         }
         private void Map_Trainer_TokenModel()
         {
             CreateMap<Trainer, TokenModel>()
-                .ForMember(m => m, opt =>
-                {
-                    opt.PreCondition(e => e.User != null);
-                    opt.MapFrom<Map_Trainer_TokenModel_Resolver>();
-                });
+                //.ForMember(m => m, opt =>
+                //{
+                //    opt.PreCondition(e => e.User != null);
+                //    opt.MapFrom<Map_Trainer_TokenModel_Resolver>();
+                //});                
+                .AfterMap<MappingAction_Trainer_TokenModel>();
         }
         private void Map_User_TokenModel()
         {
             CreateMap<User, TokenModel>()
-                .ForMember(m => m, opt =>
-                {
-                    opt.MapFrom<Map_User_TokenModel_Resolver>();
-                });
+                //.ForMember(m => m, opt =>
+                //{
+                //    opt.MapFrom<Map_User_TokenModel_Resolver>();
+                //});
+                .AfterMap<MappingAction_User_TokenModel>();
         }
     }
-    public class Map_Customer_TokenModel_Resolver : IValueResolver<Customer, TokenModel, TokenModel>
+    //public class Map_Customer_TokenModel_Resolver : IValueResolver<Customer, TokenModel, TokenModel>
+    //{
+    //    public TokenModel Resolve(Customer source, TokenModel destination, TokenModel destMember, ResolutionContext context)
+    //    {
+    //        destMember.Role = (Models.Enum.Role)source.User.RoleId;
+    //        destMember.Email = source.User.Email;
+    //        destMember.Avatar = source.User.Avatar;
+    //        destMember.Name = source.User.Name;
+    //        destMember.Id = source.Id;
+    //        return destMember;
+    //    }
+    //}
+    public class MappingAction_Customer_TokenModel : IMappingAction<Customer, TokenModel>
     {
-        public TokenModel Resolve(Customer source, TokenModel destination, TokenModel destMember, ResolutionContext context)
+        public void Process(Customer source, TokenModel destination, ResolutionContext context)
         {
-            destMember.Role = (Models.Enum.Role)source.User.RoleId;
-            destMember.Email = source.User.Email;
-            destMember.Avatar = source.User.Avatar;
-            destMember.Name = source.User.Name;
-            destMember.Id = source.Id;
-            return destMember;
+            destination.Role = (Models.Enum.Role)source.User.RoleId;
+            destination.Email = source.User.Email;
+            destination.Avatar = source.User.Avatar == null?String.Empty: source.User.Avatar;
+            destination.Name = source.User.Name;
+            destination.Id = source.Id;
         }
     }
-    public class Map_Trainer_TokenModel_Resolver : IValueResolver<Trainer, TokenModel, TokenModel>
+    //public class Map_Trainer_TokenModel_Resolver : IValueResolver<Trainer, TokenModel, TokenModel>
+    //{
+    //    public TokenModel Resolve(Trainer source, TokenModel destination, TokenModel destMember, ResolutionContext context)
+    //    {
+    //        destMember.Role = (Models.Enum.Role)source.User.RoleId;
+    //        destMember.Email = source.User.Email;
+    //        destMember.Avatar = source.User.Avatar;
+    //        destMember.Name = source.User.Name;
+    //        destMember.Id = source.Id;
+    //        return destMember;
+    //    }
+    //}
+    public class MappingAction_Trainer_TokenModel : IMappingAction<Trainer, TokenModel>
     {
-        public TokenModel Resolve(Trainer source, TokenModel destination, TokenModel destMember, ResolutionContext context)
+        public void Process(Trainer source, TokenModel destination, ResolutionContext context)
         {
-            destMember.Role = (Models.Enum.Role)source.User.RoleId;
-            destMember.Email = source.User.Email;
-            destMember.Avatar = source.User.Avatar;
-            destMember.Name = source.User.Name;
-            destMember.Id = source.Id;
-            return destMember;
+            destination.Role = (Models.Enum.Role)source.User.RoleId;
+            destination.Email = source.User.Email;
+            destination.Avatar = source.User.Avatar == null ? String.Empty : source.User.Avatar;
+            destination.Name = source.User.Name;
+            destination.Id = source.Id;
         }
     }
-    public class Map_User_TokenModel_Resolver : IValueResolver<User, TokenModel, TokenModel>
+    //public class Map_User_TokenModel_Resolver : IValueResolver<User, TokenModel, TokenModel>
+    //{
+    //    public TokenModel Resolve(User source, TokenModel destination, TokenModel destMember, ResolutionContext context)
+    //    {
+    //        destMember.Role = (Models.Enum.Role)source.RoleId;
+    //        destMember.Email = source.Email;
+    //        destMember.Avatar = source.Avatar;
+    //        destMember.Name = source.Name;
+    //        destMember.Id = source.Id;
+    //        return destMember;
+    //    }
+    //}
+    public class MappingAction_User_TokenModel : IMappingAction<User, TokenModel>
     {
-        public TokenModel Resolve(User source, TokenModel destination, TokenModel destMember, ResolutionContext context)
+        public void Process(User source, TokenModel destination, ResolutionContext context)
         {
-            destMember.Role = (Models.Enum.Role)source.RoleId;
-            destMember.Email = source.Email;
-            destMember.Avatar = source.Avatar;
-            destMember.Name = source.Name;
-            destMember.Id = source.Id;
-            return destMember;
+            destination.Role = (Models.Enum.Role)source.RoleId;
+            destination.Email = source.Email;
+            destination.Avatar = source.Avatar == null ? string.Empty : source.Avatar;
+            destination.Name = source.Name;
+            destination.Id = source.Id;
         }
     }
 }

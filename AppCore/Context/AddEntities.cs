@@ -22,12 +22,13 @@ namespace AppCore.Context
 
                 entity.HasOne(d => d.Workshop)
                     .WithMany(p => p.WorkshopDetailTemplates)
-                    .HasForeignKey(d => d.WorkshopId);
+                    .HasForeignKey(d => d.WorkshopId)
+                    .OnDelete(DeleteBehavior.Cascade);
 
                 entity.HasMany(d => d.WorkshopClassDetails)
                     .WithOne(p => p.WorkshopDetailTemplate)
                     .HasForeignKey(d => d.DetailId)
-                    .OnDelete(DeleteBehavior.NoAction);
+                    .OnDelete(DeleteBehavior.Restrict);
             });
         }
     }

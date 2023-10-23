@@ -16,7 +16,7 @@ namespace Models.ServiceModels.WorkshopModels.WorkshopClass
         public int Id { get; set; } 
         public int TrainerId { get; set; }
         public int SlotId { get; set; }
-        [SP_Validator.DateOnlyValidator]
-        public DateTime Date { get; set; }
+        //[SP_Validator.DateOnlyValidator]
+        public DateOnly Date { get; set; }
     }
 }

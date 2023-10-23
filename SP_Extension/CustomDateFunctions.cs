@@ -8,13 +8,20 @@ using System.Threading.Tasks;
 namespace SP_Extension
 {
     public static class CustomDateFunctions
-    {        
-        [DbFunction("DATE_CMP_EQUALLY")]
+    {
+        [DbFunction("date_cmp_equally")]
         public static bool IsEqualToDate(this DateTime date1, DateTime date2)
         {
             int result = date1.Date.CompareTo(date2.Date);
             return result == 0;
         }
+        //-- Define a custom function that compares two dates
+        //CREATE OR REPLACE FUNCTION date_cmp_equally(date1 date, date2 date)
+        //RETURNS boolean AS $$
+        //BEGIN
+        //  RETURN date1 = date2;
+        //END;
+        //$$ LANGUAGE plpgsql;
         [DbFunction("DATE_CMP")]
         public static int CompareDate(this DateTime date1, DateTime date2)
         {
