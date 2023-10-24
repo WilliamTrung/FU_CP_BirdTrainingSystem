@@ -49,7 +49,14 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
                 return Unauthorized();
             }
             var customerId = accessToken.First(c => c.Type == ClaimTypes.NameIdentifier);
-            await _workshopService.Customer.Regsiter(Int32.Parse(customerId.Value), workshopClassId);
+            try
+            {
+                await _workshopService.Customer.Regsiter(Int32.Parse(customerId.Value), workshopClassId);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
             return Ok();
         }
     }

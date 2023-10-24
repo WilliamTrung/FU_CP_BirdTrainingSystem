@@ -22,7 +22,13 @@ namespace AppService.WorkshopService.Implementation
 
         public async Task Regsiter(int customerId, int workshopClassId)
         {
-            await _workshop.Customer.Register(customerId, workshopClassId);
+            if(await _workshop.All.SetWorkshopClassFull(workshopClassId))
+            {
+                throw new InvalidOperationException("This workshop class is full!");
+            } else
+            {
+                await _workshop.Customer.Register(customerId, workshopClassId);
+            }            
         }
     }
 }

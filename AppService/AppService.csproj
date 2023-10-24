@@ -12,6 +12,7 @@
     <PackageReference Include="GoogleApi" Version="5.2.1" />
     <PackageReference Include="MailKit" Version="4.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="2.2.0" />
   </ItemGroup>
 
   <ItemGroup>

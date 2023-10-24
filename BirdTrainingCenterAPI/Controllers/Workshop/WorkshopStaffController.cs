@@ -80,5 +80,19 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
                 return BadRequest(ex.Message);
             }
         }
+        [HttpPut]
+        [Route("cancel")]
+        public async Task<IActionResult> CancelWorkshopClass([FromQuery] int workshopClassId)
+        {
+            try
+            {
+                await _workshopService.Staff.CancelWorkshopClass(workshopClassId);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

@@ -95,6 +95,13 @@ namespace WorkshopSubsystem.Implementation
             var details = await _unitOfWork.WorkshopDetailTemplateRepository.Get(c => c.WorkshopId == workshop.Id);
             if(workshop.Status == (int)Models.Enum.Workshop.Status.Inactive)
             {
+                //check if any class is in progress or registration
+                var classes = await _unitOfWork.WorkshopClassRepository.Get(c => c.Status == (int)Models.Enum.Workshop.Class.Status.Registration 
+                                                                                || c.Status == (int)Models.Enum.Workshop.Class.Status.OnGoing);
+                if (classes.Any())
+                {
+                    throw new InvalidOperationException("Classes are in operation!");
+                }
                 entity.Status = workshop.Status;
                 await _unitOfWork.WorkshopRepository.Update(entity);
             } else if (details.All(c => c.Detail != string.Empty) && workshop.Status == (int)Models.Enum.Workshop.Status.Active)

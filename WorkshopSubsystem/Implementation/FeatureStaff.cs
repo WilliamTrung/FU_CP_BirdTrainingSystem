@@ -1,5 +1,6 @@
 ﻿using AppRepository.UnitOfWork;
 using AutoMapper;
+using Models.ConfigModels;
 using Models.Entities;
 using Models.ServiceModels.WorkshopModels.WorkshopClass;
 using SP_Extension;
@@ -143,6 +144,18 @@ namespace WorkshopSubsystem.Implementation
             await _unitOfWork.WorkshopClassDetailRepository.Update(entity);
         }
 
-        
+        public async Task CancelWorkshopClass(int workshopClassId)
+        {
+            var entity = await _unitOfWork.WorkshopClassRepository.GetFirst(c => c.Id == workshopClassId);
+            var registered = await _unitOfWork.CustomerWorkshopClassRepository.Get(c => c.WorkshopClassId == workshopClassId && c.Status == (int)Models.Enum.Workshop.Transaction.Status.Paid);
+            if (registered.Count() >= BR_WorkshopConstant.MinimumRegisteredCustomer)
+            {
+                throw new InvalidOperationException("This workshop class has reached the minimum amount of registration!");   
+            } else
+            {
+                entity.Status = (int)Models.Enum.Workshop.Class.Status.Cancel;
+                await _unitOfWork.WorkshopClassRepository.Update(entity);
+            }
+        }
     }
 }

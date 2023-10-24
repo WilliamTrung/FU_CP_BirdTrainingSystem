@@ -84,12 +84,50 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+        //[HttpPut]
+        //[Route("modify-status")]
+        //public async Task<IActionResult> ModifyWorkshopStatus([FromBody] WorkshopStatusModifyModel workshop)
+        //{
+        //    try
+        //    {
+        //        await _workshopService.Manager.ModifyWorkshopStatus(workshop);
+        //        return Ok();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        //    }
+        //}
         [HttpPut]
-        [Route("modify-status")]
-        public async Task<IActionResult> ModifyWorkshopStatus([FromBody] WorkshopStatusModifyModel workshop)
+        [Route("activate")]
+        public async Task<IActionResult> ActivateWorkshop([FromQuery] int workshopId)
         {
             try
             {
+                var workshop = new WorkshopStatusModifyModel
+                {
+                    Id = workshopId,
+                    Status = (int)Models.Enum.Workshop.Status.Active,
+                };
+                await _workshopService.Manager.ModifyWorkshopStatus(workshop);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+        [HttpPut]
+        [Route("deactivate")]
+        public async Task<IActionResult> DeactivateWorkshop([FromQuery] int workshopId)
+        {
+            try
+            {
+                var workshop = new WorkshopStatusModifyModel
+                {
+                    Id = workshopId,
+                    Status = (int)Models.Enum.Workshop.Status.Inactive,
+                };
                 await _workshopService.Manager.ModifyWorkshopStatus(workshop);
                 return Ok();
             }

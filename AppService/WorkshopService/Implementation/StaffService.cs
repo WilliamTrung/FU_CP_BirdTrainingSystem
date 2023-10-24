@@ -145,5 +145,9 @@ namespace AppService.WorkshopService.Implementation
             }
             return Task.CompletedTask;
         }
+        public async Task CancelWorkshopClass(int workshopClassId)
+        {
+            await _workshop.Staff.CancelWorkshopClass(workshopClassId);
+        }
     }
 }

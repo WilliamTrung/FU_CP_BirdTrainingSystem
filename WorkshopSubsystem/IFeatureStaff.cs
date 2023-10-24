@@ -19,5 +19,6 @@ namespace WorkshopSubsystem
         Task ModifyWorkshopClassDetailSlotOnly(WorkshopClassDetailTrainerSlotOnlyModifyModel workshopClass);
         Task<WorkshopClassDetailViewModel?> GetPreviousWorkshopClassDetail(int workshopClassDetailId);
         Task<WorkshopClassDetailViewModel?> GetFollowingWorkshopClassDetail(int workshopClassDetailId);
+        Task CancelWorkshopClass(int workshopClassId);
     }
 }

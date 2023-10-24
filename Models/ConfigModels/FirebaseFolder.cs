@@ -12,6 +12,7 @@ namespace Models.ConfigModels
         public static string PROFILE_USER = "images-profile";
         public static string PROFILE_BIRD = "images-profile-bird";
         public static string VIDEO = "videos";
+        public static string IMAGE = "images";
         public static string WOKRSHOP = "workshops";
     }
 }

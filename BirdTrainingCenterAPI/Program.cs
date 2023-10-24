@@ -50,6 +50,7 @@ builder.Services.AddGoogleApiClients();
 builder.WebHost.ConfigureKestrel(options => {
     options.Limits.MaxRequestBodySize = 524288000; // 500 MB
 });
+//builder.WebHost.UseUrls("http://localhost:5000");
 //Add service
 builder.JwtConfiguration();
 builder.ConfiguringServices();
@@ -57,6 +58,7 @@ builder.ConfiguringCors();
 builder.AddUOW();
 builder.AddTimetableFeature();
 builder.AddWorkshopFeature();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

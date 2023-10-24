@@ -17,8 +17,11 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.Workshop
         [Route("modify-detail-template")]
         Task<IActionResult> ModifyWorkshopDetail([FromBody] WorkshopDetailTemplateModiyModel workshopDetail);
         [HttpPut]
-        [Route("modify-status")]
-        Task<IActionResult> ModifyWorkshopStatus([FromBody] WorkshopStatusModifyModel workshop);
+        [Route("activate")]
+        Task<IActionResult> ActivateWorkshop([FromQuery] int workshopId);
+        [HttpPut]
+        [Route("deactivate")]
+        Task<IActionResult> DeactivateWorkshop([FromQuery] int workshopId);
         [HttpGet]
         [Route("status")]
         Task<IActionResult> GetWorkshopStatuses();
