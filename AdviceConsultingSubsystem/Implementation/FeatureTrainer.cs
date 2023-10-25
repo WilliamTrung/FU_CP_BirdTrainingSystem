@@ -28,17 +28,17 @@ namespace AdviceConsultingSubsystem.Implementation
             return models;
         }
 
-        public async Task UpdateAppointment(ConsultingTicketUpdateModel consultingTicket)
+        public async Task UpdateAppointment(int ticketId, string ggmeetLink)
         {
-            var entity = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id == consultingTicket.Id);
+            var entity = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id == ticketId);
             if (entity == null)
             {
-                throw new KeyNotFoundException($"{nameof(entity)} not found for id: {consultingTicket.Id}");
+                throw new KeyNotFoundException($"{nameof(entity)} not found for id: {ticketId}");
             }
 
-            if (entity.OnlineOrOffline == true && consultingTicket.GgMeetLink != null)
+            if (entity.OnlineOrOffline == true && ggmeetLink != null)
             {
-                entity.GgMeetLink = consultingTicket.GgMeetLink;
+                entity.GgMeetLink = ggmeetLink;
             }
             await _unitOfWork.ConsultingTicketRepository.Update(entity);
         }

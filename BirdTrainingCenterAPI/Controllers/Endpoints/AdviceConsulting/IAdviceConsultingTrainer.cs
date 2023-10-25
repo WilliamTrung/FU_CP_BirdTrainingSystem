@@ -10,7 +10,7 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting
         Task<IActionResult> ViewAssignedAppointment();
         [HttpPut]
         [Route("trainer-updateAppointment")]
-        Task<IActionResult> UpdateAppointment(ConsultingTicketUpdateModel consultingTicket);
+        Task<IActionResult> UpdateAppointment(int ticketId, string ggmeetLink);
         [HttpPut]
         [Route("trainer-finishAppointment")]
         Task<IActionResult> FinishAppointment(ConsultingTicketUpdateStatusModel consultingTicket);

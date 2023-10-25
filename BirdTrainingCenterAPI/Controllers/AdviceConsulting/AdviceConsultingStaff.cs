@@ -16,34 +16,62 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         }
         [HttpPut]
         [Route("staff-approveConsultingTicket")]
-        public async Task<IActionResult> ApproveConsultingTicket(ConsultingTicketUpdateStatusModel consultingTicket)
+        public async Task<IActionResult> ApproveConsultingTicket(int ticketId)
         {
-            await _consultingService.Staff.ApproveConsultingTicket(consultingTicket);
-            return Ok();
+            try
+            {
+                await _consultingService.Staff.ApproveConsultingTicket(ticketId);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpPut]
         [Route("staff-assignTrainer")]
-        public async Task<IActionResult> AssignTrainer(ConsultingTicketUpdateModel consultingTicket)
+        public async Task<IActionResult> AssignTrainer(int trainerId, int ticketId)
         {
-            await _consultingService.Staff.AssignTrainer(consultingTicket);
-            return Ok();
+            try
+            {
+                await _consultingService.Staff.AssignTrainer(trainerId, ticketId);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpPut]
         [Route("staff-cancelConsultingTicket")]
-        public async Task<IActionResult> CancelConsultingTicket(ConsultingTicketUpdateStatusModel consultingTicket)
+        public async Task<IActionResult> CancelConsultingTicket(int ticketId)
         {
-            await _consultingService.Staff.CancelConsultingTicket(consultingTicket);
-            return Ok();
+            try
+            {
+                await _consultingService.Staff.CancelConsultingTicket(ticketId);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpGet]
         [Route("staff-viewListConsultingTicketByStatus")]
         public async Task<IActionResult> ViewListConsultingTicketByStatus(int status)
         {
-            var result = await _consultingService.Staff.GetListConsultingTicketsByStatus(status);
-            return Ok(result);
+            try
+            {
+                var result = await _consultingService.Staff.GetListConsultingTicketsByStatus(status);
+                return Ok(result);
+            }
+            catch (Exception ex) 
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
     }
 }

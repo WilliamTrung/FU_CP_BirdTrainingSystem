@@ -14,19 +14,19 @@ namespace AppService.AdviceConsultingService.Implementation
         public ServiceStaff(IAdviceConsultingFeature consulting) : base(consulting) 
         { 
         }
-        public async Task ApproveConsultingTicket(ConsultingTicketUpdateStatusModel consultingTicket)
+        public async Task ApproveConsultingTicket(int ticketId)
         {
-            await _consulting.Staff.ApproveConsultingTicket(consultingTicket);
+            await _consulting.Staff.ApproveConsultingTicket(ticketId);
         }
 
-        public async Task AssignTrainer(ConsultingTicketUpdateModel consultingTicket)
+        public async Task AssignTrainer(int trainerId, int ticketId)
         {
-            await _consulting.Staff.AssignTrainer (consultingTicket);
+            await _consulting.Staff.AssignTrainer(trainerId, ticketId);
         }
 
-        public async Task CancelConsultingTicket(ConsultingTicketUpdateStatusModel consultingTicket)
+        public async Task CancelConsultingTicket(int ticketId)
         {
-            await _consulting.Staff.CancelConsultingTicket(consultingTicket);
+            await _consulting.Staff.CancelConsultingTicket(ticketId);
         }
 
         public async Task<ConsultingTicketDetailViewModel> GetConsultingTicketByID(int id)

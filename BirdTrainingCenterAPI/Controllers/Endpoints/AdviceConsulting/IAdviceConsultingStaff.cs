@@ -10,12 +10,12 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting
         Task<IActionResult> ViewListConsultingTicketByStatus(int status);
         [HttpPut]
         [Route("staff-assignTrainer")]
-        Task<IActionResult> AssignTrainer(ConsultingTicketUpdateModel consultingTicket);
+        Task<IActionResult> AssignTrainer(int trainerId, int ticketId);
         [HttpPut]
         [Route("staff-approveConsultingTicket")]
-        Task<IActionResult> ApproveConsultingTicket(ConsultingTicketUpdateStatusModel consultingTicket);
+        Task<IActionResult> ApproveConsultingTicket(int ticketId);
         [HttpPut]
         [Route("staff-cancelConsultingTicket")]
-        Task<IActionResult> CancelConsultingTicket(ConsultingTicketUpdateStatusModel consultingTicket);
+        Task<IActionResult> CancelConsultingTicket(int ticketId);
     }
 }

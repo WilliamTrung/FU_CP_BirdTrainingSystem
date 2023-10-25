@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TransactionSubsystem;
 
 namespace AdviceConsultingSubsystem.Implementation
 {
@@ -12,6 +13,7 @@ namespace AdviceConsultingSubsystem.Implementation
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IFeatureTransaction _transaction;
 
         public AdviceConsultingFeature (IUnitOfWork unitOfWork, IMapper mapper)
         {
@@ -19,7 +21,7 @@ namespace AdviceConsultingSubsystem.Implementation
             _mapper = mapper;
         }
 
-        public IFeatureCustomer Customer => new FeatureCustomer(_unitOfWork, _mapper);
+        public IFeatureCustomer Customer => new FeatureCustomer(_unitOfWork, _mapper, _transaction);
 
         public IFeatureStaff Staff => new FeatureStaff(_unitOfWork, _mapper);
 
