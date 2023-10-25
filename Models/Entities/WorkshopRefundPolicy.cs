@@ -7,13 +7,13 @@ namespace Models.Entities
     {
         public WorkshopRefundPolicy()
         {
-            Workshops = new HashSet<Workshop>();
+            CustomerWorkshopClasses = new HashSet<CustomerWorkshopClass>();
         }
 
         public int Id { get; set; }
         public int TotalDayBeforeStart { get; set; }
         public float? RefundRate { get; set; }
 
-        public virtual ICollection<Workshop> Workshops { get; set; }
+        public virtual ICollection<CustomerWorkshopClass> CustomerWorkshopClasses { get; set; }
     }
 }

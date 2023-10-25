@@ -19,6 +19,6 @@ namespace WorkshopSubsystem
         Task<IEnumerable<WorkshopClassViewModel>> GetClassesByWorkshopId(int workshopId);
         Task<WorkshopClassDetailViewModel> GetWorkshopClassDetail(int workshopClassDetailId);
         Task<IEnumerable<WorkshopClassDetailViewModel>> GetWorkshopClassDetailOnWorkshopClass(int workshopClassId);
-        Task<WorkshopRefundPolicyModel> GetRefundPolicy();
+        Task<IEnumerable<WorkshopRefundPolicyModel>> GetRefundPolicies();
     }
 }

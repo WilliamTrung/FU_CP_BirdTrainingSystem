@@ -31,7 +31,7 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
         {
             try
             {
-                var result = await _workshopService.Staff.GetWorkshopClassesByWorkshopId(workshopId);
+                var result = await _workshopService.Staff.GetWorkshopClassAdminViewModels(workshopId);
                 return Ok(result);
             } catch (Exception ex)
             {

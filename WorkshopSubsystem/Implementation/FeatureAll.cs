@@ -37,7 +37,8 @@ namespace WorkshopSubsystem.Implementation
         {
             var entity = await _unitOfWork.WorkshopClassDetailRepository.GetFirst(c => c.Id == workshopClassDetailId
                                                                                     && c.WorkshopClass.Workshop.Status != (int)Models.Enum.Workshop.Status.Inactive
-                                                                                    , nameof(WorkshopClassDetail.DaySlot));
+                                                                                    , nameof(WorkshopClassDetail.DaySlot)
+                                                                                    , nameof(WorkshopClassDetail.WorkshopDetailTemplate));
             var model = _mapper.Map<WorkshopClassDetailViewModel>(entity);
             return model;
         }
@@ -46,23 +47,24 @@ namespace WorkshopSubsystem.Implementation
         {
             var entities = await _unitOfWork.WorkshopClassDetailRepository.Get(c => c.WorkshopClassId == workshopClassId 
                                                                                  && c.WorkshopClass.Workshop.Status != (int)Models.Enum.Workshop.Status.Inactive
-                                                                                 , nameof(WorkshopClassDetail.DaySlot));
+                                                                                 , nameof(WorkshopClassDetail.DaySlot)
+                                                                                 , nameof(WorkshopClassDetail.WorkshopDetailTemplate));
+            entities = entities.OrderBy(c => c.Id);
             var models = _mapper.Map<List<WorkshopClassDetailViewModel>>(entities);
             return models;
         }
 
         public async Task<IEnumerable<WorkshopModel>> GetWorkshopGeneralInformation()
         {            
-            var entities = await _unitOfWork.WorkshopRepository.Get(c => c.Status != (int)Models.Enum.Workshop.Status.Inactive
-                                                                    , nameof(Workshop.WorkshopRefundPolicy));
+            var entities = await _unitOfWork.WorkshopRepository.Get(c => c.Status != (int)Models.Enum.Workshop.Status.Inactive);
             var models = _mapper.Map<IEnumerable<WorkshopModel>>(entities);
             return models;
         }
-        public async Task<WorkshopRefundPolicyModel> GetRefundPolicy()
+        public async Task<IEnumerable<WorkshopRefundPolicyModel>> GetRefundPolicies()
         {
-            var entity = await _unitOfWork.WorkshopRefundPolicyRepository.GetFirst();
-            var model = _mapper.Map<WorkshopRefundPolicyModel>(entity);
-            return model;
+            var entities = await _unitOfWork.WorkshopRefundPolicyRepository.Get();
+            var models = _mapper.Map<List<WorkshopRefundPolicyModel>>(entities);
+            return models;
         }
 
         public async Task<bool> SetWorkshopClassFull(int workshopClassId)

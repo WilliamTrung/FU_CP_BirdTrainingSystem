@@ -20,6 +20,13 @@ namespace SP_AutoMapperConfig
             Map_TrainerSlot_TrainerSlotModel();
             Map_TrainerSlot_TrainerSlotDetailModel();
             Map_TrainerSlot_TimetableModel();
+            Map_Trainer_TrainerModel();
+        }
+        private void Map_Trainer_TrainerModel()
+        {
+            
+            CreateMap<Trainer, TrainerModel>()
+                .AfterMap<MappingAction_Trainer_TrainerModel>();
         }
         private void Map_TrainerSlot_TrainerSlotDetailModel()
         {
@@ -98,6 +105,28 @@ namespace SP_AutoMapperConfig
         public void Process(TrainerSlot source, SlotModel destination, ResolutionContext context)
         {
             destination = _mapper.Map<SlotModel>(source.Slot);
+        }
+    }
+    public class MappingAction_Trainer_TrainerModel : IMappingAction<Trainer, TrainerModel>
+    {
+        private readonly IMapper _mapper;
+        public MappingAction_Trainer_TrainerModel(IMapper mapper)
+        {
+            _mapper = mapper;
+        }
+        public void Process(Trainer source, TrainerModel destination, ResolutionContext context)
+        {
+            destination.Id = source.Id;
+            destination.Name = source.User.Name;
+            destination.Email = source.User.Email;
+            destination.Avatar = source.User.Avatar;
+            List<TrainerSkillModel> trainerSkillModels = new List<TrainerSkillModel>();
+            foreach (TrainerSkill skill in source.TrainerSkills)
+            {
+                var trainerSkillModel = _mapper.Map<TrainerSkillModel>(skill);
+                trainerSkillModels.Add(trainerSkillModel);
+            }
+            destination.Skills = trainerSkillModels;
         }
     }
 }

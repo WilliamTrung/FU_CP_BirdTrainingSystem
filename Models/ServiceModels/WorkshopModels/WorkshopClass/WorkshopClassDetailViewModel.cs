@@ -24,9 +24,9 @@ namespace Models.ServiceModels.WorkshopModels.WorkshopClass
     {
         public int Id { get; set; }
         public string Detail { get; set; } = null!;
-        public TimeSpan StartTime { get  ; set  ; }
-        public TimeSpan EndTime { get  ; set  ; }
-        public DateTime Date { get  ; set  ; }
+        public TimeSpan? StartTime { get  ; set  ; }
+        public TimeSpan? EndTime { get  ; set  ; }
+        public DateTime? Date { get  ; set  ; }
         public TrainerWorkshopModel? Trainer { get; set; }
     }
 }

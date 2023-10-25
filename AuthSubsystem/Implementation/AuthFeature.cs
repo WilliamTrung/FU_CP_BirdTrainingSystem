@@ -59,7 +59,7 @@ namespace AuthSubsystem.Implementation
             var user = await _unitOfWork.UserRepository.GetFirst(c => c.Email == loginUser.Email && c.Password == loginUser.Password);
             if(user == null)
             {
-                throw new KeyNotFoundException();
+                throw new KeyNotFoundException("Record not found!");
             }
             if(user.RoleId == (int)Models.Enum.Role.Customer)
             {
@@ -120,10 +120,10 @@ namespace AuthSubsystem.Implementation
         public async Task<string> Register(RegisterRequestModel registerUser)
         {
             //check duplicate email
-            var check = await _unitOfWork.UserRepository.GetFirst(c => c.Email == registerUser.Email);
+            var check = await _unitOfWork.UserRepository.GetFirst(c => c.Email == registerUser.Email || c.PhoneNumber == Decimal.Parse(registerUser.PhoneNumber));
             if(check != null)
             {
-                throw new InvalidOperationException();
+                throw new InvalidOperationException("Existing email or phone number!");
             }
             //add user and customer record
             var user = _mapper.Map<User>(registerUser);
@@ -146,6 +146,23 @@ namespace AuthSubsystem.Implementation
             var handler = new JwtSecurityTokenHandler();
             var jsonToken = handler.ReadToken(accessToken) as JwtSecurityToken;
             return jsonToken.Claims.ToList();
+        }
+
+        public async Task<TokenModel?> ValidateToken(string? token)
+        {
+            if(token == null)
+            {
+                return null;
+            }
+            token = token.Split(" ")[1];
+            if(token == null || token.Length == 0)
+            {
+                return null;
+            }
+            var claims = DeserializedToken(token);
+            var email = claims.First(c => c.Type == CustomClaimTypes.Email).Value;
+            var user = await _unitOfWork.UserRepository.GetFirst(c => c.Email == email);
+            return _mapper.Map<TokenModel>(user);
         }
     }
 }

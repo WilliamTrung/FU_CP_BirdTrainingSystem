@@ -3,6 +3,7 @@ using System;
 using AppCore.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AppCore.Migrations
 {
     [DbContext(typeof(BirdTrainingCenterSystemContext))]
-    partial class BirdTrainingCenterSystemContextModelSnapshot : ModelSnapshot
+    [Migration("20231025032422_workshop-picture-maxlength_to2000c")]
+    partial class workshoppicturemaxlength_to2000c
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -801,15 +803,10 @@ namespace AppCore.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("WorkshopRefundPolicyId")
-                        .HasColumnType("integer");
-
                     b.HasKey("CustomerId", "WorkshopClassId")
                         .HasName("PK__Customer__7EEF8348DE684159");
 
                     b.HasIndex("WorkshopClassId");
-
-                    b.HasIndex("WorkshopRefundPolicyId");
 
                     b.ToTable("Customer_WorkshopClass", (string)null);
                 });
@@ -1531,7 +1528,12 @@ namespace AppCore.Migrations
                     b.Property<int>("TotalSlot")
                         .HasColumnType("integer");
 
+                    b.Property<int>("WorkshopRefundPolicyId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("WorkshopRefundPolicyId");
 
                     b.ToTable("Workshop", (string)null);
                 });
@@ -1663,32 +1665,6 @@ namespace AppCore.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("WorkshopRefundPolicy", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            RefundRate = 0f,
-                            TotalDayBeforeStart = 13
-                        },
-                        new
-                        {
-                            Id = 2,
-                            RefundRate = 0.5f,
-                            TotalDayBeforeStart = 29
-                        },
-                        new
-                        {
-                            Id = 3,
-                            RefundRate = 0.75f,
-                            TotalDayBeforeStart = 30
-                        },
-                        new
-                        {
-                            Id = 4,
-                            RefundRate = 1f,
-                            TotalDayBeforeStart = -1
-                        });
                 });
 
             modelBuilder.Entity("Models.Entities.AcquirableSkill", b =>
@@ -2060,16 +2036,9 @@ namespace AppCore.Migrations
                         .IsRequired()
                         .HasConstraintName("FKCustomer_W257990");
 
-                    b.HasOne("Models.Entities.WorkshopRefundPolicy", "WorkshopRefundPolicy")
-                        .WithMany("CustomerWorkshopClasses")
-                        .HasForeignKey("WorkshopRefundPolicyId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
                     b.Navigation("Customer");
 
                     b.Navigation("WorkshopClass");
-
-                    b.Navigation("WorkshopRefundPolicy");
                 });
 
             modelBuilder.Entity("Models.Entities.Feedback", b =>
@@ -2220,6 +2189,17 @@ namespace AppCore.Migrations
                         .HasConstraintName("FKTransactio250053");
 
                     b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("Models.Entities.Workshop", b =>
+                {
+                    b.HasOne("Models.Entities.WorkshopRefundPolicy", "WorkshopRefundPolicy")
+                        .WithMany("Workshops")
+                        .HasForeignKey("WorkshopRefundPolicyId")
+                        .IsRequired()
+                        .HasConstraintName("FKWorkshop234277");
+
+                    b.Navigation("WorkshopRefundPolicy");
                 });
 
             modelBuilder.Entity("Models.Entities.WorkshopAttendance", b =>
@@ -2497,7 +2477,7 @@ namespace AppCore.Migrations
 
             modelBuilder.Entity("Models.Entities.WorkshopRefundPolicy", b =>
                 {
-                    b.Navigation("CustomerWorkshopClasses");
+                    b.Navigation("Workshops");
                 });
 #pragma warning restore 612, 618
         }

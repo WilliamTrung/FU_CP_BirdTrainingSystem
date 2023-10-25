@@ -2,12 +2,15 @@
 using AppService.WorkshopService;
 using BirdTrainingCenterAPI.Controllers.Endpoints.Workshop;
 using BirdTrainingCenterAPI.Helper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SP_Middleware;
 using System.Security.Claims;
 
 namespace BirdTrainingCenterAPI.Controllers.Workshop
 {
+    [CustomAuthorize(roles: "Customer")]
     public class WorkshopCustomerController : WorkshopBaseController, IWorkshopCustomer
     {
         public WorkshopCustomerController(IWorkshopService workshopService, IAuthService authService) : base(workshopService, authService)

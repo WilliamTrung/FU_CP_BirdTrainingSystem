@@ -17,6 +17,7 @@ using SP_Middleware.CustomJsonConverter;
 using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
+using Microsoft.OData.Edm;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,7 +25,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
 builder.Services.AddControllers().AddOData(options => options
         .Select()
         .Filter()
@@ -41,6 +41,8 @@ builder.Services.AddControllers().AddOData(options => options
                        x.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
                        x.JsonSerializerOptions.Converters.Add(new TimeOnlyConverter());
                        x.JsonSerializerOptions.Converters.Add(new DateOnlyConverter());
+                       x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.Workshop.Status>());
+                       x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.Workshop.Class.Status>());
                    }
                );
 

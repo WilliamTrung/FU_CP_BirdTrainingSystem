@@ -24,6 +24,7 @@ namespace AuthSubsystem
         /// <returns></returns>
         /// <exception cref="InvalidOperationException"></exception>
         Task<string> Register(RegisterRequestModel registerUser);
+        Task<TokenModel?> ValidateToken(string? token);
         List<Claim> DeserializedToken(string accessToken);
     }
 }

@@ -953,11 +953,11 @@ namespace Models.Entities
                     .HasMaxLength(300)
                     .IsUnicode(false);
 
-                entity.HasOne(d => d.WorkshopRefundPolicy)
-                    .WithMany(p => p.Workshops)
-                    .HasForeignKey(d => d.WorkshopRefundPolicyId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FKWorkshop234277");
+                //entity.HasOne(d => d.WorkshopRefundPolicy)
+                //    .WithMany(p => p.Workshops)
+                //    .HasForeignKey(d => d.WorkshopRefundPolicyId)
+                //    .OnDelete(DeleteBehavior.ClientSetNull)
+                //    .HasConstraintName("FKWorkshop234277");
             });
 
             modelBuilder.Entity<WorkshopAttendance>(entity =>

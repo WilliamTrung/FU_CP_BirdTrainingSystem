@@ -8,7 +8,7 @@ namespace Models.ServiceModels.SlotModels
 {
     public interface ISlotModel
     {
-        TimeSpan StartTime { get; set; }
-        TimeSpan EndTime { get; set; }
+        TimeSpan? StartTime { get; set; }
+        TimeSpan? EndTime { get; set; }
     }
 }

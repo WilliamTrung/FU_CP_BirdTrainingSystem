@@ -36,6 +36,13 @@ namespace WorkshopSubsystem.Implementation
             return models;
         }
 
+        public async Task<IEnumerable<WorkshopAdminModel>> GetWorkshops()
+        {
+            var entities = await _unitOfWork.WorkshopRepository.Get();
+            var models = _mapper.Map<IEnumerable<WorkshopAdminModel>>(entities);
+            return models;
+        }
+
 
 
         //public async Task ModifyWorkshop(WorkshopModifyModel workshop)

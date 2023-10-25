@@ -2,6 +2,7 @@
 using AppService.WorkshopService;
 using BirdTrainingCenterAPI.Controllers.Endpoints.Workshop;
 using BirdTrainingCenterAPI.Helper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -9,18 +10,20 @@ using MimeKit;
 using Models.ApiParamModels.Workshop;
 using Models.ConfigModels;
 using Models.ServiceModels.WorkshopModels;
+using SP_Middleware;
 using System.Net.Mime;
 
 namespace BirdTrainingCenterAPI.Controllers.Workshop
 {
+    [CustomAuthorize(roles: "Manager")]
     public class WorkshopManagerController : WorkshopBaseController, IWorkshopManager
     {
         private readonly IFirebaseService _firebaseService;
         private readonly FirebaseBucket _bucket;
-        public WorkshopManagerController(IWorkshopService workshopService, IAuthService authService, IFirebaseService firebaseService, FirebaseBucket bucket) : base(workshopService, authService)
+        public WorkshopManagerController(IWorkshopService workshopService, IAuthService authService, IFirebaseService firebaseService, IOptions<FirebaseBucket> bucket) : base(workshopService, authService)
         {
             _firebaseService = firebaseService;
-            _bucket = bucket;
+            _bucket = bucket.Value;
         }
         [HttpPost]
         [Route("create")]
@@ -135,6 +138,13 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
+        }
+        [HttpGet]
+        [Route("workshops")]
+        public async Task<IActionResult> GetWorkshops()
+        {
+            var result = await _workshopService.Manager.GetAllWorkshops();
+            return Ok(result);
         }
     }
 }

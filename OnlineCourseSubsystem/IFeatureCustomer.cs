@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Models.ServiceModels.SlotModels
+namespace OnlineCourseSubsystem
 {
-    public interface IClassSlot : ISlotModel
+    internal interface IFeatureCustomer
     {
-        DateTime? Date { get; set; }
     }
 }
