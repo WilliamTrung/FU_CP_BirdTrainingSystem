@@ -35,12 +35,6 @@ namespace AdviceConsultingSubsystem.Implementation
                 consultingTicket.Status = (int)Models.Enum.ConsultingTicket.Status.WaitingForApprove;
             }
 
-            decimal distancePrice = 0;
-            if (consultingTicket.OnlineOrOffline == true)
-            {
-                distancePrice = await _transaction.CalculateDistancePrice(consultingTicket.Distance);
-            }
-
             dynamic price = await _transaction.CalculateConsultingTicketFinalPrice(consultingTicket.Id);
             consultingTicket.Price = price.FinalPrice;
             consultingTicket.DiscountedPrice = price.DiscountedPrice;

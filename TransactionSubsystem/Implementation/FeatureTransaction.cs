@@ -1,5 +1,4 @@
-﻿using AppCore.Models;
-using AppRepository.UnitOfWork;
+﻿using AppRepository.UnitOfWork;
 using AutoMapper;
 using Models.Entities;
 using System;
