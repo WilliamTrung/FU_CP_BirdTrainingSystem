@@ -15,6 +15,7 @@ namespace SP_AutoMapperConfig
         public BirdTrainingReportProfile()
         {
             Map_BirdTrainingReport_BirdTrainingReportModel();
+            Map_BirdTrainingReport_InitReportTrainerSlot();
         }
         private void Map_BirdTrainingReport_BirdTrainingReportModel()
         {
@@ -24,6 +25,13 @@ namespace SP_AutoMapperConfig
                     opt.PreCondition(e => e.TrainerSlot != null);
                     opt.MapFrom(e => e.TrainerSlot.Date);
                 });
+        }
+        private void Map_BirdTrainingReport_InitReportTrainerSlot()
+        {
+            CreateMap<BirdTrainingReport, InitReportTrainerSlot>()
+                .ForMember(m => m.TrainerId, opt => opt.MapFrom(e => e.TrainerId))
+                .ForMember(m => m.BirdTrainingProgressId, opt => opt.MapFrom(e => e.BirdTrainingProgressId))
+                .ForMember(m => m.TrainerSlotId, opt => opt.MapFrom(e => e.TrainerSlotId));
         }
     }
 }

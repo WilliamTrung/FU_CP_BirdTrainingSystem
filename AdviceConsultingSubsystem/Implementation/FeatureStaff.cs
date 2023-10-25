@@ -70,50 +70,47 @@ namespace AdviceConsultingSubsystem.Implementation
             return model;
         }
 
-        public async Task AssignTrainer(ConsultingTicketUpdateModel consultingTicket)
+        public async Task AssignTrainer(int trainerId, int ticketId)
         {
-            var entity = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id.Equals(consultingTicket.Id));
+            var entity = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id.Equals(ticketId));
             if (entity == null)
             {
-                throw new KeyNotFoundException($"{nameof(entity)} not found for id: {consultingTicket.Id}");
+                throw new KeyNotFoundException($"{nameof(entity)} not found for id: {ticketId}");
             }
-            if (entity.Trainer == null & consultingTicket.Trainer != null)
+
+            var trainer = await _unitOfWork.TrainerRepository.GetFirst(x => x.Id == trainerId);
+            if (trainer == null)
             {
-                var trainer = await _unitOfWork.TrainerRepository.GetFirst(x => x.Id == consultingTicket.Trainer.Id);
-                if (trainer == null)
-                {
-                    throw new KeyNotFoundException($"{nameof(trainer)} not fount for Trainer: {entity.Trainer}");
-                }
-
-                entity.Trainer = trainer;
+                throw new KeyNotFoundException($"{nameof(trainer)} not fount for Trainer: {trainerId}");
             }
 
-            entity.Status = 2;
+            entity.Trainer = trainer;
+            entity.Status = (int)Models.Enum.ConsultingTicket.Status.WaitingForApprove;
 
             await _unitOfWork.ConsultingTicketRepository.Update(entity);
         }
 
-        public async Task ApproveConsultingTicket(ConsultingTicketUpdateStatusModel consultingTicket)
+        public async Task ApproveConsultingTicket(int ticketId)
         {
-            var entity = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id.Equals(consultingTicket.Id));
+            var entity = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id.Equals(ticketId));
             if (entity == null)
             {
-                throw new KeyNotFoundException($"{nameof(entity)} not found for id: {consultingTicket.Id}");
+                throw new KeyNotFoundException($"{nameof(entity)} not found for id: {ticketId}");
             }
 
-            entity.Status = 3;
+            entity.Status = (int)Models.Enum.ConsultingTicket.Status.Confirmed;
             await _unitOfWork.ConsultingTicketRepository.Update(entity);
         }
 
-        public async Task CancelConsultingTicket(ConsultingTicketUpdateModel consultingTicket)
+        public async Task CancelConsultingTicket(int ticketId)
         {
-            var entity = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id.Equals(consultingTicket.Id));
+            var entity = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id.Equals(ticketId));
             if (entity == null)
             {
-                throw new KeyNotFoundException($"{nameof(entity)} not found for id: {consultingTicket.Id}");
+                throw new KeyNotFoundException($"{nameof(entity)} not found for id: {ticketId}");
             }
 
-            entity.Status = 0;
+            entity.Status = (int)Models.Enum.ConsultingTicket.Status.Canceled;
             await _unitOfWork.ConsultingTicketRepository.Update(entity);
         }
     }

@@ -9,10 +9,10 @@ namespace Models.ServiceModels.AdviceConsultantModels.ConsultingTicket
     public class ConsultingTicketCreateNewModel
     {
         public int Id { get; set; }
-        public CustomerServiceModel customer { get; set; } = null!;
-        public AddressServiceModel Address { get; set; } = null!;
-        public ConsultingTypeServiceModel ConsultingType { get; set; } = null!;
-        public TrainerServiceModel Trainer { get; set; } = null!;
+        public int CustomerId { get; set; }
+        public string Address { get; set; }
+        public string ConsultingType { get; set; }
+        public int TrainerId { get; set; }
         public string ConsultingDetail { get; set; }
         public int Distance { get; set; }
         public bool OnlineOrOffline { get; set; }
@@ -22,7 +22,5 @@ namespace Models.ServiceModels.AdviceConsultantModels.ConsultingTicket
         public decimal Price { get; set; }
         public decimal? DiscountedPrice { get; set; }
         public int Status { get; set; }
-        public ConsultingPricePolicyServiceModel ConsultingPricePolicy { get; set; } = null!;
-        public DistancePriceServiceModel DistancePrice { get; set; } = null!;
     }
 }

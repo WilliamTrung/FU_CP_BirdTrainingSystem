@@ -9,8 +9,6 @@ namespace Models.ServiceModels.AdviceConsultantModels.ConsultingTicket
     public class ConsultingTicketListViewModel
     {
         public int Id { get; set; }
-        public CustomerServiceModel customer { get; set; } = null!;
-        public TrainerServiceModel Trainer { get; set; } = null!;
         public bool OnlineOrOffline { get; set; }
         public DateTime AppointmentDate { get; set; }
         public int ActualSlotStart { get; set; }

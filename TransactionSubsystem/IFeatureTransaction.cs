@@ -8,7 +8,8 @@ namespace TransactionSubsystem
 {
     public interface IFeatureTransaction
     {
-        Task<decimal> CalculateDistancePrice(float distance);
+        Task<decimal> CalculateDistancePrice(int distance);
         Task<decimal> CalculateMemberShipDiscountedPrice(decimal price, int customerId);
+        Task<dynamic> CalculateConsultingTicketFinalPrice(int ticketId);
     }
 }
