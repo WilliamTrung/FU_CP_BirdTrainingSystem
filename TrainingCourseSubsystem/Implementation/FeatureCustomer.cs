@@ -30,7 +30,8 @@ namespace TrainingCourseSubsystem.Implementation
 
         public async Task<TrainingCourseModel> GetTrainingCourseById(int trainingCourseId)
         {
-            var entities = await _unitOfWork.TrainingCourseRepository.GetFirst(e => e.Id == trainingCourseId);
+            var entities = await _unitOfWork.TrainingCourseRepository.GetFirst(e => e.Id == trainingCourseId 
+                                                                                 && e.Status == (int)Models.Enum.TrainingCourse.Status.Active);
             var models = _mapper.Map<TrainingCourseModel>(entities);
             return models;
         }
@@ -89,7 +90,8 @@ namespace TrainingCourseSubsystem.Implementation
 
         public async Task<IEnumerable<TrainingCourseModel>> GetTrainingCourseBySpeciesId(int birdSpeciesId)
         {
-            var entities = await _unitOfWork.TrainingCourseRepository.GetFirst(e => e.BirdSpeciesId == birdSpeciesId);
+            var entities = await _unitOfWork.TrainingCourseRepository.GetFirst(e => e.BirdSpeciesId == birdSpeciesId
+                                                                                 && e.Status == (int)Models.Enum.TrainingCourse.Status.Active);
             var models = _mapper.Map<IEnumerable<TrainingCourseModel>>(entities);
             return models;
         }
@@ -103,7 +105,9 @@ namespace TrainingCourseSubsystem.Implementation
 
         public async Task<IEnumerable<BirdTrainingCourseViewModel>> ViewRegisteredTrainingCourse(int birdId, int customerId)
         {
-            var entities = await _unitOfWork.BirdTrainingCourseRepository.Get(expression:e => e.CustomerId == customerId && e.BirdId == birdId, nameof(TrainingCourse));
+            var entities = await _unitOfWork.BirdTrainingCourseRepository.Get(expression:e => e.CustomerId == customerId && e.BirdId == birdId
+                                                                                 && e.Status == (int)Models.Enum.TrainingCourse.Status.Active
+                                                                                 , nameof(TrainingCourse));
             List<BirdTrainingCourseViewModel> models = new List<BirdTrainingCourseViewModel>();
             foreach(var entity in entities)
             {
