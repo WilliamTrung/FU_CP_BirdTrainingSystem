@@ -22,33 +22,48 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         [Route("customer-listConsultingTicket")]
         public async Task<IActionResult> GetListConsultingTicketByCustomerId()
         {
-            var accessToken = Request.DeserializeToken(_authService);
-            if (accessToken == null)
+            try
             {
-                return Unauthorized();
+                var accessToken = Request.DeserializeToken(_authService);
+                if (accessToken == null)
+                {
+                    return Unauthorized();
+                }
+                var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
+
+                var result = await _consultingService.Customer.GetListConsultingTicketByCustomerID(Int32.Parse(customerId.Value));
+
+                return Ok(result);
             }
-            var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
-
-            var result = await _consultingService.Customer.GetListConsultingTicketByCustomerID(Int32.Parse(customerId.Value));
-
-            return Ok(result);
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpPost]
-        [Route("sendConsultingTicket")]
+        [Route("customer-sendConsultingTicket")]
         public async Task<IActionResult> SendConsultingTicket([FromBody] ConsultingTicketCreateNewModel ticket)
         {
-            var accessToken = Request.DeserializeToken(_authService);
-            if (accessToken == null)
+            try
             {
-                return Unauthorized();
+                var accessToken = Request.DeserializeToken(_authService);
+                if (accessToken == null)
+                {
+                    return Unauthorized();
+                }
+                var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
+
+                ticket.CustomerId = Int32.Parse(customerId.Value);
+
+                await _consultingService.Customer.SendConsultingTicket(ticket);
+                return Ok();
+
             }
-            var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
-
-            ticket.CustomerId = Int32.Parse(customerId.Value);
-
-            await _consultingService.Customer.SendConsultingTicket(ticket);
-            return Ok();
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }        
         }
     }
 }

@@ -6,7 +6,7 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting
     public interface IAdviceConsultingCustomer
     {
         [HttpPost]
-        [Route("sendConsultingTicket")]
+        [Route("customer-sendConsultingTicket")]
         Task<IActionResult>SendConsultingTicket([FromBody] ConsultingTicketCreateNewModel ticket);
         [HttpGet]
         [Route("customer-listConsultingTicket")]

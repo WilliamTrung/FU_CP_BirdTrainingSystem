@@ -12,7 +12,6 @@ namespace AdviceConsultingSubsystem
     public interface IFeatureCustomer
     {
         Task SendConsultingTicket(ConsultingTicketCreateNewModel consultingTicket);
-        Task<ConsultingTicketPrePriceModel> ViewConsultingTicketPrice (int ticketId);
         Task<IEnumerable<ConsultingTicketListViewModel>> GetListConsultingTicketByCustomerID(int customerId);
         Task<ConsultingTicketDetailViewModel> GetConsultingTicketByID(int id);
 
