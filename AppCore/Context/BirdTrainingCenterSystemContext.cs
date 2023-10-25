@@ -81,6 +81,7 @@ namespace AppCore.Context
             modelBuilder.AddMembershipModels();
             modelBuilder.AddSlots();
             modelBuilder.AddTrainerSkills();
+            modelBuilder.AddWorkshopRefundPolicies();
             modelBuilder.Entity<AcquirableSkill>(entity =>
             {
                 entity.HasKey(e => new { e.BirdSpeciesId, e.BirdSkillId })
@@ -625,6 +626,11 @@ namespace AppCore.Context
                     .HasForeignKey(d => d.WorkshopClassId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKCustomer_W257990");
+                entity.HasOne(d => d.WorkshopRefundPolicy)
+                    .WithMany(p => p.CustomerWorkshopClasses)
+                    .HasForeignKey(d => d.WorkshopRefundPolicyId)
+                    .OnDelete(DeleteBehavior.NoAction);
+                    //.HasConstraintName("FKWorkshop234277");
             });
 
             modelBuilder.Entity<DistancePrice>(entity =>
@@ -789,6 +795,9 @@ namespace AppCore.Context
                     .HasForeignKey(d => d.UserId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKTrainer76895");
+                //entity.HasMany(d => d.TrainerSkills)
+                //    .WithOne(p => p.Trainer)
+                //    .OnDelete(DeleteBehavior.Cascade);
             });
 
             modelBuilder.Entity<TrainerSkill>(entity =>
@@ -952,7 +961,7 @@ namespace AppCore.Context
                     .IsUnicode(false);
 
                 entity.Property(e => e.Picture)
-                    .HasMaxLength(50)
+                    .HasMaxLength(2000)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Price).HasColumnType("money");
@@ -966,11 +975,11 @@ namespace AppCore.Context
                 entity.HasMany(d => d.WorkshopDetailTemplates)
                     .WithOne(p => p.Workshop)
                     .OnDelete(DeleteBehavior.Cascade);
-                entity.HasOne(d => d.WorkshopRefundPolicy)
-                    .WithMany(p => p.Workshops)
-                    .HasForeignKey(d => d.WorkshopRefundPolicyId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FKWorkshop234277");
+                //entity.HasOne(d => d.WorkshopRefundPolicy)
+                //    .WithMany(p => p.Workshops)
+                //    .HasForeignKey(d => d.WorkshopRefundPolicyId)
+                //    .OnDelete(DeleteBehavior.ClientSetNull)
+                //    .HasConstraintName("FKWorkshop234277");
             });
 
             modelBuilder.Entity<WorkshopAttendance>(entity =>

@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using AppRepository.UnitOfWork;
+using AutoMapper;
+using Models.ApiParamModels.Workshop;
 using Models.Entities;
 using Models.ServiceModels.WorkshopModels;
 using Models.ServiceModels.WorkshopModels.WorkshopClass;
@@ -21,14 +23,42 @@ namespace SP_AutoMapperConfig
             Map_WorkshopClass_WorkshopClassAdminViewModel();
             Map_WorkshopClassDetailTemplate_WorkshopClassDetailTemplateViewModel();
             Map_WorkshopClassAddModel_WorkshopClass();
+            Map_Workshop_WorkshopModel();
+            Map_Workshop_WorkshopAdminModel();
+            Map_WorkshopClassDetailTrainerSlotModifyModel_TrainerSlot();
+        }
+        private void Map_WorkshopClassDetailTrainerSlotModifyModel_TrainerSlot()
+        {
+            CreateMap<WorkshopClassDetailTrainerSlotModifyModel, TrainerSlot>()
+                .ForMember(e => e.SlotId, opt => opt.MapFrom(m => m.SlotId))
+                .ForMember(e => e.Date, opt => opt.MapFrom(m => m.Date.ToDateTime(new TimeOnly(0,0,0))))
+                .ForMember(e => e.TrainerId, opt => opt.MapFrom(m => m.TrainerId))
+                .ForMember(e => e.Status, opt => opt.MapFrom(m => (int)Models.Enum.TrainerSlotStatus.Enabled))
+                .ForMember(e => e.EntityId, opt => opt.MapFrom(m => m.Id))
+                .ForMember(e => e.EntityTypeId, opt => opt.MapFrom(m => (int)Models.Enum.EntityType.WorkshopClass))
+                .ForMember(e => e.Reason, opt => opt.MapFrom(m => "Host workshop class slot"));
+        }
+        private void Map_Workshop_WorkshopAdminModel()
+        {
+            CreateMap<Workshop, WorkshopAdminModel>()
+                .ForMember(c => c.Status, opt => opt.MapFrom(e => e.Status));
+        }
+        private void Map_WorkshopAddParamModel_WorkshopAddModel()
+        {
+            CreateMap<WorkshopAddParamModel, WorkshopAddModel>()
+                .ForMember(d => d.Picture, opt => opt.Ignore());
         }
         private void Map_WorkshopRefundPolicy_WorkshopRefundPolicyModel()
         {
             CreateMap<WorkshopRefundPolicy, WorkshopRefundPolicyModel>();
         }
+        private void Map_Workshop_WorkshopModel()
+        {
+            CreateMap<Workshop, WorkshopModel>();
+        }
         private void Map_WorkshopClass_WorkshopClassViewModel()
         {
-
+            
         }        
         private void Map_WorkshopClassDetailTemplate_WorkshopClassDetailTemplateViewModel()
         {
@@ -41,8 +71,9 @@ namespace SP_AutoMapperConfig
         private void Map_WorkshopClassAddModel_WorkshopClass()
         {
             CreateMap<WorkshopClassAddModel, WorkshopClass>()
-                .ForMember(e => e.StartTime, opt => opt.MapFrom(c => c.StartTime))
-                .ForMember(e => e.WorkshopId, opt => opt.MapFrom(c => c.WorkshopId));
+                .ForMember(e => e.StartTime, opt => opt.MapFrom(c => c.StartTime.ToDateTime(new TimeOnly(0, 0, 0))))
+                .ForMember(e => e.WorkshopId, opt => opt.MapFrom(c => c.WorkshopId))
+                .ForMember(e => e.Status, opt => opt.MapFrom(c => (int)Models.Enum.Workshop.Class.Status.Pending));
         }
         private void Map_WorkshopDetailTemplateAddModel_WorkshopDetailTemplate()
         {
@@ -104,8 +135,8 @@ namespace SP_AutoMapperConfig
         public void Process(WorkshopAddModel source, Workshop destination, ResolutionContext context)
         {
             destination.Picture = source.Picture;
-            destination.Status = (int)Models.Enum.Workshop.Status.Active;
-            destination.WorkshopRefundPolicyId = 1;
+            destination.Status = (int)Models.Enum.Workshop.Status.Inactive;
+            //destination.WorkshopRefundPolicyId = 1;
             destination.Description = source.Description;
             destination.Price = source.Price;
             destination.Title = source.Title;
@@ -138,19 +169,33 @@ namespace SP_AutoMapperConfig
     public class MappingAction_WorkshopClassDetail_WorkshopClassDetailViewModel : IMappingAction<WorkshopClassDetail, WorkshopClassDetailViewModel>
     {
         private readonly IMapper _mapper;
-        public MappingAction_WorkshopClassDetail_WorkshopClassDetailViewModel(IMapper mapper)
+        private readonly IUnitOfWork _uow;
+        public MappingAction_WorkshopClassDetail_WorkshopClassDetailViewModel(IMapper mapper, IUnitOfWork uow)
         {
             _mapper = mapper;
+            _uow = uow;
         }
         public void Process(WorkshopClassDetail source, WorkshopClassDetailViewModel destination, ResolutionContext context)
         {
             destination.Detail = source.WorkshopDetailTemplate.Detail;
             destination.Id = source.Id;
 #pragma warning disable CS8629 // Nullable value type may be null.
-            destination.Trainer = _mapper.Map<TrainerWorkshopModel>(source.DaySlot.Trainer);
-            destination.Date = (DateTime)source.DaySlot.Date;
-            destination.StartTime = (TimeSpan)source.DaySlot.Slot.StartTime;
-            destination.EndTime = (TimeSpan)source.DaySlot.Slot.EndTime;
+            if(source.DaySlot == null)
+            {
+                //not yet assign trainer
+                destination.Trainer = null;
+                destination.Date = null;
+                
+            } else
+            {
+                source.DaySlot = _uow.TrainerSlotRepository.GetFirst(c => c.Id == source.DaySlotId
+                                                                        , nameof(TrainerSlot.Trainer)
+                                                                        , nameof(TrainerSlot.Slot)).Result;
+                destination.Trainer = _mapper.Map<TrainerWorkshopModel>(source.DaySlot.Trainer);
+                destination.Date = (DateTime)source.DaySlot.Date;
+                destination.StartTime = (TimeSpan)source.DaySlot.Slot.StartTime;
+                destination.EndTime = (TimeSpan)source.DaySlot.Slot.EndTime;
+            }
 #pragma warning restore CS8629 // Nullable value type may be null.
         }
     }

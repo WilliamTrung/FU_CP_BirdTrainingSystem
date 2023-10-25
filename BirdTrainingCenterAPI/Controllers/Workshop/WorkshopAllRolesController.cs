@@ -37,11 +37,11 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             return Ok(result);
         }
         [HttpGet]
-        [Route("refund-policy")]
+        [Route("refund-policies")]
 
-        public async Task<IActionResult> GetWorkshopRefuncPolicy()
+        public async Task<IActionResult> GetWorkshopRefuncPolicies()
         {
-            var result = await _workshopService.All.GetRefundPolicy();
+            var result = await _workshopService.All.GetRefundPolicies();
             return Ok(result);
         }
         [HttpGet]

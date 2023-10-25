@@ -801,10 +801,15 @@ namespace AppCore.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
+                    b.Property<int?>("WorkshopRefundPolicyId")
+                        .HasColumnType("integer");
+
                     b.HasKey("CustomerId", "WorkshopClassId")
                         .HasName("PK__Customer__7EEF8348DE684159");
 
                     b.HasIndex("WorkshopClassId");
+
+                    b.HasIndex("WorkshopRefundPolicyId");
 
                     b.ToTable("Customer_WorkshopClass", (string)null);
                 });
@@ -1504,9 +1509,9 @@ namespace AppCore.Migrations
                         .HasColumnType("character varying(2000)");
 
                     b.Property<string>("Picture")
-                        .HasMaxLength(50)
+                        .HasMaxLength(2000)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("character varying(2000)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("money");
@@ -1526,12 +1531,7 @@ namespace AppCore.Migrations
                     b.Property<int>("TotalSlot")
                         .HasColumnType("integer");
 
-                    b.Property<int>("WorkshopRefundPolicyId")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("WorkshopRefundPolicyId");
 
                     b.ToTable("Workshop", (string)null);
                 });
@@ -1663,6 +1663,32 @@ namespace AppCore.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("WorkshopRefundPolicy", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            RefundRate = 0f,
+                            TotalDayBeforeStart = 13
+                        },
+                        new
+                        {
+                            Id = 2,
+                            RefundRate = 0.5f,
+                            TotalDayBeforeStart = 29
+                        },
+                        new
+                        {
+                            Id = 3,
+                            RefundRate = 0.75f,
+                            TotalDayBeforeStart = 30
+                        },
+                        new
+                        {
+                            Id = 4,
+                            RefundRate = 1f,
+                            TotalDayBeforeStart = -1
+                        });
                 });
 
             modelBuilder.Entity("Models.Entities.AcquirableSkill", b =>
@@ -2034,9 +2060,16 @@ namespace AppCore.Migrations
                         .IsRequired()
                         .HasConstraintName("FKCustomer_W257990");
 
+                    b.HasOne("Models.Entities.WorkshopRefundPolicy", "WorkshopRefundPolicy")
+                        .WithMany("CustomerWorkshopClasses")
+                        .HasForeignKey("WorkshopRefundPolicyId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
                     b.Navigation("Customer");
 
                     b.Navigation("WorkshopClass");
+
+                    b.Navigation("WorkshopRefundPolicy");
                 });
 
             modelBuilder.Entity("Models.Entities.Feedback", b =>
@@ -2187,17 +2220,6 @@ namespace AppCore.Migrations
                         .HasConstraintName("FKTransactio250053");
 
                     b.Navigation("Customer");
-                });
-
-            modelBuilder.Entity("Models.Entities.Workshop", b =>
-                {
-                    b.HasOne("Models.Entities.WorkshopRefundPolicy", "WorkshopRefundPolicy")
-                        .WithMany("Workshops")
-                        .HasForeignKey("WorkshopRefundPolicyId")
-                        .IsRequired()
-                        .HasConstraintName("FKWorkshop234277");
-
-                    b.Navigation("WorkshopRefundPolicy");
                 });
 
             modelBuilder.Entity("Models.Entities.WorkshopAttendance", b =>
@@ -2475,7 +2497,7 @@ namespace AppCore.Migrations
 
             modelBuilder.Entity("Models.Entities.WorkshopRefundPolicy", b =>
                 {
-                    b.Navigation("Workshops");
+                    b.Navigation("CustomerWorkshopClasses");
                 });
 #pragma warning restore 612, 618
         }

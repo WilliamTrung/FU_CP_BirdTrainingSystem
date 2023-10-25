@@ -8,9 +8,11 @@ namespace Models.Enum.Workshop.Class
 {
     public enum Status
     {
-        Registration = 0,
-        OnGoing = 1,
-        Completed = 2,
-        Cancel = 3,
+        Pending = 0,
+        Registration = 1,
+        Full = 2,
+        OnGoing = 3,
+        Completed = 4,
+        Cancel = 5,
     }
 }

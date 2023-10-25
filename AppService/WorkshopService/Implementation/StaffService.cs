@@ -36,8 +36,12 @@ namespace AppService.WorkshopService.Implementation
             var slots = await _timetable.GetSlotData();
             var changedSlot = slots.First(c => c.Id == workshopClassDetail.SlotId);
             var current_slot = await _workshop.Staff.GetWorkshopClassDetail(workshopClassDetail.Id);
-
-            
+            //check duplicate trainer to this slot
+            if (current_slot.StartTime == slots.First(s => s.Id == workshopClassDetail.SlotId).StartTime
+                && current_slot.Date == workshopClassDetail.Date.ToDateTime(new TimeOnly()))
+            {
+                throw new InvalidOperationException("No change detected!");
+            }
             List<Task> validatedTasks = new List<Task>();
             //Modified date and modified slot must be free from current trainer timetable
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
@@ -56,7 +60,7 @@ namespace AppService.WorkshopService.Implementation
             //if null --> current slot is the last slot of the workshop
             if (following_slot != null)
             {                
-                Task compareFollowingSlot = CompareFollowingSlotDetail(following_slot, workshopClassDetail.Date.ToDateTime(new TimeOnly(0, 0, 0)), changedSlot.StartTime);
+                Task compareFollowingSlot = CompareFollowingSlotDetail(following_slot, workshopClassDetail.Date.ToDateTime(new TimeOnly(0, 0, 0)), changedSlot.StartTime.Value);
                 validatedTasks.Add(compareFollowingSlot);
             }            
             //changed date must be before the previous slot
@@ -65,7 +69,7 @@ namespace AppService.WorkshopService.Implementation
             //if null --> current slot is the first slot of the workshop
             if(previous_slot != null)
             {
-                Task comparePreviousSlot = ComparePreviousSlotDetail(previous_slot, workshopClassDetail.Date.ToDateTime(new TimeOnly(0, 0, 0)), changedSlot.StartTime);
+                Task comparePreviousSlot = ComparePreviousSlotDetail(previous_slot, workshopClassDetail.Date.ToDateTime(new TimeOnly(0, 0, 0)), changedSlot.StartTime.Value);
                 validatedTasks.Add(comparePreviousSlot);
             }
             await Task.WhenAll(validatedTasks);
@@ -75,12 +79,22 @@ namespace AppService.WorkshopService.Implementation
 
         public async Task ModifyWorkshopClassDetailTrainerSlot(WorkshopClassDetailTrainerSlotModifyModel workshopClassDetail)
         {
+            
+            if(!await _workshop.Staff.CheckPassEndRegistrationDay(workshopClassDetail.Id, workshopClassDetail.Date))
+            {
+                throw new InvalidOperationException("Assigned slot must start after registration end date!");
+            }
             //start validating
             var slots = await _timetable.GetSlotData();
             var changedSlot = slots.First(c => c.Id == workshopClassDetail.SlotId);
             var current_slot = await _workshop.Staff.GetWorkshopClassDetail(workshopClassDetail.Id);
-
-
+            //check duplicate trainer to this slot
+            if(current_slot.StartTime == slots.First(s => s.Id == workshopClassDetail.SlotId).StartTime
+                && current_slot.Trainer.Id == workshopClassDetail.TrainerId
+                && current_slot.Date == workshopClassDetail.Date.ToDateTime(new TimeOnly()))   
+            {
+                throw new InvalidOperationException("No change detected!");
+            }
             List<Task> validatedTasks = new List<Task>();
             //Modified date and modified slot must be free from current trainer timetable
             var trainerCheck = await _timetable.CheckTrainerFree(workshopClassDetail.TrainerId, workshopClassDetail.Date.ToDateTime(new TimeOnly(0, 0, 0)), workshopClassDetail.SlotId);
@@ -97,7 +111,7 @@ namespace AppService.WorkshopService.Implementation
             //if null --> current slot is the last slot of the workshop
             if (following_slot != null)
             {
-                Task compareFollowingSlot = CompareFollowingSlotDetail(following_slot, workshopClassDetail.Date.ToDateTime(new TimeOnly(0, 0, 0)), changedSlot.StartTime);
+                Task compareFollowingSlot = CompareFollowingSlotDetail(following_slot, workshopClassDetail.Date.ToDateTime(new TimeOnly(0, 0, 0)), changedSlot.StartTime.Value);
                 validatedTasks.Add(compareFollowingSlot);
             }
             //changed date must be before the previous slot
@@ -106,7 +120,7 @@ namespace AppService.WorkshopService.Implementation
             //if null --> current slot is the first slot of the workshop
             if (previous_slot != null)
             {
-                Task comparePreviousSlot = ComparePreviousSlotDetail(previous_slot, workshopClassDetail.Date.ToDateTime(new TimeOnly(0, 0, 0)), changedSlot.StartTime);
+                Task comparePreviousSlot = ComparePreviousSlotDetail(previous_slot, workshopClassDetail.Date.ToDateTime(new TimeOnly(0, 0, 0)), changedSlot.StartTime.Value);
                 validatedTasks.Add(comparePreviousSlot);
             }
             await Task.WhenAll(validatedTasks);
@@ -116,6 +130,11 @@ namespace AppService.WorkshopService.Implementation
 
         private Task CompareCurrentDate(WorkshopClassDetailViewModel slotDetail)
         {
+            if (slotDetail.Date == null)
+            {
+                //not yet assigned
+                return Task.CompletedTask;
+            }
             if (slotDetail.Date < DateTime.Now.AddDays(Models.ConfigModels.BR_WorkshopConstant.DeadlineDateModifySlotDetail).Date)
             {
                 throw new InvalidOperationException("This slot will be hosted within 3 days from today!");
@@ -123,27 +142,40 @@ namespace AppService.WorkshopService.Implementation
             return Task.CompletedTask;
         }
         private Task ComparePreviousSlotDetail(WorkshopClassDetailViewModel previousSlotDetail, DateTime modifiedDate, TimeSpan modifiedSlotStartTime) { 
-            if(previousSlotDetail.Date >  modifiedDate)
+            if(previousSlotDetail.Date == null) {
+                //not yet assigned
+                return Task.CompletedTask;
+            }
+            if (previousSlotDetail.Date >  modifiedDate)
             {
                 throw new InvalidOperationException("Modified date is sooner than previous slot detail!");
             }
             if(previousSlotDetail.Date == modifiedDate.Date && previousSlotDetail.StartTime >= modifiedSlotStartTime)
             {
-                throw new InvalidOperationException("Modified slot is sooner than or equal to previous slot detail!");
+                throw new InvalidOperationException("Modified slot is sooner than previous slot detail!");
             }
             return Task.CompletedTask;
         }
         private Task CompareFollowingSlotDetail(WorkshopClassDetailViewModel followingSlotDetail, DateTime modifiedDate, TimeSpan modifiedSlotStartTime)
         {
+            if (followingSlotDetail.Date == null)
+            {
+                //not yet assigned
+                return Task.CompletedTask;
+            }
             if (followingSlotDetail.Date < modifiedDate)
             {
-                throw new InvalidOperationException("Modified date is sooner than following slot detail!");
+                throw new InvalidOperationException("Modified date is later than following slot detail!");
             }
             if (followingSlotDetail.Date == modifiedDate.Date && followingSlotDetail.StartTime <= modifiedSlotStartTime)
             {
-                throw new InvalidOperationException("Modified slot is later than or equal to following slot detail!");
+                throw new InvalidOperationException("Modified slot is later than following slot detail!");
             }
             return Task.CompletedTask;
+        }
+        public async Task CancelWorkshopClass(int workshopClassId)
+        {
+            await _workshop.Staff.CancelWorkshopClass(workshopClassId);
         }
     }
 }

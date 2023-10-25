@@ -11,6 +11,37 @@ namespace AppCore.Context
 {
     public static class AddModels
     {
+        private static List<WorkshopRefundPolicy> RefundPolicies
+        {
+            get
+            {
+                var r1 = new WorkshopRefundPolicy
+                {
+                    Id = 1,
+                    RefundRate = 0,
+                    TotalDayBeforeStart = 13,
+                };
+                var r2 = new WorkshopRefundPolicy
+                {
+                    Id = 2,
+                    RefundRate = 0.5f,
+                    TotalDayBeforeStart = 29,
+                };
+                var r3 = new WorkshopRefundPolicy
+                {
+                    Id = 3,
+                    RefundRate = 0.75f,
+                    TotalDayBeforeStart = 30,
+                };
+                var r4 = new WorkshopRefundPolicy
+                {
+                    Id = 4,
+                    RefundRate = 1f,
+                    TotalDayBeforeStart = -1,
+                };
+                return new List<WorkshopRefundPolicy> { r1, r2, r3, r4, };
+            }
+        }
         private static List<Skill> Skills
         {
             get
@@ -90,6 +121,10 @@ namespace AppCore.Context
                 };
                 return listTrainableSkill;
             }
+        }
+        public static void AddWorkshopRefundPolicies(this ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<WorkshopRefundPolicy>().HasData(RefundPolicies);
         }
         public static void AddSlots(this ModelBuilder modelBuilder)
         {

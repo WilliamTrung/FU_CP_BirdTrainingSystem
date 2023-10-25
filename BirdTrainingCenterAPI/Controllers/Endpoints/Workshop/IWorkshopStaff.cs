@@ -21,6 +21,9 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.Workshop
         [HttpPut]
         [Route("modify-slot")]
         Task<IActionResult> ModifyTrainerForDetailSlot([FromBody] WorkshopClassDetailTrainerSlotOnlyModifyModel workshopClassDetail);
+        [HttpPut]
+        [Route("cancel")]
+        Task<IActionResult> CancelWorkshopClass([FromQuery] int workshopClassId);
 
     }
 }

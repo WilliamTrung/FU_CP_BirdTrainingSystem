@@ -9,7 +9,7 @@ namespace Models.ServiceModels.WorkshopModels
     public class WorkshopModel
     {
         public int Id { get; set; }
-        public WorkshopRefundPolicyModel RefundPolicy { get; set; } = null!;
+        //public WorkshopRefundPolicyModel RefundPolicy { get; set; } = null!;
         public string Title { get; set; } = null!;
         public string Description { get; set; } = null!;
         public string? Picture { get; set; } = null!;

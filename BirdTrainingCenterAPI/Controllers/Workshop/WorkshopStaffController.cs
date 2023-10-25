@@ -31,7 +31,7 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
         {
             try
             {
-                var result = await _workshopService.Staff.GetWorkshopClassesByWorkshopId(workshopId);
+                var result = await _workshopService.Staff.GetWorkshopClassAdminViewModels(workshopId);
                 return Ok(result);
             } catch (Exception ex)
             {
@@ -73,6 +73,20 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             try
             {
                 await _workshopService.Staff.ModifyWorkshopClassDetailSlotOnly(workshopClassDetail);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpPut]
+        [Route("cancel")]
+        public async Task<IActionResult> CancelWorkshopClass([FromQuery] int workshopClassId)
+        {
+            try
+            {
+                await _workshopService.Staff.CancelWorkshopClass(workshopClassId);
                 return Ok();
             }
             catch (Exception ex)

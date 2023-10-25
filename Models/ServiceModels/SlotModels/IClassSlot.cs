@@ -8,6 +8,6 @@ namespace Models.ServiceModels.SlotModels
 {
     public interface IClassSlot : ISlotModel
     {
-        DateTime Date { get; set; }
+        DateTime? Date { get; set; }
     }
 }

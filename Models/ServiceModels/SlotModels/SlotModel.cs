@@ -9,7 +9,7 @@ namespace Models.ServiceModels.SlotModels
     public class SlotModel : ISlotModel
     {
         public int Id { get; set; }
-        public TimeSpan StartTime { get; set; }
-        public TimeSpan EndTime { get; set; }
+        public TimeSpan? StartTime { get; set; }
+        public TimeSpan? EndTime { get; set; }
     }
 }

@@ -12,5 +12,6 @@ namespace Models.Enum
         Trainer = 1,
         Staff = 2,
         Manager = 3,
+        Administrator = 4,
     }
 }

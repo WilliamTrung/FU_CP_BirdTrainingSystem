@@ -12,6 +12,7 @@ namespace WorkshopSubsystem
     {
         //create workshop
         Task CreateWorkshop(WorkshopAddModel workshop);
+        Task<IEnumerable<WorkshopAdminModel>> GetWorkshops();
 
         //Task ModifyWorkshop(WorkshopModifyModel workshop);
         Task<IEnumerable<WorkshopDetailTemplateViewModel>> GetDetailTemplatesByWorkshopId(int workshopId);

@@ -1,6 +1,7 @@
 using AppService;
 using AppService.Implementation;
 using AuthSubsystem;
+using Microsoft.AspNetCore.Builder;
 using AuthSubsystem.Implementation;
 using BirdTrainingCenterAPI.Startup;
 using Google.Apis.Auth.OAuth2;
@@ -16,6 +17,7 @@ using SP_Middleware.CustomJsonConverter;
 using System.Reflection;
 using System.Text;
 using System.Text.Json.Serialization;
+using Microsoft.OData.Edm;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,7 +25,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
 builder.Services.AddControllers().AddOData(options => options
         .Select()
         .Filter()
@@ -40,13 +41,18 @@ builder.Services.AddControllers().AddOData(options => options
                        x.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
                        x.JsonSerializerOptions.Converters.Add(new TimeOnlyConverter());
                        x.JsonSerializerOptions.Converters.Add(new DateOnlyConverter());
+                       x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.Workshop.Status>());
+                       x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.Workshop.Class.Status>());
                    }
                );
 
 builder.Services.AddAutoMapper(Assembly.GetAssembly(typeof(SP_AutoMapperConfig.SP_AutoMapperAssembly)));
 builder.Services.AddGoogleApiClients();
-//Add json
 
+builder.WebHost.ConfigureKestrel(options => {
+    options.Limits.MaxRequestBodySize = 524288000; // 500 MB
+});
+//builder.WebHost.UseUrls("http://localhost:5000");
 //Add service
 builder.JwtConfiguration();
 builder.ConfiguringServices();
@@ -54,6 +60,7 @@ builder.ConfiguringCors();
 builder.AddUOW();
 builder.AddTimetableFeature();
 builder.AddWorkshopFeature();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -66,7 +73,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();

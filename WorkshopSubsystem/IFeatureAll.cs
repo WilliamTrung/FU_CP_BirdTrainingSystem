@@ -11,9 +11,14 @@ namespace WorkshopSubsystem
     public interface IFeatureAll
     {        
         Task<IEnumerable<WorkshopModel>> GetWorkshopGeneralInformation();
+        Task<bool> SetWorkshopClassFull(int workshopClassId);
+        Task SetWorkshopClassOngoing();
+        Task SetWorkshopClassComplete();
+        Task SetWorkshopClassExceedRegistration();
+        Task SetWorkshopClassOpenRegistration();
         Task<IEnumerable<WorkshopClassViewModel>> GetClassesByWorkshopId(int workshopId);
         Task<WorkshopClassDetailViewModel> GetWorkshopClassDetail(int workshopClassDetailId);
         Task<IEnumerable<WorkshopClassDetailViewModel>> GetWorkshopClassDetailOnWorkshopClass(int workshopClassId);
-        Task<WorkshopRefundPolicyModel> GetRefundPolicy();
+        Task<IEnumerable<WorkshopRefundPolicyModel>> GetRefundPolicies();
     }
 }

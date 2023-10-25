@@ -1,24 +1,49 @@
 ﻿using AppService;
 using AppService.WorkshopService;
 using BirdTrainingCenterAPI.Controllers.Endpoints.Workshop;
+using BirdTrainingCenterAPI.Helper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using MimeKit;
+using Models.ApiParamModels.Workshop;
+using Models.ConfigModels;
 using Models.ServiceModels.WorkshopModels;
+using SP_Middleware;
+using System.Net.Mime;
 
 namespace BirdTrainingCenterAPI.Controllers.Workshop
 {
+    [CustomAuthorize(roles: "Manager")]
     public class WorkshopManagerController : WorkshopBaseController, IWorkshopManager
     {
-        public WorkshopManagerController(IWorkshopService workshopService, IAuthService authService) : base(workshopService, authService)
+        private readonly IFirebaseService _firebaseService;
+        private readonly FirebaseBucket _bucket;
+        public WorkshopManagerController(IWorkshopService workshopService, IAuthService authService, IFirebaseService firebaseService, IOptions<FirebaseBucket> bucket) : base(workshopService, authService)
         {
+            _firebaseService = firebaseService;
+            _bucket = bucket.Value;
         }
         [HttpPost]
         [Route("create")]
-        public async Task<IActionResult> CreateWorkshop([FromForm] WorkshopAddModel workshop)
+        public async Task<IActionResult> CreateWorkshop([FromForm] WorkshopAddParamModel workshop)
         {
             try
             {
-                await _workshopService.Manager.CreateWorkshop(workshop);
+                var pictures = string.Empty;
+                if(workshop.Pictures.Any(e => !e.IsImage())) {
+                    return BadRequest("Upload image only!");
+                }
+                foreach (var file in workshop.Pictures)
+                {
+                    var temp = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.WOKRSHOP, _bucket.General);
+                    pictures += $"{temp},";
+                }
+                pictures = pictures.Substring(0, pictures.Length - 1);
+                var workshopAdd = workshop.ToWorkshopAddModel(pictures);
+
+                await _workshopService.Manager.CreateWorkshop(workshopAdd);
                 return Ok();
             } catch (Exception ex)
             {
@@ -62,12 +87,31 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+        //[HttpPut]
+        //[Route("modify-status")]
+        //public async Task<IActionResult> ModifyWorkshopStatus([FromBody] WorkshopStatusModifyModel workshop)
+        //{
+        //    try
+        //    {
+        //        await _workshopService.Manager.ModifyWorkshopStatus(workshop);
+        //        return Ok();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        //    }
+        //}
         [HttpPut]
-        [Route("modify-status")]
-        public async Task<IActionResult> ModifyWorkshopStatus([FromBody] WorkshopStatusModifyModel workshop)
+        [Route("activate")]
+        public async Task<IActionResult> ActivateWorkshop([FromQuery] int workshopId)
         {
             try
             {
+                var workshop = new WorkshopStatusModifyModel
+                {
+                    Id = workshopId,
+                    Status = (int)Models.Enum.Workshop.Status.Active,
+                };
                 await _workshopService.Manager.ModifyWorkshopStatus(workshop);
                 return Ok();
             }
@@ -75,6 +119,32 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
+        }
+        [HttpPut]
+        [Route("deactivate")]
+        public async Task<IActionResult> DeactivateWorkshop([FromQuery] int workshopId)
+        {
+            try
+            {
+                var workshop = new WorkshopStatusModifyModel
+                {
+                    Id = workshopId,
+                    Status = (int)Models.Enum.Workshop.Status.Inactive,
+                };
+                await _workshopService.Manager.ModifyWorkshopStatus(workshop);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+        [HttpGet]
+        [Route("workshops")]
+        public async Task<IActionResult> GetWorkshops()
+        {
+            var result = await _workshopService.Manager.GetAllWorkshops();
+            return Ok(result);
         }
     }
 }

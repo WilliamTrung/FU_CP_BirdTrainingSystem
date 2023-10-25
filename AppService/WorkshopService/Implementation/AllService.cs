@@ -19,9 +19,9 @@ namespace AppService.WorkshopService.Implementation
             _timetable = timetable;
             _workshop = workshop;
         }
-        public async Task<WorkshopRefundPolicyModel> GetRefundPolicy()
+        public async Task<IEnumerable<WorkshopRefundPolicyModel>> GetRefundPolicies()
         {
-            return await _workshop.All.GetRefundPolicy();
+            return await _workshop.All.GetRefundPolicies();
         }
 
         public async Task<WorkshopClassDetailViewModel> GetWorkshopClassDetailById(int workshopClassDetailId)

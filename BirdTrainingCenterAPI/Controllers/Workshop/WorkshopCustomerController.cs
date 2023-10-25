@@ -2,12 +2,15 @@
 using AppService.WorkshopService;
 using BirdTrainingCenterAPI.Controllers.Endpoints.Workshop;
 using BirdTrainingCenterAPI.Helper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SP_Middleware;
 using System.Security.Claims;
 
 namespace BirdTrainingCenterAPI.Controllers.Workshop
 {
+    [CustomAuthorize(roles: "Customer")]
     public class WorkshopCustomerController : WorkshopBaseController, IWorkshopCustomer
     {
         public WorkshopCustomerController(IWorkshopService workshopService, IAuthService authService) : base(workshopService, authService)
@@ -49,7 +52,14 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
                 return Unauthorized();
             }
             var customerId = accessToken.First(c => c.Type == ClaimTypes.NameIdentifier);
-            await _workshopService.Customer.Regsiter(Int32.Parse(customerId.Value), workshopClassId);
+            try
+            {
+                await _workshopService.Customer.Regsiter(Int32.Parse(customerId.Value), workshopClassId);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
             return Ok();
         }
     }
