@@ -4,13 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Models.Enum.ConsultingTicket
+namespace Models.Enum.Transaction
 {
     public enum Status
     {
-        Canceled = 0,
-        WaitingForApprove = 1,
-        Confirmed = 2,
-        Finished = 3
+        Unpaid = 0,
+        Paid = 1
     }
 }

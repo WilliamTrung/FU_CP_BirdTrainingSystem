@@ -7,7 +7,7 @@ namespace Models.Entities
     {
         public int Id { get; set; }
         public int CustomerId { get; set; }
-        public int TrainerId { get; set; }
+        public int? TrainerId { get; set; }
         public int AddressId { get; set; }
         public int ConsultingTypeId { get; set; }
         public string? ConsultingDetail { get; set; }
@@ -15,7 +15,7 @@ namespace Models.Entities
         public bool OnlineOrOffline { get; set; }
         public string? GgMeetLink { get; set; }
         public DateTime? AppointmentDate { get; set; }
-        public int? ActualSlotStart { get; set; }
+        public int ActualSlotStart { get; set; }
         public int? ActualEndSlot { get; set; }
         public string? Evidence { get; set; }
         public decimal? Price { get; set; }
@@ -29,6 +29,6 @@ namespace Models.Entities
         public virtual ConsultingType ConsultingType { get; set; } = null!;
         public virtual Customer Customer { get; set; } = null!;
         public virtual DistancePrice DistancePrice { get; set; } = null!;
-        public virtual Trainer Trainer { get; set; } = null!;
+        public virtual Trainer? Trainer { get; set; }
     }
 }

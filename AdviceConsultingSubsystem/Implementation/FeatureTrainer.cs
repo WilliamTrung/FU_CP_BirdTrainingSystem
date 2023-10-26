@@ -78,5 +78,10 @@ namespace AdviceConsultingSubsystem.Implementation
             var model = _mapper.Map<ConsultingTicketBillModel>(entity);
             return model;
         }
+
+        public Task UploadEvidence(int ticketId, string evidence)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
