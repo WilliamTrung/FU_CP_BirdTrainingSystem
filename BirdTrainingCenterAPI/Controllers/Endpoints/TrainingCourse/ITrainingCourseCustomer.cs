@@ -14,7 +14,7 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
 
         [HttpPut]
         [Route("update-bird")]
-        Task<IActionResult> UpdateBirdProfile(BirdModel bird);
+        Task<IActionResult> UpdateBirdProfile([FromBody] BirdModel bird);
 
         [HttpGet]
         [Route("customer-bird")]

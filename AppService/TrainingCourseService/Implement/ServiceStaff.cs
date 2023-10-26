@@ -58,6 +58,7 @@ namespace AppService.TrainingCourseService.Implement
                     model.Date = current;
                     model.EntityTypeId = (int)Models.Enum.EntityType.TrainingCourse;
                     model.EntityId = progress.Id;
+                    model.Status = (int)Models.Enum.TrainerSlotStatus.Enabled;
                     await ConfirmTrainerSlot(model);
                 }
                 start = start.AddDays(1);
