@@ -6,14 +6,13 @@ using System.Threading.Tasks;
 
 namespace Models.ServiceModels.AdviceConsultantModels.ConsultingTicket
 {
-    public class ConsultingTicketUpdateModel
+    public class ConsultingTicketTrainerFinishModel
     {
         public int Id { get; set; }
-        public int TrainerId { get; set; }
-        public string GgMeetLink { get; set; }
-        public int ActualSlotStart { get; set; }
         public int ActualEndSlot { get; set; }
+        public string? Evidence { get; set; }
         public decimal Price { get; set; }
         public decimal? DiscountedPrice { get; set; }
+        public int Status { get; set; }
     }
 }

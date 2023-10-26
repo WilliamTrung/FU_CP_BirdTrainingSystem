@@ -26,14 +26,7 @@ namespace AdviceConsultingSubsystem.Implementation
 
         public async Task SendConsultingTicket(ConsultingTicketCreateNewModel consultingTicket)
         {
-            if (consultingTicket.TrainerId == null)
-            {
-                consultingTicket.Status = (int)Models.Enum.ConsultingTicket.Status.WaitingForAssign;
-            }
-            else
-            {
-                consultingTicket.Status = (int)Models.Enum.ConsultingTicket.Status.WaitingForApprove;
-            }
+            consultingTicket.Status = (int)Models.Enum.ConsultingTicket.Status.WaitingForApprove;
 
             dynamic price = await _transaction.CalculateConsultingTicketFinalPrice(consultingTicket.Id);
             consultingTicket.Price = price.FinalPrice;

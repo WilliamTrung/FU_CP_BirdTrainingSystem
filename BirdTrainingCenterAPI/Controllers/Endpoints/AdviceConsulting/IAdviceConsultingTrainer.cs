@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Models.ApiParamModels.AdviceConsulting;
 using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
 
 namespace BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting
@@ -8,14 +9,13 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting
         [HttpGet]
         [Route("trainer-viewAssignedAppointmet")]
         Task<IActionResult> ViewAssignedAppointment();
+
         [HttpPut]
         [Route("trainer-updateAppointment")]
-        Task<IActionResult> UpdateAppointment(int ticketId, string ggmeetLink);
+        Task<IActionResult> UpdateAppointment([FromQuery] int ticketId, string ggmeetLink);
+
         [HttpPut]
         [Route("trainer-finishAppointment")]
-        Task<IActionResult> FinishAppointment(ConsultingTicketUpdateStatusModel consultingTicket);
-        [HttpPut]
-        [Route("trainer-fillingOutBillingForm")]
-        Task<IActionResult> FillOutBillingForm(ConsultingTicketBillModel consultingTicket);
+        Task<IActionResult> FinishAppointment([FromForm] ConsultingTicketTrainerUpdateParamModel consultingTicket);
     }
 }

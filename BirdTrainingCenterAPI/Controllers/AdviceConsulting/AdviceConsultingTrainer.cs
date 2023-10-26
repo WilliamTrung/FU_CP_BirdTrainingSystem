@@ -7,6 +7,9 @@ using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
 using BirdTrainingCenterAPI.Helper;
 using System.Security.Claims;
 using Models.AuthModels;
+using Models.ApiParamModels.AdviceConsulting;
+using Models.ConfigModels;
+using Microsoft.Extensions.Options;
 
 namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
 {
@@ -14,33 +17,30 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
     [ApiController]
     public class AdviceConsultingTrainer : AdviceConsultingBaseController, IAdviceConsultingTrainer
     {
-        public AdviceConsultingTrainer(IAdviceConsultingService adviceConsultingService, IAuthService authService) : base(adviceConsultingService, authService)
+        private readonly IFirebaseService _firebaseService;
+        private readonly FirebaseBucket _bucket;
+        public AdviceConsultingTrainer(IAdviceConsultingService adviceConsultingService, IAuthService authService, IFirebaseService firebaseService, IOptions<FirebaseBucket> bucket) : base(adviceConsultingService, authService)
         {
-        }
-
-        [HttpPut]
-        [Route("trainer-fillingOutBillingForm")]
-        public async Task<IActionResult> FillOutBillingForm(ConsultingTicketBillModel consultingTicket)
-        {
-            try
-            {
-
-                var result = await _consultingService.Trainer.FillOutBillingForm(consultingTicket);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
+            _firebaseService = firebaseService;
+            _bucket = bucket.Value;
         }
 
         [HttpPut]
         [Route("trainer-finishAppointment")]
-        public async Task<IActionResult> FinishAppointment(ConsultingTicketUpdateStatusModel consultingTicket)
+        public async Task<IActionResult> FinishAppointment(ConsultingTicketTrainerUpdateParamModel consultingTicket)
         {
             try
             {
-                await _consultingService.Trainer.FinishAppointment(consultingTicket);
+                var evidence = string.Empty;
+                foreach (var file in consultingTicket.Evidence)
+                {
+                    var temp = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.CONSULTINGTICKET, _bucket.General);
+                    evidence += $"{temp},";
+                }
+                evidence = evidence.Substring(0, evidence.Length - 1);
+                var updateTicket = consultingTicket.ToConsultingTicketUpdateModel(evidence);
+
+                await _consultingService.Trainer.FinishAppointment(updateTicket);
                 return Ok();
             }
             catch (Exception ex)

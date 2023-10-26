@@ -20,7 +20,7 @@ namespace Models.ServiceModels.AdviceConsultantModels
         public string GgMeetLink { get; set; }
         public DateTime AppointmentDate { get; set; }
         public int ActualSlotStart { get; set; }
-        public int ActualEndSlot { get; set; }
+        public int? ActualEndSlot { get; set; }
         public string? Evidence { get; set; }
         public decimal Price { get; set; }
         public decimal? DiscountedPrice { get; set; }
