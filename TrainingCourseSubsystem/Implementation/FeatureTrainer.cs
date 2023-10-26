@@ -2,6 +2,7 @@
 using AutoMapper;
 using Models.Entities;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
+using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,13 @@ namespace TrainingCourseSubsystem.Implementation
             var entities = await _unitOfWork.BirdTrainingProgressRepository.Get(e => e.TrainerId == trainerId);
             var models = _mapper.Map<IEnumerable<BirdTrainingProgressModel>>(entities);
             return models;
+        }
+
+        public async Task<TimetableReportView> GetTimetableReportView(int birdTrainingReportId)
+        {
+            var entity = await _unitOfWork.BirdTrainingReportRepository.GetFirst(e => e.Id == birdTrainingReportId);
+            var model = _mapper.Map<TimetableReportView>(entity);
+            return model;
         }
 
         public async Task MarkTrainingSkillDone(MarkSkillDone markDone)

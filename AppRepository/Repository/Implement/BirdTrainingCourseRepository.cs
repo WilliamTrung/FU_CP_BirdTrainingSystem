@@ -33,12 +33,12 @@ namespace AppRepository.Repository.Implement
                 if(entity != null)
                 {
                     int compareDate = DateTime.Compare((DateTime)entity.ActualStartDate, DateTime.Now);
-                    if(entity.Status == (int)Models.Enum.BirdTrainingCourse.Status.ReceivedBirdFromCustomer && compareDate >= 0)
+                    if(entity.Status == (int)Models.Enum.BirdTrainingCourse.Status.CheckIn && compareDate >= 0)
                     {
                         entity.Status = (int)Models.Enum.BirdTrainingCourse.Status.Training;
                         await Update(entity);
                     }
-                    else if(entity.Status == (int)Models.Enum.BirdTrainingCourse.Status.AssignedTrainerToCourse && compareDate > 0)
+                    else if(entity.Status == (int)Models.Enum.BirdTrainingCourse.Status.Registered && compareDate > 0)
                     {
                         entity.Status = (int)Models.Enum.BirdTrainingCourse.Status.Registered;
                         await Update(entity);

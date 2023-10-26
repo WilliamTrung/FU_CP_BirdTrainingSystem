@@ -157,7 +157,7 @@ namespace TrainingCourseSubsystem.Implementation
                     var trainingSkills = _unitOfWork.TrainingCourseSkillRepository.Get(e => e.TrainingCourseId == entity.TrainingCourseId).Result.ToList();
                     if (assignedSkills.Count == trainingSkills.Count)
                     {
-                        entity.Status = (int)Models.Enum.BirdTrainingCourse.Status.AssignedTrainerToCourse;
+                        entity.Status = (int)Models.Enum.BirdTrainingCourse.Status.Confirmed;
                     }
                     entity.Status = (int)Models.Enum.BirdTrainingCourse.Status.Registered;
 
@@ -187,7 +187,7 @@ namespace TrainingCourseSubsystem.Implementation
                     entity.ReceiveNote = birdTrainingCourse.ReceiveNote;
                     entity.ReceivePicture = birdTrainingCourse.ReceivePicture;
                     entity.LastestUpdate = DateTime.Now;
-                    entity.Status = (int)Models.Enum.BirdTrainingCourse.Status.ReceivedBirdFromCustomer; //enum birdtrainingcourse status
+                    entity.Status = (int)Models.Enum.BirdTrainingCourse.Status.CheckIn; //enum birdtrainingcourse status
 
                     var bird = _unitOfWork.BirdRepository.GetFirst(e => e.Id == entity.BirdId).Result;
                     bird.Status = (int)Models.Enum.Bird.Status.NotReady;
@@ -222,7 +222,7 @@ namespace TrainingCourseSubsystem.Implementation
                     entity.ReturnNote = birdTrainingCourse.ReturnNote;
                     entity.ReturnPicture = birdTrainingCourse.ReturnPicture;
                     entity.LastestUpdate = DateTime.Now;
-                    entity.Status = (int)Models.Enum.BirdTrainingCourse.Status.ReturnedBirdToCustomer;
+                    entity.Status = (int)Models.Enum.BirdTrainingCourse.Status.CheckOut;
                     await _unitOfWork.BirdTrainingCourseRepository.Update(entity);
                 }
             }

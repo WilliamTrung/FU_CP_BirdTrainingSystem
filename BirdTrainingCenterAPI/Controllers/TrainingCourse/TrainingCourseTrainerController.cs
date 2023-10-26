@@ -19,6 +19,15 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             var result = await _trainingCourseService.Trainer.GetBirdTrainingProgressByTrainerId(trainerId);
             return Ok(result);
         }
+
+        [HttpGet]
+        [Route("timetable-slot-itemdetail")]
+        public async Task<IActionResult> GetTimetableReportView(int birdTrainingReportId)
+        {
+            var result = await _trainingCourseService.Trainer.GetTimetableReportView(birdTrainingReportId);
+            return Ok(result);
+        }
+
         [HttpPut]
         [Route("mark-trainingdone")]
         public async Task<IActionResult> MarkTrainingSkillDone(MarkSkillDone markDone)
