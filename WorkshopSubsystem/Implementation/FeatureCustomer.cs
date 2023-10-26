@@ -17,9 +17,11 @@ namespace WorkshopSubsystem.Implementation
         {
         }
 
-        public async Task<IEnumerable<WorkshopClassViewModel>> GetRegisteredWorkshopClasses(int customerId)
+        public async Task<IEnumerable<WorkshopClassViewModel>> GetRegisteredWorkshopClass(int customerId, int workshopId)
         {
-            var entities = await _unitOfWork.CustomerWorkshopClassRepository.Get(c => c.CustomerId == customerId, nameof(CustomerWorkshopClass.WorkshopClass));
+            var entities = await _unitOfWork.CustomerWorkshopClassRepository.Get(c => c.CustomerId == customerId && workshopId == c.WorkshopClass.WorkshopId
+                                                                                , nameof(CustomerWorkshopClass.WorkshopClass)
+                                                                                , $"{nameof(CustomerWorkshopClass.WorkshopClass)}.{nameof(WorkshopClass.WorkshopClassDetails)}");
             var models = new List<WorkshopClassViewModel>();
             foreach (var entity in entities)
             {
@@ -28,7 +30,15 @@ namespace WorkshopSubsystem.Implementation
             }
             return models;
         }
+        public async Task<IEnumerable<WorkshopModel>> GetRegisteredWorkshops(int customerId)
+        {
+            var entities = await _unitOfWork.CustomerWorkshopClassRepository.Get(c => c.CustomerId == customerId, nameof(CustomerWorkshopClass.WorkshopClass));            
+            var workshops = await _unitOfWork.WorkshopRepository.Get();
+            workshops = workshops.Where(c => entities.Any(e => e.WorkshopClass.WorkshopId == c.Id));
+            var models = _mapper.Map<List<WorkshopModel>>(workshops);
+            return models;
 
+        }
         public async Task Register(int customerId, int workshopClassId)
         {
             //add new entity to CustomerWorkshopClass

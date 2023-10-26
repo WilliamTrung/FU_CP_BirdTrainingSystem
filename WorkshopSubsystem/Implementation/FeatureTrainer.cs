@@ -23,9 +23,10 @@ namespace WorkshopSubsystem.Implementation
             var entities = await _unitOfWork.WorkshopClassDetailRepository.Get(c => c.WorkshopClassId == workshopClassId 
                                                                                  && c.DaySlot.TrainerId == trainerId 
                                                                                  && c.DaySlot.Status == (int)Models.Enum.TrainerSlotStatus.Enabled
-                                                                                 && c.WorkshopClass.Status != (int)Models.Enum.Workshop.Class.Status.Cancel
+                                                                                 && c.WorkshopClass.Status != (int)Models.Enum.Workshop.Class.Status.Cancelled
                                                                                  , nameof(WorkshopClassDetail.DaySlot)
-                                                                                 , nameof(WorkshopClassDetail.WorkshopClass));
+                                                                                 , nameof(WorkshopClassDetail.WorkshopClass)
+                                                                                 , nameof(WorkshopClassDetail.WorkshopDetailTemplate));
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
             var models = _mapper.Map<List<WorkshopClassDetailViewModel>>(entities);
             return models;
@@ -35,13 +36,13 @@ namespace WorkshopSubsystem.Implementation
         {
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
             var details = await _unitOfWork.WorkshopClassDetailRepository.Get(c => c.DaySlot.TrainerId == trainerId 
-                                                                                && c.WorkshopClass.Status != (int)Models.Enum.Workshop.Class.Status.Cancel
+                                                                                && c.WorkshopClass.Status != (int)Models.Enum.Workshop.Class.Status.Cancelled
                                                                                 , nameof(WorkshopClassDetail.DaySlot)
                                                                                 , nameof(WorkshopClassDetail.WorkshopClass));
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
             details = details.DistinctBy(c => c.WorkshopClassId);
-            var workshopClasses = await _unitOfWork.WorkshopClassRepository.Get(c => details.Any(detail => detail.WorkshopClassId == c.Id)
-                                                                                  && c.Id == workshopId);
+            var workshopClasses = await _unitOfWork.WorkshopClassRepository.Get(c => c.Id == workshopId);
+            workshopClasses = workshopClasses.Where(c => details.Any(detail => detail.WorkshopClassId == c.Id));
             var models = _mapper.Map<List<WorkshopClassAdminViewModel>>(workshopClasses);
             return models;
         }
@@ -50,12 +51,13 @@ namespace WorkshopSubsystem.Implementation
         {
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
             var details = await _unitOfWork.WorkshopClassDetailRepository.Get(c => c.DaySlot.TrainerId == trainerId
-                                                                                && c.WorkshopClass.Status != (int)Models.Enum.Workshop.Class.Status.Cancel
+                                                                                && c.WorkshopClass.Status != (int)Models.Enum.Workshop.Class.Status.Cancelled
                                                                                 , nameof(WorkshopClassDetail.DaySlot)
                                                                                 , nameof(WorkshopClassDetail.WorkshopClass));
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
             details = details.DistinctBy(c => c.WorkshopClassId);
-            var workshopClasses = await _unitOfWork.WorkshopClassRepository.Get(c => details.Any(detail => detail.WorkshopClassId == c.Id), nameof(WorkshopClass.Workshop));
+            var workshopClasses = await _unitOfWork.WorkshopClassRepository.Get(null, nameof(WorkshopClass.Workshop));
+            workshopClasses = workshopClasses.Where(c => details.Any(detail => detail.WorkshopClassId == c.Id));
             workshopClasses = workshopClasses.DistinctBy(c => c.WorkshopId);
             var models = _mapper.Map<List<WorkshopModel>>(workshopClasses.Select(c => c.Workshop));
             return models;

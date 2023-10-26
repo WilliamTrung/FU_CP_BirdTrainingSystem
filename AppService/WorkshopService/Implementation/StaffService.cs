@@ -177,5 +177,9 @@ namespace AppService.WorkshopService.Implementation
         {
             await _workshop.Staff.CancelWorkshopClass(workshopClassId);
         }
+        public async Task CompleteWorkshopClass(int workshopClassId)
+        {
+            await _workshop.Staff.CompleteWorkshopClass(workshopClassId);
+        }
     }
 }

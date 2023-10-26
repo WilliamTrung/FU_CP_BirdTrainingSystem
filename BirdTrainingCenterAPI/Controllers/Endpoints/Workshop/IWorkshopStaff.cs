@@ -24,6 +24,9 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.Workshop
         [HttpPut]
         [Route("cancel")]
         Task<IActionResult> CancelWorkshopClass([FromQuery] int workshopClassId);
+        [HttpPut]
+        [Route("complete")]
+        Task<IActionResult> CompleteWorkshopClass([FromQuery] int workshopClassId);
 
     }
 }
