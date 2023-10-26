@@ -1,4 +1,5 @@
-﻿using Models.ServiceModels.WorkshopModels.WorkshopClass;
+﻿using Models.ServiceModels.WorkshopModels;
+using Models.ServiceModels.WorkshopModels.WorkshopClass;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,12 +16,12 @@ namespace AppService.WorkshopService.Implementation
         {
         }
 
-        public async Task<IEnumerable<WorkshopClassViewModel>> GetRegisteredClasses(int customerId)
+        public async Task<IEnumerable<WorkshopClassViewModel>> GetRegisteredClass(int customerId, int workshopId)
         {
-            return await _workshop.Customer.GetRegisteredWorkshopClasses(customerId);
+            return await _workshop.Customer.GetRegisteredWorkshopClass(customerId, workshopId);
         }
 
-        public async Task Regsiter(int customerId, int workshopClassId)
+        public async Task Register(int customerId, int workshopClassId)
         {
             if(await _workshop.All.SetWorkshopClassFull(workshopClassId))
             {
@@ -29,6 +30,10 @@ namespace AppService.WorkshopService.Implementation
             {
                 await _workshop.Customer.Register(customerId, workshopClassId);
             }            
+        }
+        public async Task<IEnumerable<WorkshopModel>> GetRegisteredWorkshopss(int customerId)
+        {
+            return await _workshop.Customer.GetRegisteredWorkshops(customerId);
         }
     }
 }
