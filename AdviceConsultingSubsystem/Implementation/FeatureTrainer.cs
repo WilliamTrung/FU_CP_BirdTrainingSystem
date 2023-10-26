@@ -43,7 +43,7 @@ namespace AdviceConsultingSubsystem.Implementation
             await _unitOfWork.ConsultingTicketRepository.Update(entity);
         }
 
-        public async Task FinishAppointment(ConsultingTicketUpdateStatusModel consultingTicket)
+        public async Task FinishAppointment(ConsultingTicketTrainerFinishModel consultingTicket)
         {
             var entity = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id == consultingTicket.Id);
             if (entity == null)
@@ -51,37 +51,13 @@ namespace AdviceConsultingSubsystem.Implementation
                 throw new KeyNotFoundException($"{nameof(entity)} not found for id: {consultingTicket.Id}");
             }
 
+            entity.ActualEndSlot = consultingTicket.ActualEndSlot;
+            entity.Evidence = consultingTicket.Evidence;
+            entity.Price = consultingTicket.Price;
+            entity.DiscountedPrice = consultingTicket.DiscountedPrice;
             entity.Status = consultingTicket.Status;
 
             await _unitOfWork.ConsultingTicketRepository.Update(entity);
-        }
-        public async Task<ConsultingTicketBillModel> FillOutBillingForm(ConsultingTicketBillModel consultingTicket)
-        {
-            var entity = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id == consultingTicket.Id);
-            if (entity == null)
-            {
-                throw new KeyNotFoundException($"{nameof(entity)} not found for id: {consultingTicket.Id}");
-            }
-
-            entity.ActualSlotStart = consultingTicket.ActualSlotStart;
-            entity.ActualEndSlot = consultingTicket.ActualEndSlot;
-            entity.Evidence = consultingTicket.Evidence;
-
-            if (consultingTicket.Price > 0)
-            {
-                entity.Price = consultingTicket.Price;
-                entity.DiscountedPrice = consultingTicket.DiscountedPrice;
-            }
-
-            await _unitOfWork.ConsultingTicketRepository.Update(entity);
-
-            var model = _mapper.Map<ConsultingTicketBillModel>(entity);
-            return model;
-        }
-
-        public Task UploadEvidence(int ticketId, string evidence)
-        {
-            throw new NotImplementedException();
         }
     }
 }
