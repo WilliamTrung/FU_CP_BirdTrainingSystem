@@ -16,5 +16,6 @@ namespace AppService.WorkshopService
         Task ModifyWorkshopClassDetailTrainerSlot(WorkshopClassDetailTrainerSlotModifyModel workshopClassDetail);
         Task ModifyWorkshopClassDetailSlotOnly(WorkshopClassDetailTrainerSlotOnlyModifyModel workshopClassDetail);
         Task CancelWorkshopClass(int workshopClassId);
+        Task CompleteWorkshopClass(int workshopClassId);
     }
 }

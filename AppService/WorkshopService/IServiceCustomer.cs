@@ -1,4 +1,5 @@
-﻿using Models.ServiceModels.WorkshopModels.WorkshopClass;
+﻿using Models.ServiceModels.WorkshopModels;
+using Models.ServiceModels.WorkshopModels.WorkshopClass;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,9 @@ namespace AppService.WorkshopService
 {
     public interface IServiceCustomer : IServiceAll
     {
-        Task Regsiter(int customerId, int workshopClassId);
-        Task<IEnumerable<WorkshopClassViewModel>> GetRegisteredClasses(int customerId);
+        Task Register(int customerId, int workshopClassId);
+        Task<IEnumerable<WorkshopClassViewModel>> GetRegisteredClass(int customerId, int workshopId);
+        Task<IEnumerable<WorkshopModel>> GetRegisteredWorkshopss(int customerId);
 
     }
 }

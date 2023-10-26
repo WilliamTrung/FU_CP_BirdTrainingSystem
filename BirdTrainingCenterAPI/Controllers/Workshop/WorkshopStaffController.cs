@@ -94,5 +94,19 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
                 return BadRequest(ex.Message);
             }
         }
+        [HttpPut]
+        [Route("complete")]
+        public async Task<IActionResult> CompleteWorkshopClass([FromQuery] int workshopClassId)
+        {
+            try
+            {
+                await _workshopService.Staff.CompleteWorkshopClass(workshopClassId);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

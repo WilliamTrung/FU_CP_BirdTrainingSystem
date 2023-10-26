@@ -107,7 +107,7 @@ namespace WorkshopSubsystem.Implementation
         public async Task<IEnumerable<WorkshopClassAdminViewModel>> GetWorkshopClassAdminViewModels(int workshopId)
         {
             var entities = await _unitOfWork.WorkshopClassRepository.Get(c => c.WorkshopId == workshopId 
-                                                                           && c.Status != (int)Models.Enum.Workshop.Class.Status.Cancel);
+                                                                           && c.Status != (int)Models.Enum.Workshop.Class.Status.Cancelled);
             var models = _mapper.Map<List<WorkshopClassAdminViewModel>>(entities);
             return models;
         }
@@ -115,7 +115,7 @@ namespace WorkshopSubsystem.Implementation
         public async Task<IEnumerable<WorkshopClassDetailViewModel>> GetWorkshopClassDetailViewModels(int workshopClassId)
         {
             var entities = await _unitOfWork.WorkshopClassDetailRepository.Get(c => c.WorkshopClassId == workshopClassId 
-                                                                                 && c.WorkshopClass.Status != (int)Models.Enum.Workshop.Class.Status.Cancel
+                                                                                 && c.WorkshopClass.Status != (int)Models.Enum.Workshop.Class.Status.Cancelled
                                                                                  , nameof(WorkshopClassDetail.DaySlot), nameof(WorkshopClassDetail.WorkshopClass));
             var models = _mapper.Map<List<WorkshopClassDetailViewModel>>(entities);
             return models;
@@ -124,7 +124,7 @@ namespace WorkshopSubsystem.Implementation
         public async Task ModifyWorkshopClassDetailSlotOnly(WorkshopClassDetailTrainerSlotOnlyModifyModel workshopClass)
         {
             var entity = await _unitOfWork.WorkshopClassDetailRepository.GetFirst(c => c.Id == workshopClass.Id
-                                                                                    && c.WorkshopClass.Status != (int)Models.Enum.Workshop.Class.Status.Cancel
+                                                                                    && c.WorkshopClass.Status != (int)Models.Enum.Workshop.Class.Status.Cancelled
                                                                                     , nameof(WorkshopClassDetail.DaySlot)
                                                                                     , nameof(WorkshopClassDetail.WorkshopClass));
             if(entity == null)
@@ -153,7 +153,7 @@ namespace WorkshopSubsystem.Implementation
         public async Task ModifyWorkshopClassDetailTrainerSlot(WorkshopClassDetailTrainerSlotModifyModel workshopClass)
         {
             var entity = await _unitOfWork.WorkshopClassDetailRepository.GetFirst(c => c.Id == workshopClass.Id
-                                                                                    && c.WorkshopClass.Status != (int)Models.Enum.Workshop.Class.Status.Cancel
+                                                                                    && c.WorkshopClass.Status != (int)Models.Enum.Workshop.Class.Status.Cancelled
                                                                                     , nameof(WorkshopClassDetail.DaySlot)
                                                                                     , nameof(WorkshopClassDetail.WorkshopClass));
             if(entity == null)
@@ -177,15 +177,29 @@ namespace WorkshopSubsystem.Implementation
         public async Task CancelWorkshopClass(int workshopClassId)
         {
             var entity = await _unitOfWork.WorkshopClassRepository.GetFirst(c => c.Id == workshopClassId);
-            var registered = await _unitOfWork.CustomerWorkshopClassRepository.Get(c => c.WorkshopClassId == workshopClassId && c.Status == (int)Models.Enum.Workshop.Transaction.Status.Paid);
-            if (registered.Count() >= BR_WorkshopConstant.MinimumRegisteredCustomer)
+            //26-10-2023 - TrungNT - Delete Start
+            //var registered = await _unitOfWork.CustomerWorkshopClassRepository.Get(c => c.WorkshopClassId == workshopClassId 
+            //                                                                        && c.Status == (int)Models.Enum.Workshop.Transaction.Status.Paid);
+            //if (registered.Count() >= BR_WorkshopConstant.MinimumRegisteredCustomer)
+            //{
+            //    throw new InvalidOperationException("This workshop class has reached the minimum amount of registration!");   
+            //} else
+            //{
+            //    entity.Status = (int)Models.Enum.Workshop.Class.Status.Cancelled;
+            //    await _unitOfWork.WorkshopClassRepository.Update(entity);
+            //}
+            //26-10-2023 - TrungNT - Delete End
+            //26-10-2023 - TrungNT - Add Start
+            if(entity.Status == (int)Models.Enum.Workshop.Class.Status.OnGoing)
             {
-                throw new InvalidOperationException("This workshop class has reached the minimum amount of registration!");   
-            } else
+                throw new InvalidOperationException("This workshop class is on-going!");
+            } else if(entity.Status == (int)Models.Enum.Workshop.Class.Status.Completed)
             {
-                entity.Status = (int)Models.Enum.Workshop.Class.Status.Cancel;
-                await _unitOfWork.WorkshopClassRepository.Update(entity);
+                throw new InvalidOperationException("This workshop class has been completed!");
             }
+            //26-10-2023 - TrungNT - Add End
+            entity.Status = (int)Models.Enum.Workshop.Class.Status.Cancelled;
+            await _unitOfWork.WorkshopClassRepository.Update(entity);
         }
 
         public async Task<bool> CheckPassEndRegistrationDay(int workshopClassDetailId, DateOnly compareDate)
@@ -197,6 +211,18 @@ namespace WorkshopSubsystem.Implementation
                 return false;
             }
             return true;
+        }
+        public async Task CompleteWorkshopClass(int workshopClassId)
+        {
+            //26-10-2023 - TrungNT - Add Start
+            var entity = await _unitOfWork.WorkshopClassRepository.GetFirst(c => c.Id == workshopClassId);
+            if (entity.Status != (int)Models.Enum.Workshop.Class.Status.OnGoing)
+            {
+                throw new InvalidOperationException("This workshop class has not started!");
+            }                        
+            entity.Status = (int)Models.Enum.Workshop.Class.Status.Completed;
+            await _unitOfWork.WorkshopClassRepository.Update(entity);
+            //26-10-2023 - TrungNT - Add End
         }
     }
 }

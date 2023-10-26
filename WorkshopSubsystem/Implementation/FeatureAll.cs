@@ -73,7 +73,7 @@ namespace WorkshopSubsystem.Implementation
             var registered = await _unitOfWork.CustomerWorkshopClassRepository.Get(c => c.WorkshopClassId == workshopClassId && c.Status == (int)Models.Enum.Workshop.Transaction.Status.Paid);
             if(registered.Count() == BR_WorkshopConstant.MaximumRegisteredCustomer)
             {
-                entity.Status = (int)Models.Enum.Workshop.Class.Status.Full;
+                entity.Status = (int)Models.Enum.Workshop.Class.Status.OpenRegistration;
                 await _unitOfWork.WorkshopClassRepository.Update(entity);
                 return true;
             }
@@ -82,7 +82,7 @@ namespace WorkshopSubsystem.Implementation
 
         public async Task SetWorkshopClassOngoing()
         {
-            var entities = await _unitOfWork.WorkshopClassRepository.Get(c => c.RegisterEndDate >= DateTime.Now && (c.Status == (int)Models.Enum.Workshop.Class.Status.Registration || c.Status == (int)Models.Enum.Workshop.Class.Status.Full));
+            var entities = await _unitOfWork.WorkshopClassRepository.Get(c => c.RegisterEndDate >= DateTime.Now && (c.Status == (int)Models.Enum.Workshop.Class.Status.OpenRegistration || c.Status == (int)Models.Enum.Workshop.Class.Status.ClosedRegistration));
             foreach (var entity in entities)
             {
                 entity.Status = (int)Models.Enum.Workshop.Class.Status.OnGoing;
@@ -116,7 +116,7 @@ namespace WorkshopSubsystem.Implementation
                                                                         && c.RegisterEndDate < DateTime.Now.Date);
             foreach (var entity in entities)
             {
-                entity.Status = (int)Models.Enum.Workshop.Class.Status.Cancel;
+                entity.Status = (int)Models.Enum.Workshop.Class.Status.Cancelled;
                 await _unitOfWork.WorkshopClassRepository.Update(entity);
             }
         }
@@ -126,7 +126,7 @@ namespace WorkshopSubsystem.Implementation
             var entities = await _unitOfWork.WorkshopClassRepository.Get(c => c.Status == (int)Models.Enum.Workshop.Class.Status.Pending);
             foreach (var entity in entities)
             {
-                entity.Status = (int)Models.Enum.Workshop.Class.Status.Cancel;
+                entity.Status = (int)Models.Enum.Workshop.Class.Status.Cancelled;
                 await _unitOfWork.WorkshopClassRepository.Update(entity);
             }
         }
