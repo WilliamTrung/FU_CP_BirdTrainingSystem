@@ -19,6 +19,6 @@ namespace Models.ServiceModels.TimetableModels
         public DateOnly Date { get; set; }
         public string Reason { get; set; } = null!;
         public int TypeId { get; set; } 
-        public Models.Enum.EntityType Type { get; set; }
+        public Models.Enum.EntityType TypeName { get; set; }
     }
 }
