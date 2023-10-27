@@ -5,6 +5,7 @@ using BirdTrainingCenterAPI.Helper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models.ApiParamModels.Timetable;
+using Models.AuthModels;
 using System.Security.Claims;
 
 namespace BirdTrainingCenterAPI.Controllers.Timetable
@@ -29,7 +30,7 @@ namespace BirdTrainingCenterAPI.Controllers.Timetable
             {
                 return Unauthorized();
             }
-            var trainerId = accessToken.First(c => c.Type == ClaimTypes.NameIdentifier);
+            var trainerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
             try
             {
                 var result = await _timetableService.Trainer.GetTrainerTimetable(Int32.Parse(trainerId.Value), param.From.ToDateTime(new TimeOnly()), param.To.ToDateTime(new TimeOnly()));

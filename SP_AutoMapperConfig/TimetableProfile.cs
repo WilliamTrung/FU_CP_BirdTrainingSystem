@@ -4,6 +4,7 @@ using Models.Entities;
 using Models.ServiceModels;
 using Models.ServiceModels.SlotModels;
 using Models.ServiceModels.TimetableModels;
+using SP_Extension;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -55,11 +56,15 @@ namespace SP_AutoMapperConfig
                 })
                 .ForMember(m => m.Date, opt =>
                 {
-                    opt.MapFrom(e => e.Date);
+                    opt.MapFrom(e => e.Date.ToDateOnly());
                 })
                 .ForMember(m => m.Reason, opt =>
                 {
                     opt.MapFrom(e => e.Reason);
+                })
+                .ForMember(m => m.TypeId, opt =>
+                {
+                    opt.MapFrom(e => e.EntityTypeId);
                 })
                 .ForMember(m => m.Type, opt =>
                 {
