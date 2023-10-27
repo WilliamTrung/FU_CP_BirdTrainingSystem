@@ -108,13 +108,13 @@ namespace TimetableSubsystem.Implementation
         public async Task<IEnumerable<TimetableModel>> GetTrainerTimetable(DateOnly from, DateOnly to, int trainerId)
         {
             var trainerSlots = await _unitOfWork.TrainerSlotRepository.Get(c => c.TrainerId == trainerId
-                                                                             && c.Status != (int)Models.Enum.TrainerSlotStatus.Disabled);
-            trainerSlots = trainerSlots.Where(c => c.Date.Day >= from.Day
-                                                && c.Date.Month >= from.Month
-                                                && c.Date.Year >= from.Year
-                                                && c.Date.Day <= to.Day
-                                                && c.Date.Month <= to.Month
-                                                && c.Date.Year <= to.Year);
+                                                                             && c.Status != (int)Models.Enum.TrainerSlotStatus.Disabled
+                                                                             && c.Date.Day >= from.Day
+                                                                             && c.Date.Month >= from.Month
+                                                                             && c.Date.Year >= from.Year
+                                                                             && c.Date.Day <= to.Day
+                                                                             && c.Date.Month <= to.Month
+                                                                             && c.Date.Year <= to.Year);
             var slots = _mapper.Map<List<TimetableModel>>(trainerSlots);
             return slots;
         }
