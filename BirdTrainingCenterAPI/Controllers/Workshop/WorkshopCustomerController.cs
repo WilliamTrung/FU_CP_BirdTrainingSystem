@@ -5,6 +5,7 @@ using BirdTrainingCenterAPI.Helper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Query;
 using Models.AuthModels;
 using SP_Middleware;
 using System.Security.Claims;
@@ -19,6 +20,7 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
         }
 
         [HttpGet]
+        [EnableQuery]
         [Route("registered-class")]
         public async Task<IActionResult> GetRegisteredClass([FromQuery]int workshopId)
         {
@@ -64,6 +66,7 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             return Ok();
         }
         [HttpGet]
+        [EnableQuery]
         [Route("registered-workshop")]
         public async Task<IActionResult> GetRegisteredWorkshops()
         {

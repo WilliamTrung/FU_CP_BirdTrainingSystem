@@ -4,6 +4,7 @@ using BirdTrainingCenterAPI.Controllers.Endpoints.Workshop;
 using BirdTrainingCenterAPI.Helper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Query;
 using Models.AuthModels;
 using SP_Middleware;
 using System.Security.Claims;
@@ -17,6 +18,7 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
         {
         }
         [HttpGet]
+        [EnableQuery]
         [Route("assigned-classes")]
         public async Task<IActionResult> GetAssignedClasses([FromQuery] int workshopId)
         {
@@ -42,6 +44,7 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             }
         }
         [HttpGet]
+        [EnableQuery]
         [Route("assigned-slots")]
         public async Task<IActionResult> GetAssignedSlots([FromQuery] int workshopClassId)
         {
@@ -67,6 +70,7 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             }
         }
         [HttpGet]
+        [EnableQuery]
         [Route("assigned-workshops")]
         public async Task<IActionResult> GetAssignedWorkshops()
         {

@@ -3,6 +3,7 @@ using AppService.WorkshopService;
 using BirdTrainingCenterAPI.Controllers.Endpoints.Workshop;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Query;
 using Models.ServiceModels.WorkshopModels.WorkshopClass;
 using SP_Middleware;
 
@@ -28,6 +29,7 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             return Ok();
         }
         [HttpGet]
+        [EnableQuery]
         [Route("get-classes")]
         public async Task<IActionResult> GetClassesByWorkshop([FromQuery] int workshopId)
         {
@@ -42,7 +44,7 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
         }
         [HttpGet]
         [Route("get-class-details")]
-
+        [EnableQuery]
         public async Task<IActionResult> GetDetailsByClass([FromQuery] int workshopClassId)
         {
             try
@@ -111,6 +113,7 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             }
         }
         [HttpGet]
+        [EnableQuery]
         [Route("workshops")]
         public async Task<IActionResult> GetWorkshops()
         {

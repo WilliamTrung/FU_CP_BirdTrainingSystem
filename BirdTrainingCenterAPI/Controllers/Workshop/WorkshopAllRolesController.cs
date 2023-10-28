@@ -3,6 +3,7 @@ using AppService.WorkshopService;
 using BirdTrainingCenterAPI.Controllers.Endpoints.Workshop;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Query;
 
 namespace BirdTrainingCenterAPI.Controllers.Workshop
 {
@@ -14,6 +15,7 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
         {
         }
         [HttpGet]
+        [EnableQuery]
         [Route("class")]
         public async Task<IActionResult> GetClassesOnSelectedWorkshopAsync([FromQuery] int workshopId)
         {
@@ -21,6 +23,7 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             return Ok(result);
         }
         [HttpGet]
+        [EnableQuery]
         [Route("slot-detail")]
 
         public async Task<IActionResult> GetClassSlotDetailsAsync([FromQuery] int workshopClassDetailId)
@@ -29,6 +32,7 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             return Ok(result);
         }
         [HttpGet]
+        [EnableQuery]
         [Route("class-slots")]
 
         public async Task<IActionResult> GetWorkshopClassDetailsAsync([FromQuery] int workshopClassId)
@@ -37,6 +41,7 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             return Ok(result);
         }
         [HttpGet]
+        [EnableQuery]
         [Route("refund-policies")]
 
         public async Task<IActionResult> GetWorkshopRefuncPolicies()
@@ -45,6 +50,7 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             return Ok(result);
         }
         [HttpGet]
+        [EnableQuery]
         public async Task<IActionResult> GetWorkshopsAsync()
         {
             var result = await _workshopService.All.GetWorkshopsGeneralInformation();
