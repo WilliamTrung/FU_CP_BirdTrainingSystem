@@ -2,6 +2,7 @@
 using BirdTrainingCenterAPI.Controllers.Endpoints.Timetable;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace BirdTrainingCenterAPI.Controllers.Timetable
@@ -44,6 +45,7 @@ namespace BirdTrainingCenterAPI.Controllers.Timetable
         }
         //general
         [HttpGet]
+        [EnableQuery]
         [Route("time")]
         public async Task<IActionResult> GetSlots()
         {
