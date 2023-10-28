@@ -66,7 +66,7 @@ namespace SP_AutoMapperConfig
                 {
                     opt.MapFrom(e => e.EntityTypeId);
                 })
-                .ForMember(m => m.Type, opt =>
+                .ForMember(m => m.TypeName, opt =>
                 {
                     opt.MapFrom(e => e.EntityTypeId);
                 });
