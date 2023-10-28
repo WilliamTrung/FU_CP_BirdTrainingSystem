@@ -15,6 +15,7 @@ namespace SP_AutoMapperConfig
         {
             Map_BirdTrainingCourse_BirdTrainingCourseRegister();
             Map_BirdTrainingCourse_BirdTrainingCourseViewModel();
+            Map_BirdTrainingCourse_BirdTrainingCourseListView();
         }
         private void Map_BirdTrainingCourse_BirdTrainingCourseRegister()
         {
@@ -49,6 +50,27 @@ namespace SP_AutoMapperConfig
                     opt.PreCondition(e => e.TrainingCourse != null);
                     opt.MapFrom(e => e.TrainingCourse.Picture);
                 });
+        }
+        private void Map_BirdTrainingCourse_BirdTrainingCourseListView()
+        {
+            CreateMap<BirdTrainingCourse, BirdTrainingCourseListView>()
+                .ForMember(m => m.Id, opt => opt.MapFrom(e => e.Id))
+                .ForMember(m => m.TrainingCourseId, opt => opt.MapFrom(e => e.TrainingCourseId))
+                .ForMember(m => m.BirdName, opt => {
+                    opt.PreCondition(e => e.Bird != null);
+                    opt.MapFrom(e => e.Bird.Name);
+                })
+                .ForMember(m => m.CustomerId, opt => opt.MapFrom(e => e.CustomerId))
+                .ForMember(m => m.CustomerName, opt => {
+                    opt.PreCondition(e => e.Customer != null);
+                    opt.PreCondition(e => e.Customer.User != null);
+                    opt.MapFrom(e => e.Customer.User.Name);
+                }).ForMember(m => m.TrainingCourseTitle, opt => {
+                    opt.PreCondition(e => e.TrainingCourse != null);
+                    opt.MapFrom(e => e.TrainingCourse.Title);
+                })
+                .ForMember(m => m.RegisteredDate, opt => opt.MapFrom(e => e.RegisteredDate))
+                .ForMember(m => m.Status, opt => opt.MapFrom(e => e.Status));
         }
     }
 }

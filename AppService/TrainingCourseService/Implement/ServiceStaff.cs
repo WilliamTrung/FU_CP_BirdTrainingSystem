@@ -119,5 +119,10 @@ namespace AppService.TrainingCourseService.Implement
         {
             await _trainingCourse.Staff.ModifyTrainerSlot(trainerSlot);
         }
+
+        public Task<IEnumerable<BirdTrainingCourseListView>> GetBirdTrainingCourseByCustomerId(int customerId)
+        {
+            return _trainingCourse.Staff.GetBirdTrainingCourseByCustomerId(customerId);
+        }
     }
 }

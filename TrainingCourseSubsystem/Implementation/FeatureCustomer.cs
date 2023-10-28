@@ -83,6 +83,7 @@ namespace TrainingCourseSubsystem.Implementation
             else
             {
                 entity.LastestUpdate = DateTime.Now;
+                entity.RegisteredDate= DateTime.Now;
                 entity.Status = (int)Models.Enum.BirdTrainingCourse.Status.Registered;
                 await _unitOfWork.BirdTrainingCourseRepository.Add(entity);
             }

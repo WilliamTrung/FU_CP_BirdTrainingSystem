@@ -11,6 +11,7 @@ namespace Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse
         public int CustomerId { get; set; }
         public int BirdId { get; set; }
         public int TrainingCourseId { get; set; }
+        public DateTime? RegisteredDate { get; set; }
         public decimal? TotalPrice { get; set; }
         public decimal? DiscountedPrice { get; set; }
         public int StaffId { get; set; }

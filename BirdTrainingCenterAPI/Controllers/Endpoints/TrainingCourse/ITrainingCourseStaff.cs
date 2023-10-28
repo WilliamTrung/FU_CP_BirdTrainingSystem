@@ -49,6 +49,10 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
         [Route("birdtrainingcourse-bird")]
         Task<IActionResult> GetBirdTrainingCourseByBirdId([FromQuery] int birdId);
 
+        [HttpGet]
+        [Route("birdtrainingcourse-customer")]
+        Task<IActionResult> GetBirdTrainingCourseByCustomerId(int customerId);
+
         [HttpPost]
         [Route("trainer")]
         Task<IActionResult> GetTrainer();

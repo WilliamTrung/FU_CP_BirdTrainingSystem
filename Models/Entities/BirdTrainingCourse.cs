@@ -15,6 +15,7 @@ namespace Models.Entities
         public int TrainingCourseId { get; set; }
         public int StaffId { get; set; }
         public int CustomerId { get; set; }
+        public DateTime? RegisteredDate { get; set; }
         public decimal? TotalPrice { get; set; }
         public decimal? DiscountedPrice { get; set; }
         public DateTime? ExpectedStartDate { get; set; }

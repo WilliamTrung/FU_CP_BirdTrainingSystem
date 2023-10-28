@@ -322,5 +322,16 @@ namespace TrainingCourseSubsystem.Implementation
             entity.Status = (int)Models.Enum.TrainerSlotStatus.Enabled;
             await _unitOfWork.TrainerSlotRepository.Add(entity);
         }
+
+        public async Task<IEnumerable<BirdTrainingCourseListView>> GetBirdTrainingCourseByCustomerId(int customerId)
+        {
+            var entities = await _unitOfWork.BirdTrainingCourseRepository.Get(e => e.CustomerId == customerId
+                                                                                , nameof(BirdTrainingCourse.TrainingCourse)
+                                                                                , nameof(BirdTrainingCourse.Bird)
+                                                                                , nameof(BirdTrainingCourse.Customer)
+                                                                                , $"{nameof(BirdTrainingCourse.Customer)}.{nameof(BirdTrainingCourse.Customer.User)}");
+            var models = _mapper.Map<IEnumerable<BirdTrainingCourseListView>>(entities);
+            return models;
+        }
     }
 }

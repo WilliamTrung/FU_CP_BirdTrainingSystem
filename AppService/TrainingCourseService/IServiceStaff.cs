@@ -24,6 +24,7 @@ namespace AppService.TrainingCourseService
         Task ReceiveBird(BirdTrainingCourseReceiveBird birdTrainingCourse); //nhan chim => chim is not ready => ko the set lich moi
         Task ReturnBird(BirdTrainingCourseReturnBird birdTrainingCourse); //tra chim => chim ready => co the set lich moi neu muon
         Task<IEnumerable<BirdTrainingCourseModel>> GetBirdTrainingCourseByBirdId(int birdId); //xem request theo chim
+        Task<IEnumerable<BirdTrainingCourseListView>> GetBirdTrainingCourseByCustomerId(int customerId);
         Task<IEnumerable<TrainerModel>> GetTrainer();//lay tat ca trainer
         Task<TrainerModel> GetTrainerById(int trainerId);//lay trainer theo id
         Task<IEnumerable<TrainerModel>> GetTrainerByTrainerSkillId(int trainerSkillId);//lay danh sach trainer theo ki nang Trainer

@@ -34,6 +34,7 @@ namespace TrainingCourseSubsystem
         Task ReturnBird(BirdTrainingCourseReturnBird birdTrainingCourse);
         //Task Update(BirdTrainingProgressModel birdTrainingProgress);
         Task<IEnumerable<BirdTrainingCourseModel>> GetBirdTrainingCourseByBirdId(int birdId);
+        Task<IEnumerable<BirdTrainingCourseListView>> GetBirdTrainingCourseByCustomerId(int customerId);
         Task<IEnumerable<TrainerModel>> GetTrainer();
         Task<TrainerModel> GetTrainerById(int trainerId);
         Task<IEnumerable<TrainerModel>> GetTrainerByTrainerSkillId(int trainerSkillId);
