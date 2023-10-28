@@ -139,12 +139,6 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
-        [HttpGet]
-        [Route("workshops")]
-        public async Task<IActionResult> GetWorkshops()
-        {
-            var result = await _workshopService.Manager.GetAllWorkshops();
-            return Ok(result);
-        }
+       
     }
 }

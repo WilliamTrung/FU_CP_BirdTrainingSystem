@@ -2,12 +2,13 @@
 using BirdTrainingCenterAPI.Controllers.Endpoints.Timetable;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace BirdTrainingCenterAPI.Controllers.Timetable
 {
     [Route("api/slot")]
     [ApiController]
-    public class SlotController : ControllerBase, ISlotGeneral, ISlotStaff
+    public class SlotController : ODataController, ISlotGeneral, ISlotStaff
     {
         private readonly ITimetableService _timetableService;
         public SlotController(ITimetableService timetableService)

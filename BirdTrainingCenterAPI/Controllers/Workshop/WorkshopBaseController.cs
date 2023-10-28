@@ -2,13 +2,14 @@
 using AppService.WorkshopService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Routing.Controllers;
 using System.Security.Claims;
 
 namespace BirdTrainingCenterAPI.Controllers.Workshop
 {
     [Route("api/workshop")]
     [ApiController]
-    public class WorkshopBaseController : ControllerBase
+    public class WorkshopBaseController : ODataController
     {
         internal readonly IWorkshopService _workshopService;
         internal readonly IAuthService _authService;

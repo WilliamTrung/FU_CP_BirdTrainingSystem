@@ -2,13 +2,14 @@
 using AppService.TimetableService;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Routing.Controllers;
 using System.Security.Claims;
 
 namespace BirdTrainingCenterAPI.Controllers.Timetable
 {
     [Route("api/timetable")]
     [ApiController]
-    public class TimetableBaseController : ControllerBase
+    public class TimetableBaseController : ODataController
     {
         internal readonly ITimetableService _timetableService;
         internal readonly IAuthService _authService;
