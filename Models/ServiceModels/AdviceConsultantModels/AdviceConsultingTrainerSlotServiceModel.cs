@@ -10,11 +10,11 @@ namespace Models.ServiceModels.AdviceConsultantModels
     {
         public int TrainerId { get; private set; }
         public int SlotId { get; private set; }
-        public DateTime Date { get; private set; }
+        public DateOnly Date { get; private set; }
         public int EntityTypeId { get; } = (int)Models.Enum.EntityType.AdviceConsulting;
         public int EntityId { get; private set; }
         public int Status { get; } = (int)Models.Enum.TrainerSlotStatus.Enabled;
-        public AdviceConsultingTrainerSlotServiceModel(int trainerId, int slotId, DateTime date, int ticketId)
+        public AdviceConsultingTrainerSlotServiceModel(int trainerId, int slotId, DateOnly date, int ticketId)
         {
             TrainerId = trainerId;
             SlotId = slotId;

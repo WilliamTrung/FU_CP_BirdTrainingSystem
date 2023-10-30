@@ -22,12 +22,13 @@ namespace AdviceConsultingSubsystem.Implementation
             _mapper = mapper;
         }
 
-        public async Task SendConsultingTicket(ConsultingTicketCreateNewModel consultingTicket, decimal finalPrice, decimal discountedPrice)
+        public async Task SendConsultingTicket(ConsultingTicketCreateNewModel consultingTicket, int distance, decimal finalPrice, decimal discountedPrice)
         {
             var entity = _mapper.Map<ConsultingTicket>(consultingTicket);
-            entity.Status = (int)Models.Enum.ConsultingTicket.Status.WaitingForApprove;
+            entity.Distance = distance;
             entity.Price = finalPrice;
             entity.DiscountedPrice = discountedPrice;
+            entity.Status = (int)Models.Enum.ConsultingTicket.Status.WaitingForApprove;
 
             await _unitOfWork.ConsultingTicketRepository.Add(entity);
             //Add new Consulting Ticket

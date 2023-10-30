@@ -8,9 +8,8 @@ namespace Models.ServiceModels.AdviceConsultantModels.ConsultingTicket
 {
     public class ConsultingTicketCreateNewModel
     {
-        public int Id { get; set; }
         public int CustomerId { get; set; }
-        public string Address { get; set; }
+        public string? Address { get; set; }
         public string ConsultingType { get; set; }
         public int TrainerId { get; set; }
         public string ConsultingDetail { get; set; }
