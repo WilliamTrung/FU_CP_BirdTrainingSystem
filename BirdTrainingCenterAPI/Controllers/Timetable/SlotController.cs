@@ -16,7 +16,7 @@ namespace BirdTrainingCenterAPI.Controllers.Timetable
         {
             _timetableService = timetableService;
         }
-        //staff
+        //staff - customer
         [HttpPost]
         public async Task<IActionResult> GetFreeSlotOfTrainerByDate([FromQuery] int trainerId, [FromBody] DateOnly date)
         {
