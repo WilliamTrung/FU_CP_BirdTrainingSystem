@@ -16,5 +16,6 @@ namespace AppService.WorkshopService
         Task<WorkshopClassDetailViewModel> GetWorkshopClassDetailById(int workshopClassDetailId);
         Task<IEnumerable<WorkshopRefundPolicyModel>> GetRefundPolicies();
         Task<RegistrationAmountModel> GetRegistrationAmount(int workshopClassId);
+        Task<WorkshopClassViewModel> GetWorkshopClass(int workshopClassId);
     }
 }
