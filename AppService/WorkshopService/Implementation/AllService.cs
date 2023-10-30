@@ -47,5 +47,10 @@ namespace AppService.WorkshopService.Implementation
         {
             return await _workshop.All.GetRegistrationAmount(workshopClassId);
         }
+
+        public async Task<WorkshopClassViewModel> GetWorkshopClass(int workshopClassId)
+        {
+            return await _workshop.All.GetWorkshopClass(workshopClassId);
+        }
     }
 }

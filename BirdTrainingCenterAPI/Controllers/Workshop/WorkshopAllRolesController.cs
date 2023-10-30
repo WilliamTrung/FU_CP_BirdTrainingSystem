@@ -24,6 +24,14 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
         }
         [HttpGet]
         [EnableQuery]
+        [Route("class-by-id")]
+        public async Task<IActionResult> GetClassById([FromQuery] int workshopClassId)
+        {
+            var result = await _workshopService.All.GetWorkshopClass(workshopClassId);
+            return Ok(result);
+        }
+        [HttpGet]
+        [EnableQuery]
         [Route("slot-detail")]
 
         public async Task<IActionResult> GetClassSlotDetailsAsync([FromQuery] int workshopClassDetailId)

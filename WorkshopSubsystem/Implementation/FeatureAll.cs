@@ -143,5 +143,17 @@ namespace WorkshopSubsystem.Implementation
             };
             return result;
         }
+
+        public async Task<WorkshopClassViewModel> GetWorkshopClass(int workshopClassId)
+        {
+            var entity = await _unitOfWork.WorkshopClassRepository.GetFirst(c => c.Id == workshopClassId
+                                                                          && c.Workshop.Status != (int)Models.Enum.Workshop.Status.Inactive
+                                                                          , nameof(WorkshopClass.WorkshopClassDetails)
+                                                                          , nameof(WorkshopClass.Workshop)
+                                                                          , $"{nameof(WorkshopClass.WorkshopClassDetails)}.{nameof(WorkshopClassDetail.DaySlot)}"
+                                                                          , $"{nameof(WorkshopClass.WorkshopClassDetails)}.{nameof(WorkshopClassDetail.DaySlot)}.{nameof(TrainerSlot.Trainer)}");
+            var model = _mapper.Map<WorkshopClassViewModel>(entity);
+            return model;
+        }
     }
 }
