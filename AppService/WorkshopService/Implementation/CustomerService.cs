@@ -45,7 +45,7 @@ namespace AppService.WorkshopService.Implementation
             {
                 throw new InvalidOperationException("Has not registered this class!");
             }
-            var discounted = await _transaction.CalculateMemberShipDiscountedPrice(customerRegistered.WorkshopClass.Workshop.Price, customerId);
+            var discounted = await _transaction.CalculateMemberShipDiscountedPrice(customerId, customerRegistered.WorkshopClass.Workshop.Price);
             var final = customerRegistered.WorkshopClass.Workshop.Price - discounted;
             var billingInfo = new BillingModel
             {
