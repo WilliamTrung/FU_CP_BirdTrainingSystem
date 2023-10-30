@@ -120,7 +120,10 @@ namespace TrainingCourseSubsystem.Implementation
 
         public async Task<IEnumerable<BirdTrainingProgressViewModel>> ViewBirdTrainingCourseProgress(int birdTrainingCourseId)
         {
-            var entities = await _unitOfWork.BirdTrainingProgressRepository.Get(expression: e => e.BirdTrainingCourseId == birdTrainingCourseId);
+            var entities = await _unitOfWork.BirdTrainingProgressRepository.Get(expression: e => e.BirdTrainingCourseId == birdTrainingCourseId
+                                                                                ,nameof(BirdTrainingProgress.Trainer)
+                                                                                ,nameof(BirdTrainingProgress.TrainingCourseSkill)
+                                                                                ,$"{nameof(BirdTrainingProgress.TrainingCourseSkill)}.{nameof(BirdTrainingProgress.TrainingCourseSkill.BirdSkill)}");
             List<BirdTrainingProgressViewModel> models = new List<BirdTrainingProgressViewModel>();
             foreach (var entity in entities)
             {
@@ -132,7 +135,8 @@ namespace TrainingCourseSubsystem.Implementation
 
         public async Task<IEnumerable<BirdTrainingReportViewModel>> ViewBirdTrainingCourseReport(int birdTrainingProgressId)
         {
-            var entities = await _unitOfWork.BirdTrainingReportRepository.Get(expression: e => e.BirdTrainingProgressId == birdTrainingProgressId, nameof(TrainerSlot));
+            var entities = await _unitOfWork.BirdTrainingReportRepository.Get(expression: e => e.BirdTrainingProgressId == birdTrainingProgressId
+                                                                              , nameof(TrainerSlot));
             List<BirdTrainingReportViewModel> models = new List<BirdTrainingReportViewModel>();
             foreach (var entity in entities)
             {

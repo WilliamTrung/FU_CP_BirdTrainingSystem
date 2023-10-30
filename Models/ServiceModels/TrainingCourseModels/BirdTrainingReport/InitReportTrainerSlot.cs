@@ -8,8 +8,8 @@ namespace Models.ServiceModels.TrainingCourseModels.BirdTrainingReport
 {
     public class InitReportTrainerSlot
     {
-        public int TrainerId { get; set; }
         public int BirdTrainingProgressId { get; set; }
+        public int TrainerId { get; set; }
         public int TrainerSlotId { get; set; }
     }
 }

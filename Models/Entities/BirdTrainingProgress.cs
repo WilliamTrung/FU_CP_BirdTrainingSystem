@@ -13,10 +13,12 @@ namespace Models.Entities
         public int Id { get; set; }
         public int BirdTrainingCourseId { get; set; }
         public int TrainingCourseSkillId { get; set; }
-        public int TrainerId { get; set; }
+        public int TotalTrainingSlot { get; set; }
+        public int? TrainerId { get; set; }
+        public DateTime? StartTrainingDate { get; set; }
         public DateTime? TrainingDoneDate { get; set; }
         public string? Evidence { get; set; }
-        public bool? IsComplete { get; set; }
+        public int Status { get; set; }
 
         public virtual BirdTrainingCourse BirdTrainingCourse { get; set; } = null!;
         public virtual Trainer Trainer { get; set; } = null!;

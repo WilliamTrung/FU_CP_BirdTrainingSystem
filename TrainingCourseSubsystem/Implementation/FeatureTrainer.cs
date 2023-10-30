@@ -42,14 +42,14 @@ namespace TrainingCourseSubsystem.Implementation
             {
                 entity.Evidence = markDone.Evidence;
                 entity.TrainingDoneDate = DateTime.Now;
-                entity.IsComplete = true;
+                entity.Status = (int)Models.Enum.BirdTrainingProgress.Status.Complete;
                 await _unitOfWork.BirdTrainingProgressRepository.Update(entity);
 
                 var birdTrainingProgressAll = _unitOfWork.BirdTrainingProgressRepository.Get(e => e.BirdTrainingCourseId == entity.BirdTrainingCourseId).Result.ToList();
                 bool allDone = true;
                 foreach(BirdTrainingProgress progress in birdTrainingProgressAll)
                 {
-                    if (progress.IsComplete == false)
+                    if (progress.Status == (int)Models.Enum.BirdTrainingProgress.Status.Complete)
                     {
                         allDone= false;
                     }

@@ -36,9 +36,9 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         }
         [HttpPost]
         [Route("generate-trainerslot")]
-        public async Task<IActionResult> GenerateTrainerTimetable([FromBody] InitReportTrainerSlot report)
+        public async Task<IActionResult> GenerateTrainerTimetable([FromBody] IEnumerable<int> progressId)
         {
-            await _trainingCourseService.Staff.GenerateTrainerTimetable(report);
+            await _trainingCourseService.Staff.GenerateTrainerTimetable(progressId);
             return Ok();
         }
         [HttpGet]

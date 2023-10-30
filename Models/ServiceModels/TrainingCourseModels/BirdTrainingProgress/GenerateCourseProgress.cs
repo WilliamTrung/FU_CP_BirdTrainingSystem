@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress
 {
-    public class AssignTrainerToCourse
+    public class GenerateCourseProgress
     {
-        public int Id { get; set; }
-        public int TrainerId { get; set; }
+        public int BirdTrainingCourseId { get; set; }
+        public int TrainingCourseSkillId { get; set; }
     }
 }

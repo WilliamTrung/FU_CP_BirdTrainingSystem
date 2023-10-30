@@ -38,15 +38,9 @@ namespace AppRepository.Repository.Implement
                         entity.Status = (int)Models.Enum.BirdTrainingCourse.Status.Training;
                         await Update(entity);
                     }
-                    else if(entity.Status == (int)Models.Enum.BirdTrainingCourse.Status.Registered && compareDate > 0)
-                    {
-                        entity.Status = (int)Models.Enum.BirdTrainingCourse.Status.Registered;
-                        await Update(entity);
-                    }
                 }
             }
-            var result = await base.Get(expression, includeProperties);
-            return result;
+            return entities;
         }
     }
 }

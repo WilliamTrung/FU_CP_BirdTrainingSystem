@@ -16,12 +16,12 @@ namespace SP_AutoMapperConfig
     {
         public BirdTrainingReportProfile()
         {
-            Map_BirdTrainingReport_BirdTrainingReportModel();
+            Map_BirdTrainingReport_BirdTrainingReportViewModel();
             Map_BirdTrainingReport_InitReportTrainerSlot();
             Map_BirdTrainingReport_TimetableReportView();
         }
 
-        private void Map_BirdTrainingReport_BirdTrainingReportModel()
+        private void Map_BirdTrainingReport_BirdTrainingReportViewModel()
         {
             CreateMap<BirdTrainingReport, BirdTrainingReportViewModel>()
                 .ForMember(m => m.Status, opt => opt.MapFrom(e => e.Status))

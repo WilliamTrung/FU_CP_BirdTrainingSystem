@@ -22,21 +22,23 @@ namespace TrainingCourseSubsystem
         //FE36[Staff] notify[Customer] - to receive[Bird] - [Customer] must be at the center to receive[Bird]
 
         Task<IEnumerable<BirdTrainingCourseModel>> GetBirdTrainingCourse();
-        Task<IEnumerable<TrainingCourseSkillModel>> GetTrainingCourseSkill(int trainingCourseId);
+        Task<IEnumerable<BirdTrainingCourseListView>> GetBirdTrainingCourseByCustomerId(int customerId);
+        Task<IEnumerable<BirdTrainingCourseModel>> GetBirdTrainingCourseByBirdId(int birdId);
+        Task ConfirmBirdTrainingCourse(int birdTrainingCourseId);
+        Task<IEnumerable<BirdTrainingProgressViewModel>> GetTrainingCourseSkill(int birdTrainingCourseId);
+        Task<IEnumerable<TrainerModel>> GetTrainer();
         Task<IEnumerable<TrainerModel>> GetTrainerByBirdSkillId(int birdSkillId);
+        Task<IEnumerable<TrainerModel>> GetTrainerByTrainerSkillId(int trainerSkillId);
+        Task<TrainerModel> GetTrainerById(int trainerId);
         Task<BirdTrainingProgressModel> AssignTrainer(AssignTrainerToCourse assignTrainer);
         Task GenerateTrainerTimetable(InitReportTrainerSlot report);
-        Task InitStartTime(BirdTrainingCourseStartTime birdTrainingCourse);
-        Task ConfirmTrainerSlot(TrainerSlotModel trainerSlotModel);
-        Task ModifyActualStartTime(DateTime startDate, int birdTrainingCourseId);
+        Task<IEnumerable<BirdTrainingProgressModel>> GetBirdTrainingProgress();
         Task ModifyTrainerSlot(ModifyTrainerSlot trainerSlot);
+        Task<TrainerSlotModel> CreateTrainerSlot(TrainerSlotModel trainerSlotModel);
+        Task InitStartTime(BirdTrainingCourseStartTime birdTrainingCourse);
+        Task ModifyActualStartTime(DateTime startDate, int birdTrainingCourseId);
         Task ReceiveBird(BirdTrainingCourseReceiveBird birdTrainingCourse);
         Task ReturnBird(BirdTrainingCourseReturnBird birdTrainingCourse);
         //Task Update(BirdTrainingProgressModel birdTrainingProgress);
-        Task<IEnumerable<BirdTrainingCourseModel>> GetBirdTrainingCourseByBirdId(int birdId);
-        Task<IEnumerable<BirdTrainingCourseListView>> GetBirdTrainingCourseByCustomerId(int customerId);
-        Task<IEnumerable<TrainerModel>> GetTrainer();
-        Task<TrainerModel> GetTrainerById(int trainerId);
-        Task<IEnumerable<TrainerModel>> GetTrainerByTrainerSkillId(int trainerSkillId);
     }
 }
