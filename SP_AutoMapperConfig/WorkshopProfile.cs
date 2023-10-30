@@ -182,7 +182,7 @@ namespace SP_AutoMapperConfig
             destination.Detail = source.WorkshopDetailTemplate.Detail;
             destination.Id = source.Id;
 #pragma warning disable CS8629 // Nullable value type may be null.
-            if(source.DaySlot == null)
+            if(source.DaySlotId == null)
             {
                 //not yet assign trainer
                 destination.Trainer = null;
@@ -192,7 +192,8 @@ namespace SP_AutoMapperConfig
             {
                 source.DaySlot = _uow.TrainerSlotRepository.GetFirst(c => c.Id == source.DaySlotId
                                                                         , nameof(TrainerSlot.Trainer)
-                                                                        , nameof(TrainerSlot.Slot)).Result;
+                                                                        , nameof(TrainerSlot.Slot)
+                                                                        , $"{nameof(TrainerSlot.Trainer)}.{nameof(Trainer.User)}").Result;
                 destination.Trainer = _mapper.Map<TrainerWorkshopModel>(source.DaySlot.Trainer);
                 destination.Date = (DateTime)source.DaySlot.Date;
                 destination.StartTime = (TimeSpan)source.DaySlot.Slot.StartTime;
@@ -219,7 +220,7 @@ namespace SP_AutoMapperConfig
             foreach (var detail in source.WorkshopClassDetails)
             {
 #pragma warning disable CS8601 // Possible null reference assignment.
-                detail.WorkshopDetailTemplate = _uow.WorkshopDetailTemplateRepository.GetFirst(c => c.Id == source.Id).Result;
+                detail.WorkshopDetailTemplate = _uow.WorkshopDetailTemplateRepository.GetFirst(c => c.Id == detail.DetailId).Result;
 #pragma warning restore CS8601 // Possible null reference assignment.
             }
             destination.ClassSlots = _mapper.Map<List<WorkshopClassDetailViewModel>>(source.WorkshopClassDetails);
