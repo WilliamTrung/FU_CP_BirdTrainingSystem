@@ -25,12 +25,12 @@ namespace AppService.AdviceConsultingService.Implementation
             return await _consulting.Customer.GetConsultingTicketByID(id);
         }
 
-        public async Task SendConsultingTicket(ConsultingTicketCreateNewModel consultingTicket)
+        public async Task SendConsultingTicket(ConsultingTicketCreateNewModel consultingTicket, int distance)
         {
-            dynamic price = await _transaction.CalculateConsultingTicketFinalPrice(consultingTicket.Id);
+            dynamic price = await _transaction.CalculateConsultingTicketFinalPrice(consultingTicket, distance);
             decimal finalPrice = price.FinalPrice;
             decimal discountedPrice = price.DiscountedPrice;
-            await _consulting.Customer.SendConsultingTicket(consultingTicket, finalPrice, discountedPrice);
+            await _consulting.Customer.SendConsultingTicket(consultingTicket, distance, finalPrice, discountedPrice);
         }
     }
 }

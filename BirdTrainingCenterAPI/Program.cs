@@ -41,6 +41,7 @@ builder.Services.AddControllers().AddOData(options => options
                        x.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
                        x.JsonSerializerOptions.Converters.Add(new TimeOnlyConverter());
                        x.JsonSerializerOptions.Converters.Add(new DateOnlyConverter());
+                       x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.ConsultingTicket.Status>());
                        x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.Workshop.Status>());
                        x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.Workshop.Class.Status>());
                        x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.EntityType>());

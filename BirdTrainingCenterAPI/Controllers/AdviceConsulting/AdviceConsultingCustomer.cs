@@ -14,8 +14,10 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
     [ApiController]
     public class AdviceConsultingCustomer : AdviceConsultingBaseController, IAdviceConsultingCustomer
     {
-        public AdviceConsultingCustomer(IAdviceConsultingService adviceConsultingService, IAuthService authService) : base(adviceConsultingService, authService) 
+        private readonly IGoogleMapService _googleMapService;
+        public AdviceConsultingCustomer(IAdviceConsultingService adviceConsultingService, IAuthService authService, IGoogleMapService googleMapService) : base(adviceConsultingService, authService) 
         {
+            _googleMapService = googleMapService;
         }
 
         [HttpGet]
@@ -56,7 +58,12 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
 
                 ticket.CustomerId = Int32.Parse(customerId.Value);
 
-                await _consultingService.Customer.SendConsultingTicket(ticket);
+                int distance = 0;
+                if (ticket.Address != null)
+                {
+                    distance = (int)await _googleMapService.CalculateDistance(ticket.Address);
+                }
+                await _consultingService.Customer.SendConsultingTicket(ticket, distance);
                 return Ok();
 
             }

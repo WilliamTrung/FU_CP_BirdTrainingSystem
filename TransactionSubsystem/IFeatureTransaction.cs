@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +10,8 @@ namespace TransactionSubsystem
     public interface IFeatureTransaction
     {
         Task<decimal> CalculateDistancePrice(int distance);
-        Task<decimal> CalculateMemberShipDiscountedPrice(decimal price, int customerId);
-        Task<dynamic> CalculateConsultingTicketFinalPrice(int ticketId);
+        Task<decimal> CalculateMemberShipDiscountedPrice(int customerId, decimal price);
+        Task<dynamic> CalculateConsultingTicketFinalPrice(ConsultingTicketCreateNewModel consultingTicket, int distance);
+        Task<dynamic> CalculateFinalPrice(int customerId, decimal price);
     }
 }

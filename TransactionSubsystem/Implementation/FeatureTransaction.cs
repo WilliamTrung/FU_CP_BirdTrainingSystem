@@ -1,6 +1,7 @@
 ﻿using AppRepository.UnitOfWork;
 using AutoMapper;
 using Models.Entities;
+using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,21 +20,13 @@ namespace TransactionSubsystem.Implementation
             _mapper = mapper;
         }
 
-        public async Task<dynamic> CalculateConsultingTicketFinalPrice(int ticketId)
+        public async Task<dynamic> CalculateConsultingTicketFinalPrice(ConsultingTicketCreateNewModel consultingTicket, int distance)
         {
-            var ticket = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id == ticketId);
-            if (ticket == null)
-            {
-                throw new KeyNotFoundException($"{nameof(ticket)} not found for id: {ticketId}");
-            }
-#pragma warning disable CS8629 // Nullable value type may be null.
-            int distance = (int)ticket.Distance;
-#pragma warning restore CS8629 // Nullable value type may be null.
             var distancePrice = await CalculateDistancePrice(distance);
 
-            var pricePolicy = await _unitOfWork.ConsultingPricePolicyRepository.GetFirst(x => x.OnlineOrOffline == ticket.OnlineOrOffline);
+            var pricePolicy = await _unitOfWork.ConsultingPricePolicyRepository.GetFirst(x => x.OnlineOrOffline == consultingTicket.OnlineOrOffline);
             var totalPrice = distancePrice + pricePolicy.Price;
-            var discountedPrice = await CalculateMemberShipDiscountedPrice(totalPrice, ticket.CustomerId);
+            var discountedPrice = await CalculateMemberShipDiscountedPrice(consultingTicket.CustomerId, totalPrice);
             var finalPrice = totalPrice - discountedPrice;
             //return finalPrice;
             return new
@@ -86,7 +79,18 @@ namespace TransactionSubsystem.Implementation
             return totalDistancePrice;
         }
 
-        public async Task<decimal> CalculateMemberShipDiscountedPrice(decimal price, int customerId)
+        public async Task<dynamic> CalculateFinalPrice(int customerId, decimal price)
+        {
+            var discountedPrice = await CalculateMemberShipDiscountedPrice(customerId, price);
+            var finalPrice = price - discountedPrice;
+            return new
+            {
+                FinalPrice = finalPrice,
+                DiscountedPrice = discountedPrice
+            };
+        }
+
+        public async Task<decimal> CalculateMemberShipDiscountedPrice(int customerId, decimal price)
         {
             var customer = await _unitOfWork.CustomerRepository.GetFirst(x => x.Id == customerId, nameof(Customer.MembershipRank));
             if (customer == null)
