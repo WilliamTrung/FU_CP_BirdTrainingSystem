@@ -12,6 +12,7 @@ namespace WorkshopSubsystem
     {        
         Task<IEnumerable<WorkshopModel>> GetWorkshopGeneralInformation();
         Task<bool> SetWorkshopClassFull(int workshopClassId);
+        Task<RegistrationAmountModel> GetRegistrationAmount(int workshopClassId);
         Task SetWorkshopClassOngoing();
         Task SetWorkshopClassComplete();
         Task SetWorkshopClassExceedRegistration();

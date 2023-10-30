@@ -21,5 +21,6 @@ namespace WorkshopSubsystem
         Task<WorkshopClassDetailViewModel?> GetPreviousWorkshopClassDetail(int workshopClassDetailId);
         Task<WorkshopClassDetailViewModel?> GetFollowingWorkshopClassDetail(int workshopClassDetailId);
         Task CancelWorkshopClass(int workshopClassId);
+        Task CompleteWorkshopClass(int workshopClassId);
     }
 }

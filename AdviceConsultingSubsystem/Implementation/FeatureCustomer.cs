@@ -16,30 +16,19 @@ namespace AdviceConsultingSubsystem.Implementation
     {
         internal readonly IUnitOfWork _unitOfWork;
         internal readonly IMapper _mapper;
-        internal readonly IFeatureTransaction _transaction;
-        public FeatureCustomer(IUnitOfWork unitOfWork, IMapper mapper, IFeatureTransaction transaction)
+        public FeatureCustomer(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _transaction = transaction;
         }
 
-        public async Task SendConsultingTicket(ConsultingTicketCreateNewModel consultingTicket)
+        public async Task SendConsultingTicket(ConsultingTicketCreateNewModel consultingTicket, decimal finalPrice, decimal discountedPrice)
         {
-            if (consultingTicket.TrainerId == null)
-            {
-                consultingTicket.Status = (int)Models.Enum.ConsultingTicket.Status.WaitingForAssign;
-            }
-            else
-            {
-                consultingTicket.Status = (int)Models.Enum.ConsultingTicket.Status.WaitingForApprove;
-            }
-
-            dynamic price = await _transaction.CalculateConsultingTicketFinalPrice(consultingTicket.Id);
-            consultingTicket.Price = price.FinalPrice;
-            consultingTicket.DiscountedPrice = price.DiscountedPrice;
-
             var entity = _mapper.Map<ConsultingTicket>(consultingTicket);
+            entity.Status = (int)Models.Enum.ConsultingTicket.Status.WaitingForApprove;
+            entity.Price = finalPrice;
+            entity.DiscountedPrice = discountedPrice;
+
             await _unitOfWork.ConsultingTicketRepository.Add(entity);
             //Add new Consulting Ticket
         }

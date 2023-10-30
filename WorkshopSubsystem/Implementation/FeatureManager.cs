@@ -1,5 +1,6 @@
 ﻿using AppRepository.UnitOfWork;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using Models.Entities;
 using Models.ServiceModels.WorkshopModels;
 using System;
@@ -100,15 +101,17 @@ namespace WorkshopSubsystem.Implementation
             }
             //entity.Status = workshop.Status;
             var details = await _unitOfWork.WorkshopDetailTemplateRepository.Get(c => c.WorkshopId == workshop.Id);
-            if(workshop.Status == (int)Models.Enum.Workshop.Status.Inactive)
+            if (workshop.Status == (int)Models.Enum.Workshop.Status.Inactive)
             {
-                //check if any class is in progress or registration
-                var classes = await _unitOfWork.WorkshopClassRepository.Get(c => c.Status == (int)Models.Enum.Workshop.Class.Status.Registration 
-                                                                                || c.Status == (int)Models.Enum.Workshop.Class.Status.OnGoing);
-                if (classes.Any())
-                {
-                    throw new InvalidOperationException("Classes are in operation!");
-                }
+                //26-10-2023 - TrungNT - Delete Start
+                ////check if any class is in progress or registration
+                //var classes = await _unitOfWork.WorkshopClassRepository.Get(c => c.Status == (int)Models.Enum.Workshop.Class.Status.OpenRegistration 
+                //                                                                || c.Status == (int)Models.Enum.Workshop.Class.Status.OnGoing);
+                //if (classes.Any())
+                //{
+                //    throw new InvalidOperationException("Classes are in operation!");
+                //}
+                //26-10-2023 - TrungNT - Delete End
                 entity.Status = workshop.Status;
                 await _unitOfWork.WorkshopRepository.Update(entity);
             } else if (details.All(c => c.Detail != string.Empty) && workshop.Status == (int)Models.Enum.Workshop.Status.Active)

@@ -43,6 +43,7 @@ builder.Services.AddControllers().AddOData(options => options
                        x.JsonSerializerOptions.Converters.Add(new DateOnlyConverter());
                        x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.Workshop.Status>());
                        x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.Workshop.Class.Status>());
+                       x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.EntityType>());
                    }
                );
 

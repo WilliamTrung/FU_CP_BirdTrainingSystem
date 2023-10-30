@@ -14,13 +14,8 @@ namespace Models.ServiceModels.AdviceConsultantModels.ConsultingTicket
         public string ConsultingType { get; set; }
         public int TrainerId { get; set; }
         public string ConsultingDetail { get; set; }
-        public int Distance { get; set; }
         public bool OnlineOrOffline { get; set; }
-        public DateTime AppointmentDate { get; set; }
+        public DateOnly AppointmentDate { get; set; }
         public int ActualSlotStart { get; set; }
-        public int ActualEndSlot { get; set; }
-        public decimal Price { get; set; }
-        public decimal? DiscountedPrice { get; set; }
-        public int Status { get; set; }
     }
 }

@@ -18,6 +18,7 @@ namespace Models.ServiceModels.TimetableModels
         public int SlotId { get; set; }
         public DateOnly Date { get; set; }
         public string Reason { get; set; } = null!;
-        public int Type { get; set; } 
+        public int TypeId { get; set; } 
+        public Models.Enum.EntityType TypeName { get; set; }
     }
 }

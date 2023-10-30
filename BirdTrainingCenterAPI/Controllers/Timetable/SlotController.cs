@@ -2,19 +2,21 @@
 using BirdTrainingCenterAPI.Controllers.Endpoints.Timetable;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Query;
+using Microsoft.AspNetCore.OData.Routing.Controllers;
 
 namespace BirdTrainingCenterAPI.Controllers.Timetable
 {
     [Route("api/slot")]
     [ApiController]
-    public class SlotController : ControllerBase, ISlotGeneral, ISlotStaff
+    public class SlotController : ODataController, ISlotGeneral, ISlotStaff
     {
         private readonly ITimetableService _timetableService;
         public SlotController(ITimetableService timetableService)
         {
             _timetableService = timetableService;
         }
-        //staff
+        //staff - customer
         [HttpPost]
         public async Task<IActionResult> GetFreeSlotOfTrainerByDate([FromQuery] int trainerId, [FromBody] DateOnly date)
         {
@@ -43,6 +45,7 @@ namespace BirdTrainingCenterAPI.Controllers.Timetable
         }
         //general
         [HttpGet]
+        [EnableQuery]
         [Route("time")]
         public async Task<IActionResult> GetSlots()
         {

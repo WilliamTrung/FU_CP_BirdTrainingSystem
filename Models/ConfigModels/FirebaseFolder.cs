@@ -15,5 +15,6 @@ namespace Models.ConfigModels
         public static string IMAGE = "images";
         public static string WOKRSHOP = "workshops";
         public static string TRAININGCOURSE = "trainingcourses";
+        public static string CONSULTINGTICKET = "consulting-ticket";
     }
 }

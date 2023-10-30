@@ -3,10 +3,13 @@ using AppService.WorkshopService;
 using BirdTrainingCenterAPI.Controllers.Endpoints.Workshop;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Query;
 using Models.ServiceModels.WorkshopModels.WorkshopClass;
+using SP_Middleware;
 
 namespace BirdTrainingCenterAPI.Controllers.Workshop
 {
+    [CustomAuthorize(roles:"Manager,Staff")]
     public class WorkshopStaffController : WorkshopBaseController, IWorkshopStaff
     {
         public WorkshopStaffController(IWorkshopService workshopService, IAuthService authService) : base(workshopService, authService)
@@ -26,6 +29,7 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             return Ok();
         }
         [HttpGet]
+        [EnableQuery]
         [Route("get-classes")]
         public async Task<IActionResult> GetClassesByWorkshop([FromQuery] int workshopId)
         {
@@ -40,7 +44,7 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
         }
         [HttpGet]
         [Route("get-class-details")]
-
+        [EnableQuery]
         public async Task<IActionResult> GetDetailsByClass([FromQuery] int workshopClassId)
         {
             try
@@ -93,6 +97,28 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             {
                 return BadRequest(ex.Message);
             }
+        }
+        [HttpPut]
+        [Route("complete")]
+        public async Task<IActionResult> CompleteWorkshopClass([FromQuery] int workshopClassId)
+        {
+            try
+            {
+                await _workshopService.Staff.CompleteWorkshopClass(workshopClassId);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+        [HttpGet]
+        [EnableQuery]
+        [Route("workshops")]
+        public async Task<IActionResult> GetWorkshops()
+        {
+            var result = await _workshopService.Manager.GetAllWorkshops();
+            return Ok(result);
         }
     }
 }

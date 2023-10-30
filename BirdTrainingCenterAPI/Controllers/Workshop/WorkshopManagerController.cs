@@ -5,6 +5,7 @@ using BirdTrainingCenterAPI.Helper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Query;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using Models.ApiParamModels.Workshop;
@@ -51,6 +52,7 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             }            
         }
         [HttpGet]
+        [EnableQuery]
         [Route("detail-template")]
         public async Task<IActionResult> GetWorkshopDetailTemplate([FromQuery] int workshopId)
         {
@@ -66,6 +68,7 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
         }
         
         [HttpGet]
+        [EnableQuery]
         [Route("status")]
         public async Task<IActionResult> GetWorkshopStatuses()
         {
@@ -139,12 +142,6 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
-        [HttpGet]
-        [Route("workshops")]
-        public async Task<IActionResult> GetWorkshops()
-        {
-            var result = await _workshopService.Manager.GetAllWorkshops();
-            return Ok(result);
-        }
+       
     }
 }

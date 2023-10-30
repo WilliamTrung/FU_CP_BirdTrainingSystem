@@ -11,7 +11,6 @@ namespace AppService.AdviceConsultingService
     {
         Task<IEnumerable<ConsultingTicketListViewModel>> ViewAssignedAppointment(int id);
         Task UpdateAppointment(int ticketId, string ggmeetLink);
-        Task FinishAppointment(ConsultingTicketUpdateStatusModel consultingTicket);
-        Task<ConsultingTicketBillModel> FillOutBillingForm(ConsultingTicketBillModel consultingTicket);
+        Task FinishAppointment(ConsultingTicketTrainerFinishModel consultingTicket);
     }
 }

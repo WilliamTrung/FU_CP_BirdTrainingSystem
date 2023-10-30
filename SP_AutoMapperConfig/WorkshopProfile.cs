@@ -26,6 +26,7 @@ namespace SP_AutoMapperConfig
             Map_Workshop_WorkshopModel();
             Map_Workshop_WorkshopAdminModel();
             Map_WorkshopClassDetailTrainerSlotModifyModel_TrainerSlot();
+            Map_WorkshopClass_WorkshopClassViewModel();
         }
         private void Map_WorkshopClassDetailTrainerSlotModifyModel_TrainerSlot()
         {
@@ -58,7 +59,8 @@ namespace SP_AutoMapperConfig
         }
         private void Map_WorkshopClass_WorkshopClassViewModel()
         {
-            
+            CreateMap<WorkshopClass, WorkshopClassViewModel>()
+                .AfterMap<MappingAction_WorkshopClass_WorkshopClassViewmModel>();
         }        
         private void Map_WorkshopClassDetailTemplate_WorkshopClassDetailTemplateViewModel()
         {
@@ -180,7 +182,7 @@ namespace SP_AutoMapperConfig
             destination.Detail = source.WorkshopDetailTemplate.Detail;
             destination.Id = source.Id;
 #pragma warning disable CS8629 // Nullable value type may be null.
-            if(source.DaySlot == null)
+            if(source.DaySlotId == null)
             {
                 //not yet assign trainer
                 destination.Trainer = null;
@@ -190,13 +192,39 @@ namespace SP_AutoMapperConfig
             {
                 source.DaySlot = _uow.TrainerSlotRepository.GetFirst(c => c.Id == source.DaySlotId
                                                                         , nameof(TrainerSlot.Trainer)
-                                                                        , nameof(TrainerSlot.Slot)).Result;
+                                                                        , nameof(TrainerSlot.Slot)
+                                                                        , $"{nameof(TrainerSlot.Trainer)}.{nameof(Trainer.User)}").Result;
                 destination.Trainer = _mapper.Map<TrainerWorkshopModel>(source.DaySlot.Trainer);
                 destination.Date = (DateTime)source.DaySlot.Date;
                 destination.StartTime = (TimeSpan)source.DaySlot.Slot.StartTime;
                 destination.EndTime = (TimeSpan)source.DaySlot.Slot.EndTime;
             }
 #pragma warning restore CS8629 // Nullable value type may be null.
+        }
+    }
+    public class MappingAction_WorkshopClass_WorkshopClassViewmModel: IMappingAction<WorkshopClass, WorkshopClassViewModel>
+    {
+        private readonly IMapper _mapper;
+        private readonly IUnitOfWork _uow;
+        public MappingAction_WorkshopClass_WorkshopClassViewmModel(IMapper mapper, IUnitOfWork uow)
+        {
+            _mapper = mapper;
+            _uow = uow;
+        }
+        public void Process(WorkshopClass source, WorkshopClassViewModel destination, ResolutionContext context)
+        {
+            destination.StartTime = source.StartTime.Value;
+            destination.RegisterEndDate = source.RegisterEndDate.Value;
+            destination.WorkshopId = source.WorkshopId;
+            destination.Id = source.Id;
+            foreach (var detail in source.WorkshopClassDetails)
+            {
+#pragma warning disable CS8601 // Possible null reference assignment.
+                detail.WorkshopDetailTemplate = _uow.WorkshopDetailTemplateRepository.GetFirst(c => c.Id == detail.DetailId).Result;
+#pragma warning restore CS8601 // Possible null reference assignment.
+            }
+            destination.ClassSlots = _mapper.Map<List<WorkshopClassDetailViewModel>>(source.WorkshopClassDetails);
+
         }
     }
 }
