@@ -30,7 +30,7 @@ namespace AppService.AdviceConsultingService.Implementation
             dynamic price = await _transaction.CalculateConsultingTicketFinalPrice(consultingTicket.Id);
             decimal finalPrice = price.FinalPrice;
             decimal discountedPrice = price.DiscountedPrice;
-            await _consulting.Customer.SendConsultingTicket(consultingTicket, );
+            await _consulting.Customer.SendConsultingTicket(consultingTicket, finalPrice, discountedPrice);
         }
     }
 }
