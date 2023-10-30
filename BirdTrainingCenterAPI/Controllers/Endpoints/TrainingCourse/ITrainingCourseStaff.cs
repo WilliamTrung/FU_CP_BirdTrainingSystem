@@ -3,6 +3,7 @@ using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
 using Models.ServiceModels.TrainingCourseModels;
 using Microsoft.AspNetCore.Mvc;
+using Models.ApiParamModels.TrainingCourse;
 
 namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
 {
@@ -38,11 +39,11 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
 
         [HttpPut]
         [Route("receive-bird")]
-        Task<IActionResult> ReceiveBird([FromBody] BirdTrainingCourseReceiveBird birdTrainingCourse);
+        Task<IActionResult> ReceiveBird([FromForm] ReceiveBirdParamModel birdTrainingCourse);
 
         [HttpPut]
         [Route("return-bird")]
-        Task<IActionResult> ReturnBird([FromBody] BirdTrainingCourseReturnBird birdTrainingCourse);
+        Task<IActionResult> ReturnBird([FromForm] ReturnBirdParamModel birdTrainingCourse);
         //Task Update(BirdTrainingProgressModel birdTrainingProgress);
 
         [HttpGet]

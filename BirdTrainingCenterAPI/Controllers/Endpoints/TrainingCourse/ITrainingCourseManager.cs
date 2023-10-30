@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Models.ApiParamModels.TrainingCourse;
 using Models.ServiceModels.TrainingCourseModels;
 
 namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
@@ -7,11 +8,11 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
     {
         [HttpPost]
         [Route("create")]
-        Task<IActionResult> CreateCourse([FromBody] TrainingCourseModel trainingCourse);
+        Task<IActionResult> CreateCourse([FromForm] TrainingCourseParamModel trainingCourse);
 
         [HttpPut]
         [Route("edit")]
-        Task<IActionResult> EditCourse([FromBody] TrainingCourseModel trainingCourse);
+        Task<IActionResult> EditCourse([FromForm] TrainingCourseParamModel trainingCourse);
 
         [HttpPut]
         [Route("disable")]
