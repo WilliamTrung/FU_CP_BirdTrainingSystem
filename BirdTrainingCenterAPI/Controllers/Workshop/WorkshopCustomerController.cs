@@ -80,5 +80,31 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             var result = await _workshopService.Customer.GetRegisteredWorkshopss(Int32.Parse(customerId.Value));
             return Ok(result);
         }
+        [HttpGet]
+        [Route("billing-information")]
+        public async Task<IActionResult> GetBillingInformation(int workshopClassId)
+        {
+            var accessToken = Request.DeserializeToken(_authService);
+            if (accessToken == null)
+            {
+                return Unauthorized();
+            }
+            var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
+            var result = await _workshopService.Customer.GetBillingInformation(Int32.Parse(customerId.Value), workshopClassId);
+            return Ok(result);
+        }
+        [HttpPost]
+        [Route("purchase")]
+        public async Task<IActionResult> Purchase(int workshopClassId)
+        {
+            var accessToken = Request.DeserializeToken(_authService);
+            if (accessToken == null)
+            {
+                return Unauthorized();
+            }
+            var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
+            await _workshopService.Customer.PurchaseClass(Int32.Parse(customerId.Value), workshopClassId);
+            return Ok();
+        }
     }
 }

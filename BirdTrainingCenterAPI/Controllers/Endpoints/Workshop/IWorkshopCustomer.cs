@@ -14,5 +14,9 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.Workshop
         [HttpGet]
         [Route("registered-workshop")]
         Task<IActionResult> GetRegisteredWorkshops();
+        [Route("billing-information")]
+        Task<IActionResult> GetBillingInformation(int workshopClassId);
+        [Route("purchase")]
+        Task<IActionResult> Purchase(int workshopClassId);
     }
 }

@@ -71,6 +71,7 @@ namespace WorkshopSubsystem.Implementation
                     WorkshopClassId = workshopClassId,
                     Price = workshopPrice,
                     DiscountedPrice = discountedPrice,
+                    RefundRate = discount,
                     Status = (int)Models.Enum.Workshop.Transaction.Status.Unpaid
                 };
                 await _unitOfWork.CustomerWorkshopClassRepository.Add(customerWorkshopClass);
@@ -82,7 +83,7 @@ namespace WorkshopSubsystem.Implementation
                 await _unitOfWork.CustomerWorkshopClassRepository.Update(customerRegistered);
             }
         }
-        public async Task OnPurchaseClass(int customerId, int workshopClassId)
+        public async Task OnPurchaseClass(int customerId, int workshopClassId, BillingModel billingModel)
         {
             var customerRegistered = await _unitOfWork.CustomerWorkshopClassRepository.GetFirst(c => c.WorkshopClassId == workshopClassId && c.CustomerId == customerId);
             if (customerRegistered != null && customerRegistered.Status == (int)Models.Enum.Workshop.Transaction.Status.Paid)
@@ -102,8 +103,30 @@ namespace WorkshopSubsystem.Implementation
             {
                 throw new KeyNotFoundException($"{nameof(customer)} at {customerId}");
             }
+            customerRegistered.Price = billingModel.TotalPrice;
+            customerRegistered.DiscountedPrice = billingModel.DiscountedPrice;
+            customerRegistered.RefundRate = (float?)billingModel.RefundRate;            
             customerRegistered.Status = (int)Models.Enum.Workshop.Transaction.Status.Paid;
             await _unitOfWork.CustomerWorkshopClassRepository.Update(customerRegistered);
+
+            //var transaction = new Transaction
+            //{
+            //    CustomerId = customerId,
+            //    EntityId = customerRegistered.WorkshopClassId,
+            //    EntityTypeId = (int)Models.Enum.EntityType.WorkshopClass,
+                
+            //};
+        }
+
+        public async Task<CustomerWorkshopClass?> GetCustomerRegistrationInfo(int customerId, int workshopClassId)
+        {
+            var customerRegistered = await _unitOfWork.CustomerWorkshopClassRepository.GetFirst(c => c.WorkshopClassId == workshopClassId
+                                                                                                    && c.CustomerId == customerId
+                                                                                                    , nameof(CustomerWorkshopClass.WorkshopClass)
+                                                                                                    , nameof(CustomerWorkshopClass.Customer)
+                                                                                                    , $"{nameof(CustomerWorkshopClass.WorkshopClass)}.{nameof(WorkshopClass.Workshop)}"
+                                                                                                    , $"{nameof(CustomerWorkshopClass.Customer)}.{nameof(Customer.MembershipRank)}");
+            return customerRegistered;
         }
     }
 }

@@ -15,6 +15,7 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.Workshop
         Task<IActionResult> GetWorkshopRefuncPolicies();
         [Route("registration-info")]
         Task<IActionResult> GetRegistrationAmount([FromQuery] int workshopClassId);
-
+        [Route("get-by-id")]
+        Task<IActionResult> GetWorkshopById([FromQuery] int workshopId);
     }
 }
