@@ -713,7 +713,7 @@ namespace AppCore.Context
                 entity.ToTable("OnlineCourse");
 
                 entity.Property(e => e.Picture)
-                    .HasMaxLength(50)
+                    .HasMaxLength(200)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Price).HasColumnType("money");
