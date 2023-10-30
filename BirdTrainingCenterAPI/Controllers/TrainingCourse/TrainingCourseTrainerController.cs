@@ -9,11 +9,13 @@ using Models.ApiParamModels.TrainingCourse;
 using Models.ConfigModels;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
 using SP_Extension;
+using SP_Middleware;
 
 namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
 {
     [Route("api/trainingcourse-trainer")]
     [ApiController]
+    [CustomAuthorize(roles: "Trainer")]
     public class TrainingCourseTrainerController : TrainingCourseBaseController, ITrainingCourseTrainer
     {
         private readonly IFirebaseService _firebaseService;
@@ -52,7 +54,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
                 }
                 else if (markDone.Evidences.Any(e => !e.IsVideo()))
                 {
-                    return BadRequest("Upload image only!");
+                    return BadRequest("Upload video only!");
                 }
                 foreach (var file in markDone.Evidences)
                 {
