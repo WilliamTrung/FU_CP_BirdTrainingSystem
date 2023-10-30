@@ -132,5 +132,16 @@ namespace WorkshopSubsystem.Implementation
                 await _unitOfWork.WorkshopClassRepository.Update(entity);
             }
         }
+
+        public async Task<RegistrationAmountModel> GetRegistrationAmount(int workshopClassId)
+        {
+            var entity = await _unitOfWork.WorkshopClassRepository.GetFirst(c => c.Id == workshopClassId);
+            var registered = await _unitOfWork.CustomerWorkshopClassRepository.Get(c => c.WorkshopClassId == workshopClassId && c.Status == (int)Models.Enum.Workshop.Transaction.Status.Paid);
+            var result = new RegistrationAmountModel()
+            {
+                Registered = registered.Count()
+            };
+            return result;
+        }
     }
 }

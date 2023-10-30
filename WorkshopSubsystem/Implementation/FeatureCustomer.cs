@@ -80,7 +80,30 @@ namespace WorkshopSubsystem.Implementation
                 customerRegistered.Price = workshopPrice;
                 customerRegistered.DiscountedPrice = discountedPrice;
                 await _unitOfWork.CustomerWorkshopClassRepository.Update(customerRegistered);
-            }            
+            }
+        }
+        public async Task OnPurchaseClass(int customerId, int workshopClassId)
+        {
+            var customerRegistered = await _unitOfWork.CustomerWorkshopClassRepository.GetFirst(c => c.WorkshopClassId == workshopClassId && c.CustomerId == customerId);
+            if (customerRegistered != null && customerRegistered.Status == (int)Models.Enum.Workshop.Transaction.Status.Paid)
+            {
+                throw new InvalidOperationException($"{customerRegistered.Customer.User.Email} has paid for this workshop class!");
+            } else if(customerRegistered == null)
+            {
+                throw new InvalidOperationException($"{customerRegistered.Customer.User.Email} has not registered for this class!");
+            }
+            var workshopClass = await _unitOfWork.WorkshopClassRepository.GetFirst(c => c.Id == workshopClassId, nameof(WorkshopClass.Workshop));
+            if (workshopClass == null)
+            {
+                throw new KeyNotFoundException($"{nameof(workshopClass)} at {workshopClassId}");
+            }
+            var customer = await _unitOfWork.CustomerRepository.GetFirst(c => c.Id == customerId, nameof(Customer.MembershipRank));
+            if (customer == null)
+            {
+                throw new KeyNotFoundException($"{nameof(customer)} at {customerId}");
+            }
+            customerRegistered.Status = (int)Models.Enum.Workshop.Transaction.Status.Paid;
+            await _unitOfWork.CustomerWorkshopClassRepository.Update(customerRegistered);
         }
     }
 }

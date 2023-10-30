@@ -13,7 +13,8 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.Workshop
         Task<IActionResult> GetClassSlotDetailsAsync([FromQuery] int workshopClassDetailId);
         [Route("refund-policies")]
         Task<IActionResult> GetWorkshopRefuncPolicies();
-
+        [Route("registration-info")]
+        Task<IActionResult> GetRegistrationAmount([FromQuery] int workshopClassId);
 
     }
 }
