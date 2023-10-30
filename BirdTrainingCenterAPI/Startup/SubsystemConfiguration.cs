@@ -5,6 +5,8 @@ using WorkshopSubsystem;
 using TimetableSubsystem;
 using TimetableSubsystem.Implementation;
 using AppRepository.UnitOfWork;
+using TransactionSubsystem;
+using TransactionSubsystem.Implementation;
 
 namespace BirdTrainingCenterAPI.Startup
 {
@@ -29,6 +31,7 @@ namespace BirdTrainingCenterAPI.Startup
             builder.Services.AddTransient<AppService.WorkshopService.IServiceStaff, AppService.WorkshopService.Implementation.StaffService>();
             builder.Services.AddTransient<AppService.WorkshopService.IServiceTrainer, AppService.WorkshopService.Implementation.TrainerService>();
             builder.Services.AddTransient<IWorkshopService, WorkshopService>();
+            builder.Services.AddTransient<IFeatureTransaction, FeatureTransaction>();
         }
         public static void AddTimetableFeature(this WebApplicationBuilder builder)
         {
