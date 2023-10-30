@@ -28,7 +28,9 @@ namespace WorkshopSubsystem.Implementation
             var entities = await _unitOfWork.WorkshopClassRepository.Get(c => c.WorkshopId == workshopId
                                                                            && c.Workshop.Status != (int)Models.Enum.Workshop.Status.Inactive
                                                                            , nameof(WorkshopClass.WorkshopClassDetails)
-                                                                           , nameof(WorkshopClass.Workshop));
+                                                                           , nameof(WorkshopClass.Workshop)
+                                                                           , $"{nameof(WorkshopClass.WorkshopClassDetails)}.{nameof(WorkshopClassDetail.DaySlot)}"
+                                                                           , $"{nameof(WorkshopClass.WorkshopClassDetails)}.{nameof(WorkshopClassDetail.DaySlot)}.{nameof(TrainerSlot.Trainer)}");
             var models = _mapper.Map<List<WorkshopClassViewModel>>(entities);
             return models;
         }
@@ -129,6 +131,17 @@ namespace WorkshopSubsystem.Implementation
                 entity.Status = (int)Models.Enum.Workshop.Class.Status.Cancelled;
                 await _unitOfWork.WorkshopClassRepository.Update(entity);
             }
+        }
+
+        public async Task<RegistrationAmountModel> GetRegistrationAmount(int workshopClassId)
+        {
+            var entity = await _unitOfWork.WorkshopClassRepository.GetFirst(c => c.Id == workshopClassId);
+            var registered = await _unitOfWork.CustomerWorkshopClassRepository.Get(c => c.WorkshopClassId == workshopClassId && c.Status == (int)Models.Enum.Workshop.Transaction.Status.Paid);
+            var result = new RegistrationAmountModel()
+            {
+                Registered = registered.Count()
+            };
+            return result;
         }
     }
 }

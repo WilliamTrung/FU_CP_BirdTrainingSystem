@@ -56,5 +56,12 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             var result = await _workshopService.All.GetWorkshopsGeneralInformation();
             return Ok(result);
         }
+        [HttpGet]
+        [Route("registration-info")]
+        public async Task<IActionResult> GetRegistrationAmount([FromQuery] int workshopClassId)
+        {
+            var result = await _workshopService.All.GetRegistrationAmount(workshopClassId);
+            return Ok(result);
+        }
     }
 }
