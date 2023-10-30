@@ -5,12 +5,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TransactionSubsystem;
 
 namespace AppService.AdviceConsultingService.Implementation
 {
     internal class ServiceTrainer : OtherService, IServiceTrainer
     {
-        public ServiceTrainer (IAdviceConsultingFeature consulting) : base (consulting)
+        public ServiceTrainer (IAdviceConsultingFeature consulting, IFeatureTransaction transaction) : base (consulting, transaction)
         {
 
         }

@@ -6,12 +6,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TransactionSubsystem;
 
 namespace AppService.AdviceConsultingService.Implementation
 {
     public class ServiceStaff : OtherService, IServiceStaff
     {
-        public ServiceStaff(IAdviceConsultingFeature consulting) : base(consulting) 
+        public ServiceStaff(IAdviceConsultingFeature consulting, IFeatureTransaction transaction) : base(consulting, transaction) 
         { 
         }
         public async Task ApproveConsultingTicket(int ticketId)
