@@ -28,7 +28,9 @@ namespace WorkshopSubsystem.Implementation
             var entities = await _unitOfWork.WorkshopClassRepository.Get(c => c.WorkshopId == workshopId
                                                                            && c.Workshop.Status != (int)Models.Enum.Workshop.Status.Inactive
                                                                            , nameof(WorkshopClass.WorkshopClassDetails)
-                                                                           , nameof(WorkshopClass.Workshop));
+                                                                           , nameof(WorkshopClass.Workshop)
+                                                                           , $"{nameof(WorkshopClass.WorkshopClassDetails)}.{nameof(WorkshopClassDetail.DaySlot)}"
+                                                                           , $"{nameof(WorkshopClass.WorkshopClassDetails)}.{nameof(WorkshopClassDetail.DaySlot)}.{nameof(TrainerSlot.Trainer)}");
             var models = _mapper.Map<List<WorkshopClassViewModel>>(entities);
             return models;
         }
