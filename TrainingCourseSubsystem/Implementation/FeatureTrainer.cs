@@ -2,6 +2,7 @@
 using AutoMapper;
 using Models.Entities;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
+using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,13 @@ namespace TrainingCourseSubsystem.Implementation
             return models;
         }
 
+        public async Task<TimetableReportView> GetTimetableReportView(int birdTrainingReportId)
+        {
+            var entity = await _unitOfWork.BirdTrainingReportRepository.GetFirst(e => e.Id == birdTrainingReportId);
+            var model = _mapper.Map<TimetableReportView>(entity);
+            return model;
+        }
+
         public async Task MarkTrainingSkillDone(MarkSkillDone markDone)
         {
             var entity = _unitOfWork.BirdTrainingProgressRepository.GetFirst(e => e.Id == markDone.Id).Result;
@@ -34,14 +42,14 @@ namespace TrainingCourseSubsystem.Implementation
             {
                 entity.Evidence = markDone.Evidence;
                 entity.TrainingDoneDate = DateTime.Now;
-                entity.IsComplete = true;
+                entity.Status = (int)Models.Enum.BirdTrainingProgress.Status.Complete;
                 await _unitOfWork.BirdTrainingProgressRepository.Update(entity);
 
                 var birdTrainingProgressAll = _unitOfWork.BirdTrainingProgressRepository.Get(e => e.BirdTrainingCourseId == entity.BirdTrainingCourseId).Result.ToList();
                 bool allDone = true;
                 foreach(BirdTrainingProgress progress in birdTrainingProgressAll)
                 {
-                    if (progress.IsComplete == false)
+                    if (progress.Status == (int)Models.Enum.BirdTrainingProgress.Status.Complete)
                     {
                         allDone= false;
                     }

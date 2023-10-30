@@ -1,0 +1,21 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse
+{
+    public class BirdTrainingCourseListView
+    {
+        public int Id { get; set; }
+        public int TrainingCourseId { get; set; }
+        public string BirdName { get; set; } = null!;
+        public int CustomerId { get; set; }
+        public string CustomerName { get; set; } = null!;
+        public string TrainingCourseTitle { get; set; } = null!;
+        public DateTime RegisteredDate { get; set; }
+        public int Status { get; set; }
+
+    }
+}

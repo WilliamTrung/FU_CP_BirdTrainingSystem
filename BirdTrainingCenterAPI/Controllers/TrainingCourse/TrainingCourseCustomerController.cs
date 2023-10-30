@@ -1,31 +1,82 @@
-﻿using AppService.TrainingCourseService;
+﻿using AppService;
+using AppService.TrainingCourseService;
 using BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
+using Models.ApiParamModels.TrainingCourse;
+using Models.ConfigModels;
 using Models.ServiceModels.TrainingCourseModels;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
+using SP_Extension;
+using SP_Middleware;
 
 namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
 {
     [Route("api/trainingcourse-customer")]
     [ApiController]
+    [CustomAuthorize(roles: "Customer")]
     public class TrainingCourseCustomerController : TrainingCourseBaseController, ITrainingCourseCustomer
     {
-        public TrainingCourseCustomerController(ITrainingCourseService trainingCourseService) : base(trainingCourseService)
+        private readonly IFirebaseService _firebaseService;
+        private readonly FirebaseBucket _bucket;
+        public TrainingCourseCustomerController(ITrainingCourseService trainingCourseService, IAuthService authService, IFirebaseService firebaseService, IOptions<FirebaseBucket> bucket) : base(trainingCourseService)
         {
+            _firebaseService = firebaseService;
+            _bucket = bucket.Value;
         }
         [HttpPost]
         [Route("register-bird")]
-        public async Task<IActionResult> RegisterBird([FromBody] BirdModel bird)
+        public async Task<IActionResult> RegisterBird([FromForm] BirdParamModel bird)
         {
-            await _trainingCourseService.Customer.RegisterBird(bird);
-            return Ok(bird);
+            try
+            {
+                var pictures = string.Empty;
+                if (bird.Pictures.Any(e => !e.IsImage()))
+                {
+                    return BadRequest("Upload image only!");
+                }
+                foreach (var file in bird.Pictures)
+                {
+                    var temp = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
+                    pictures += $"{temp},";
+                }
+                pictures = pictures.Substring(0, pictures.Length - 1);
+                var birdModel = bird.ToBirdModel(pictures);
+
+                await _trainingCourseService.Customer.RegisterBird(birdModel);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
         [HttpPut]
         [Route("update-bird")]
-        public async Task<IActionResult> UpdateBirdProfile(BirdModel bird)
+        public async Task<IActionResult> UpdateBirdProfile([FromForm] BirdParamModel bird)
         {
-            await _trainingCourseService.Customer.UpdateBirdProfile(bird);
-            return Ok();
+            try
+            {
+                var pictures = string.Empty;
+                if (bird.Pictures.Any(e => !e.IsImage()))
+                {
+                    return BadRequest("Upload image only!");
+                }
+                foreach (var file in bird.Pictures)
+                {
+                    var temp = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
+                    pictures += $"{temp},";
+                }
+                pictures = pictures.Substring(0, pictures.Length - 1);
+                var birdModel = bird.ToBirdModel(pictures);
+
+                await _trainingCourseService.Customer.UpdateBirdProfile(birdModel);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
         [HttpGet]
         [Route("customer-bird")]

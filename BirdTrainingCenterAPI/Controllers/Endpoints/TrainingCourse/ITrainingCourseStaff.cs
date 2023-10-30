@@ -3,6 +3,7 @@ using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
 using Models.ServiceModels.TrainingCourseModels;
 using Microsoft.AspNetCore.Mvc;
+using Models.ApiParamModels.TrainingCourse;
 
 namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
 {
@@ -13,45 +14,28 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
         Task<IActionResult> GetBirdTrainingCourse();
 
         [HttpGet]
-        [Route("birdtrainingcourse-skill")]
-        Task<IActionResult> GetTrainingCourseSkill([FromQuery] int trainingCourseId);
-
-        [HttpGet]
-        [Route("trainer-birdskill")]
-        Task<IActionResult> GetTrainerByBirdSkillId([FromQuery] int birdSkillId);
-
-        [HttpPost]
-        [Route("assign-trainer")]
-        Task<IActionResult> AssignTrainer([FromBody] AssignTrainerToCourse assignTrainer);
-
-        [HttpPost]
-        [Route("generate-trainerslot")]
-        Task<IActionResult> GenerateTrainerTimetable([FromBody] InitReportTrainerSlot report);
-
-        [HttpPut]
-        [Route("modify-birdtrainingcourse-starttime")]
-        Task<IActionResult> InitStartTime([FromBody] BirdTrainingCourseStartTime birdTrainingCourse);
-
-        [HttpPut]
-        [Route("modify-trainerslot")]
-        Task<IActionResult> ModifyTrainerSlot([FromBody] ModifyTrainerSlot trainerSlot);
-
-        [HttpPut]
-        [Route("receive-bird")]
-        Task<IActionResult> ReceiveBird([FromBody] BirdTrainingCourseReceiveBird birdTrainingCourse);
-
-        [HttpPut]
-        [Route("return-bird")]
-        Task<IActionResult> ReturnBird([FromBody] BirdTrainingCourseReturnBird birdTrainingCourse);
-        //Task Update(BirdTrainingProgressModel birdTrainingProgress);
-
-        [HttpGet]
         [Route("birdtrainingcourse-bird")]
         Task<IActionResult> GetBirdTrainingCourseByBirdId([FromQuery] int birdId);
+
+        [HttpGet]
+        [Route("birdtrainingcourse-customer")]
+        Task<IActionResult> GetBirdTrainingCourseByCustomerId(int customerId);
+
+        //[HttpPost]
+        //[Route("confirm-birdtrainingcourse")]
+        //Task ConfirmBirdTrainingCourse(int birdTrainingCourseId);
+
+        [HttpGet]
+        [Route("birdtrainingprogress-skill")]
+        Task<IActionResult> GetTrainingCourseSkill([FromQuery] int birdTrainingCourseId);
 
         [HttpPost]
         [Route("trainer")]
         Task<IActionResult> GetTrainer();
+
+        [HttpGet]
+        [Route("trainer-birdskill")]
+        Task<IActionResult> GetTrainerByBirdSkillId([FromQuery] int birdSkillId);
 
         [HttpPost]
         [Route("trainer-id")]
@@ -60,5 +44,30 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
         [HttpPost]
         [Route("trainer-skill")]
         Task<IActionResult> GetTrainerByTrainerSkillId([FromQuery] int trainerSkillId);
+
+        [HttpPost]
+        [Route("assign-trainer")]
+        Task<IActionResult> AssignTrainer([FromBody] AssignTrainerToCourse assignTrainer);
+
+        [HttpPost]
+        [Route("generate-trainerslot")]
+        Task<IActionResult> GenerateTrainerTimetable([FromBody] IEnumerable<int> progressId);
+
+        [HttpPut]
+        [Route("modify-trainerslot")]
+        Task<IActionResult> ModifyTrainerSlot([FromBody] ModifyTrainerSlot trainerSlot);
+
+        [HttpPut]
+        [Route("modify-birdtrainingcourse-starttime")]
+        Task<IActionResult> InitStartTime([FromBody] BirdTrainingCourseStartTime birdTrainingCourse);
+
+        [HttpPut]
+        [Route("receive-bird")]
+        Task<IActionResult> ReceiveBird([FromForm] ReceiveBirdParamModel birdTrainingCourse);
+
+        [HttpPut]
+        [Route("return-bird")]
+        Task<IActionResult> ReturnBird([FromForm] ReturnBirdParamModel birdTrainingCourse);
+        //Task Update(BirdTrainingProgressModel birdTrainingProgress);
     }
 }

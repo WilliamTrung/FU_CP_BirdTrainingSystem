@@ -8,7 +8,10 @@ namespace Models.Enum.BirdTrainingProgress
 {
     public enum Status
     {
-        Training = 0,
-        Complete = 1
+        WaitingForAssign = 0,
+        Assigned = 1,
+        Training = 2,
+        Complete = 3,
+        Cancel = 4
     }
 }

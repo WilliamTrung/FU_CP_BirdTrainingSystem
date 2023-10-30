@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Models.ApiParamModels.TrainingCourse;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
+using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
 
 namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
 {
@@ -7,10 +9,14 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
     {
         [HttpGet]
         [Route("birdtrainingprogress-trainer")]
-        Task<IActionResult> GetBirdTrainingProgressByTrainerId(int trainerId);
+        Task<IActionResult> GetBirdTrainingProgressByTrainerId([FromQuery]int trainerId);
 
         [HttpPut]
         [Route("mark-trainingdone")]
-        Task<IActionResult> MarkTrainingSkillDone(MarkSkillDone markDone);
+        Task<IActionResult> MarkTrainingSkillDone([FromForm]TrainerMarkDoneParamModel markDone);
+
+        [HttpGet]
+        [Route("timetable-slot-itemdetail")]
+        Task<IActionResult> GetTimetableReportView([FromQuery]int birdTrainingReportId);
     }
 }
