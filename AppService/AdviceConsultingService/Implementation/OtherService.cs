@@ -7,16 +7,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TimetableSubsystem;
+using TransactionSubsystem;
 
 namespace AppService.AdviceConsultingService.Implementation
 {
     public class OtherService : IOtherService
     {
         internal readonly IAdviceConsultingFeature _consulting;
+        internal readonly IFeatureTransaction _transaction;
 
-        public OtherService(IAdviceConsultingFeature consulting)
+        public OtherService(IAdviceConsultingFeature consulting, IFeatureTransaction transaction)
         {
             _consulting = consulting;
+            _transaction = transaction;
         }
 
         public async Task<IEnumerable<ConsultingPricePolicyServiceModel>> GetConsultingPricePolicy()

@@ -6,12 +6,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TimetableSubsystem;
+using TransactionSubsystem;
 
 namespace AppService.AdviceConsultingService.Implementation
 {
     public class ServiceCustomer : OtherService, IServiceCustomer
     {
-        public ServiceCustomer(IAdviceConsultingFeature consulting) : base(consulting) 
+        public ServiceCustomer(IAdviceConsultingFeature consulting, IFeatureTransaction transaction) : base(consulting, transaction) 
         {
         }
         public async Task<IEnumerable<ConsultingTicketListViewModel>> GetListConsultingTicketByCustomerID(int customerId)
@@ -26,7 +27,10 @@ namespace AppService.AdviceConsultingService.Implementation
 
         public async Task SendConsultingTicket(ConsultingTicketCreateNewModel consultingTicket)
         {
-            await _consulting.Customer.SendConsultingTicket(consultingTicket);
+            dynamic price = await _transaction.CalculateConsultingTicketFinalPrice(consultingTicket.Id);
+            decimal finalPrice = price.FinalPrice;
+            decimal discountedPrice = price.DiscountedPrice;
+            await _consulting.Customer.SendConsultingTicket(consultingTicket, finalPrice, discountedPrice);
         }
     }
 }

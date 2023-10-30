@@ -15,17 +15,11 @@ namespace SP_AutoMapperConfig
     {
         public AdviceConsultingProfile()
         {
-            Map_ConsultingTicket_ConsultingTicketServiceModel();
             Map_DistancePrice_DistancePriceServieModel();
             Map_ConsultingTicket_ConsultingTicketCreateNewModel();
             Map_ConsultingTicket_ConsultingTicketDetailViewModel();
             Map_ConsultingPricePolicy_ConsultingPricePolicyServiceModel();
             Map_ConsultingType_ConsultingTypeServiceModel();
-        }
-
-        private void Map_ConsultingTicket_ConsultingTicketServiceModel()
-        {
-            CreateMap<ConsultingTicket, ConsultingTicketServiceModel>();
         }
 
         private void Map_DistancePrice_DistancePriceServieModel()
