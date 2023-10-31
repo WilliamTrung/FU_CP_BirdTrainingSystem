@@ -17,7 +17,7 @@ namespace WorkshopSubsystem.Implementation
         {
         }
 
-        public async Task CreateWorkshop(WorkshopAddModel workshop)
+        public async Task<int> CreateWorkshop(WorkshopAddModel workshop)
         {
             var entity = _mapper.Map<Workshop>(workshop);
             await _unitOfWork.WorkshopRepository.Add(entity);
@@ -26,8 +26,9 @@ namespace WorkshopSubsystem.Implementation
             {
                 var detailTemplate = new WorkshopDetailTemplateAddModel(entity.Id);
                 var enttiy_detailTemplate = _mapper.Map<WorkshopDetailTemplate>(detailTemplate);
-                await _unitOfWork.WorkshopDetailTemplateRepository.Add(enttiy_detailTemplate);
+                await _unitOfWork.WorkshopDetailTemplateRepository.Add(enttiy_detailTemplate);                
             }
+            return entity.Id;
         }
 
         public async Task<IEnumerable<WorkshopDetailTemplateViewModel>> GetDetailTemplatesByWorkshopId(int workshopId)
