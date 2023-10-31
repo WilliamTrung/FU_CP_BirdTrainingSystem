@@ -44,8 +44,8 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
                 pictures = pictures.Substring(0, pictures.Length - 1);
                 var workshopAdd = workshop.ToWorkshopAddModel(pictures);
 
-                await _workshopService.Manager.CreateWorkshop(workshopAdd);
-                return Ok();
+                var id = await _workshopService.Manager.CreateWorkshop(workshopAdd);
+                return Ok(id);
             } catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);

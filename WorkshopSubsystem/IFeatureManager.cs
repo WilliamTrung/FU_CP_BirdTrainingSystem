@@ -11,7 +11,7 @@ namespace WorkshopSubsystem
     public interface IFeatureManager : IFeatureStaff
     {
         //create workshop
-        Task CreateWorkshop(WorkshopAddModel workshop);
+        Task<int> CreateWorkshop(WorkshopAddModel workshop);
         Task<IEnumerable<WorkshopAdminModel>> GetWorkshops();
 
         //Task ModifyWorkshop(WorkshopModifyModel workshop);

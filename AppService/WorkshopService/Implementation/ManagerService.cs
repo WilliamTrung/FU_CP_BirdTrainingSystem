@@ -15,9 +15,9 @@ namespace AppService.WorkshopService.Implementation
         {
         }
 
-        public async Task CreateWorkshop(WorkshopAddModel workshop)
+        public async Task<int> CreateWorkshop(WorkshopAddModel workshop)
         {
-            await _workshop.Manager.CreateWorkshop(workshop);
+            return await _workshop.Manager.CreateWorkshop(workshop);
         }
 
         public async Task<IEnumerable<WorkshopAdminModel>> GetAllWorkshops()
