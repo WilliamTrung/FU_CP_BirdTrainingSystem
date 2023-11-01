@@ -11,5 +11,10 @@ namespace AppService.AdministrativeService
     {
         Task<IEnumerable<UserAdminViewModel>> GetUsersInformation();
         Task UpdateRecord(UserAdminUpdateModel record);
+        Task UpdateRole(UserRoleUpdateModel model);
+        IEnumerable<Models.Enum.Role> GetRoles();
+        IEnumerable<Models.Enum.Customer.Status> GetCustomerStatuses();
+        IEnumerable<Models.Enum.Trainer.Status> GetTrainerStatuses();
+        Task UpdateStatus(UserStatusUpdateModel model);
     }
 }

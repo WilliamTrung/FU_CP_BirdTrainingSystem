@@ -14,9 +14,12 @@ namespace Models.ServiceModels.UserModels
         public string PhoneNumber { get; set; } = null!; 
         public string Avatar { get; set; } = string.Empty;
         public Models.Enum.Role Role { get; set; }
-        public DateTime BirthDay { get; set; }
-        public bool Gender { get; set; }
-        public decimal TotalPayment { get; set; } = 0;
+        public DateTime? BirthDay { get; set; }
+        public bool? Gender { get; set; }
+        public decimal? TotalPayment { get; set; }
+        public string? Membership { get; set; } 
+        public bool? IsFulltime { get; set; }
+        public string? Status { get; set; }
 
     }
 }

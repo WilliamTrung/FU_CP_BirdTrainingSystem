@@ -45,6 +45,9 @@ builder.Services.AddControllers().AddOData(options => options
                        x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.Workshop.Status>());
                        x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.Workshop.Class.Status>());
                        x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.EntityType>());
+                       x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.Role>());
+                       x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.Customer.Status>());
+                       x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.Trainer.Status>());
                    }
                );
 
@@ -62,7 +65,8 @@ builder.ConfiguringCors();
 builder.AddUOW();
 builder.AddTimetableFeature();
 builder.AddWorkshopFeature();
-
+builder.AddAdministrativeFeature();
+builder.AddTrainingCourseFeature();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
