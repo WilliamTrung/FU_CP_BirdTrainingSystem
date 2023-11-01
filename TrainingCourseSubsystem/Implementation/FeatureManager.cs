@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace TrainingCourseSubsystem.Implementation
 {
-    public class FeatureManager : FeatureUser, IFeatureManager
+    public class FeatureManager : FeatureAll, IFeatureManager
     {
         public FeatureManager(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {

@@ -7,15 +7,15 @@ using Models.ApiParamModels.TrainingCourse;
 
 namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
 {
-    public interface ITrainingCourseCustomer
+    public interface ITrainingCourseCustomer : ITrainingCourseAll
     {
         [HttpPost]
         [Route("register-bird")]
-        Task<IActionResult> RegisterBird([FromForm] BirdParamModel bird);
+        Task<IActionResult> RegisterBird([FromForm] BirdAddParamModel bird);
 
         [HttpPut]
         [Route("update-bird")]
-        Task<IActionResult> UpdateBirdProfile([FromForm] BirdParamModel bird);
+        Task<IActionResult> UpdateBirdProfile([FromForm] BirdModifyParamModel bird);
 
         [HttpGet]
         [Route("customer-bird")]

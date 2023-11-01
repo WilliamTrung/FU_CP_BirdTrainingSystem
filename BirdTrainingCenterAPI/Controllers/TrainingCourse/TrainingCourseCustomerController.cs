@@ -26,7 +26,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         }
         [HttpPost]
         [Route("register-bird")]
-        public async Task<IActionResult> RegisterBird([FromForm] BirdParamModel bird)
+        public async Task<IActionResult> RegisterBird([FromForm] BirdAddParamModel bird)
         {
             try
             {
@@ -41,7 +41,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
                     pictures += $"{temp},";
                 }
                 pictures = pictures.Substring(0, pictures.Length - 1);
-                var birdModel = bird.ToBirdModel(pictures);
+                var birdModel = bird.ToBirdAddModel(pictures);
 
                 await _trainingCourseService.Customer.RegisterBird(birdModel);
                 return Ok();
@@ -53,7 +53,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         }
         [HttpPut]
         [Route("update-bird")]
-        public async Task<IActionResult> UpdateBirdProfile([FromForm] BirdParamModel bird)
+        public async Task<IActionResult> UpdateBirdProfile([FromForm] BirdModifyParamModel bird)
         {
             try
             {
@@ -68,7 +68,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
                     pictures += $"{temp},";
                 }
                 pictures = pictures.Substring(0, pictures.Length - 1);
-                var birdModel = bird.ToBirdModel(pictures);
+                var birdModel = bird.ToBirdModifyModel(pictures);
 
                 await _trainingCourseService.Customer.UpdateBirdProfile(birdModel);
                 return Ok();

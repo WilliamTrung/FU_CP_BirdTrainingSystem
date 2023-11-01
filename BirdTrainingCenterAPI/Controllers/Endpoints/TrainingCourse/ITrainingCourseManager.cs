@@ -4,7 +4,7 @@ using Models.ServiceModels.TrainingCourseModels;
 
 namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
 {
-    public interface ITrainingCourseManager
+    public interface ITrainingCourseManager : ITrainingCourseAll
     {
         [HttpPost]
         [Route("create")]

@@ -1,4 +1,5 @@
 ﻿using Models.ServiceModels.TrainingCourseModels;
+using Models.ServiceModels.TrainingCourseModels.Bird;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
@@ -18,7 +19,7 @@ namespace AppService.TrainingCourseService.Implement
         {
         }
 
-        public async Task<IEnumerable<BirdModel>> GetBirdByCustomerId(int customerId)
+        public async Task<IEnumerable<BirdViewModel>> GetBirdByCustomerId(int customerId)
         {
             return await _trainingCourse.Customer.GetBirdByCustomerId(customerId);
         }
@@ -38,7 +39,7 @@ namespace AppService.TrainingCourseService.Implement
             return await _trainingCourse.Customer.GetTrainingCourseBySpeciesId(birdSpeciesId);
         }
 
-        public async Task RegisterBird(BirdModel bird)
+        public async Task RegisterBird(BirdAddModel bird)
         {
             await _trainingCourse.Customer.RegisterBird(bird);
         }
@@ -48,9 +49,9 @@ namespace AppService.TrainingCourseService.Implement
             await _trainingCourse.Customer.RegisterTrainingCourse(birdTrainingCourseRegister);
         }
 
-        public async Task UpdateBirdProfile(BirdModel bird)
+        public async Task UpdateBirdProfile(BirdModifyModel bird)
         {
-            await UpdateBirdProfile(bird);
+            await _trainingCourse.Customer.UpdateBirdProfile(bird);
         }
 
         public async Task<IEnumerable<BirdTrainingProgressViewModel>> ViewBirdTrainingCourseProgress(int birdTrainingCourseId)

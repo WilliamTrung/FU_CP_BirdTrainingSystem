@@ -1,4 +1,5 @@
 ﻿using Models.ServiceModels.TrainingCourseModels;
+using Models.ServiceModels.TrainingCourseModels.Bird;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
@@ -11,11 +12,11 @@ using System.Threading.Tasks;
 
 namespace TrainingCourseSubsystem;
 //FE28[Customer] view[Training Course Detail] - of the in-training[Bird] - to check progression
-public interface IFeatureCustomer
+public interface IFeatureCustomer : IFeatureAll
 {
-    Task RegisterBird(BirdModel bird);
-    Task UpdateBirdProfile(BirdModel bird);
-    Task<IEnumerable<BirdModel>> GetBirdByCustomerId(int customerId);
+    Task RegisterBird(BirdAddModel bird);
+    Task UpdateBirdProfile(BirdModifyModel bird);
+    Task<IEnumerable<BirdViewModel>> GetBirdByCustomerId(int customerId);
     Task<IEnumerable<TrainingCourseModel>> GetTrainingCourse();
     Task<IEnumerable<TrainingCourseModel>> GetTrainingCourseBySpeciesId(int birdSpeciesId);
     Task<TrainingCourseModel> GetTrainingCourseById(int trainingCourseId);

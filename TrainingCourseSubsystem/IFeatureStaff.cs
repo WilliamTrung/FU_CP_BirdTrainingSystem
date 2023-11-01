@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace TrainingCourseSubsystem
 {
-    public interface IFeatureStaff
+    public interface IFeatureStaff : IFeatureAll
     {
         //FE29	[Staff] confirm [Bird] registration to [Training Course] - confirming [Customer] has charged the amount of [Training Course]
         //Note: "confirming [Customer] has charged the amount of [Training Course]" UC is not relevant to system

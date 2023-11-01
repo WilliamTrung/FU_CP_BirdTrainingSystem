@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace TrainingCourseSubsystem
 {
-    public interface IFeatureTrainer
+    public interface IFeatureTrainer : IFeatureAll
     {
         //FE32	[Trainer] check assigned [Training Course]
         //=> Query [BirdTrainingProgress] with (TrainerId, IsComplete == false) and with each matched get data (SlotId, Progress, Comment) from [BirdTrainingDetail]

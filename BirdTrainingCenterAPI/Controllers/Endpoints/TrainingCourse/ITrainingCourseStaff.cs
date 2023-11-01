@@ -7,7 +7,7 @@ using Models.ApiParamModels.TrainingCourse;
 
 namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
 {
-    public interface ITrainingCourseStaff
+    public interface ITrainingCourseStaff : ITrainingCourseAll
     {
         [HttpGet]
         [Route("birdtrainingcourse")]

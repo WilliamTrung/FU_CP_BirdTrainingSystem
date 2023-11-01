@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace TrainingCourseSubsystem.Implementation
 {
-    public class FeatureStaff : FeatureUser, IFeatureStaff
+    public class FeatureStaff : FeatureAll, IFeatureStaff
     {
         public FeatureStaff(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {
