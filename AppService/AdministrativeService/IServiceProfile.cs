@@ -11,7 +11,7 @@ namespace AppService.AdministrativeService
 {
     public interface IServiceProfile
     {
-        Task UpdateAvatar(int id, Role role, string avatar);
+        Task<string> UpdateAvatar(int id, Role role, string avatar);
         Task UpdateInformation(int id, Role role, AdditionalUpdateModel model);
         Task<ProfileViewModel> GetProfile(int id, Role role);
     }

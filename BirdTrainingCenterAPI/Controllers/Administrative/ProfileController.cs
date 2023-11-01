@@ -106,7 +106,11 @@ namespace BirdTrainingCenterAPI.Controllers.Administrative
                 }
                 avatarUrl = await _firebaseService.UploadFile(avatar, $"{avatar.FileName}_{DateTime.Now.ToString("yyyyMMddHHmmss")}", FirebaseFolder.PROFILE_USER, _bucket.General);                
 
-                await _admin.Profile.UpdateAvatar(Int32.Parse(id.Value), roleEnum, avatarUrl);
+                var oldAvatar = await _admin.Profile.UpdateAvatar(Int32.Parse(id.Value), roleEnum, avatarUrl);
+                if(oldAvatar != null && oldAvatar != string.Empty)
+                {
+                    await _firebaseService.DeleteFile(oldAvatar, _bucket.General);
+                }
                 return Ok();
             }
             catch (KeyNotFoundException ex)

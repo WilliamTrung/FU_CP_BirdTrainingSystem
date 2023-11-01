@@ -24,10 +24,10 @@ namespace AppService.AdministrativeService.Implementation
             return result;
         }
 
-        public async Task UpdateAvatar(int id, Role role, string avatar)
+        public async Task<string> UpdateAvatar(int id, Role role, string avatar)
         {
             var usedId = await _profile.GetUserId(id, role);
-            await _profile.UpdateAvatar(usedId, avatar);
+            return await _profile.UpdateAvatar(usedId, avatar);
         }
 
         public async Task UpdateInformation(int id, Role role, AdditionalUpdateModel model)
