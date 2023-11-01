@@ -9,11 +9,10 @@ using TransactionSubsystem;
 
 namespace AppService.AdviceConsultingService.Implementation
 {
-    internal class ServiceTrainer : OtherService, IServiceTrainer
+    public class ServiceTrainer : OtherService, IServiceTrainer
     {
         public ServiceTrainer (IAdviceConsultingFeature consulting, IFeatureTransaction transaction) : base (consulting, transaction)
         {
-
         }
 
         public async Task FinishAppointment(ConsultingTicketTrainerFinishModel consultingTicket)

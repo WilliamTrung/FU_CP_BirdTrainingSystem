@@ -13,6 +13,7 @@ using TrainingCourseSubsystem.Implementation;
 using AdministrativeSubsystem;
 using AppService.AdministrativeService;
 using AppService.AdministrativeService.Implementation;
+using AppService.AdviceConsultingService;
 
 namespace BirdTrainingCenterAPI.Startup
 {
@@ -74,6 +75,21 @@ namespace BirdTrainingCenterAPI.Startup
             builder.Services.AddTransient<AppService.TimetableService.IServiceStaff, AppService.TimetableService.Implementation.ServiceStaff>();
             builder.Services.AddTransient<AppService.TimetableService.IServiceTrainer, AppService.TimetableService.Implementation.ServiceTrainer>();
             builder.Services.AddTransient<ITimetableService, TimetableService>();
+        }
+
+        public static void AddAdviceConsultinFeature(this WebApplicationBuilder builder)
+        {
+            builder.Services.AddTransient<AdviceConsultingSubsystem.IOtherFeature, AdviceConsultingSubsystem.Implementation.OtherFeature>();
+            builder.Services.AddTransient<AdviceConsultingSubsystem.IFeatureCustomer, AdviceConsultingSubsystem.Implementation.FeatureCustomer>();
+            builder.Services.AddTransient<AdviceConsultingSubsystem.IFeatureTrainer, AdviceConsultingSubsystem.Implementation.FeatureTrainer>();
+            builder.Services.AddTransient<AdviceConsultingSubsystem.IFeatureStaff, AdviceConsultingSubsystem.Implementation.FeatureStaff>();
+            builder.Services.AddTransient<AdviceConsultingSubsystem.IAdviceConsultingFeature, AdviceConsultingSubsystem.Implementation.AdviceConsultingFeature>();
+
+            builder.Services.AddTransient<AppService.AdviceConsultingService.IOtherService, AppService.AdviceConsultingService.Implementation.OtherService>();
+            builder.Services.AddTransient<AppService.AdviceConsultingService.IServiceCustomer, AppService.AdviceConsultingService.Implementation.ServiceCustomer>();
+            builder.Services.AddTransient<AppService.AdviceConsultingService.IServiceTrainer, AppService.AdviceConsultingService.Implementation.ServiceTrainer>();
+            builder.Services.AddTransient<AppService.AdviceConsultingService.IServiceStaff, AppService.AdviceConsultingService.Implementation.ServiceStaff>();
+            builder.Services.AddTransient<IAdviceConsultingService, AdviceConsultingSerivce>();
         }
     }
 }

@@ -13,10 +13,10 @@ namespace Models.ServiceModels.AdviceConsultantModels.ConsultingTicket
         public AddressServiceModel Address { get; set; } = null!;
         public ConsultingTypeServiceModel ConsultingType { get; set; } = null!;
         public TrainerServiceModel Trainer { get; set; } = null!;
-        public string ConsultingDetail { get; set; }
-        public int Distance { get; set; }
+        public string? ConsultingDetail { get; set; }
+        public int? Distance { get; set; }
         public bool OnlineOrOffline { get; set; }
-        public string GgMeetLink { get; set; }
+        public string? GgMeetLink { get; set; }
         public DateTime AppointmentDate { get; set; }
         public int ActualSlotStart { get; set; }
         public int ActualEndSlot { get; set; }

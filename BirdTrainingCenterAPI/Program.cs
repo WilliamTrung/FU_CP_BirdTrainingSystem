@@ -67,6 +67,7 @@ builder.AddTimetableFeature();
 builder.AddWorkshopFeature();
 builder.AddAdministrativeFeature();
 builder.AddTrainingCourseFeature();
+builder.AddAdviceConsultinFeature();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

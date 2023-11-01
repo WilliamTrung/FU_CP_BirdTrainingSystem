@@ -30,12 +30,14 @@ namespace SP_AutoMapperConfig
 
         private void Map_ConsultingPricePolicyServiceModel_ConsultingPricePolicy()
         {
-            CreateMap<ConsultingPricePolicyServiceModel, ConsultingPricePolicy>();
+            CreateMap<ConsultingPricePolicyServiceModel, ConsultingPricePolicy>()
+                .ForMember(e => e.Price, opt => opt.MapFrom(c => (decimal)c.Price));
         }
 
         private void Map_ConsultingTypeServiceModel_ConsultingType()
         {
-            CreateMap<ConsultingTypeServiceModel, ConsultingType>();
+            CreateMap<ConsultingTypeServiceModel, ConsultingType>()
+                .ForMember(e => e.Name, opt => opt.MapFrom(c => c.Name.ToString()));
         }
 
         private void Map_ConsultingTicketCreateNewModel_ConsultingTicket()
