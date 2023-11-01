@@ -6,7 +6,17 @@ using System.Threading.Tasks;
 
 namespace AppService.AdministrativeService
 {
-    internal interface IAdministrativeService
+    public interface IAdministrativeService
     {
+        IServiceAdministrator Administrator { get; }        
+    }
+    public class AdministrativeService : IAdministrativeService
+    {
+        public IServiceAdministrator Administrator { get; }
+        public AdministrativeService(IServiceAdministrator serviceAdministrator)
+        {
+            Administrator = serviceAdministrator;
+        }
+
     }
 }

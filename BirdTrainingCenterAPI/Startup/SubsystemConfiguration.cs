@@ -10,6 +10,9 @@ using TransactionSubsystem.Implementation;
 using AppService.TrainingCourseService;
 using TrainingCourseSubsystem;
 using TrainingCourseSubsystem.Implementation;
+using AdministrativeSubsystem;
+using AppService.AdministrativeService;
+using AppService.AdministrativeService.Implementation;
 
 namespace BirdTrainingCenterAPI.Startup
 {
@@ -18,6 +21,16 @@ namespace BirdTrainingCenterAPI.Startup
         public static void AddUOW(this WebApplicationBuilder builder)
         {
             builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
+        }
+        public static void AddAdministrativeFeature(this WebApplicationBuilder builder)
+        {
+            builder.Services.AddTransient<AdministrativeSubsystem.IFeatureUserManagement, AdministrativeSubsystem.Implementation.FeatureUserManagement>();
+            builder.Services.AddTransient<AdministrativeSubsystem.IFeatureProfileManagement, AdministrativeSubsystem.Implementation.FeatureProfileManagement>();
+            builder.Services.AddTransient<IAdminFeature, AdminFeature>();
+
+            builder.Services.AddTransient<IServiceAdministrator, ServiceAdministrator>();
+
+            builder.Services.AddTransient<IAdministrativeService, AdministrativeService>();
         }
         public static void AddTrainingCourseFeature(this WebApplicationBuilder builder)
         {
