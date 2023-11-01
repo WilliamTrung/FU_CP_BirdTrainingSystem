@@ -934,7 +934,7 @@ namespace AppCore.Context
                     .IsUnique();
 
                 entity.Property(e => e.Avatar)
-                    .HasMaxLength(20)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Email)
