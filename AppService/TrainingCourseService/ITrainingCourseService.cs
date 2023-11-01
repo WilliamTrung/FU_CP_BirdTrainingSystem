@@ -13,7 +13,7 @@ namespace AppService.TrainingCourseService
         IServiceManager Manager { get; }
         IServiceTrainer Trainer { get; }
     }
-    class TrainingCourse : ITrainingCourseService
+    public class TrainingCourse : ITrainingCourseService
     {
         private readonly IServiceCustomer _customer;
         private readonly IServiceStaff _staff;
