@@ -30,9 +30,9 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
         [Route("create")]
         public async Task<IActionResult> CreateWorkshop([FromForm] WorkshopAddParamModel workshop)
         {
+            var pictures = string.Empty;
             try
             {
-                var pictures = string.Empty;
                 if(workshop.Pictures.Any(e => !e.IsImage())) {
                     return BadRequest("Upload image only!");
                 }
@@ -48,6 +48,10 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
                 return Ok(id);
             } catch (Exception ex)
             {
+                foreach (var picture in pictures.Split(","))
+                {
+                    await _firebaseService.DeleteFile(picture, _bucket.General);
+                }
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }            
         }

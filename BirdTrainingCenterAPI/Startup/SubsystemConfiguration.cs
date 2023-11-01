@@ -29,6 +29,7 @@ namespace BirdTrainingCenterAPI.Startup
             builder.Services.AddTransient<IAdminFeature, AdminFeature>();
 
             builder.Services.AddTransient<IServiceAdministrator, ServiceAdministrator>();
+            builder.Services.AddTransient<IServiceProfile, ServiceProfile>();
 
             builder.Services.AddTransient<IAdministrativeService, AdministrativeService>();
         }
