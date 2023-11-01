@@ -5,7 +5,7 @@ using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
 
 namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
 {
-    public interface ITrainingCourseTrainer
+    public interface ITrainingCourseTrainer : ITrainingCourseAll
     {
         [HttpGet]
         [Route("birdtrainingprogress-trainer")]

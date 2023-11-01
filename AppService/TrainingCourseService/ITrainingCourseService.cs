@@ -12,6 +12,7 @@ namespace AppService.TrainingCourseService
         IServiceStaff Staff { get; }
         IServiceManager Manager { get; }
         IServiceTrainer Trainer { get; }
+        IServiceAll All { get; }
     }
     public class TrainingCourse : ITrainingCourseService
     {
@@ -19,12 +20,14 @@ namespace AppService.TrainingCourseService
         private readonly IServiceStaff _staff;
         private readonly IServiceManager _manager;
         private readonly IServiceTrainer _trainer;
-        public TrainingCourse(IServiceCustomer customer, IServiceStaff staff, IServiceManager manager, IServiceTrainer trainer)
+        private readonly IServiceAll _all;
+        public TrainingCourse(IServiceCustomer customer, IServiceStaff staff, IServiceManager manager, IServiceTrainer trainer, IServiceAll all)
         {
             _customer = customer;
             _staff = staff;
             _manager = manager;
             _trainer = trainer;
+            _all = all;
         }
 
         public IServiceCustomer Customer => _customer;
@@ -34,5 +37,7 @@ namespace AppService.TrainingCourseService
         public IServiceManager Manager => _manager;
 
         public IServiceTrainer Trainer => _trainer;
+
+        public IServiceAll All => _all;
     }
 }

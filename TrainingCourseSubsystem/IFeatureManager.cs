@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TrainingCourseSubsystem
 {
-    public interface IFeatureManager
+    public interface IFeatureManager : IFeatureAll
     {
         //FE37	[Manager] manage [Training Course] - view, create, edit, archive [Training Course]
         //Can create new training course
@@ -18,5 +18,7 @@ namespace TrainingCourseSubsystem
         Task DisableTrainingCourse(int trainingCourseId);
         Task AddSkill(TrainingCourseSkillModel trainingCourseSkill);
         Task ActiveTrainingCourse(int trainingCourseId);
+        Task CreateBirdSpecies(BirdSpeciesModel birdSpecies);
+        Task EditBirdSpecies(BirdSpeciesModel birdSpecies);
     }
 }

@@ -7,14 +7,15 @@ using System.Text;
 using System.Threading.Tasks;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
+using Models.ServiceModels.TrainingCourseModels.Bird;
 
 namespace AppService.TrainingCourseService
 {
-    public interface IServiceCustomer
+    public interface IServiceCustomer : IServiceAll
     {
-        Task RegisterBird(BirdModel bird);
-        Task UpdateBirdProfile(BirdModel bird);
-        Task<IEnumerable<BirdModel>> GetBirdByCustomerId(int customerId);
+        Task RegisterBird(BirdAddModel bird);
+        Task UpdateBirdProfile(BirdModifyModel bird);
+        Task<IEnumerable<BirdViewModel>> GetBirdByCustomerId(int customerId);
         Task<IEnumerable<TrainingCourseModel>> GetTrainingCourse();
         Task<IEnumerable<TrainingCourseModel>> GetTrainingCourseBySpeciesId(int birdSpeciesId);
         Task<TrainingCourseModel> GetTrainingCourseById(int trainingCourseId);

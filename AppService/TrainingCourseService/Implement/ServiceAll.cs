@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Models.ServiceModels.TrainingCourseModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,7 +9,7 @@ using TrainingCourseSubsystem;
 
 namespace AppService.TrainingCourseService.Implement
 {
-    public class ServiceAll
+    public class ServiceAll : IFeatureAll
     {
         internal readonly ITrainingCourseFeature _trainingCourse;
         internal readonly ITimetableFeature _timetable;
@@ -16,6 +17,16 @@ namespace AppService.TrainingCourseService.Implement
         {
             _timetable = timetable;
             _trainingCourse = trainingCourse;
+        }
+
+        public async Task<IEnumerable<BirdSpeciesModel>> GetBirdSpecies()
+        {
+            return await _trainingCourse.All.GetBirdSpecies();
+        }
+
+        public async Task<BirdSpeciesModel> GetBirdSpeciesById(int birdSpeciesId)
+        {
+            return await _trainingCourse.All.GetBirdSpeciesById(birdSpeciesId);
         }
     }
 }
