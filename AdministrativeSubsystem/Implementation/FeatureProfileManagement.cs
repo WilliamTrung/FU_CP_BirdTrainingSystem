@@ -59,15 +59,17 @@ namespace AdministrativeSubsystem.Implementation
             return profile;
         }
 
-        public async Task UpdateAvatar(int userId, string avatar)
+        public async Task<string> UpdateAvatar(int userId, string avatar)
         {
             var user = await _uow.UserRepository.GetFirst(c => c.Id == userId);
             if (user == null)
             {
                 throw new KeyNotFoundException("User not found!");
             }
+            var temp = user.Avatar;
             user.Avatar = avatar;
             await _uow.UserRepository.Update(user);
+            return temp==null?string.Empty:temp;
         }
 
         public async Task UpdateCustomerAdditionalInformation(int customerId, AdditionalUpdateModel model)

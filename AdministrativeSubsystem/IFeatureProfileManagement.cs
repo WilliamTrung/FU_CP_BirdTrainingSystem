@@ -11,7 +11,7 @@ namespace AdministrativeSubsystem
 {
     public interface IFeatureProfileManagement
     {
-        Task UpdateAvatar(int userId, string avatar);
+        Task<string> UpdateAvatar(int userId, string avatar);
         Task UpdateUserInformation(int id, UserUpdateModel model);
         Task UpdateCustomerAdditionalInformation(int customerId, AdditionalUpdateModel model);
         Task UpdateTrainerAdditionalInformation(int trainerId, AdditionalUpdateModel model);
