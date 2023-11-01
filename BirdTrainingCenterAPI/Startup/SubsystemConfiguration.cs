@@ -7,6 +7,9 @@ using TimetableSubsystem.Implementation;
 using AppRepository.UnitOfWork;
 using TransactionSubsystem;
 using TransactionSubsystem.Implementation;
+using AppService.TrainingCourseService;
+using TrainingCourseSubsystem;
+using TrainingCourseSubsystem.Implementation;
 
 namespace BirdTrainingCenterAPI.Startup
 {
@@ -16,14 +19,29 @@ namespace BirdTrainingCenterAPI.Startup
         {
             builder.Services.AddTransient<IUnitOfWork, UnitOfWork>();
         }
+        public static void AddTrainingCourseFeature(this WebApplicationBuilder builder)
+        {
+            builder.Services.AddTransient<TrainingCourseSubsystem.IFeatureTrainer, TrainingCourseSubsystem.Implementation.FeatureTrainer>();
+            builder.Services.AddTransient<TrainingCourseSubsystem.IFeatureStaff, TrainingCourseSubsystem.Implementation.FeatureStaff> ();
+            builder.Services.AddTransient<TrainingCourseSubsystem.IFeatureManager, TrainingCourseSubsystem.Implementation.FeatureManager>();
+            builder.Services.AddTransient<TrainingCourseSubsystem.IFeatureCustomer, TrainingCourseSubsystem.Implementation.FeatureCustomer>();
+            builder.Services.AddTransient<TrainingCourseSubsystem.ITrainingCourseFeature, TrainingCourseSubsystem.Implementation.TrainingCourseFeature>();
+
+            builder.Services.AddTransient<AppService.TrainingCourseService.IServiceTrainer, AppService.TrainingCourseService.Implement.ServiceTrainer>();
+            builder.Services.AddTransient<AppService.TrainingCourseService.IServiceCustomer, AppService.TrainingCourseService.Implement.ServiceCustomer>();
+            builder.Services.AddTransient<AppService.TrainingCourseService.IServiceStaff, AppService.TrainingCourseService.Implement.ServiceStaff>();
+            builder.Services.AddTransient<AppService.TrainingCourseService.IServiceManager, AppService.TrainingCourseService.Implement.ServiceManager>();
+
+            builder.Services.AddTransient<ITrainingCourseService, AppService.TrainingCourseService.TrainingCourse>();
+        }
         public static void AddWorkshopFeature(this WebApplicationBuilder builder)
         {
-            builder.Services.AddTransient<IFeatureAll, FeatureAll>();
-            builder.Services.AddTransient<IFeatureStaff, FeatureStaff>();
-            builder.Services.AddTransient<IFeatureManager, FeatureManager>();
-            builder.Services.AddTransient<IFeatureCustomer, FeatureCustomer>();
-            builder.Services.AddTransient<IFeatureTrainer, FeatureTrainer>();
-            builder.Services.AddTransient<IWorkshopFeature, WorkshopFeature>();
+            builder.Services.AddTransient<WorkshopSubsystem.IFeatureAll, WorkshopSubsystem.Implementation.FeatureAll>();
+            builder.Services.AddTransient<WorkshopSubsystem.IFeatureStaff, WorkshopSubsystem.Implementation.FeatureStaff>();
+            builder.Services.AddTransient<WorkshopSubsystem.IFeatureManager, WorkshopSubsystem.Implementation.FeatureManager>();
+            builder.Services.AddTransient<WorkshopSubsystem.IFeatureCustomer, WorkshopSubsystem.Implementation.FeatureCustomer>();
+            builder.Services.AddTransient<WorkshopSubsystem.IFeatureTrainer, WorkshopSubsystem.Implementation.FeatureTrainer>();
+            builder.Services.AddTransient<WorkshopSubsystem.IWorkshopFeature, WorkshopSubsystem.Implementation.WorkshopFeature>();
             
             builder.Services.AddTransient<AppService.WorkshopService.IServiceAll, AppService.WorkshopService.Implementation.AllService>();
             builder.Services.AddTransient<AppService.WorkshopService.IServiceCustomer, AppService.WorkshopService.Implementation.CustomerService>();
