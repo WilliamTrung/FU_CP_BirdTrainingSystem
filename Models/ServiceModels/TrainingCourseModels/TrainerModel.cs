@@ -13,6 +13,6 @@ namespace Models.ServiceModels.TrainingCourseModels
         public string Name { get; set; } = null!;
         public string Email { get; set; } = null!;
         public string Avatar { get; set; } = null!;
-        public List<TrainerSkill.TrainerSkillModel> TrainerSkillModels { get; set; } = null!;
+        public List<TrainerSkillViewModel> TrainerSkillModels { get; set; } = null!;
     }
 }

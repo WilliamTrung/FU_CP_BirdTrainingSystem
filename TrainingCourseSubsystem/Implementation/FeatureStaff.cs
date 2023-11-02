@@ -85,7 +85,7 @@ namespace TrainingCourseSubsystem.Implementation
             List<TrainerModel> models = new List<TrainerModel>();
             foreach (Models.Entities.Trainer entity in entities)
             {
-                var skills = _mapper.Map<List<TrainerSkillModel>>(entity.TrainerSkills);
+                var skills = _mapper.Map<List<TrainerSkillViewModel>>(entity.TrainerSkills);
                 TrainerModel model = new TrainerModel()
                 {
                     Id = entity.Id,
@@ -125,7 +125,7 @@ namespace TrainingCourseSubsystem.Implementation
         public async Task<TrainerModel> GetTrainerById(int trainerId)
         {
             var entity = await _unitOfWork.TrainerRepository.GetFirst(e => e.Id == trainerId, "User", "Skill");
-            var skills = _mapper.Map<List<TrainerSkillModel>>(entity.TrainerSkills);
+            var skills = _mapper.Map<List<TrainerSkillViewModel>>(entity.TrainerSkills);
             TrainerModel model = new TrainerModel()
             {
                 Id = entity.Id,

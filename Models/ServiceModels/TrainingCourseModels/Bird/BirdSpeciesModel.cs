@@ -9,7 +9,7 @@ namespace Models.ServiceModels.TrainingCourseModels.Bird
     {
         public BirdSpeciesModel()
         {
-            AcquirableSkills = new HashSet<AcquirableSkillModel>();
+            AcquirableSkills = new HashSet<AcquirableSkillViewModel>();
             Birds = new HashSet<BirdModel>();
             TrainingCourses = new HashSet<TrainingCourseModel>();
         }
@@ -18,7 +18,7 @@ namespace Models.ServiceModels.TrainingCourseModels.Bird
         public string Name { get; set; } = null!;
         public string? ShortDetail { get; set; }
 
-        public virtual ICollection<AcquirableSkillModel> AcquirableSkills { get; set; }
+        public virtual ICollection<AcquirableSkillViewModel> AcquirableSkills { get; set; }
         public virtual ICollection<BirdModel> Birds { get; set; }
         public virtual ICollection<TrainingCourseModel> TrainingCourses { get; set; }
     }

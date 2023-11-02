@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Models.Entities;
 using Models.ServiceModels.TrainingCourseModels.Bird;
+using Models.ServiceModels.TrainingCourseModels.BirdSkill;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
+using Models.ServiceModels.TrainingCourseModels.TrainerSkill;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +20,32 @@ namespace SP_AutoMapperConfig
             Map_Bird_BirdViewModel();
             Map_BirdSpeciesAddModel_BirdSpecies();
             Map_BirdSpecies_BirdSpeciesViewModel();
+            Map_AccquirableAddModBirdSkill_AccquirableBirdSkill();
+            Map_AccquirableBirdSkill_AccquirableSkillViewModel();
+        }
+
+        private void Map_AccquirableAddModBirdSkill_AccquirableBirdSkill()
+        {
+            CreateMap<AccquirableAddModBirdSkill, AcquirableSkill>()
+                .ForMember(m => m.BirdSpeciesId, opt => opt.MapFrom(e => e.BirdSpeciesId))
+                .ForMember(m => m.BirdSkillId, opt => opt.MapFrom(e => e.BirdSkillId))
+                .ForMember(m => m.Condition, opt => opt.MapFrom(e => e.Condition));
+        }
+
+        private void Map_AccquirableBirdSkill_AccquirableSkillViewModel()
+        {
+            CreateMap<AcquirableSkill, AcquirableSkillViewModel>()
+                .ForMember(m => m.BirdSpeciesId, opt => opt.MapFrom(e => e.BirdSpeciesId))
+                .ForMember(m => m.BirdSpeciesName, opt => {
+                    opt.PreCondition(e => e.BirdSpecies != null);
+                    opt.MapFrom(e => e.BirdSpecies.Name);
+                })
+                .ForMember(m => m.BirdSkillId, opt => opt.MapFrom(e => e.BirdSkillId))
+                .ForMember(m => m.BirdSkillName, opt => {
+                    opt.PreCondition(e => e.BirdSkill != null);
+                    opt.MapFrom(e => e.BirdSkill.Name);
+                })
+                .ForMember(m => m.Condition, opt => opt.MapFrom(e => e.Condition));
         }
 
         private void Map_BirdSpecies_BirdSpeciesViewModel()
