@@ -95,7 +95,7 @@ namespace WorkshopSubsystem.Implementation
                 throw new InvalidOperationException($"{customerRegistered.Customer.User.Email} has paid for this workshop class!");
             } else if(customerRegistered == null)
             {
-                throw new InvalidOperationException($"{customerRegistered.Customer.User.Email} has not registered for this class!");
+                await Register(customerId, workshopClassId);
             }
             var workshopClass = await _unitOfWork.WorkshopClassRepository.GetFirst(c => c.Id == workshopClassId, nameof(WorkshopClass.Workshop));
             if (workshopClass == null)
