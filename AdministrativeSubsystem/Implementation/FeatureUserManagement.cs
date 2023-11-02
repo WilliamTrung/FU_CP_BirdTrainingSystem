@@ -147,5 +147,20 @@ namespace AdministrativeSubsystem.Implementation
                 throw new InvalidOperationException("Cannot change status for this role!");
             }
         }
+
+        public async Task DeleteUser(int userId)
+        {
+            var user = await _uow.UserRepository.GetFirst(c => c.Id == userId, nameof(User.Customers)
+                                                                             , nameof(User.Trainers));
+            if(user == null)
+            {
+                throw new KeyNotFoundException("User not found!");
+            }
+            if(user.Trainers.First() != null)
+                await _uow.TrainerRepository.Delete(user.Trainers.First());
+            if(user.Customers.First() != null)
+                await _uow.CustomerRepository.Delete(user.Customers.First());
+            await _uow.UserRepository.Delete(user);
+        }
     }
 }

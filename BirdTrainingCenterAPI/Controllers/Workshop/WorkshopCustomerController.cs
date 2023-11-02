@@ -93,7 +93,7 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             var result = await _workshopService.Customer.GetBillingInformation(Int32.Parse(customerId.Value), workshopClassId);
             return Ok(result);
         }
-        [HttpPost]
+        [HttpPut]
         [Route("purchase")]
         public async Task<IActionResult> Purchase(int workshopClassId)
         {

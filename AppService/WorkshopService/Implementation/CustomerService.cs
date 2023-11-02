@@ -64,5 +64,10 @@ namespace AppService.WorkshopService.Implementation
             var billingInfo = await GetBillingInformation(customerId, workshopClassId);
             await _workshop.Customer.OnPurchaseClass(customerId, workshopClassId, billingInfo);
         }
+        public async Task<IEnumerable<WorkshopClassViewModel>> GetWorkshopClassesByWorkshopId(int customerId, int workshopId)
+        {
+            var result = await _workshop.Customer.GetClassesByWorkshopId(customerId, workshopId);
+            return result;
+        }
     }
 }
