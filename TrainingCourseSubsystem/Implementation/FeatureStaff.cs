@@ -5,6 +5,8 @@ using Models.ServiceModels.TrainingCourseModels;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
+using Models.ServiceModels.TrainingCourseModels.TrainerSkill;
+using Models.ServiceModels.TrainingCourseModels.TrainerSlot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -83,7 +85,7 @@ namespace TrainingCourseSubsystem.Implementation
             List<TrainerModel> models = new List<TrainerModel>();
             foreach (Models.Entities.Trainer entity in entities)
             {
-                var skills = _mapper.Map<List<TrainerSkillModel>>(entity.TrainerSkills);
+                var skills = _mapper.Map<List<TrainerSkillViewModel>>(entity.TrainerSkills);
                 TrainerModel model = new TrainerModel()
                 {
                     Id = entity.Id,
@@ -123,7 +125,7 @@ namespace TrainingCourseSubsystem.Implementation
         public async Task<TrainerModel> GetTrainerById(int trainerId)
         {
             var entity = await _unitOfWork.TrainerRepository.GetFirst(e => e.Id == trainerId, "User", "Skill");
-            var skills = _mapper.Map<List<TrainerSkillModel>>(entity.TrainerSkills);
+            var skills = _mapper.Map<List<TrainerSkillViewModel>>(entity.TrainerSkills);
             TrainerModel model = new TrainerModel()
             {
                 Id = entity.Id,

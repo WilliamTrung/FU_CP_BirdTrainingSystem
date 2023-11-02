@@ -2,11 +2,11 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Models.Entities;
-using Models.ServiceModels.TrainingCourseModels;
 using Models.ServiceModels.TrainingCourseModels.Bird;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
+using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,18 +22,19 @@ namespace TrainingCourseSubsystem.Implementation
         public FeatureCustomer(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {
         }
-        public async Task<IEnumerable<TrainingCourseModel>> GetTrainingCourse()
+        public async Task<IEnumerable<TrainingCourseViewModel>> GetTrainingCourse()
         {
-            var entities = await _unitOfWork.TrainingCourseRepository.Get();
-            var models = _mapper.Map<IEnumerable<TrainingCourseModel>>(entities);
+            var entities = await _unitOfWork.TrainingCourseRepository.Get(expression: null, nameof(TrainingCourse.BirdSpecies));
+            var models = _mapper.Map<IEnumerable<TrainingCourseViewModel>>(entities);
             return models;
         }
 
-        public async Task<TrainingCourseModel> GetTrainingCourseById(int trainingCourseId)
+        public async Task<TrainingCourseViewModel> GetTrainingCourseById(int trainingCourseId)
         {
             var entities = await _unitOfWork.TrainingCourseRepository.GetFirst(e => e.Id == trainingCourseId 
-                                                                                 && e.Status == (int)Models.Enum.TrainingCourse.Status.Active);
-            var models = _mapper.Map<TrainingCourseModel>(entities);
+                                                                                 && e.Status == (int)Models.Enum.TrainingCourse.Status.Active
+                                                                               , nameof(TrainingCourse.BirdSpecies));
+            var models = _mapper.Map<TrainingCourseViewModel>(entities);
             return models;
         }
 
@@ -91,11 +92,12 @@ namespace TrainingCourseSubsystem.Implementation
             }
         }
 
-        public async Task<IEnumerable<TrainingCourseModel>> GetTrainingCourseBySpeciesId(int birdSpeciesId)
+        public async Task<IEnumerable<TrainingCourseViewModel>> GetTrainingCourseBySpeciesId(int birdSpeciesId)
         {
             var entities = await _unitOfWork.TrainingCourseRepository.GetFirst(e => e.BirdSpeciesId == birdSpeciesId
-                                                                                 && e.Status == (int)Models.Enum.TrainingCourse.Status.Active);
-            var models = _mapper.Map<IEnumerable<TrainingCourseModel>>(entities);
+                                                                                 && e.Status == (int)Models.Enum.TrainingCourse.Status.Active
+                                                                               , nameof(TrainingCourse.BirdSpecies));
+            var models = _mapper.Map<IEnumerable<TrainingCourseViewModel>>(entities);
             return models;
         }
 

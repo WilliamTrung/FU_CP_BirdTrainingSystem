@@ -1,4 +1,5 @@
 ﻿using Models.ServiceModels.TrainingCourseModels.Bird;
+using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,11 @@ namespace AppService.TrainingCourseService
 {
     public interface IServiceAll
     {
-        Task<IEnumerable<BirdSpeciesModel>> GetBirdSpecies();
-        Task<BirdSpeciesModel> GetBirdSpeciesById(int birdSpeciesId);
+        Task<IEnumerable<BirdSpeciesViewModel>> GetBirdSpecies();
+        Task<BirdSpeciesViewModel> GetBirdSpeciesById(int birdSpeciesId);
+        Task<IEnumerable<TrainingCourseViewModel>> GetTrainingCourses();
+        Task<TrainingCourseViewModel> GetTrainingCoursesById(int courseId);
+        //Task<IEnumerable<TrainingSkillViewModel>> GetTrainingSkillByCourseId(int courseId);
         IEnumerable<Models.Enum.BirdTrainingProgress.Status> GetEnumBirdTrainingProgressStatuses();
     }
 }

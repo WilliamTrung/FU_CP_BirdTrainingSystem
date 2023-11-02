@@ -1,9 +1,9 @@
 ﻿using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
-using Models.ServiceModels.TrainingCourseModels;
 using Microsoft.AspNetCore.Mvc;
 using Models.ApiParamModels.TrainingCourse;
+using Models.ServiceModels.TrainingCourseModels.TrainerSlot;
 
 namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
 {

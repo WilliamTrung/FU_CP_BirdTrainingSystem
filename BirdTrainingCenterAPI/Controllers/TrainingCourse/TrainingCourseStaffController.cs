@@ -5,12 +5,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Models.ApiParamModels.TrainingCourse;
 using Models.ConfigModels;
-using Models.ServiceModels.TrainingCourseModels;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
 using SP_Middleware;
 using SP_Extension;
+using Models.ServiceModels.TrainingCourseModels.TrainerSlot;
 
 namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
 {

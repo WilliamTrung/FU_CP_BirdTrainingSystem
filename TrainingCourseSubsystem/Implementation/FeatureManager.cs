@@ -3,6 +3,7 @@ using AutoMapper;
 using Models.Entities;
 using Models.ServiceModels.TrainingCourseModels;
 using Models.ServiceModels.TrainingCourseModels.Bird;
+using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,7 +19,7 @@ namespace TrainingCourseSubsystem.Implementation
         {
         }
 
-        public async Task CreateCourse(TrainingCourseModel trainingCourse)
+        public async Task CreateCourse(TrainingCourseAddModel trainingCourse)
         {
             if (trainingCourse == null)
             {
@@ -33,7 +34,7 @@ namespace TrainingCourseSubsystem.Implementation
             }
             await _unitOfWork.TrainingCourseRepository.Add(entity);
         }
-        public async Task EditCourse(TrainingCourseModel trainingCourse)
+        public async Task EditCourse(TrainingCourseModifyModel trainingCourse)
         {
             if (trainingCourse == null)
             {
@@ -84,7 +85,7 @@ namespace TrainingCourseSubsystem.Implementation
             }
         }
 
-        public async Task AddSkill(TrainingCourseSkillModel trainingCourseSkill)
+        public async Task AddSkillToCourse(AddTrainingSkillModel trainingCourseSkill)
         {
             if (trainingCourseSkill == null)
             {
@@ -107,6 +108,29 @@ namespace TrainingCourseSubsystem.Implementation
             await _unitOfWork.TrainingCourseSkillRepository.Add(entity);
             await _unitOfWork.TrainingCourseRepository.Update(trainingCourse);
         }
+        public async Task UpdateSkill(AddTrainingSkillModel trainingSkillModel)
+        {
+            if (trainingSkillModel == null)
+            {
+                throw new Exception("Client send null model.");
+            }
+            var entity = _unitOfWork.TrainingCourseSkillRepository.GetFirst(e => e.BirdSkillId == trainingSkillModel.BirdSkillId
+                                                                                && e.TrainingCourseId == trainingSkillModel.TrainingCourseId).Result;
+            var trainingCourse = _unitOfWork.TrainingCourseRepository.GetFirst(e => e.Id == trainingSkillModel.TrainingCourseId).Result;
+            if (trainingCourse == null || entity == null)
+            {
+                throw new Exception("Training Course not found");
+            }
+            else
+            {
+                trainingCourse.TotalSlot -= entity.TotalSlot;
+                trainingCourse.TotalSlot += trainingSkillModel.TotalSlot;
+            }
+            entity.BirdSkillId = trainingSkillModel.BirdSkillId;
+            entity.TrainingCourseId = trainingSkillModel.TrainingCourseId;
+            await _unitOfWork.TrainingCourseSkillRepository.Update(entity);
+            await _unitOfWork.TrainingCourseRepository.Update(trainingCourse);
+        }
 
         public async Task CreateBirdSpecies(BirdSpeciesAddModel birdSpecies)
         {
@@ -122,7 +146,7 @@ namespace TrainingCourseSubsystem.Implementation
             await _unitOfWork.BirdSpeciesRepository.Add(entity);
         }
 
-        public async Task EditBirdSpecies(BirdSpeciesModel birdSpecies)
+        public async Task EditBirdSpecies(BirdSpeciesViewModel birdSpecies)
         {
             if (birdSpecies == null)
             {
