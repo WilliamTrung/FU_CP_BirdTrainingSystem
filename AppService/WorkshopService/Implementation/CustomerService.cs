@@ -40,20 +40,16 @@ namespace AppService.WorkshopService.Implementation
         }
         public async Task<BillingModel> GetBillingInformation(int customerId, int workshopClassId)
         {
-            var customerRegistered = await _workshop.Customer.GetCustomerRegistrationInfo(customerId, workshopClassId);
-            if(customerRegistered == null)
-            {
-                throw new InvalidOperationException("Has not registered this class!");
-            }
-            var discounted = await _transaction.CalculateMemberShipDiscountedPrice(customerId, customerRegistered.WorkshopClass.Workshop.Price);
-            var final = customerRegistered.WorkshopClass.Workshop.Price - discounted;
+            var preBillingInfo = await _workshop.Customer.GetPreBillingInformation(customerId, workshopClassId);
+            var discounted = await _transaction.CalculateMemberShipDiscountedPrice(customerId, preBillingInfo.WorkshopPrice);
+            var final = preBillingInfo.WorkshopPrice - discounted;
             var billingInfo = new BillingModel
             {
                 DiscountedPrice = discounted,
-                MembershipName = customerRegistered.Customer.MembershipRank.Name,
-                RefundRate = (decimal)customerRegistered.Customer.MembershipRank.Discount,
+                MembershipName = preBillingInfo.MembershipName,
+                DiscountRate = preBillingInfo.DiscountPercent,
                 TotalPrice = final,
-                WorkshopPrice = customerRegistered.WorkshopClass.Workshop.Price,
+                WorkshopPrice = preBillingInfo.WorkshopPrice,
             };
             return billingInfo;
         }

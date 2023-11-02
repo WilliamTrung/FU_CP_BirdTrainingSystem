@@ -24,6 +24,6 @@ namespace WorkshopSubsystem
         Task<IEnumerable<WorkshopModel>> GetRegisteredWorkshops(int customerId);
         Task OnPurchaseClass(int customerId, int workshopClassId, BillingModel billingModel);
         Task<CustomerWorkshopClass?> GetCustomerRegistrationInfo(int customerId, int workshopClassId);
-        
+        Task<PreBillingInformation> GetPreBillingInformation(int customerId, int workshopClassId);
     }
 }
