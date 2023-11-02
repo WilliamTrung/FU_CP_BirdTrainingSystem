@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
+using Models.ServiceModels.TrainingCourseModels.TrainerSlot;
 
 namespace AppService.TrainingCourseService
 {

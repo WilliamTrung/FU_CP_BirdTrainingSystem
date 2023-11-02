@@ -1,6 +1,7 @@
 ﻿using Models.ServiceModels.TrainingCourseModels.Bird;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
+using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
 using System;
 using System.Collections.Generic;
 

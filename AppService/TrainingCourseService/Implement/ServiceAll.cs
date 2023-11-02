@@ -1,5 +1,6 @@
 ﻿using Models.Enum.BirdTrainingProgress;
 using Models.ServiceModels.TrainingCourseModels.Bird;
+using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,12 +21,12 @@ namespace AppService.TrainingCourseService.Implement
             _trainingCourse = trainingCourse;
         }
 
-        public async Task<IEnumerable<BirdSpeciesModel>> GetBirdSpecies()
+        public async Task<IEnumerable<BirdSpeciesViewModel>> GetBirdSpecies()
         {
             return await _trainingCourse.All.GetBirdSpecies();
         }
 
-        public async Task<BirdSpeciesModel> GetBirdSpeciesById(int birdSpeciesId)
+        public async Task<BirdSpeciesViewModel> GetBirdSpeciesById(int birdSpeciesId)
         {
             return await _trainingCourse.All.GetBirdSpeciesById(birdSpeciesId);
         }
@@ -33,6 +34,16 @@ namespace AppService.TrainingCourseService.Implement
         public IEnumerable<Status> GetEnumBirdTrainingProgressStatuses()
         {
             return _trainingCourse.Staff.GetEnumBirdTrainingProgressStatuses();
+        }
+
+        public Task<IEnumerable<TrainingCourseViewModel>> GetTrainingCourses()
+        {
+            return _trainingCourse.All.GetTrainingCourses();
+        }
+
+        public Task<TrainingCourseViewModel> GetTrainingCoursesById(int courseId)
+        {
+            return _trainingCourse.All.GetTrainingCoursesById(courseId);
         }
     }
 }

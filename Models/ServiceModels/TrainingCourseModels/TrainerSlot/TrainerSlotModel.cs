@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Models.ServiceModels.TrainingCourseModels
+namespace Models.ServiceModels.TrainingCourseModels.TrainerSlot
 {
     public class TrainerSlotModel
     {
@@ -17,7 +17,7 @@ namespace Models.ServiceModels.TrainingCourseModels
         public string? Reason { get; set; }
         public int EntityTypeId { get; set; }
         public int? EntityId { get; set; }
-        public int Status { get; set; } = (int)Models.Enum.TrainerSlotStatus.Enabled;
+        public int Status { get; set; } = (int)Enum.TrainerSlotStatus.Enabled;
 
         public virtual SlotModel Slot { get; set; } = null!;
         public virtual TrainerModel Trainer { get; set; } = null!;

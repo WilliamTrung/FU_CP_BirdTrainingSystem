@@ -1,8 +1,9 @@
-﻿using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
+﻿using Models.ServiceModels.TrainingCourseModels.BirdSkill;
+using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
 using System;
 using System.Collections.Generic;
 
-namespace Models.ServiceModels.TrainingCourseModels
+namespace Models.ServiceModels.TrainingCourseModels.TrainingCourse
 {
     public partial class TrainingCourseSkillModel
     {
@@ -10,7 +11,7 @@ namespace Models.ServiceModels.TrainingCourseModels
         public int TrainingCourseId { get; set; }
         public int TotalSlot { get; set; }
 
-        public virtual BirdSkillModel BirdSkillModel { get; set; } = null!;
+        public virtual BirdSkillViewModel BirdSkillModel { get; set; } = null!;
         public virtual TrainingCourseModel TrainingCourseModel { get; set; } = null!;
         public virtual ICollection<BirdTrainingProgressModel> BirdTrainingProgresses { get; set; }
     }

@@ -2,6 +2,7 @@
 using Models.Entities;
 using Models.ServiceModels.SlotModels;
 using Models.ServiceModels.TrainingCourseModels;
+using Models.ServiceModels.TrainingCourseModels.TrainerSkill;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,8 +15,36 @@ namespace SP_AutoMapperConfig
     {
         public TrainerProfile()
         {
+            Map_TrainerSkill_TrainerSkillViewModel();
+            Map_TrainerSkillAddModModel_TrainerSkill();
             Map_Trainer_TrainerModel();
         }
+
+        private void Map_TrainerSkillAddModModel_TrainerSkill()
+        {
+            CreateMap<TrainerSkillAddModModel, TrainerSkill>()
+                .ForMember(m => m.TrainerId, opt => opt.MapFrom(e => e.TrainerId))
+                .ForMember(m => m.SkillId, opt => opt.MapFrom(e => e.SkillId))
+                .ForMember(m => m.Description, opt => opt.MapFrom(e => e.Description));
+        }
+
+        private void Map_TrainerSkill_TrainerSkillViewModel()
+        {
+            CreateMap<TrainerSkill, TrainerSkillViewModel>()
+                .ForMember(m => m.TrainerId, opt => opt.MapFrom(e => e.TrainerId))
+                .ForMember(m => m.TrainerName, opt => {
+                    opt.PreCondition(e => e.Trainer != null);
+                    opt.PreCondition(e => e.Trainer.User != null);
+                    opt.MapFrom(e => e.Trainer.User.Name); 
+                })
+                .ForMember(m => m.SkillId, opt => opt.MapFrom(e => e.SkillId))
+                .ForMember(m => m.SkillName, opt => {
+                    opt.PreCondition(e => e.Skill != null);
+                    opt.MapFrom(e => e.Skill.Name); 
+                })
+                .ForMember(m => m.Description, opt => opt.MapFrom(e => e.Description));
+        }
+
         private void SetTrainerMapping()
         {
 
@@ -81,10 +110,10 @@ namespace SP_AutoMapperConfig
                 destination.Name = source.User.Name;
                 destination.Email = source.User.Email;
                 destination.Avatar = source.User.Avatar;
-                List<TrainerSkillModel> trainerSkillModels = new List<TrainerSkillModel>();
+                List<TrainerSkillViewModel> trainerSkillModels = new List<TrainerSkillViewModel>();
                 foreach (TrainerSkill skill in source.TrainerSkills)
                 {
-                    var trainerSkillModel = _mapper.Map<TrainerSkillModel>(skill);
+                    var trainerSkillModel = _mapper.Map<TrainerSkillViewModel>(skill);
                     trainerSkillModels.Add(trainerSkillModel);
                 }
                 destination.TrainerSkillModels = trainerSkillModels;

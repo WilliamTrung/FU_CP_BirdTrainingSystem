@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Models.ServiceModels.TrainingCourseModels.Bird
+namespace Models.ServiceModels.TrainingCourseModels.BirdSkill
 {
-    public class BirdSpeciesViewModel
+    public class BirdSkillModModel
     {
         public int Id { get; set; }
         public string Name { get; set; } = null!;
-        public string? ShortDetail { get; set; }
+        public string? Description { get; set; }
     }
 }

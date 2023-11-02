@@ -1,5 +1,6 @@
 ﻿using Models.ServiceModels.TrainingCourseModels;
 using Models.ServiceModels.TrainingCourseModels.Bird;
+using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,12 +15,13 @@ namespace TrainingCourseSubsystem
         //Can create new training course
         //Can edit training course
         //Can archive training course
-        Task CreateCourse(TrainingCourseModel trainingCourse);
-        Task EditCourse(TrainingCourseModel trainingCourse);
-        Task DisableTrainingCourse(int trainingCourseId);
-        Task AddSkill(TrainingCourseSkillModel trainingCourseSkill);
+        Task CreateCourse(TrainingCourseAddModel trainingCourse);
+        Task EditCourse(TrainingCourseModifyModel trainingCourse);
         Task ActiveTrainingCourse(int trainingCourseId);
+        Task DisableTrainingCourse(int trainingCourseId);
+        Task AddSkillToCourse(AddTrainingSkillModel trainingCourseSkill);
+        Task UpdateSkill(AddTrainingSkillModel trainingSkillModel);
         Task CreateBirdSpecies(BirdSpeciesAddModel birdSpecies);
-        Task EditBirdSpecies(BirdSpeciesModel birdSpecies);
+        Task EditBirdSpecies(BirdSpeciesViewModel birdSpecies);
     }
 }
