@@ -1,5 +1,5 @@
 ﻿using Models.Enum.BirdTrainingProgress;
-using Models.ServiceModels.TrainingCourseModels;
+using Models.ServiceModels.TrainingCourseModels.Bird;
 using System;
 using System.Collections.Generic;
 using System.Linq;

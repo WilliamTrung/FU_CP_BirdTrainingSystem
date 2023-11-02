@@ -2,6 +2,7 @@
 using AutoMapper;
 using Models.Entities;
 using Models.ServiceModels.TrainingCourseModels;
+using Models.ServiceModels.TrainingCourseModels.Bird;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -107,7 +108,7 @@ namespace TrainingCourseSubsystem.Implementation
             await _unitOfWork.TrainingCourseRepository.Update(trainingCourse);
         }
 
-        public async Task CreateBirdSpecies(BirdSpeciesModel birdSpecies)
+        public async Task CreateBirdSpecies(BirdSpeciesAddModel birdSpecies)
         {
             if (birdSpecies == null)
             {

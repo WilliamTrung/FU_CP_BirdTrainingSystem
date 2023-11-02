@@ -14,8 +14,16 @@ namespace SP_AutoMapperConfig
     {
         public BirdProfile()
         {
-            Map_Bird_BirdAddModel();
+            Map_BirdAddModel_Bird();
             Map_Bird_BirdViewModel();
+            Map_BirdSpeciesAddModel_BirdSpecies();
+        }
+
+        private void Map_BirdSpeciesAddModel_BirdSpecies()
+        {
+            CreateMap<BirdSpeciesAddModel, BirdSpecies>()
+                .ForMember(m => m.Name, opt => opt.MapFrom(e => e.Name))
+                .ForMember(m => m.ShortDetail, opt => opt.MapFrom(e => e.ShortDetail));
         }
 
         private void Map_Bird_BirdViewModel()
@@ -49,9 +57,9 @@ namespace SP_AutoMapperConfig
             //});
         }
 
-        private void Map_Bird_BirdAddModel()
+        private void Map_BirdAddModel_Bird()
         {
-            CreateMap<Bird, BirdAddModel>()
+            CreateMap<BirdAddModel, Bird>()
                 .ForMember(m => m.CustomerId, opt => opt.MapFrom(e => e.CustomerId))
                 .ForMember(m => m.BirdSpeciesId, opt => opt.MapFrom(e => e.BirdSpeciesId))
                 .ForMember(m => m.Name, opt => opt.MapFrom(e => e.Name))

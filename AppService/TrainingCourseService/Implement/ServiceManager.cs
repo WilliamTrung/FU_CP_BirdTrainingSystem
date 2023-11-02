@@ -1,4 +1,5 @@
 ﻿using Models.ServiceModels.TrainingCourseModels;
+using Models.ServiceModels.TrainingCourseModels.Bird;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,6 +39,15 @@ namespace AppService.TrainingCourseService.Implement
         public async Task EditCourse(TrainingCourseModel trainingCourse)
         {
             await _trainingCourse.Manager.EditCourse(trainingCourse);
+        }
+
+        public async Task CreateBirdSpecies(BirdSpeciesAddModel birdSpecies)
+        {
+            await _trainingCourse.Manager.CreateBirdSpecies(birdSpecies);
+        }
+        public async Task EditBirdSpecies(BirdSpeciesModel birdSpecies)
+        {
+            await _trainingCourse.Manager.EditBirdSpecies(birdSpecies);
         }
     }
 }

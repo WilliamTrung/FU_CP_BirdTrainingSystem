@@ -1,11 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using Models.ServiceModels.TrainingCourseModels.Bird;
 
-namespace Models.ServiceModels.TrainingCourseModels
+namespace Models.ServiceModels.TrainingCourseModels.Bird
 {
     public partial class BirdSpeciesModel
     {
+        public BirdSpeciesModel()
+        {
+            AcquirableSkills = new HashSet<AcquirableSkillModel>();
+            Birds = new HashSet<BirdModel>();
+            TrainingCourses = new HashSet<TrainingCourseModel>();
+        }
+
         public int Id { get; set; }
         public string Name { get; set; } = null!;
         public string? ShortDetail { get; set; }

@@ -1,4 +1,5 @@
-﻿using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
+﻿using Models.ServiceModels.TrainingCourseModels.Bird;
+using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
 using System;
 using System.Collections.Generic;
 
