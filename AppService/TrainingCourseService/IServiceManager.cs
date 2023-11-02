@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AppService.TrainingCourseService
 {
-    public interface IServiceManager
+    public interface IServiceManager : IServiceAll
     {
         Task CreateCourse(TrainingCourseModel trainingCourse);
         Task EditCourse(TrainingCourseModel trainingCourse);

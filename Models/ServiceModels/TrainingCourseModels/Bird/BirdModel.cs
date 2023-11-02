@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Models.ServiceModels.TrainingCourseModels
+namespace Models.ServiceModels.TrainingCourseModels.Bird
 {
     public partial class BirdModel
     {

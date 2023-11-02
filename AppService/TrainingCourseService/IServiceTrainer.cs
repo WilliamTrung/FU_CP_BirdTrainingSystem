@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AppService.TrainingCourseService
 {
-    public interface IServiceTrainer
+    public interface IServiceTrainer : IServiceAll
     {
         Task<IEnumerable<BirdTrainingProgressModel>> GetBirdTrainingProgressByTrainerId(int trainerId);
         Task MarkTrainingSkillDone(MarkSkillDone markDone);

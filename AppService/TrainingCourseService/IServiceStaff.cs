@@ -10,7 +10,7 @@ using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
 
 namespace AppService.TrainingCourseService
 {
-    public interface IServiceStaff
+    public interface IServiceStaff : IServiceAll
     {
         //Task<IEnumerable<BirdTrainingCourseModel>> GetBirdTrainingCourse(); //xem tat ca request
         //Task<IEnumerable<BirdTrainingProgressViewModel>> GetTrainingCourseSkill(int birdTrainingCourseId); //lay danh sach ki nang theo course

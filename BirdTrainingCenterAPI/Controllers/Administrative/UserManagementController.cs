@@ -2,6 +2,7 @@
 using BirdTrainingCenterAPI.Controllers.Endpoints.Administrative;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Models.ServiceModels.UserModels;
 using SP_Middleware;
@@ -19,6 +20,7 @@ namespace BirdTrainingCenterAPI.Controllers.Administrative
             _admin = admin;
         }
         [HttpGet]
+        [EnableQuery]
         [Route("users")]
         public async Task<IActionResult> GetUsers()
         {            

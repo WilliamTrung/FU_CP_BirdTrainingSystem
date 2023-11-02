@@ -26,5 +26,7 @@ namespace TrainingCourseSubsystem.Implementation
         public IFeatureTrainer Trainer => new FeatureTrainer(_unitOfWork, _mapper);
 
         public IFeatureStaff Staff => new FeatureStaff(_unitOfWork, _mapper);
+
+        public IFeatureAll All => new FeatureAll(_unitOfWork, _mapper);
     }
 }

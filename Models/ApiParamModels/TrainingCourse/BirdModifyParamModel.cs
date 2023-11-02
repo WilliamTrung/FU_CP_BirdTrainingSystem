@@ -1,19 +1,17 @@
-﻿using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
-using Models.ServiceModels.TrainingCourseModels;
+﻿using Microsoft.AspNetCore.Http;
+using Models.ServiceModels.TrainingCourseModels.Bird;
+using SP_Validator;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SP_Validator;
-using Microsoft.AspNetCore.Http;
 
 namespace Models.ApiParamModels.TrainingCourse
 {
-    public class BirdParamModel
+    public class BirdModifyParamModel
     {
         public int Id { get; set; }
-        public int CustomerId { get; set; }
         public int BirdSpeciesId { get; set; }
         public string? Name { get; set; }
         public string? Color { get; set; }
@@ -21,21 +19,18 @@ namespace Models.ApiParamModels.TrainingCourse
         public List<IFormFile>? Pictures { get; set; }
         public string? Description { get; set; }
         public bool? IsDefault { get; set; }
-        public int Status { get; set; }
 
-        public BirdModel ToBirdModel(string? picture)
+        public BirdModifyModel ToBirdModifyModel(string? picture)
         {
-            return new BirdModel
+            return new BirdModifyModel
             {
-                Id = Id,
-                CustomerId= CustomerId,
-                BirdSpeciesId= BirdSpeciesId,
+                Id= Id,
+                BirdSpeciesId = BirdSpeciesId,
                 Name = Name,
                 Color = Color,
                 Picture = picture,
-                Description= Description,
-                IsDefault = IsDefault,
-                Status = (int)Models.Enum.Bird.Status.Ready
+                Description = Description,
+                IsDefault = IsDefault
             };
         }
     }

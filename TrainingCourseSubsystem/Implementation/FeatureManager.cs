@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace TrainingCourseSubsystem.Implementation
 {
-    public class FeatureManager : FeatureUser, IFeatureManager
+    public class FeatureManager : FeatureAll, IFeatureManager
     {
         public FeatureManager(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {
@@ -105,6 +105,36 @@ namespace TrainingCourseSubsystem.Implementation
             }
             await _unitOfWork.TrainingCourseSkillRepository.Add(entity);
             await _unitOfWork.TrainingCourseRepository.Update(trainingCourse);
+        }
+
+        public async Task CreateBirdSpecies(BirdSpeciesModel birdSpecies)
+        {
+            if (birdSpecies == null)
+            {
+                throw new Exception("Client send null model.");
+            }
+            var entity = _mapper.Map<BirdSpecies>(birdSpecies);
+            if (entity == null)
+            {
+                throw new Exception("Entity is null.");
+            }
+            await _unitOfWork.BirdSpeciesRepository.Add(entity);
+        }
+
+        public async Task EditBirdSpecies(BirdSpeciesModel birdSpecies)
+        {
+            if (birdSpecies == null)
+            {
+                throw new Exception("Client send null model.");
+            }
+            var entity = await _unitOfWork.BirdSpeciesRepository.GetFirst(e => e.Id == birdSpecies.Id);
+            if (entity == null)
+            {
+                throw new Exception("Entity is null.");
+            }
+            entity.Name = birdSpecies.Name;
+            entity.ShortDetail = birdSpecies.ShortDetail;
+            await _unitOfWork.BirdSpeciesRepository.Update(entity);
         }
     }
 }

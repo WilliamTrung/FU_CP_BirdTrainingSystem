@@ -3,6 +3,7 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Models.Entities;
 using Models.ServiceModels.TrainingCourseModels;
+using Models.ServiceModels.TrainingCourseModels.Bird;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
@@ -16,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace TrainingCourseSubsystem.Implementation
 {
-    public class FeatureCustomer : FeatureUser, IFeatureCustomer
+    public class FeatureCustomer : FeatureAll, IFeatureCustomer
     {
         public FeatureCustomer(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {
@@ -36,7 +37,7 @@ namespace TrainingCourseSubsystem.Implementation
             return models;
         }
 
-        public async Task RegisterBird(BirdModel bird)
+        public async Task RegisterBird(BirdAddModel bird)
         {
             if (bird == null)
             {
@@ -47,10 +48,11 @@ namespace TrainingCourseSubsystem.Implementation
             {
                 throw new Exception("Entity is null.");
             }
+            entity.Status = (int)Models.Enum.Bird.Status.Ready;
             await _unitOfWork.BirdRepository.Add(entity);
         }
 
-        public async Task UpdateBirdProfile(BirdModel bird)
+        public async Task UpdateBirdProfile(BirdModifyModel bird)
         {
             if (bird == null)
             {
@@ -61,7 +63,7 @@ namespace TrainingCourseSubsystem.Implementation
             {
                 throw new Exception("Entity is null.");
             }
-            entity.CustomerId = bird.CustomerId;
+            //entity.CustomerId = bird.CustomerId;
             entity.BirdSpeciesId = bird.BirdSpeciesId;
             entity.Name = bird.Name;
             entity.Color = bird.Color;
@@ -97,10 +99,13 @@ namespace TrainingCourseSubsystem.Implementation
             return models;
         }
 
-        public async Task<IEnumerable<BirdModel>> GetBirdByCustomerId(int customerId)
+        public async Task<IEnumerable<BirdViewModel>> GetBirdByCustomerId(int customerId)
         {
-            var entities = await _unitOfWork.BirdRepository.GetFirst(e => e.CustomerId == customerId);
-            var models = _mapper.Map<IEnumerable<BirdModel>>(entities);
+            var entities = await _unitOfWork.BirdRepository.GetFirst(e => e.CustomerId == customerId
+                                                                     , nameof(Bird.BirdSpecies)
+                                                                     , nameof(Bird.Customer)
+                                                                     , $"{nameof(Bird.Customer)}.{nameof(Bird.Customer.User)}");
+            var models = _mapper.Map<IEnumerable<BirdViewModel>>(entities);
             return models;
         }
 

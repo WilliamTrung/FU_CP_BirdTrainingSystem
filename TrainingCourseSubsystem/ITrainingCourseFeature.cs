@@ -12,5 +12,6 @@ namespace TrainingCourseSubsystem
         IFeatureManager Manager { get; }
         IFeatureStaff Staff { get; }
         IFeatureTrainer Trainer { get; }
+        IFeatureAll All { get; }
     }
 }

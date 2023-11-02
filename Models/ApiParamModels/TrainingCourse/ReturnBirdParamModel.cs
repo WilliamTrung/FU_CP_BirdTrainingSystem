@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Models.ServiceModels.TrainingCourseModels;
+using Models.ServiceModels.TrainingCourseModels.Bird;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
 using SP_Validator;
 using System;
