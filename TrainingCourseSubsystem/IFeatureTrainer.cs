@@ -19,6 +19,7 @@ namespace TrainingCourseSubsystem
 
         Task<IEnumerable<BirdTrainingProgressModel>> GetBirdTrainingProgressByTrainerId(int trainerId);
         Task MarkTrainingSkillDone(MarkSkillDone markDone);
+        Task<int> MarkTrainingSlotDone(int birdTrainingProgressId);
         Task<TimetableReportView> GetTimetableReportView(int birdTrainingReportId);
     }
 }
