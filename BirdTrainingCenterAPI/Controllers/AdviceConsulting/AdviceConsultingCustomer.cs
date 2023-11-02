@@ -21,7 +21,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         }
 
         [HttpGet]
-        [Route("customer-listConsultingTicket")]
+        [Route("listCustomerConsultingTicket")]
         public async Task<IActionResult> GetListConsultingTicketByCustomerId()
         {
             try
@@ -44,7 +44,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         }
 
         [HttpPost]
-        [Route("customer-sendConsultingTicket")]
+        [Route("sendConsultingTicket")]
         public async Task<IActionResult> SendConsultingTicket([FromBody] ConsultingTicketCreateNewModel ticket)
         {
             try

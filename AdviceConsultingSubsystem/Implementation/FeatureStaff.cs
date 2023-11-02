@@ -78,12 +78,6 @@ namespace AdviceConsultingSubsystem.Implementation
                 throw new KeyNotFoundException($"{nameof(entity)} not found for id: {ticketId}");
             }
 
-            var trainer = await _unitOfWork.TrainerRepository.GetFirst(x => x.Id == trainerId);
-            if (trainer == null)
-            {
-                throw new KeyNotFoundException($"{nameof(trainer)} not found for Trainer: {trainerId}");
-            }
-
             entity.TrainerId = trainerId;
 
             await _unitOfWork.ConsultingTicketRepository.Update(entity);

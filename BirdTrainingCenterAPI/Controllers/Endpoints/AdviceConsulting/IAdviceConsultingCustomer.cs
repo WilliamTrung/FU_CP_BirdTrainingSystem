@@ -6,10 +6,10 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting
     public interface IAdviceConsultingCustomer
     {
         [HttpPost]
-        [Route("customer-sendConsultingTicket")]
+        [Route("sendConsultingTicket")]
         Task<IActionResult>SendConsultingTicket([FromBody] ConsultingTicketCreateNewModel ticket);
         [HttpGet]
-        [Route("customer-listConsultingTicket")]
+        [Route("listCustomerConsultingTicket")]
         Task<IActionResult> GetListConsultingTicketByCustomerId();
     }
 }
