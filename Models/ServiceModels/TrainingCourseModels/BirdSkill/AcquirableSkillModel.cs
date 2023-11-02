@@ -3,7 +3,7 @@ using Models.Skills;
 using System;
 using System.Collections.Generic;
 
-namespace Models.ServiceModels.TrainingCourseModels
+namespace Models.ServiceModels.TrainingCourseModels.BirdSkill
 {
     public partial class AcquirableSkillModel
     {

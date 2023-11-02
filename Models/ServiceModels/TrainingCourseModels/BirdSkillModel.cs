@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Models.ServiceModels.TrainingCourseModels.BirdSkill;
+using Models.ServiceModels.TrainingCourseModels.TrainerSkill;
+using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
+using System;
 using System.Collections.Generic;
 
 namespace Models.ServiceModels.TrainingCourseModels

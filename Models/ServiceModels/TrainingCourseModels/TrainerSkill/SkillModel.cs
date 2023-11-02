@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Models.ServiceModels.TrainingCourseModels
+namespace Models.ServiceModels.TrainingCourseModels.TrainerSkill
 {
     public partial class SkillModel
     {

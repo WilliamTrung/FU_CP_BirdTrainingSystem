@@ -24,8 +24,7 @@ namespace TrainingCourseSubsystem.Implementation
         }
         public async Task<IEnumerable<TrainingCourseViewModel>> GetTrainingCourse()
         {
-            var entities = await _unitOfWork.TrainingCourseRepository.Get(expression: null
-                                                                         , nameof(TrainingCourse.BirdSpecies));
+            var entities = await _unitOfWork.TrainingCourseRepository.Get(expression: null, nameof(TrainingCourse.BirdSpecies));
             var models = _mapper.Map<IEnumerable<TrainingCourseViewModel>>(entities);
             return models;
         }

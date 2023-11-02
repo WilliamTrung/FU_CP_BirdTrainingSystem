@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Models.ServiceModels.TrainingCourseModels
+namespace Models.ServiceModels.TrainingCourseModels.TrainerSkill
 {
     public class TrainerSkillModel
     {

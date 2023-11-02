@@ -19,7 +19,7 @@ namespace TrainingCourseSubsystem
         Task EditCourse(TrainingCourseModifyModel trainingCourse);
         Task ActiveTrainingCourse(int trainingCourseId);
         Task DisableTrainingCourse(int trainingCourseId);
-        Task AddSkill(AddTrainingSkillModel trainingCourseSkill);
+        Task AddSkillToCourse(AddTrainingSkillModel trainingCourseSkill);
         Task UpdateSkill(AddTrainingSkillModel trainingSkillModel);
         Task CreateBirdSpecies(BirdSpeciesAddModel birdSpecies);
         Task EditBirdSpecies(BirdSpeciesViewModel birdSpecies);

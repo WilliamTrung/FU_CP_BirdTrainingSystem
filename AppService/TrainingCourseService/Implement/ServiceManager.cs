@@ -24,7 +24,7 @@ namespace AppService.TrainingCourseService.Implement
 
         public async Task AddSkill(AddTrainingSkillModel trainingCourseSkill)
         {
-            await _trainingCourse.Manager.AddSkill(trainingCourseSkill);
+            await _trainingCourse.Manager.AddSkillToCourse(trainingCourseSkill);
         }
 
         public async Task CreateCourse(TrainingCourseAddModel trainingCourse)

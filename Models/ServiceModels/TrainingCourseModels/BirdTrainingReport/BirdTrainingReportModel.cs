@@ -1,5 +1,6 @@
 ﻿using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
+using Models.ServiceModels.TrainingCourseModels.TrainerSlot;
 using System;
 using System.Collections.Generic;
 

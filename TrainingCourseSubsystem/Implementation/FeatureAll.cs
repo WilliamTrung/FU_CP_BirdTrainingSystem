@@ -1,5 +1,6 @@
 ﻿using AppRepository.UnitOfWork;
 using AutoMapper;
+using Models.Entities;
 using Models.Enum.BirdTrainingProgress;
 using Models.ServiceModels.TrainingCourseModels.Bird;
 using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
@@ -43,14 +44,15 @@ namespace TrainingCourseSubsystem.Implementation
 
         public async Task<IEnumerable<TrainingCourseViewModel>> GetTrainingCourses()
         {
-            var entities = await _unitOfWork.TrainingCourseRepository.Get();
+            var entities = await _unitOfWork.TrainingCourseRepository.Get(expression: null, nameof(TrainingCourse.BirdSpecies));
             var models = _mapper.Map<IEnumerable<TrainingCourseViewModel>>(entities);
             return models;
         }
 
         public async Task<TrainingCourseViewModel> GetTrainingCoursesById(int courseId)
         {
-            var entities = await _unitOfWork.TrainingCourseRepository.GetFirst(e => e.Id == courseId);
+            var entities = await _unitOfWork.TrainingCourseRepository.GetFirst(e => e.Id == courseId
+                                                                               , nameof(TrainingCourse.BirdSpecies));
             var models = _mapper.Map<TrainingCourseViewModel>(entities);
             return models;
         }

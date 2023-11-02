@@ -85,7 +85,7 @@ namespace TrainingCourseSubsystem.Implementation
             }
         }
 
-        public async Task AddSkill(AddTrainingSkillModel trainingCourseSkill)
+        public async Task AddSkillToCourse(AddTrainingSkillModel trainingCourseSkill)
         {
             if (trainingCourseSkill == null)
             {
