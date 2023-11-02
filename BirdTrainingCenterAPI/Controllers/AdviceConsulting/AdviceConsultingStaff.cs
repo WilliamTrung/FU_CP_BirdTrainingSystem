@@ -15,7 +15,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         {
         }
         [HttpPut]
-        [Route("staff-approveConsultingTicket")]
+        [Route("approveConsultingTicket")]
         public async Task<IActionResult> ApproveConsultingTicket(int ticketId)
         {
             try
@@ -30,7 +30,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         }
 
         [HttpPut]
-        [Route("staff-assignTrainer")]
+        [Route("assignTrainer")]
         public async Task<IActionResult> AssignTrainer(int trainerId, int ticketId)
         {
             try
@@ -45,7 +45,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         }
 
         [HttpPut]
-        [Route("staff-cancelConsultingTicket")]
+        [Route("cancelConsultingTicket")]
         public async Task<IActionResult> CancelConsultingTicket(int ticketId)
         {
             try
@@ -60,7 +60,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         }
 
         [HttpGet]
-        [Route("staff-viewListConsultingTicketByStatus")]
+        [Route("viewListConsultingTicketByStatus")]
         public async Task<IActionResult> ViewListConsultingTicketByStatus(int status)
         {
             try

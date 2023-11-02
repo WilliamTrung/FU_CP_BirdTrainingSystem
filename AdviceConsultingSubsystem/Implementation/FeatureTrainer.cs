@@ -21,10 +21,17 @@ namespace AdviceConsultingSubsystem.Implementation
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<ConsultingTicketListViewModel>> ViewAssignedAppointment (int id)
+        public async Task<IEnumerable<ConsultingTicketListViewModel>> GetListAssignedConsultingTicket(int trainerId)
         {
-            var entities = await _unitOfWork.ConsultingTicketRepository.Get(x => x.Trainer.Id == id);
-            var models = _mapper.Map<IEnumerable<ConsultingTicketListViewModel>>(entities);
+            var entities = await _unitOfWork.ConsultingTicketRepository.Get(x => x.Trainer.Id == trainerId
+                                                                                && x.Status == (int)Models.Enum.ConsultingTicket.Status.Confirmed);
+            var models = new List<ConsultingTicketListViewModel>();
+            foreach (var entity in entities)
+            {
+                var model = _mapper.Map<ConsultingTicketListViewModel>(entity);
+                models.Add(model);
+            }
+                
             return models;
         }
 
@@ -36,26 +43,26 @@ namespace AdviceConsultingSubsystem.Implementation
                 throw new KeyNotFoundException($"{nameof(entity)} not found for id: {ticketId}");
             }
 
-            if (entity.OnlineOrOffline == true && ggmeetLink != null)
+            if (entity.OnlineOrOffline == true)
             {
                 entity.GgMeetLink = ggmeetLink;
             }
             await _unitOfWork.ConsultingTicketRepository.Update(entity);
         }
 
-        public async Task FinishAppointment(ConsultingTicketTrainerFinishModel consultingTicket)
+        public async Task FinishAppointment(ConsultingTicketTrainerFinishModel ticket)
         {
-            var entity = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id == consultingTicket.Id);
+            var entity = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id == ticket.Id);
             if (entity == null)
             {
-                throw new KeyNotFoundException($"{nameof(entity)} not found for id: {consultingTicket.Id}");
+                throw new KeyNotFoundException($"{nameof(entity)} not found for id: {ticket.Id}");
             }
 
-            entity.ActualEndSlot = consultingTicket.ActualEndSlot;
-            entity.Evidence = consultingTicket.Evidence;
-            entity.Price = consultingTicket.Price;
-            entity.DiscountedPrice = consultingTicket.DiscountedPrice;
-            entity.Status = consultingTicket.Status;
+            entity.ActualEndSlot = ticket.ActualEndSlot;
+            entity.Evidence = ticket.Evidence;
+            entity.Price = ticket.Price;
+            entity.DiscountedPrice = ticket.DiscountedPrice;
+            entity.Status = ticket.Status;
 
             await _unitOfWork.ConsultingTicketRepository.Update(entity);
         }

@@ -21,7 +21,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         }
 
         [HttpGet]
-        [Route("customer-listConsultingTicket")]
+        [Route("listCustomerConsultingTicket")]
         public async Task<IActionResult> GetListConsultingTicketByCustomerId()
         {
             try
@@ -44,20 +44,11 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         }
 
         [HttpPost]
-        [Route("customer-sendConsultingTicket")]
+        [Route("sendConsultingTicket")]
         public async Task<IActionResult> SendConsultingTicket([FromBody] ConsultingTicketCreateNewModel ticket)
         {
             try
             {
-                var accessToken = Request.DeserializeToken(_authService);
-                if (accessToken == null)
-                {
-                    return Unauthorized();
-                }
-                var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
-
-                ticket.CustomerId = Int32.Parse(customerId.Value);
-
                 int distance = 0;
                 if (ticket.Address != null)
                 {

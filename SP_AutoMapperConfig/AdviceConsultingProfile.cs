@@ -20,6 +20,7 @@ namespace SP_AutoMapperConfig
             Map_ConsultingType_ConsultingTypeServiceModel();
             Map_ConsultingTicketCreateNewModel_ConsultingTicket();
             Map_ConsultingTicket_ConsultingTicketDetailViewModel();
+            Map_ConsultingTicket_ConsultingTicketListViewModel();
             Map_AdviceConsultingTrainerSlotServiceModel_TrainerSlot();
         }
 
@@ -52,11 +53,15 @@ namespace SP_AutoMapperConfig
             CreateMap<ConsultingTicket, ConsultingTicketDetailViewModel>();
         }
 
+        private void Map_ConsultingTicket_ConsultingTicketListViewModel()
+        {
+            CreateMap<ConsultingTicket, ConsultingTicketListViewModel>();
+        }
         private void Map_AdviceConsultingTrainerSlotServiceModel_TrainerSlot()
         {
             CreateMap<AdviceConsultingTrainerSlotServiceModel, TrainerSlot>()
                 .ForMember(e => e.SlotId, opt => opt.MapFrom(m => m.SlotId))
-                .ForMember(e => e.Date, opt => opt.MapFrom(m => m.Date.ToDateTime(new TimeOnly(0, 0, 0))))
+                .ForMember(e => e.Date, opt => opt.MapFrom(m => m.Date.ToDateTime(new TimeOnly())))
                 .ForMember(e => e.TrainerId, opt => opt.MapFrom(m => m.TrainerId))
                 .ForMember(e => e.Status, opt => opt.MapFrom(m => (int)Models.Enum.ConsultingTicket.Status.Confirmed))
                 .ForMember(e => e.EntityId, opt => opt.MapFrom(m => m.EntityId))
