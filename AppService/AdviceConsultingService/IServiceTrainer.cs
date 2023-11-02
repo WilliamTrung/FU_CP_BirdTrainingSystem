@@ -9,7 +9,7 @@ namespace AppService.AdviceConsultingService
 {
     public interface IServiceTrainer : IOtherService
     {
-        Task<IEnumerable<ConsultingTicketListViewModel>> ViewAssignedAppointment(int id);
+        Task<IEnumerable<ConsultingTicketListViewModel>> GetListAssignedConsultingTicket(int trainerId);
         Task UpdateAppointment(int ticketId, string ggmeetLink);
         Task FinishAppointment(ConsultingTicketTrainerFinishModel consultingTicket);
     }

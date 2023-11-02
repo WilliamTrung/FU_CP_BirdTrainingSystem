@@ -91,11 +91,6 @@ namespace AdviceConsultingSubsystem.Implementation
                 throw new KeyNotFoundException($"{nameof(entity)} not found for id: {ticketId}");
             }
 
-            if (entity.TrainerId == null)
-            {
-                throw new Exception($"{nameof(entity)} cannot approve because still not assign trainer");
-            }
-
             var trainerSlot = new AdviceConsultingTrainerSlotServiceModel(
                 (int)entity.TrainerId, entity.ActualSlotStart, DateOnly.FromDateTime((DateTime)entity.AppointmentDate), entity.Id);
             var slotEntity = _mapper.Map<TrainerSlot>(trainerSlot);
@@ -113,13 +108,13 @@ namespace AdviceConsultingSubsystem.Implementation
                 throw new KeyNotFoundException($"{nameof(entity)} not found for id: {ticketId}");
             }
 
-            var trainerSlot = await _unitOfWork.TrainerSlotRepository.GetFirst(x => x.Date == entity.AppointmentDate
-                                                                            && x.SlotId == entity.ActualSlotStart
-                                                                            && x.TrainerId == entity.TrainerId);
-            if (trainerSlot != null)
-            {
-                await _unitOfWork.TrainerSlotRepository.Delete(trainerSlot);
-            }
+            //var trainerSlot = await _unitOfWork.TrainerSlotRepository.GetFirst(x => x.Date == entity.AppointmentDate
+            //                                                                && x.SlotId == entity.ActualSlotStart
+            //                                                                && x.TrainerId == entity.TrainerId);
+            //if (trainerSlot != null)
+            //{
+            //    await _unitOfWork.TrainerSlotRepository.Delete(trainerSlot);
+            //}
             
             entity.Status = (int)Models.Enum.ConsultingTicket.Status.Canceled;
             await _unitOfWork.ConsultingTicketRepository.Update(entity);

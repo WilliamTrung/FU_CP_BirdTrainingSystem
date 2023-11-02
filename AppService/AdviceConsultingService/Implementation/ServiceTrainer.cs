@@ -15,9 +15,9 @@ namespace AppService.AdviceConsultingService.Implementation
         {
         }
 
-        public async Task FinishAppointment(ConsultingTicketTrainerFinishModel consultingTicket)
+        public async Task FinishAppointment(ConsultingTicketTrainerFinishModel ticket)
         {
-            await _consulting.Trainer.FinishAppointment(consultingTicket);
+            await _consulting.Trainer.FinishAppointment(ticket);
         }
 
         public async Task UpdateAppointment(int ticketId, string ggmeetLink)
@@ -25,9 +25,9 @@ namespace AppService.AdviceConsultingService.Implementation
             await _consulting.Trainer.UpdateAppointment(ticketId, ggmeetLink);
         }
 
-        public async Task<IEnumerable<ConsultingTicketListViewModel>> ViewAssignedAppointment(int id)
+        public async Task<IEnumerable<ConsultingTicketListViewModel>> GetListAssignedConsultingTicket(int trainerId)
         {
-            return await _consulting.Trainer.ViewAssignedAppointment(id);
+            return await _consulting.Trainer.GetListAssignedConsultingTicket(trainerId);
         }
     }
 }
