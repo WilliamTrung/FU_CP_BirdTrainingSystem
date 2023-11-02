@@ -22,7 +22,7 @@ namespace AppService.AdviceConsultingService.Implementation
 
         public async Task<ConsultingTicketDetailViewModel> GetConsultingTicketDetailByID(int customerId)
         {
-            return await _consulting.Customer.GetConsultingTicketByID(id);
+            return await _consulting.Customer.GetConsultingTicketByID(customerId);
         }
 
         public async Task SendConsultingTicket(ConsultingTicketCreateNewModel consultingTicket, int distance)
