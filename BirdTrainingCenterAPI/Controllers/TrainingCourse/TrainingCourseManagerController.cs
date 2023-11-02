@@ -8,11 +8,12 @@ using Models.ConfigModels;
 using Models.ServiceModels.TrainingCourseModels;
 using SP_Middleware;
 using SP_Extension;
+using Models.ServiceModels.TrainingCourseModels.Bird;
 
 namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
 {
     [Route("api/trainingcourse-manager")]
-    [CustomAuthorize(roles: "Manager")]
+    //[CustomAuthorize(roles: "Manager")]
     [ApiController]
     public class TrainingCourseManagerController : TrainingCourseBaseController, ITrainingCourseManager
     {
@@ -98,6 +99,21 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
+        }
+        [HttpPost]
+        [Route("birdspecies")]
+        public async Task<IActionResult> CreateBirdSpecies([FromBody] BirdSpeciesAddModel birdSpecies)
+        {
+            await _trainingCourseService.Manager.CreateBirdSpecies(birdSpecies);
+            return Ok();
+        }
+
+        [HttpPut]
+        [Route("birdspecies")]
+        public async Task<IActionResult> EditBirdSpecies([FromBody] BirdSpeciesModel birdSpecies)
+        {
+            await _trainingCourseService.Manager.EditBirdSpecies(birdSpecies);
+            return Ok();
         }
     }
 }

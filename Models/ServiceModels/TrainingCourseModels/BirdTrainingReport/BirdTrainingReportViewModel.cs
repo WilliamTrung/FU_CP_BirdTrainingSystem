@@ -9,6 +9,6 @@ namespace Models.ServiceModels.TrainingCourseModels.BirdTrainingReport
     public class BirdTrainingReportViewModel
     {
         public DateTime TrainingDate { get; set; }
-        public int Status { get; set; }
+        public Models.Enum.BirdTrainingReport.Status Status { get; set; }
     }
 }

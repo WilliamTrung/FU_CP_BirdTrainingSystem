@@ -40,12 +40,15 @@ namespace BirdTrainingCenterAPI.Startup
             builder.Services.AddTransient<TrainingCourseSubsystem.IFeatureStaff, TrainingCourseSubsystem.Implementation.FeatureStaff> ();
             builder.Services.AddTransient<TrainingCourseSubsystem.IFeatureManager, TrainingCourseSubsystem.Implementation.FeatureManager>();
             builder.Services.AddTransient<TrainingCourseSubsystem.IFeatureCustomer, TrainingCourseSubsystem.Implementation.FeatureCustomer>();
+            builder.Services.AddTransient<TrainingCourseSubsystem.IFeatureAll, TrainingCourseSubsystem.Implementation.FeatureAll>();
+
             builder.Services.AddTransient<TrainingCourseSubsystem.ITrainingCourseFeature, TrainingCourseSubsystem.Implementation.TrainingCourseFeature>();
 
             builder.Services.AddTransient<AppService.TrainingCourseService.IServiceTrainer, AppService.TrainingCourseService.Implement.ServiceTrainer>();
             builder.Services.AddTransient<AppService.TrainingCourseService.IServiceCustomer, AppService.TrainingCourseService.Implement.ServiceCustomer>();
             builder.Services.AddTransient<AppService.TrainingCourseService.IServiceStaff, AppService.TrainingCourseService.Implement.ServiceStaff>();
             builder.Services.AddTransient<AppService.TrainingCourseService.IServiceManager, AppService.TrainingCourseService.Implement.ServiceManager>();
+            builder.Services.AddTransient<AppService.TrainingCourseService.IServiceAll, AppService.TrainingCourseService.Implement.ServiceAll>();
 
             builder.Services.AddTransient<ITrainingCourseService, AppService.TrainingCourseService.TrainingCourse>();
         }

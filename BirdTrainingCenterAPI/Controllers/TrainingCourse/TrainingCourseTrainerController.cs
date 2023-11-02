@@ -15,7 +15,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
 {
     [Route("api/trainingcourse-trainer")]
     [ApiController]
-    [CustomAuthorize(roles: "Trainer")]
+    //[CustomAuthorize(roles: "Trainer")]
     public class TrainingCourseTrainerController : TrainingCourseBaseController, ITrainingCourseTrainer
     {
         private readonly IFirebaseService _firebaseService;
@@ -42,7 +42,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         }
 
         [HttpPut]
-        [Route("mark-trainingdone")]
+        [Route("mark-trainingskilldone")]
         public async Task<IActionResult> MarkTrainingSkillDone([FromForm] TrainerMarkDoneParamModel markDone)
         {
             try
@@ -70,6 +70,20 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+        [HttpPut]
+        [Route("mark-trainingslotdone")]
+        public async Task<IActionResult> MarkTrainingSlotDone(int birdTrainingProgressId)
+        {
+            var result = await _trainingCourseService.Trainer.MarkTrainingSlotDone(birdTrainingProgressId);
+            if(result == (int)Models.Enum.BirdTrainingReport.FirstOrEnd.EndSlot)
+            {
+                return StatusCode(206);
+            }
+            else
+            {
+                return Ok();
             }
         }
     }

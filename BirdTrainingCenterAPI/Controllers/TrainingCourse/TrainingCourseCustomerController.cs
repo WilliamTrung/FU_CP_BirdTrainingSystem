@@ -14,7 +14,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
 {
     [Route("api/trainingcourse-customer")]
     [ApiController]
-    [CustomAuthorize(roles: "Customer")]
+    //[CustomAuthorize(roles: "Customer")]
     public class TrainingCourseCustomerController : TrainingCourseBaseController, ITrainingCourseCustomer
     {
         private readonly IFirebaseService _firebaseService;

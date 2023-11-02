@@ -27,5 +27,13 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             var result = await _trainingCourseService.All.GetBirdSpeciesById(birdSpeciesId);
             return Ok(result);
         }
+
+        [HttpGet]
+        [Route("birdtrainingprogress-statuses")]
+        public IActionResult GetEnumBirdTrainingProgressStatuses()
+        {
+            var result = _trainingCourseService.All.GetEnumBirdTrainingProgressStatuses();
+            return Ok(result);
+        }
     }
 }

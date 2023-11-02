@@ -1,7 +1,7 @@
 ﻿using AppRepository.UnitOfWork;
 using AutoMapper;
 using Models.Enum.BirdTrainingProgress;
-using Models.ServiceModels.TrainingCourseModels;
+using Models.ServiceModels.TrainingCourseModels.Bird;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,7 +23,7 @@ namespace TrainingCourseSubsystem.Implementation
         public async Task<IEnumerable<BirdSpeciesModel>> GetBirdSpecies()
         {
             var entities = await _unitOfWork.BirdSpeciesRepository.Get();
-            var models = _mapper.Map<IEnumerable<BirdSpeciesModel>>(entities);
+            var models = _mapper.Map<List<BirdSpeciesModel>>(entities);
             return models;
         }
 
