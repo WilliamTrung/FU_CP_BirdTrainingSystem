@@ -10,5 +10,6 @@ namespace Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress
     {
         public int Id { get; set; }
         public string? Evidence { get; set; }
+        public string Status { get; set; }
     }
 }

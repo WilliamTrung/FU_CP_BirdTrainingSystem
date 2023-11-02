@@ -11,5 +11,6 @@ namespace AppService.TrainingCourseService
     {
         Task<IEnumerable<BirdSpeciesModel>> GetBirdSpecies();
         Task<BirdSpeciesModel> GetBirdSpeciesById(int birdSpeciesId);
+        IEnumerable<Models.Enum.BirdTrainingProgress.Status> GetEnumBirdTrainingProgressStatuses();
     }
 }

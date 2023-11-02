@@ -13,13 +13,15 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         {
             _trainingCourseService = trainingCourseService;
         }
-
+        [HttpGet]
+        [Route("birdspecies")]
         public async Task<IActionResult> GetBirdSpecies()
         {
             var result = await _trainingCourseService.All.GetBirdSpecies();
             return Ok(result);
         }
-
+        [HttpGet]
+        [Route("birdspecies-id")]
         public async Task<IActionResult> GetBirdSpeciesById([FromQuery] int birdSpeciesId)
         {
             var result = await _trainingCourseService.All.GetBirdSpeciesById(birdSpeciesId);

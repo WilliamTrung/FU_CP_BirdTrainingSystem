@@ -1,5 +1,6 @@
 ﻿using AppRepository.UnitOfWork;
 using AutoMapper;
+using Models.Enum.BirdTrainingProgress;
 using Models.ServiceModels.TrainingCourseModels;
 using System;
 using System.Collections.Generic;
@@ -31,6 +32,12 @@ namespace TrainingCourseSubsystem.Implementation
             var entity = await _unitOfWork.BirdSpeciesRepository.GetFirst(e => e.Id == birdSpeciesId);
             var model = _mapper.Map<BirdSpeciesModel>(entity);
             return model;
+        }
+
+        public IEnumerable<Status> GetEnumBirdTrainingProgressStatuses()
+        {
+            var statuses = Enum.GetValues(typeof(Models.Enum.BirdTrainingProgress.Status)).Cast<Models.Enum.BirdTrainingProgress.Status>();
+            return statuses;
         }
     }
 }
