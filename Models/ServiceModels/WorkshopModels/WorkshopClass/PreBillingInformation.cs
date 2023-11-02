@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 namespace Models.ServiceModels.WorkshopModels.WorkshopClass
 {
-    public class BillingModel
-    {        
-        public decimal WorkshopPrice { get; set; }
-        public decimal DiscountedPrice { get; set; }
-        public decimal TotalPrice { get; set; }
-        public float DiscountRate { get; set; }
+    public class PreBillingInformation
+    {
         public string MembershipName { get; set; } = null!;
+        public float DiscountPercent { get; set; }
+        public decimal WorkshopPrice { get; set; }
     }
 }
