@@ -76,10 +76,10 @@ namespace TrainingCourseSubsystem.Implementation
             }
         }
 
-        public async Task<int> MarkTrainingSlotDone(int birdTrainingProgressId)//status 206 de chuyen qua trang khac
+        public async Task<int> MarkTrainingSlotDone(int birdTrainingReportId)//status 206 de chuyen qua trang khac
         {
             int result = (int)Models.Enum.BirdTrainingReport.FirstOrEnd.MidSlot;
-            var entity = await _unitOfWork.BirdTrainingReportRepository.GetFirst(e => e.Id == birdTrainingProgressId);
+            var entity = await _unitOfWork.BirdTrainingReportRepository.GetFirst(e => e.Id == birdTrainingReportId);
             if(entity == null)
             {
                 throw new Exception("Entity not found");

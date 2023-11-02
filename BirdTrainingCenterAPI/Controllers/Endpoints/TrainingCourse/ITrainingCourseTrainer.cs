@@ -12,11 +12,15 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
         Task<IActionResult> GetBirdTrainingProgressByTrainerId([FromQuery]int trainerId);
 
         [HttpPut]
-        [Route("mark-trainingdone")]
+        [Route("mark-trainingskilldone")]
         Task<IActionResult> MarkTrainingSkillDone([FromForm]TrainerMarkDoneParamModel markDone);
 
         [HttpGet]
         [Route("timetable-slot-itemdetail")]
         Task<IActionResult> GetTimetableReportView([FromQuery]int birdTrainingReportId);
+
+        [HttpPut]
+        [Route("mark-trainingslotdone")]
+        Task<IActionResult> MarkTrainingSlotDone(int birdTrainingProgressId);
     }
 }

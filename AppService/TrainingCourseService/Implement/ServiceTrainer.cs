@@ -30,5 +30,10 @@ namespace AppService.TrainingCourseService.Implement
         {
             await _trainingCourse.Trainer.MarkTrainingSkillDone(markDone);
         }
+
+        public async Task<int> MarkTrainingSlotDone(int birdTrainingReportId)
+        {
+            return await _trainingCourse.Trainer.MarkTrainingSlotDone(birdTrainingReportId);
+        }
     }
 }
