@@ -2,6 +2,7 @@
 using Models.Entities;
 using Models.ServiceModels.SlotModels;
 using Models.ServiceModels.TrainingCourseModels;
+using Models.ServiceModels.TrainingCourseModels.TrainerSkill;
 using System;
 using System.Collections.Generic;
 using System.Linq;
