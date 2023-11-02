@@ -16,5 +16,9 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting
         [HttpGet]
         [Route("validateBeforeUsingSendConsultingTicket")]
         Task<IActionResult> ValidateBeforeUsingSendConsultingTicket(int customerId);
+
+        [HttpGet]
+        [Route("getFreeTrainerOnSlotDate")]
+        Task<IActionResult> GetListFreeTrainerOnSlotAndDate(DateOnly date, int slotId);
     }
 }

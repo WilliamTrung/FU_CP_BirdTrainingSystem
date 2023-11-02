@@ -24,6 +24,25 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         }
 
         [HttpGet]
+        [Route("getFreeTrainerOnSlotDate")]
+        public async Task<IActionResult> GetListFreeTrainerOnSlotAndDate(DateOnly date, int slotId)
+        {
+            try
+            {
+                var result = await _timetable.GetListFreeTrainerOnSlotAndDate(date, slotId, (int)Models.Enum.Trainer.Category.Consulting);
+                if (result == null)
+                {
+                    return StatusCode(StatusCodes.Status503ServiceUnavailable, "Khong co trainer ranh");
+                }
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet]
         [Route("listCustomerConsultingTicket")]
         public async Task<IActionResult> GetListConsultingTicketByCustomerId(int customerId)
         {
@@ -71,6 +90,8 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
             }        
         }
 
+        [HttpGet]
+        [Route("validateBeforeUsingSendConsultingTicket")]
         public async Task<IActionResult> ValidateBeforeUsingSendConsultingTicket(int customerId)
         {
             try
