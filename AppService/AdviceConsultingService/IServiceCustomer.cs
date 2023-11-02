@@ -11,6 +11,7 @@ namespace AppService.AdviceConsultingService
     {
         Task SendConsultingTicket(ConsultingTicketCreateNewModel consultingTicket, int distance);
         Task<IEnumerable<ConsultingTicketListViewModel>> GetListConsultingTicketByCustomerID(int customerId);
-        Task<ConsultingTicketDetailViewModel> GetConsultingTicketDetailByID(int id);
+        Task<ConsultingTicketDetailViewModel> GetConsultingTicketDetailByID(int customerId);
+        Task<bool> ValidateBeforeUsingSendConsultingTicket(int customerId);
     }
 }

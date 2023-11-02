@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Models.AuthModels;
 using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
 using System.Security.Claims;
+using TimetableSubsystem;
 
 namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
 {
@@ -15,25 +16,39 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
     public class AdviceConsultingCustomer : AdviceConsultingBaseController, IAdviceConsultingCustomer
     {
         private readonly IGoogleMapService _googleMapService;
-        public AdviceConsultingCustomer(IAdviceConsultingService adviceConsultingService, IAuthService authService, IGoogleMapService googleMapService) : base(adviceConsultingService, authService) 
+        private readonly ITimetableFeature _timetable;
+        public AdviceConsultingCustomer(IAdviceConsultingService adviceConsultingService, IAuthService authService, IGoogleMapService googleMapService, ITimetableFeature timetable) : base(adviceConsultingService, authService) 
         {
             _googleMapService = googleMapService;
+            _timetable = timetable;
+        }
+
+        [HttpGet]
+        [Route("getFreeTrainerOnSlotDate")]
+        public async Task<IActionResult> GetListFreeTrainerOnSlotAndDate(DateOnly date, int slotId)
+        {
+            try
+            {
+                var result = await _timetable.GetListFreeTrainerOnSlotAndDate(date, slotId, (int)Models.Enum.Trainer.Category.Consulting);
+                if (result == null)
+                {
+                    return StatusCode(StatusCodes.Status503ServiceUnavailable, "Khong co trainer ranh");
+                }
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
 
         [HttpGet]
         [Route("listCustomerConsultingTicket")]
-        public async Task<IActionResult> GetListConsultingTicketByCustomerId()
+        public async Task<IActionResult> GetListConsultingTicketByCustomerId(int customerId)
         {
             try
             {
-                var accessToken = Request.DeserializeToken(_authService);
-                if (accessToken == null)
-                {
-                    return Unauthorized();
-                }
-                var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
-
-                var result = await _consultingService.Customer.GetListConsultingTicketByCustomerID(Int32.Parse(customerId.Value));
+                var result = await _consultingService.Customer.GetListConsultingTicketByCustomerID(customerId);
 
                 return Ok(result);
             }
@@ -49,6 +64,17 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         {
             try
             {
+                //Validate kiểm tra lịch rảnh của trainer
+                var trainerFreeSLot = await _timetable.GetTrainerFreeSlotOnDate(ticket.AppointmentDate , ticket.TrainerId);
+                if (trainerFreeSLot == null || !trainerFreeSLot.Any())
+                {
+                    return StatusCode(StatusCodes.Status503ServiceUnavailable, "Trainer không có lịch rảnh vào slot này của ngày này");
+                }
+                if (!trainerFreeSLot.Any(x => x.Id == ticket.ActualSlotStart))
+                {
+                    return StatusCode(StatusCodes.Status503ServiceUnavailable, "Trainer không có lịch rảnh vào slot này của ngày này");
+                }
+
                 int distance = 0;
                 if (ticket.Address != null)
                 {
@@ -62,6 +88,25 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }        
+        }
+
+        [HttpGet]
+        [Route("validateBeforeUsingSendConsultingTicket")]
+        public async Task<IActionResult> ValidateBeforeUsingSendConsultingTicket(int customerId)
+        {
+            try
+            {
+                var validate = await _consultingService.Customer.ValidateBeforeUsingSendConsultingTicket(customerId);
+                if (validate == false)
+                {
+                    return StatusCode(StatusCodes.Status503ServiceUnavailable, "Người dùng không thể sử dụng chức năng này vì đang bị giới hạn");
+                }
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
     }
 }
