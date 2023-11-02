@@ -4,9 +4,9 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.Workshop
 {
     public interface IWorkshopCustomer
     {
-        [HttpPost]
-        [Route("register")]
-        Task<IActionResult> Register([FromQuery] int workshopClassId);
+        //[HttpPost]
+        //[Route("register")]
+        //Task<IActionResult> Register([FromQuery] int workshopClassId);
 
         [HttpGet]
         [Route("registered-class")]
