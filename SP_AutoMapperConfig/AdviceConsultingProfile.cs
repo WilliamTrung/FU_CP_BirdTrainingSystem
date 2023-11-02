@@ -15,27 +15,29 @@ namespace SP_AutoMapperConfig
     {
         public AdviceConsultingProfile()
         {
-            Map_DistancePriceServieModel_DistancePrice();
-            Map_ConsultingPricePolicyServiceModel_ConsultingPricePolicy();
-            Map_ConsultingTypeServiceModel_ConsultingType();
+            Map_DistancePrice_DistancePriceServieModel();
+            Map_ConsultingPricePolicy_ConsultingPricePolicyServiceModel();
+            Map_ConsultingType_ConsultingTypeServiceModel();
             Map_ConsultingTicketCreateNewModel_ConsultingTicket();
-            Map_ConsultingTicketDetailViewModel_ConsultingTicket();
+            Map_ConsultingTicket_ConsultingTicketDetailViewModel();
             Map_AdviceConsultingTrainerSlotServiceModel_TrainerSlot();
         }
 
-        private void Map_DistancePriceServieModel_DistancePrice()
+        private void Map_DistancePrice_DistancePriceServieModel()
         {
-            CreateMap<DistancePriceServiceModel, DistancePrice>();
+            CreateMap<DistancePrice, DistancePriceServiceModel>();
         }
 
-        private void Map_ConsultingPricePolicyServiceModel_ConsultingPricePolicy()
+        private void Map_ConsultingPricePolicy_ConsultingPricePolicyServiceModel()
         {
-            CreateMap<ConsultingPricePolicyServiceModel, ConsultingPricePolicy>();
+            CreateMap<ConsultingPricePolicy, ConsultingPricePolicyServiceModel>()
+                .ForMember(e => e.Price, opt => opt.MapFrom(c => c.Price));
         }
 
-        private void Map_ConsultingTypeServiceModel_ConsultingType()
+        private void Map_ConsultingType_ConsultingTypeServiceModel()
         {
-            CreateMap<ConsultingTypeServiceModel, ConsultingType>();
+            CreateMap<ConsultingType, ConsultingTypeServiceModel>()
+                .ForMember(e => e.Name, opt => opt.MapFrom(c => c.Name));
         }
 
         private void Map_ConsultingTicketCreateNewModel_ConsultingTicket()
@@ -45,9 +47,9 @@ namespace SP_AutoMapperConfig
                 .ForMember(e => e.Status, opt => opt.MapFrom(c => (int)Models.Enum.ConsultingTicket.Status.WaitingForApprove));
         }
 
-        private void Map_ConsultingTicketDetailViewModel_ConsultingTicket()
+        private void Map_ConsultingTicket_ConsultingTicketDetailViewModel()
         {
-            CreateMap<ConsultingTicketDetailViewModel, ConsultingTicket>();
+            CreateMap<ConsultingTicket, ConsultingTicketDetailViewModel>();
         }
 
         private void Map_AdviceConsultingTrainerSlotServiceModel_TrainerSlot()

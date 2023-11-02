@@ -49,6 +49,7 @@ builder.Services.AddControllers().AddOData(options => options
                        x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.Customer.Status>());
                        x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.Trainer.Status>());
                        x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.BirdTrainingProgress.Status>());
+                       x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.Trainer.Category>());
                    }
                );
 
@@ -68,6 +69,7 @@ builder.AddTimetableFeature();
 builder.AddWorkshopFeature();
 builder.AddAdministrativeFeature();
 builder.AddTrainingCourseFeature();
+builder.AddAdviceConsultinFeature();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

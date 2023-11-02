@@ -12,5 +12,6 @@ namespace AppService.TimetableService
     {
         Task<IEnumerable<SlotModel>> GetSlots();    
         Task<TrainerSlotDetailModel> GetTrainerSlotDetail(int trainerSlotId);
+        Task<IEnumerable<TrainerModel>> GetListTrainer(Models.Enum.Trainer.Category stringCategory);
     }
 }
