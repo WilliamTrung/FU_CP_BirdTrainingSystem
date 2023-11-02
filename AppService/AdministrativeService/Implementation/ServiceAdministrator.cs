@@ -18,6 +18,11 @@ namespace AppService.AdministrativeService.Implementation
             _admin = admin;
         }
 
+        public async Task DeleteUser(int userId)
+        {
+            await _admin.User.DeleteUser(userId);
+        }
+
         public IEnumerable<Models.Enum.Customer.Status> GetCustomerStatuses()
         {
             var result = _admin.User.GetCustomerStatuses();

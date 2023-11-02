@@ -17,5 +17,6 @@ namespace AdministrativeSubsystem
         IEnumerable<Models.Enum.Trainer.Status> GetTrainerStatuses();
         Task GenerateRoleModel(int userId);
         Task UpdateStatus(UserStatusUpdateModel model);
+        Task DeleteUser(int userId);
     }
 }

@@ -19,7 +19,9 @@ namespace WorkshopSubsystem.Implementation
 
         public async Task<IEnumerable<WorkshopClassViewModel>> GetRegisteredWorkshopClass(int customerId, int workshopId)
         {
-            var entities = await _unitOfWork.CustomerWorkshopClassRepository.Get(c => c.CustomerId == customerId && workshopId == c.WorkshopClass.WorkshopId
+            var entities = await _unitOfWork.CustomerWorkshopClassRepository.Get(c => c.CustomerId == customerId 
+                                                                                    && workshopId == c.WorkshopClass.WorkshopId
+                                                                                    && c.Status == (int)Models.Enum.Workshop.Transaction.Status.Paid
                                                                                 , nameof(CustomerWorkshopClass.WorkshopClass)
                                                                                 , $"{nameof(CustomerWorkshopClass.WorkshopClass)}.{nameof(WorkshopClass.WorkshopClassDetails)}");
             var models = new List<WorkshopClassViewModel>();
@@ -32,7 +34,9 @@ namespace WorkshopSubsystem.Implementation
         }
         public async Task<IEnumerable<WorkshopModel>> GetRegisteredWorkshops(int customerId)
         {
-            var entities = await _unitOfWork.CustomerWorkshopClassRepository.Get(c => c.CustomerId == customerId, nameof(CustomerWorkshopClass.WorkshopClass));            
+            var entities = await _unitOfWork.CustomerWorkshopClassRepository.Get(c => c.CustomerId == customerId
+                                                                                    && c.Status == (int)Models.Enum.Workshop.Transaction.Status.Paid
+                                                                                    , nameof(CustomerWorkshopClass.WorkshopClass));            
             var workshops = await _unitOfWork.WorkshopRepository.Get();
             workshops = workshops.Where(c => entities.Any(e => e.WorkshopClass.WorkshopId == c.Id));
             var models = _mapper.Map<List<WorkshopModel>>(workshops);
@@ -127,6 +131,14 @@ namespace WorkshopSubsystem.Implementation
                                                                                                     , $"{nameof(CustomerWorkshopClass.WorkshopClass)}.{nameof(WorkshopClass.Workshop)}"
                                                                                                     , $"{nameof(CustomerWorkshopClass.Customer)}.{nameof(Customer.MembershipRank)}");
             return customerRegistered;
+        }
+
+        public async Task<IEnumerable<WorkshopClassViewModel>> GetClassesByWorkshopId(int customerId, int workshopId)
+        {
+            var classes = await GetClassesByWorkshopId(workshopId);
+            var registered_classes = await GetRegisteredWorkshopClass(customerId, workshopId);
+            classes = classes.Select(c => registered_classes.Any(e => e.Id == c.Id) ? c.AddPaidStatus() : c).ToList();
+            return classes;
         }
     }
 }
