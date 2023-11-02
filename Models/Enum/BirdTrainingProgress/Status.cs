@@ -11,7 +11,8 @@ namespace Models.Enum.BirdTrainingProgress
         WaitingForAssign = 0,
         Assigned = 1,
         Training = 2,
-        Complete = 3,
-        Cancel = 4
+        NotPass = 3,
+        Pass = 4,
+        Cancel = 5
     }
 }

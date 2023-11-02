@@ -1,4 +1,5 @@
-﻿using Models.ServiceModels.TrainingCourseModels;
+﻿using Models.Enum.BirdTrainingProgress;
+using Models.ServiceModels.TrainingCourseModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,7 +10,7 @@ using TrainingCourseSubsystem;
 
 namespace AppService.TrainingCourseService.Implement
 {
-    public class ServiceAll : IFeatureAll
+    public class ServiceAll : IServiceAll
     {
         internal readonly ITrainingCourseFeature _trainingCourse;
         internal readonly ITimetableFeature _timetable;
@@ -27,6 +28,11 @@ namespace AppService.TrainingCourseService.Implement
         public async Task<BirdSpeciesModel> GetBirdSpeciesById(int birdSpeciesId)
         {
             return await _trainingCourse.All.GetBirdSpeciesById(birdSpeciesId);
+        }
+
+        public IEnumerable<Status> GetEnumBirdTrainingProgressStatuses()
+        {
+            return _trainingCourse.Staff.GetEnumBirdTrainingProgressStatuses();
         }
     }
 }
