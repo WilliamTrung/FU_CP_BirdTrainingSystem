@@ -26,13 +26,14 @@ namespace SP_AutoMapperConfig
         private void Map_BirdTrainingProgress_BirdTrainingProgressViewModel()
         {
             CreateMap<BirdTrainingProgress, BirdTrainingProgressViewModel>()
-                //.ForMember(m => m.Id, opt => opt.MapFrom(e => e.Id))
                 .ForMember(m => m.Id, opt => opt.MapFrom(e => e.Id))
+                .ForMember(m => m.BirdTrainingCourseId, opt => opt.MapFrom(e => e.BirdTrainingCourseId))
                 .ForMember(m => m.SkillName, opt => {
                     opt.PreCondition(e => e.TrainingCourseSkill != null);
                     opt.PreCondition(e => e.TrainingCourseSkill.BirdSkill != null);
                     opt.MapFrom(e => e.TrainingCourseSkill.BirdSkill.Name);
                 })
+                .ForMember(m => m.TrainerId, opt => opt.MapFrom(e => e.TrainerId))
                 .ForMember(m => m.TrainerName, opt => {
                     opt.PreCondition(e => e.Trainer != null);
                     opt.PreCondition(e => e.Trainer.User != null);

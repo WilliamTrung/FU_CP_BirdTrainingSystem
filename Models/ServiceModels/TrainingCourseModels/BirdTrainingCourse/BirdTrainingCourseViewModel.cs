@@ -12,6 +12,6 @@ namespace Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse
         public string TrainingCourseTitle { get; set; } = null!;
         public string? TrainingCoursePicture { get; set; }
         public int TotalSlot { get; set; }
-        public int Status { get; set; }
+        public Models.Enum.BirdTrainingCourse.Status Status { get; set; }
     }
 }

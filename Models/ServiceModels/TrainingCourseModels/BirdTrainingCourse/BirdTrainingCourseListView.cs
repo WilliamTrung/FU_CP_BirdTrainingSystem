@@ -15,7 +15,7 @@ namespace Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse
         public string CustomerName { get; set; } = null!;
         public string TrainingCourseTitle { get; set; } = null!;
         public DateTime RegisteredDate { get; set; }
-        public int Status { get; set; }
+        public Models.Enum.BirdTrainingCourse.Status Status { get; set; }
 
     }
 }

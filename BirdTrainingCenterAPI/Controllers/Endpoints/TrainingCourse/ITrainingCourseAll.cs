@@ -11,5 +11,9 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
         [HttpGet]
         [Route("birdspecies")]
         Task<IActionResult> GetBirdSpecies();
+
+        [HttpGet]
+        [Route("birdtrainingprogress-statuses")]
+        IActionResult GetEnumBirdTrainingProgressStatuses();
     }
 }
