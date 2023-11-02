@@ -1,9 +1,11 @@
 ﻿using AppService;
 using AppService.WorkshopService;
 using BirdTrainingCenterAPI.Controllers.Endpoints.Workshop;
+using BirdTrainingCenterAPI.Helper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
+using Models.AuthModels;
 
 namespace BirdTrainingCenterAPI.Controllers.Workshop
 {
@@ -19,8 +21,15 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
         [Route("class")]
         public async Task<IActionResult> GetClassesOnSelectedWorkshopAsync([FromQuery] int workshopId)
         {
-            var result = await _workshopService.All.GetWorkshopClassesByWorkshopId(workshopId);
-            return Ok(result);
+            var accessToken = Request.DeserializeToken(_authService);
+            if (accessToken == null)
+            {
+                var result_guest = await _workshopService.All.GetWorkshopClassesByWorkshopId(workshopId);
+                return Ok(result_guest);
+            }
+            var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
+            var result_customer = await _workshopService.Customer.GetWorkshopClassesByWorkshopId(Int32.Parse(customerId.Value), workshopId);
+            return Ok(result_customer);
         }
         [HttpGet]
         [EnableQuery]
@@ -69,6 +78,7 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
         public async Task<IActionResult> GetRegistrationAmount([FromQuery] int workshopClassId)
         {
             var result = await _workshopService.All.GetRegistrationAmount(workshopClassId);
+            result.ClassId = workshopClassId;
             return Ok(result);
         }
         [HttpGet]
