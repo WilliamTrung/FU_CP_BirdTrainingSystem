@@ -17,12 +17,6 @@ namespace AppService.TimetableService.Implementation
         {
         }
 
-        public async Task<IEnumerable<SlotModel>> GetFreeSlotOnSelectedDateOfTrainer(int trainerId, DateTime date)
-        {
-            var result = await _timetable.GetTrainerFreeSlotOnDate(date.ToDateOnly(), trainerId);
-            return result;
-        }
-
         public async Task<IEnumerable<TrainerModel>> GetFreeTrainerOnSelectedDate(DateTime date)
         {
             var result = await _timetable.GetTrainerFreeOnDate(date);

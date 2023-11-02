@@ -1,5 +1,6 @@
 ﻿using Models.ServiceModels;
 using Models.ServiceModels.SlotModels;
+using SP_Extension;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,6 +31,11 @@ namespace AppService.TimetableService.Implementation
         public async Task<TrainerSlotDetailModel> GetTrainerSlotDetail(int trainerSlotId)
         {
             var result = await _timetable.GetTrainerSlotDetail(trainerSlotId);
+            return result;
+        }
+        public async Task<IEnumerable<SlotModel>> GetFreeSlotOnSelectedDateOfTrainer(int trainerId, DateTime date)
+        {
+            var result = await _timetable.GetTrainerFreeSlotOnDate(date.ToDateOnly(), trainerId);
             return result;
         }
     }
