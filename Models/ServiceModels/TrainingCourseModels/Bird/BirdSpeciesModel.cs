@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
 
 namespace Models.ServiceModels.TrainingCourseModels.Bird
 {

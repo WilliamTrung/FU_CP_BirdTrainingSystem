@@ -2,6 +2,7 @@
 using AutoMapper;
 using Models.Enum.BirdTrainingProgress;
 using Models.ServiceModels.TrainingCourseModels.Bird;
+using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,17 +21,17 @@ namespace TrainingCourseSubsystem.Implementation
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<BirdSpeciesModel>> GetBirdSpecies()
+        public async Task<IEnumerable<BirdSpeciesViewModel>> GetBirdSpecies()
         {
             var entities = await _unitOfWork.BirdSpeciesRepository.Get();
-            var models = _mapper.Map<List<BirdSpeciesModel>>(entities);
+            var models = _mapper.Map<List<BirdSpeciesViewModel>>(entities);
             return models;
         }
 
-        public async Task<BirdSpeciesModel> GetBirdSpeciesById(int birdSpeciesId)
+        public async Task<BirdSpeciesViewModel> GetBirdSpeciesById(int birdSpeciesId)
         {
             var entity = await _unitOfWork.BirdSpeciesRepository.GetFirst(e => e.Id == birdSpeciesId);
-            var model = _mapper.Map<BirdSpeciesModel>(entity);
+            var model = _mapper.Map<BirdSpeciesViewModel>(entity);
             return model;
         }
 
@@ -38,6 +39,20 @@ namespace TrainingCourseSubsystem.Implementation
         {
             var statuses = Enum.GetValues(typeof(Models.Enum.BirdTrainingProgress.Status)).Cast<Models.Enum.BirdTrainingProgress.Status>();
             return statuses;
+        }
+
+        public async Task<IEnumerable<TrainingCourseViewModel>> GetTrainingCourses()
+        {
+            var entities = await _unitOfWork.TrainingCourseRepository.Get();
+            var models = _mapper.Map<IEnumerable<TrainingCourseViewModel>>(entities);
+            return models;
+        }
+
+        public async Task<TrainingCourseViewModel> GetTrainingCoursesById(int courseId)
+        {
+            var entities = await _unitOfWork.TrainingCourseRepository.GetFirst(e => e.Id == courseId);
+            var models = _mapper.Map<TrainingCourseViewModel>(entities);
+            return models;
         }
     }
 }

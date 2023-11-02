@@ -2,6 +2,7 @@
 using Models.ApiParamModels.TrainingCourse;
 using Models.ServiceModels.TrainingCourseModels;
 using Models.ServiceModels.TrainingCourseModels.Bird;
+using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
 
 namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
 {
@@ -9,11 +10,11 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
     {
         [HttpPost]
         [Route("create")]
-        Task<IActionResult> CreateCourse([FromForm] TrainingCourseParamModel trainingCourse);
+        Task<IActionResult> CreateCourse([FromForm] TrainingCourseAddParamModel trainingCourse);
 
         [HttpPut]
         [Route("edit")]
-        Task<IActionResult> EditCourse([FromForm] TrainingCourseParamModel trainingCourse);
+        Task<IActionResult> EditCourse([FromForm] TrainingCourseModParamModel trainingCourse);
 
         [HttpPut]
         [Route("disable")]
@@ -21,7 +22,7 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
 
         [HttpPost]
         [Route("add-skill")]
-        Task<IActionResult> AddSkill([FromBody] TrainingCourseSkillModel trainingCourseSkill);
+        Task<IActionResult> AddSkill([FromBody] AddTrainingSkillModel trainingCourseSkill);
 
         [HttpPut]
         [Route("active")]
@@ -33,6 +34,6 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
 
         [HttpPut]
         [Route("birdspecies")]
-        Task<IActionResult> EditBirdSpecies([FromBody] BirdSpeciesModel birdSpecies);
+        Task<IActionResult> EditBirdSpecies([FromBody] BirdSpeciesViewModel birdSpecies);
     }
 }

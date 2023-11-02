@@ -17,6 +17,15 @@ namespace SP_AutoMapperConfig
             Map_BirdAddModel_Bird();
             Map_Bird_BirdViewModel();
             Map_BirdSpeciesAddModel_BirdSpecies();
+            Map_BirdSpecies_BirdSpeciesViewModel();
+        }
+
+        private void Map_BirdSpecies_BirdSpeciesViewModel()
+        {
+            CreateMap<BirdSpecies, BirdSpeciesViewModel>()
+                .ForMember(m => m.Id, opt => opt.MapFrom(e => e.Id))
+                .ForMember(m => m.Name, opt => opt.MapFrom(e => e.Name))
+                .ForMember(m => m.ShortDetail, opt => opt.MapFrom(e => e.ShortDetail));
         }
 
         private void Map_BirdSpeciesAddModel_BirdSpecies()

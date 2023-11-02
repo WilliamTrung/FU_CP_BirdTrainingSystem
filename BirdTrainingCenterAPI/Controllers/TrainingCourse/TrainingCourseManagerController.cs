@@ -9,6 +9,7 @@ using Models.ServiceModels.TrainingCourseModels;
 using SP_Middleware;
 using SP_Extension;
 using Models.ServiceModels.TrainingCourseModels.Bird;
+using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
 
 namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
 {
@@ -33,7 +34,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         }
         [HttpPost]
         [Route("add-skill")]
-        public async Task<IActionResult> AddSkill([FromBody] TrainingCourseSkillModel trainingCourseSkill)
+        public async Task<IActionResult> AddSkill([FromBody] AddTrainingSkillModel trainingCourseSkill)
         {
             await _trainingCourseService.Manager.AddSkill(trainingCourseSkill);
             return Ok();
@@ -41,7 +42,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
 
         [HttpPost]
         [Route("create")]
-        public async Task<IActionResult> CreateCourse([FromForm] TrainingCourseParamModel trainingCourse)
+        public async Task<IActionResult> CreateCourse([FromForm] TrainingCourseAddParamModel trainingCourse)
         {
             try
             {
@@ -75,7 +76,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         }
         [HttpPut]
         [Route("edit")]
-        public async Task<IActionResult> EditCourse([FromForm] TrainingCourseParamModel trainingCourse)
+        public async Task<IActionResult> EditCourse([FromForm] TrainingCourseModParamModel trainingCourse)
         {
             try
             {
@@ -110,7 +111,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
 
         [HttpPut]
         [Route("birdspecies")]
-        public async Task<IActionResult> EditBirdSpecies([FromBody] BirdSpeciesModel birdSpecies)
+        public async Task<IActionResult> EditBirdSpecies([FromBody] BirdSpeciesViewModel birdSpecies)
         {
             await _trainingCourseService.Manager.EditBirdSpecies(birdSpecies);
             return Ok();
