@@ -40,31 +40,31 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             return Ok(result);
 
         }
-        [HttpPost]
-        [Route("register")]
-        public async Task<IActionResult> Register([FromQuery] int workshopClassId)
-        {
-            //var accessToken = DeserializeToken();
-            //if (accessToken == null)
-            //{
-            //    return Unauthorized();
-            //}
-            var accessToken = Request.DeserializeToken(_authService);
-            if (accessToken == null)
-            {
-                return Unauthorized();
-            }
-            var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
-            try
-            {
-                await _workshopService.Customer.Register(Int32.Parse(customerId.Value), workshopClassId);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
-            return Ok();
-        }
+        //[HttpPost]
+        //[Route("register")]
+        //public async Task<IActionResult> Register([FromQuery] int workshopClassId)
+        //{
+        //    //var accessToken = DeserializeToken();
+        //    //if (accessToken == null)
+        //    //{
+        //    //    return Unauthorized();
+        //    //}
+        //    var accessToken = Request.DeserializeToken(_authService);
+        //    if (accessToken == null)
+        //    {
+        //        return Unauthorized();
+        //    }
+        //    var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
+        //    try
+        //    {
+        //        await _workshopService.Customer.Register(Int32.Parse(customerId.Value), workshopClassId);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        //    }
+        //    return Ok();
+        //}
         [HttpGet]
         [EnableQuery]
         [Route("registered-workshop")]
@@ -93,7 +93,7 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             var result = await _workshopService.Customer.GetBillingInformation(Int32.Parse(customerId.Value), workshopClassId);
             return Ok(result);
         }
-        [HttpPost]
+        [HttpPut]
         [Route("purchase")]
         public async Task<IActionResult> Purchase(int workshopClassId)
         {

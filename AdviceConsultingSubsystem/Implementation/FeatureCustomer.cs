@@ -46,11 +46,21 @@ namespace AdviceConsultingSubsystem.Implementation
             return models;
         }
 
-        public async Task<ConsultingTicketDetailViewModel> GetConsultingTicketByID(int id)
+        public async Task<ConsultingTicketDetailViewModel> GetConsultingTicketByID(int customerId)
         {
-            var entity = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id == id);
+            var entity = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id == customerId);
             var model = _mapper.Map<ConsultingTicketDetailViewModel>(entity);
             return model;
+        }
+
+        public async Task<bool> ValidateBeforeUsingSendConsultingTicket(int customerId)
+        {
+            var customer = await _unitOfWork.CustomerRepository.GetFirst(x => x.Id == customerId);
+            if (customer.Status == (int)Models.Enum.Customer.Status.Charged)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }

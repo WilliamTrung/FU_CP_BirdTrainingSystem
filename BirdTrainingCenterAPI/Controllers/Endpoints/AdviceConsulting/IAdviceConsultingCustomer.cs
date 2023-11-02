@@ -6,10 +6,19 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting
     public interface IAdviceConsultingCustomer
     {
         [HttpPost]
-        [Route("customer-sendConsultingTicket")]
+        [Route("sendConsultingTicket")]
         Task<IActionResult>SendConsultingTicket([FromBody] ConsultingTicketCreateNewModel ticket);
+
         [HttpGet]
-        [Route("customer-listConsultingTicket")]
-        Task<IActionResult> GetListConsultingTicketByCustomerId();
+        [Route("listCustomerConsultingTicket")]
+        Task<IActionResult> GetListConsultingTicketByCustomerId(int customerId);
+
+        [HttpGet]
+        [Route("validateBeforeUsingSendConsultingTicket")]
+        Task<IActionResult> ValidateBeforeUsingSendConsultingTicket(int customerId);
+
+        [HttpGet]
+        [Route("getFreeTrainerOnSlotDate")]
+        Task<IActionResult> GetListFreeTrainerOnSlotAndDate(DateOnly date, int slotId);
     }
 }

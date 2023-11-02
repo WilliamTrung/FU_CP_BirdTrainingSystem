@@ -18,11 +18,12 @@ namespace WorkshopSubsystem
         //"customerId : int
         //WorkshopClassId : int
         Task Register(int customerId, int workshopClassId);
+        Task<IEnumerable<WorkshopClassViewModel>> GetClassesByWorkshopId(int customerId, int workshopId);
         Task<IEnumerable<WorkshopClassViewModel>> GetRegisteredWorkshopClass(int customerId, int workshopId);
 
         Task<IEnumerable<WorkshopModel>> GetRegisteredWorkshops(int customerId);
         Task OnPurchaseClass(int customerId, int workshopClassId, BillingModel billingModel);
         Task<CustomerWorkshopClass?> GetCustomerRegistrationInfo(int customerId, int workshopClassId);
-        
+        Task<PreBillingInformation> GetPreBillingInformation(int customerId, int workshopClassId);
     }
 }

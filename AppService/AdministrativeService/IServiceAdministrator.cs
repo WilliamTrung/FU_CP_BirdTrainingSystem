@@ -16,5 +16,6 @@ namespace AppService.AdministrativeService
         IEnumerable<Models.Enum.Customer.Status> GetCustomerStatuses();
         IEnumerable<Models.Enum.Trainer.Status> GetTrainerStatuses();
         Task UpdateStatus(UserStatusUpdateModel model);
+        Task DeleteUser(int userId);
     }
 }

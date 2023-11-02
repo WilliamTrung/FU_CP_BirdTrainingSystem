@@ -75,7 +75,7 @@ namespace WorkshopSubsystem.Implementation
             var registered = await _unitOfWork.CustomerWorkshopClassRepository.Get(c => c.WorkshopClassId == workshopClassId && c.Status == (int)Models.Enum.Workshop.Transaction.Status.Paid);
             if(registered.Count() == BR_WorkshopConstant.MaximumRegisteredCustomer)
             {
-                entity.Status = (int)Models.Enum.Workshop.Class.Status.OpenRegistration;
+                entity.Status = (int)Models.Enum.Workshop.Class.Status.ClosedRegistration;
                 await _unitOfWork.WorkshopClassRepository.Update(entity);
                 return true;
             }

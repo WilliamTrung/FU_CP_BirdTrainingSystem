@@ -77,5 +77,20 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
+        [HttpGet]
+        [Route("GetTrainerFreeSlotOnDate")]
+        public async Task<IActionResult> GetTrainerFreeSlotOnDate(DateOnly date, int trainerId)
+        {
+            try
+            {
+                var result = await _timetableService.All.GetFreeSlotOnSelectedDateOfTrainer(trainerId, date.ToDateTime(new TimeOnly()));
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
     }
 }

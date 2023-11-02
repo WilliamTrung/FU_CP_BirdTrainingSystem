@@ -4,6 +4,7 @@ using BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
+using TimetableSubsystem;
 
 namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
 {
@@ -11,15 +12,28 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
     [ApiController]
     public class AdviceConsultingStaff : AdviceConsultingBaseController, IAdviceConsultingStaff
     {
-        public AdviceConsultingStaff(IAdviceConsultingService adviceConsultingService, IAuthService authService) : base(adviceConsultingService, authService)
+        private readonly ITimetableFeature _timetable;
+        public AdviceConsultingStaff(IAdviceConsultingService adviceConsultingService, IAuthService authService, ITimetableFeature timetable) : base(adviceConsultingService, authService)
         {
+            _timetable = timetable;
         }
         [HttpPut]
-        [Route("staff-approveConsultingTicket")]
-        public async Task<IActionResult> ApproveConsultingTicket(int ticketId)
+        [Route("approveConsultingTicket")]
+        public async Task<IActionResult> ApproveConsultingTicket(int ticketId, int trainerId, DateOnly date, int slotId)
         {
             try
             {
+                //Validate kiểm tra lịch rảnh của trainer
+                var trainerFreeSLot = await _timetable.GetTrainerFreeSlotOnDate(date, trainerId);
+                if (trainerFreeSLot == null || !trainerFreeSLot.Any())
+                {
+                    return StatusCode(StatusCodes.Status503ServiceUnavailable, "Trainer không có lịch rảnh vào slot này của ngày này");
+                }
+                if (!trainerFreeSLot.Any(x => x.Id == slotId))
+                {
+                    return StatusCode(StatusCodes.Status503ServiceUnavailable, "Trainer không có lịch rảnh vào slot này của ngày này");
+                }
+                
                 await _consultingService.Staff.ApproveConsultingTicket(ticketId);
                 return Ok();
             }
@@ -30,7 +44,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         }
 
         [HttpPut]
-        [Route("staff-assignTrainer")]
+        [Route("assignTrainer")]
         public async Task<IActionResult> AssignTrainer(int trainerId, int ticketId)
         {
             try
@@ -45,7 +59,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         }
 
         [HttpPut]
-        [Route("staff-cancelConsultingTicket")]
+        [Route("cancelConsultingTicket")]
         public async Task<IActionResult> CancelConsultingTicket(int ticketId)
         {
             try
@@ -60,7 +74,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         }
 
         [HttpGet]
-        [Route("staff-viewListConsultingTicketByStatus")]
+        [Route("viewListConsultingTicketByStatus")]
         public async Task<IActionResult> ViewListConsultingTicketByStatus(int status)
         {
             try

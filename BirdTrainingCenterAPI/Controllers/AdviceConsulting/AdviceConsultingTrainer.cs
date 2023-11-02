@@ -26,7 +26,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         }
 
         [HttpPut]
-        [Route("trainer-finishAppointment")]
+        [Route("finishAppointment")]
         public async Task<IActionResult> FinishAppointment(ConsultingTicketTrainerUpdateParamModel consultingTicket)
         {
             try
@@ -38,9 +38,9 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
                     evidence += $"{temp},";
                 }
                 evidence = evidence.Substring(0, evidence.Length - 1);
-                var updateTicket = consultingTicket.ToConsultingTicketUpdateModel(evidence);
+                var ticket = consultingTicket.ToConsultingTicketUpdateModel(evidence);
 
-                await _consultingService.Trainer.FinishAppointment(updateTicket);
+                await _consultingService.Trainer.FinishAppointment(ticket);
                 return Ok();
             }
             catch (Exception ex)
@@ -50,12 +50,11 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         }
 
         [HttpPut]
-        [Route("trainer-updateAppointment")]
-        public async Task<IActionResult> UpdateAppointment(int ticketId, string ggmeetLink)
+        [Route("updateGooglemeetLink")]
+        public async Task<IActionResult> UpdateGooglemeetLink(int ticketId, string ggmeetLink)
         {
             try
             {
-
                 await _consultingService.Trainer.UpdateAppointment(ticketId, ggmeetLink);
                 return Ok();
             }
@@ -66,19 +65,12 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         }
 
         [HttpGet]
-        [Route("trainer-viewAssignedAppointmet")]
-        public async Task<IActionResult> ViewAssignedAppointment()
+        [Route("getListAssignedConsultingTicket")]
+        public async Task<IActionResult> GetListAssignedConsultingTicket(int trainerId)
         {
             try
             {
-
-                var accessToken = Request.DeserializeToken(_authService);
-                if (accessToken == null)
-                {
-                    return Unauthorized();
-                }
-                var trainerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
-                var result = await _consultingService.Trainer.ViewAssignedAppointment(Int32.Parse(trainerId.Value));
+                var result = await _consultingService.Trainer.GetListAssignedConsultingTicket(trainerId);
 
                 return Ok(result);
             }

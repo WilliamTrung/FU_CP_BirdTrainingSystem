@@ -11,7 +11,7 @@ namespace AdviceConsultingSubsystem
 {
     public interface IFeatureTrainer
     {
-        Task<IEnumerable<ConsultingTicketListViewModel>> ViewAssignedAppointment(int id);
+        Task<IEnumerable<ConsultingTicketListViewModel>> GetListAssignedConsultingTicket(int trainerId);
         Task UpdateAppointment(int ticketId, string ggmeetLink);
         Task FinishAppointment(ConsultingTicketTrainerFinishModel consultingTicket);
     }

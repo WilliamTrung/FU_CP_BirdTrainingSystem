@@ -20,9 +20,9 @@ namespace AppService.AdviceConsultingService.Implementation
             return await _consulting.Customer.GetListConsultingTicketByCustomerID(customerId);
         }
 
-        public async Task<ConsultingTicketDetailViewModel> GetConsultingTicketDetailByID(int id)
+        public async Task<ConsultingTicketDetailViewModel> GetConsultingTicketDetailByID(int customerId)
         {
-            return await _consulting.Customer.GetConsultingTicketByID(id);
+            return await _consulting.Customer.GetConsultingTicketByID(customerId);
         }
 
         public async Task SendConsultingTicket(ConsultingTicketCreateNewModel consultingTicket, int distance)
@@ -31,6 +31,11 @@ namespace AppService.AdviceConsultingService.Implementation
             decimal finalPrice = price.FinalPrice;
             decimal discountedPrice = price.DiscountedPrice;
             await _consulting.Customer.SendConsultingTicket(consultingTicket, distance, finalPrice, discountedPrice);
+        }
+
+        public async Task<bool> ValidateBeforeUsingSendConsultingTicket(int customerId)
+        {
+            return await _consulting.Customer.ValidateBeforeUsingSendConsultingTicket(customerId);
         }
     }
 }
