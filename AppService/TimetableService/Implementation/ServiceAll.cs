@@ -16,6 +16,11 @@ namespace AppService.TimetableService.Implementation
         {
             _timetable = timetable;
         }
+        
+        public async Task<IEnumerable<TrainerModel>> GetListTrainer(Models.Enum.Trainer.Category category)
+        {
+            return await _timetable.GetListTrainer((int)category);
+        }
 
         public async Task<IEnumerable<SlotModel>> GetSlots()
         {

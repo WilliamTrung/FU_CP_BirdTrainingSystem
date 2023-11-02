@@ -46,6 +46,19 @@ namespace TimetableSubsystem.Implementation
             return true;
         }
 
+        public async Task<IEnumerable<TrainerModel>> GetListTrainer(int category)
+        {
+            //var entities = await _unitOfWork.TrainerRepository.Get(x => x.Category == category); Chi bo command khi da update duoi DB co Category
+            var entities = await _unitOfWork.TrainerRepository.Get(expression: null, nameof(Trainer.User));
+            var models = new List<TrainerModel>();
+            foreach (var entity in entities) 
+            {
+                var model = _mapper.Map<TrainerModel>(entity);
+                models.Add(model);
+            }
+            return models;
+        }
+
         public async Task<IEnumerable<SlotModel>> GetSlotData()
         {
             var entities = await _unitOfWork.SlotRepository.Get();

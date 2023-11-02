@@ -1,6 +1,8 @@
 ﻿using AppCore.Models;
 using AppRepository.UnitOfWork;
 using AutoMapper;
+using Models.Enum.Trainer;
+using Models.ServiceModels;
 using Models.ServiceModels.AdviceConsultantModels;
 using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
 using System;
