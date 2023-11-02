@@ -1,8 +1,10 @@
 ﻿using AppService;
 using AppService.AdviceConsultingService;
+using AppService.TimetableService;
 using BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Models.Enum.Trainer;
 
 namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
 {
@@ -10,8 +12,10 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
     [ApiController]
     public class AdviceConsultingAllRolesController : AdviceConsultingBaseController, IAdviceConsultingAllRoles
     {
-        public AdviceConsultingAllRolesController(IAdviceConsultingService adviceConsultingService, IAuthService authService) : base(adviceConsultingService, authService)
+        private readonly ITimetableService _timetableService;
+        public AdviceConsultingAllRolesController(IAdviceConsultingService adviceConsultingService, IAuthService authService, ITimetableService timetableService) : base(adviceConsultingService, authService)
         {
+            _timetableService = timetableService;
         }
         [HttpGet]
         [Route("GetConsultingTicketPricePolicy")]
@@ -49,7 +53,23 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         {
             try
             {
-                var result = await _consultingService.Other.GetConsultingPricePolicy();
+                var result = await _consultingService.Other.GetDistancePrice();
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("GetListTrainer")]
+        public async Task<IActionResult> GetListTrainer()
+        {
+            try
+            {
+                Models.Enum.Trainer.Category stringCategory = Models.Enum.Trainer.Category.Consulting;
+                var result = await _timetableService.Trainer.GetListTrainer(stringCategory);
                 return Ok(result);
             }
             catch (Exception ex)

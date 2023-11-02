@@ -15,5 +15,9 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting
         [HttpGet]
         [Route("GetConsultingType")]
         Task<IActionResult> GetConsultingType();
+
+        [HttpGet]
+        [Route("GetListTrainer")]
+        Task<IActionResult> GetListTrainer();
     }
 }
