@@ -38,7 +38,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         }
 
         [HttpGet]
-        [Route("trainingcourse")]
+        [Route("basetrainingcourse")]
         public async Task<IActionResult> GetTrainingCourses()
         {
             var result = await _trainingCourseService.All.GetTrainingCourses();
@@ -46,7 +46,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         }
 
         [HttpGet]
-        [Route("trainingcourse-id")]
+        [Route("basetrainingcourse-id")]
         public async Task<IActionResult> GetTrainingCoursesById(int courseId)
         {
             var result = await _trainingCourseService.All.GetTrainingCoursesById(courseId);
