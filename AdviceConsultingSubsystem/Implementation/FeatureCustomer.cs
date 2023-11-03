@@ -22,9 +22,22 @@ namespace AdviceConsultingSubsystem.Implementation
             _mapper = mapper;
         }
 
-        public async Task SendConsultingTicket(ConsultingTicketCreateNewModel consultingTicket, int distance, decimal finalPrice, decimal discountedPrice)
+        public async Task SendConsultingTicket(ConsultingTicketCreateNewModel consultingTicket, int distance, decimal finalPrice, decimal discountedPrice, string address, string consultingType)
         {
+            var customerAddress = await _unitOfWork.AddressRepository.GetFirst(x => x.CustomerId == consultingTicket.CustomerId
+                                                                    && x.AddressDetail == address);
+            Address newAddress = new Address();
+            if (customerAddress == null && address != null)
+            {
+                newAddress.CustomerId = consultingTicket.CustomerId;
+                newAddress.AddressDetail = address;
+                await _unitOfWork.AddressRepository.Add(newAddress);
+            }
+            var type = await _unitOfWork.ConsultingTypeRepository.GetFirst(x => x.Name == consultingType);
+
             var entity = _mapper.Map<ConsultingTicket>(consultingTicket);
+            entity.AddressId = newAddress.Id;
+            entity.ConsultingTypeId = type.Id;
             entity.Distance = distance;
             entity.Price = finalPrice;
             entity.DiscountedPrice = discountedPrice;

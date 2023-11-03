@@ -44,7 +44,7 @@ namespace SP_AutoMapperConfig
         private void Map_ConsultingTicketCreateNewModel_ConsultingTicket()
         {
             CreateMap<ConsultingTicketCreateNewModel, ConsultingTicket>()
-                .ForMember(e => e.AppointmentDate, opt => opt.MapFrom(c => c.AppointmentDate.ToDateTime(new TimeOnly(0, 0, 0))))
+                .ForMember(e => e.AppointmentDate, opt => opt.MapFrom(c => c.AppointmentDate))
                 .ForMember(e => e.Status, opt => opt.MapFrom(c => (int)Models.Enum.ConsultingTicket.Status.WaitingForApprove));
         }
 

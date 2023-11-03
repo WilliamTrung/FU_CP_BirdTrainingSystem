@@ -68,8 +68,8 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         {
             try
             {
-                Models.Enum.Trainer.Category stringCategory = Models.Enum.Trainer.Category.Consulting;
-                var result = await _timetableService.Trainer.GetListTrainer(stringCategory);
+                int category = (int)Models.Enum.Trainer.Category.Consulting;
+                var result = await _timetableService.Trainer.GetListTrainer(category);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -80,11 +80,11 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
 
         [HttpGet]
         [Route("GetTrainerFreeSlotOnDate")]
-        public async Task<IActionResult> GetTrainerFreeSlotOnDate(DateOnly date, int trainerId)
+        public async Task<IActionResult> GetTrainerFreeSlotOnDate(DateTime date, int trainerId)
         {
             try
             {
-                var result = await _timetableService.All.GetFreeSlotOnSelectedDateOfTrainer(trainerId, date.ToDateTime(new TimeOnly()));
+                var result = await _timetableService.All.GetFreeSlotOnSelectedDateOfTrainer(date, trainerId);
                 return Ok(result);
             }
             catch (Exception ex)

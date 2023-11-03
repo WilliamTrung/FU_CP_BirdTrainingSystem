@@ -1,11 +1,14 @@
 ﻿using AppService;
 using AppService.AdviceConsultingService;
+using AppService.TimetableService;
 using BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting;
 using BirdTrainingCenterAPI.Helper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models.AuthModels;
+using Models.ServiceModels.AdviceConsultantModels;
 using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
+using SP_Extension;
 using System.Security.Claims;
 using TimetableSubsystem;
 
@@ -16,8 +19,8 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
     public class AdviceConsultingCustomer : AdviceConsultingBaseController, IAdviceConsultingCustomer
     {
         private readonly IGoogleMapService _googleMapService;
-        private readonly ITimetableFeature _timetable;
-        public AdviceConsultingCustomer(IAdviceConsultingService adviceConsultingService, IAuthService authService, IGoogleMapService googleMapService, ITimetableFeature timetable) : base(adviceConsultingService, authService) 
+        private readonly ITimetableService _timetable;
+        public AdviceConsultingCustomer(IAdviceConsultingService adviceConsultingService, IAuthService authService, IGoogleMapService googleMapService, ITimetableService timetable) : base(adviceConsultingService, authService) 
         {
             _googleMapService = googleMapService;
             _timetable = timetable;
@@ -25,11 +28,11 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
 
         [HttpGet]
         [Route("getFreeTrainerOnSlotDate")]
-        public async Task<IActionResult> GetListFreeTrainerOnSlotAndDate(DateOnly date, int slotId)
+        public async Task<IActionResult> GetListFreeTrainerOnSlotAndDate(DateTime date, int slotId)
         {
             try
             {
-                var result = await _timetable.GetListFreeTrainerOnSlotAndDate(date, slotId, (int)Models.Enum.Trainer.Category.Consulting);
+                var result = await _timetable.All.GetListFreeTrainerOnSlotAndDate(date.ToDateOnly(), slotId, (int)Models.Enum.Trainer.Category.Consulting);
                 if (result == null)
                 {
                     return StatusCode(StatusCodes.Status503ServiceUnavailable, "Khong co trainer ranh");
@@ -60,12 +63,12 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
 
         [HttpPost]
         [Route("sendConsultingTicket")]
-        public async Task<IActionResult> SendConsultingTicket([FromBody] ConsultingTicketCreateNewModel ticket)
+        public async Task<IActionResult> SendConsultingTicket([FromBody] ConsultingTicketCreateNewModel ticket, string address, string consultingType)
         {
             try
             {
                 //Validate kiểm tra lịch rảnh của trainer
-                var trainerFreeSLot = await _timetable.GetTrainerFreeSlotOnDate(ticket.AppointmentDate , ticket.TrainerId);
+                var trainerFreeSLot = await _timetable.All.GetFreeSlotOnSelectedDateOfTrainer(ticket.AppointmentDate , ticket.TrainerId);
                 if (trainerFreeSLot == null || !trainerFreeSLot.Any())
                 {
                     return StatusCode(StatusCodes.Status503ServiceUnavailable, "Trainer không có lịch rảnh vào slot này của ngày này");
@@ -76,11 +79,11 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
                 }
 
                 int distance = 0;
-                if (ticket.Address != null)
-                {
-                    distance = (int)await _googleMapService.CalculateDistance(ticket.Address);
-                }
-                await _consultingService.Customer.SendConsultingTicket(ticket, distance);
+                //if (address != null)
+                //{
+                //    distance = (int)await _googlemapservice.calculatedistance(address);
+                //}
+                await _consultingService.Customer.SendConsultingTicket(ticket, distance, address, consultingType);
                 return Ok();
 
             }

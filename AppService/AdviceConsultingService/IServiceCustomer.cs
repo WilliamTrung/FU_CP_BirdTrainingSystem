@@ -9,7 +9,7 @@ namespace AppService.AdviceConsultingService
 {
     public interface IServiceCustomer : IOtherService
     {
-        Task SendConsultingTicket(ConsultingTicketCreateNewModel consultingTicket, int distance);
+        Task SendConsultingTicket(ConsultingTicketCreateNewModel consultingTicket, int distance, string address, string consultingType);
         Task<IEnumerable<ConsultingTicketListViewModel>> GetListConsultingTicketByCustomerID(int customerId);
         Task<ConsultingTicketDetailViewModel> GetConsultingTicketDetailByID(int customerId);
         Task<bool> ValidateBeforeUsingSendConsultingTicket(int customerId);

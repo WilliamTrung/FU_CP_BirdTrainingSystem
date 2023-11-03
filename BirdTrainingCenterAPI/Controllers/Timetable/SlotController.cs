@@ -22,7 +22,7 @@ namespace BirdTrainingCenterAPI.Controllers.Timetable
         {
             try
             {
-                var result = await _timetableService.Staff.GetFreeSlotOnSelectedDateOfTrainer(trainerId, date.ToDateTime(new TimeOnly()));
+                var result = await _timetableService.Staff.GetFreeSlotOnSelectedDateOfTrainer(date.ToDateTime(new TimeOnly()), trainerId);
                 return Ok(result);
             }
             catch (Exception ex)

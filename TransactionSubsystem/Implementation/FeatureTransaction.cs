@@ -28,12 +28,10 @@ namespace TransactionSubsystem.Implementation
             var totalPrice = distancePrice + pricePolicy.Price;
             var discountedPrice = await CalculateMemberShipDiscountedPrice(consultingTicket.CustomerId, totalPrice);
             var finalPrice = totalPrice - discountedPrice;
+
+            dynamic price = new { FinalPrice = finalPrice, DiscountedPrice = discountedPrice };
             //return finalPrice;
-            return new
-            {
-                FinalPrice = finalPrice,
-                DiscountedPrice = discountedPrice
-            };
+            return price;
         }
 
         public async Task<decimal> CalculateDistancePrice(int distance)

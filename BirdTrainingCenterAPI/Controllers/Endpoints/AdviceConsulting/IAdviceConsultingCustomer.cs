@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Models.ServiceModels.AdviceConsultantModels;
 using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
 
 namespace BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting
@@ -7,7 +8,7 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting
     {
         [HttpPost]
         [Route("sendConsultingTicket")]
-        Task<IActionResult>SendConsultingTicket([FromBody] ConsultingTicketCreateNewModel ticket);
+        Task<IActionResult>SendConsultingTicket(ConsultingTicketCreateNewModel ticket, string address, string consultingType);
 
         [HttpGet]
         [Route("listCustomerConsultingTicket")]
@@ -19,6 +20,6 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting
 
         [HttpGet]
         [Route("getFreeTrainerOnSlotDate")]
-        Task<IActionResult> GetListFreeTrainerOnSlotAndDate(DateOnly date, int slotId);
+        Task<IActionResult> GetListFreeTrainerOnSlotAndDate(DateTime date, int slotId);
     }
 }

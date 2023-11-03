@@ -62,7 +62,7 @@ namespace TimetableSubsystem.Implementation
                 foreach (var freeTrainer in freeTrainerOnDate)
                 {
                     var trainerFreeSlot = await GetTrainerFreeSlotOnDate(date, freeTrainer.Id);
-                    if (trainerFreeSlot == null)
+                    if (trainerFreeSlot != null)
                     {
                         foreach (var slot in trainerFreeSlot)
                         {
