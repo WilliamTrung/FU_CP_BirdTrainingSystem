@@ -36,6 +36,10 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             try
             {
                 var result = await _workshopService.Staff.GetWorkshopClassAdminViewModels(workshopId);
+                foreach (var model in result)
+                {
+                    model.RegistrationAmount = await _workshopService.All.GetRegistrationAmount(model.Id);
+                }
                 return Ok(result);
             } catch (Exception ex)
             {

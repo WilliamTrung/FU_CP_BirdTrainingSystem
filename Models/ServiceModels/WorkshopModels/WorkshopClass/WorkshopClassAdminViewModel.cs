@@ -13,6 +13,7 @@ namespace Models.ServiceModels.WorkshopModels.WorkshopClass
         public int WorkshopId { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime RegisterEndDate { get; set; }
+        public RegistrationAmountModel? RegistrationAmount { get; set; }
         public Models.Enum.Workshop.Class.Status Status { get; set; }
     }
 }
