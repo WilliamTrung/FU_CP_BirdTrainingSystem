@@ -90,7 +90,7 @@ namespace AppCore.Context
                 entity.ToTable("AcquirableSkill");
 
                 entity.Property(e => e.Condition)
-                    .HasMaxLength(30)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.HasOne(d => d.BirdSkill)
@@ -111,7 +111,7 @@ namespace AppCore.Context
                 entity.ToTable("Address");
 
                 entity.Property(e => e.AddressDetail)
-                    .HasMaxLength(50)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.HasOne(d => d.Customer)
@@ -138,7 +138,7 @@ namespace AppCore.Context
                     .IsUnicode(false);
 
                 entity.Property(e => e.Picture)
-                    .HasMaxLength(50)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.HasOne(d => d.BirdSpecies)
@@ -163,7 +163,7 @@ namespace AppCore.Context
                     .IsUnicode(false);
 
                 entity.Property(e => e.Picture)
-                    .HasMaxLength(50)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.Property(e => e.ShortDescrption)
@@ -274,7 +274,7 @@ namespace AppCore.Context
                     .IsUnicode(false);
 
                 entity.Property(e => e.ReceivePicture)
-                    .HasMaxLength(20)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.Property(e => e.ReturnNote)
@@ -282,7 +282,7 @@ namespace AppCore.Context
                     .IsUnicode(false);
 
                 entity.Property(e => e.ReturnPicture)
-                    .HasMaxLength(20)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.Property(e => e.TotalPrice).HasColumnType("money");
@@ -321,7 +321,7 @@ namespace AppCore.Context
                 entity.Property(e => e.BirdTrainingCourseId).HasColumnName("Bird_TrainingCourseId");
 
                 entity.Property(e => e.Evidence)
-                    .HasMaxLength(50)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.Property(e => e.TrainingCourseSkillId).HasColumnName("TrainingCourse_SkillId");
@@ -360,7 +360,7 @@ namespace AppCore.Context
                 entity.Property(e => e.DateCreate).HasColumnType("date");
 
                 entity.Property(e => e.Evidence)
-                    .HasMaxLength(50)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.HasOne(d => d.BirdTrainingProgress)
@@ -404,7 +404,7 @@ namespace AppCore.Context
                     .IsUnicode(false);
 
                 entity.Property(e => e.Picture)
-                    .HasMaxLength(50)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.Property(e => e.ShortDescrption)
@@ -442,11 +442,11 @@ namespace AppCore.Context
                 entity.Property(e => e.DiscountedPrice).HasColumnType("money");
 
                 entity.Property(e => e.Evidence)
-                    .HasMaxLength(50)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.Property(e => e.GgMeetLink)
-                    .HasMaxLength(20)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Price).HasColumnType("money");
@@ -687,7 +687,7 @@ namespace AppCore.Context
                     .IsUnicode(false);
 
                 entity.Property(e => e.Video)
-                    .HasMaxLength(100)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.HasOne(d => d.Section)
@@ -713,7 +713,7 @@ namespace AppCore.Context
                 entity.ToTable("OnlineCourse");
 
                 entity.Property(e => e.Picture)
-                    .HasMaxLength(200)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Price).HasColumnType("money");
@@ -856,7 +856,7 @@ namespace AppCore.Context
                     .IsUnicode(false);
 
                 entity.Property(e => e.Picture)
-                    .HasMaxLength(50)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Title)
@@ -957,11 +957,11 @@ namespace AppCore.Context
                 entity.ToTable("Workshop");
 
                 entity.Property(e => e.Description)
-                    .HasMaxLength(2000)
+                    .HasMaxLength(1000)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Picture)
-                    .HasMaxLength(2000)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Price).HasColumnType("money");
