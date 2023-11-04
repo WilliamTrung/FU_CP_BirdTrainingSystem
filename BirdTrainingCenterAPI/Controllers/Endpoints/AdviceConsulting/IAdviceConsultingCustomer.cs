@@ -21,5 +21,9 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting
         [HttpGet]
         [Route("getFreeTrainerOnSlotDate")]
         Task<IActionResult> GetListFreeTrainerOnSlotAndDate(DateTime date, int slotId);
+
+        [HttpGet]
+        [Route("getTrainerFreeSlotOnDate")]
+        Task<IActionResult> GetTrainerFreeSlotOnDate(DateTime date, int trainerId);
     }
 }
