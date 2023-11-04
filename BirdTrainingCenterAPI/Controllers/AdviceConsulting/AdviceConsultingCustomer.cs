@@ -111,5 +111,24 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
+        [HttpGet]
+        [Route("getTrainerFreeSlotOnDate")]
+        public async Task<IActionResult> GetTrainerFreeSlotOnDate(DateTime date, int trainerId)
+        {
+            try
+            {
+                var trainerSlot = await _timetable.All.GetFreeSlotOnSelectedDateOfTrainer(date, trainerId);
+                if (trainerSlot == null)
+                {
+                    return StatusCode(StatusCodes.Status503ServiceUnavailable, "Trainer không có lịch rảnh vào ngày này");
+                }
+                return Ok(trainerSlot);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
     }
 }
