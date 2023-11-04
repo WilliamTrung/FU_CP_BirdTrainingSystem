@@ -19,7 +19,7 @@ namespace Models.Entities
         public DateTime? BirthDay { get; set; }
         public bool? Gender { get; set; }
         public bool IsFullTime { get; set; }
-        //public int? Category { get; set; }
+        public int Category { get; set; }
         public int Status { get; set; }
 
         public virtual User User { get; set; } = null!;
