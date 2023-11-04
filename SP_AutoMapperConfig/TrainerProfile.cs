@@ -20,7 +20,7 @@ namespace SP_AutoMapperConfig
             Map_Trainer_TrainerModel();
         }
 
-        private void Map_TrainerSkillAddModModel_TrainerSkill()
+        private void Map_TrainerSkillAddModModel_TrainerSkill()//trainingCourse
         {
             CreateMap<TrainerSkillAddModModel, TrainerSkill>()
                 .ForMember(m => m.TrainerId, opt => opt.MapFrom(e => e.TrainerId))
@@ -28,7 +28,7 @@ namespace SP_AutoMapperConfig
                 .ForMember(m => m.Description, opt => opt.MapFrom(e => e.Description));
         }
 
-        private void Map_TrainerSkill_TrainerSkillViewModel()
+        private void Map_TrainerSkill_TrainerSkillViewModel()//trainingCourse
         {
             CreateMap<TrainerSkill, TrainerSkillViewModel>()
                 .ForMember(m => m.TrainerId, opt => opt.MapFrom(e => e.TrainerId))
