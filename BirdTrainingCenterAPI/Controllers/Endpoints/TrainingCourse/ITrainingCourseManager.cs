@@ -69,7 +69,7 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
         Task<IActionResult> CreateAccquirableBirdSkill(AccquirableAddModBirdSkill accquirableAdd);
 
         [HttpPut]
-        [Route("acquirablebirdskill-updte")]
+        [Route("acquirablebirdskill-update")]
         Task<IActionResult> EditAccquirableBirdSkill(AccquirableAddModBirdSkill accquirableMod);
         #endregion
 
@@ -79,7 +79,7 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
         Task<IActionResult> CreateSkill(SkillAddModel skillAddModel);
 
         [HttpPut]
-        [Route("skill-updte")]
+        [Route("skill-update")]
         Task<IActionResult> EditSkill(SkillViewModModel skillModModel);
 
         [HttpGet]

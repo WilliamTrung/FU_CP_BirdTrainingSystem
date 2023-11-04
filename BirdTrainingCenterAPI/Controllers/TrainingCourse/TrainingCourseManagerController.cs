@@ -182,7 +182,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         }
 
         [HttpPut]
-        [Route("acquirablebirdskill-updte")]
+        [Route("acquirablebirdskill-update")]
         public async Task<IActionResult> EditAccquirableBirdSkill(AccquirableAddModBirdSkill accquirableMod)
         {
             await _trainingCourseService.Manager.EditAccquirableBirdSkill(accquirableMod);
@@ -199,7 +199,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         }
 
         [HttpPut]
-        [Route("skill-updte")]
+        [Route("skill-update")]
         public async Task<IActionResult> EditSkill(SkillViewModModel skillModModel)
         {
             await _trainingCourseService.Manager.EditSkill(skillModModel);
