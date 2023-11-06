@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Models.ApiParamModels.Timetable;
 
 namespace BirdTrainingCenterAPI.Controllers.Endpoints.Timetable
 {
@@ -7,5 +8,8 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.Timetable
         [HttpGet]
         [Route("slot-detail")]
         Task<IActionResult> GetOccupiedSlots([FromQuery] int trainerSlotId);
+        [HttpPost]
+        [Route("free-trainers")]
+        Task<IActionResult> GetTrainerFreeOnSlotAndDate([FromBody] GetTrainerFreeOnSlotAndDate model, [FromQuery] string category);
     }
 }
