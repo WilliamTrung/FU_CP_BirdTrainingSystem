@@ -114,21 +114,21 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             return Ok();
         }
         [HttpGet]
-        [Route("registered-trainingcourse")]
+        [Route("registered-birdtrainingcourseprogress")]
         public async Task<IActionResult> GetRegisteredBirdTrainingCourseProgress([FromQuery] int birdTrainingCourseId)
         {
             var result = await _trainingCourseService.Customer.ViewBirdTrainingCourseProgress(birdTrainingCourseId);
             return Ok(result);
         }
         [HttpGet]
-        [Route("registered-birdtrainingcourseprogress")]
+        [Route("registered-birdtrainingcoursereport")]
         public async Task<IActionResult> GetRegisteredBirdTrainingCourseReport([FromQuery] int birdTrainingProgressId)
         {
             var result = await _trainingCourseService.Customer.ViewBirdTrainingCourseReport(birdTrainingProgressId);
             return Ok(result);
         }
         [HttpGet]
-        [Route("registered-birdtrainingcoursereport")]
+        [Route("registered-birdtrainingcourse")]
         public async Task<IActionResult> GetRegisteredTrainingCourse([FromQuery] int birdId, [FromQuery] int customerId)
         {
             var result = await _trainingCourseService.Customer.ViewRegisteredTrainingCourse(birdId: birdId, customerId: customerId);

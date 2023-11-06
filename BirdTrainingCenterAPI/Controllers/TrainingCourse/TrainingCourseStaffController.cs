@@ -62,7 +62,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             var result = await _trainingCourseService.Staff.GetBirdTrainingCourseByCustomerId(customerId);
             return Ok(result);
         }
-        [HttpPost]
+        [HttpGet]
         [Route("trainer")]
         public async Task<IActionResult> GetTrainer()
         {

@@ -29,7 +29,7 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
         [Route("birdtrainingprogress-skill")]
         Task<IActionResult> GetTrainingCourseSkill([FromQuery] int birdTrainingCourseId);
 
-        [HttpPost]
+        [HttpGet]
         [Route("trainer")]
         Task<IActionResult> GetTrainer();
 
