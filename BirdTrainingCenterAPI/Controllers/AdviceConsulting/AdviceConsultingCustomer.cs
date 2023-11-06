@@ -27,25 +27,6 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         }
 
         [HttpGet]
-        [Route("getFreeTrainerOnSlotDate")]
-        public async Task<IActionResult> GetListFreeTrainerOnSlotAndDate(DateTime date, int slotId)
-        {
-            try
-            {
-                var result = await _timetable.All.GetListFreeTrainerOnSlotAndDate(date.ToDateOnly(), slotId, (int)Models.Enum.Trainer.Category.Consulting);
-                if (result == null)
-                {
-                    return StatusCode(StatusCodes.Status503ServiceUnavailable, "Khong co trainer ranh");
-                }
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
-        }
-
-        [HttpGet]
         [Route("listCustomerConsultingTicket")]
         public async Task<IActionResult> GetListConsultingTicketByCustomerId(int customerId)
         {
@@ -105,25 +86,6 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
                     return StatusCode(StatusCodes.Status503ServiceUnavailable, "Người dùng không thể sử dụng chức năng này vì đang bị giới hạn");
                 }
                 return Ok();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
-        }
-
-        [HttpGet]
-        [Route("getTrainerFreeSlotOnDate")]
-        public async Task<IActionResult> GetTrainerFreeSlotOnDate(DateTime date, int trainerId)
-        {
-            try
-            {
-                var trainerSlot = await _timetable.All.GetFreeSlotOnSelectedDateOfTrainer(date, trainerId);
-                if (trainerSlot == null)
-                {
-                    return StatusCode(StatusCodes.Status503ServiceUnavailable, "Trainer không có lịch rảnh vào ngày này");
-                }
-                return Ok(trainerSlot);
             }
             catch (Exception ex)
             {

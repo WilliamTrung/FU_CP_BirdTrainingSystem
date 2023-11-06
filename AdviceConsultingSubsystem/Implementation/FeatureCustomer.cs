@@ -1,4 +1,5 @@
-﻿using AppRepository.UnitOfWork;
+﻿using AppRepository.Repository.Implement;
+using AppRepository.UnitOfWork;
 using AutoMapper;
 using Models.Entities;
 using Models.ServiceModels.AdviceConsultantModels;
@@ -33,7 +34,19 @@ namespace AdviceConsultingSubsystem.Implementation
                 newAddress.AddressDetail = address;
                 await _unitOfWork.AddressRepository.Add(newAddress);
             }
+
             var type = await _unitOfWork.ConsultingTypeRepository.GetFirst(x => x.Name == consultingType);
+            var pricePolicy = await _unitOfWork.ConsultingPricePolicyRepository.GetFirst(x => x.OnlineOrOffline == consultingTicket.OnlineOrOffline);
+
+            var distancePricePolicy = new DistancePrice(); 
+            if (distance != 0)
+            {
+                distancePricePolicy = await _unitOfWork.DistancePriceRepository.GetFirst(x => x.From < distance && x.To > distance);
+            }
+            else
+            {
+                distancePricePolicy = await _unitOfWork.DistancePriceRepository.GetFirst(x => x.PricePerKm == 0);
+            }
 
             var entity = _mapper.Map<ConsultingTicket>(consultingTicket);
             entity.AddressId = newAddress.Id;
@@ -42,7 +55,8 @@ namespace AdviceConsultingSubsystem.Implementation
             entity.Price = finalPrice;
             entity.DiscountedPrice = discountedPrice;
             entity.Status = (int)Models.Enum.ConsultingTicket.Status.WaitingForApprove;
-
+            entity.ConsultingPricePolicyId = pricePolicy.Id;
+            entity.DistancePriceId = distancePricePolicy.Id;
             await _unitOfWork.ConsultingTicketRepository.Add(entity);
             //Add new Consulting Ticket
         }

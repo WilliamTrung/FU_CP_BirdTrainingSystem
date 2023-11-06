@@ -80,8 +80,7 @@ namespace TimetableSubsystem.Implementation
 
         public async Task<IEnumerable<TrainerModel>> GetListTrainer(int category)
         {
-            //var entities = await _unitOfWork.TrainerRepository.Get(x => x.Category == category); Chi bo command khi da update duoi DB co Category
-            var entities = await _unitOfWork.TrainerRepository.Get(expression: null, nameof(Trainer.User));
+            var entities = await _unitOfWork.TrainerRepository.Get(x => x.Category == category, nameof(Trainer.User));
             var models = new List<TrainerModel>();
             foreach (var entity in entities) 
             {
