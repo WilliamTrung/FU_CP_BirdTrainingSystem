@@ -5,6 +5,7 @@ using BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting;
 using BirdTrainingCenterAPI.Helper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Models.ApiParamModels.AdviceConsulting;
 using Models.AuthModels;
 using Models.ServiceModels.AdviceConsultantModels;
 using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
@@ -44,17 +45,26 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
 
         [HttpPost]
         [Route("sendConsultingTicket")]
-        public async Task<IActionResult> SendConsultingTicket([FromBody] ConsultingTicketCreateNewModel ticket, string address, string consultingType)
+        public async Task<IActionResult> SendConsultingTicket([FromBody] ConsultingTicketCreateNewParamModel paramTicket)
         {
             try
             {
+                var accessToken = Request.DeserializeToken(_authService);
+                if (accessToken == null)
+                {
+                    return Unauthorized();
+                }
+                //var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
+                //var ticket = paramTicket.Convert_ParamModel_ServiceModel(Int32.Parse(customerId.Value));
+                var ticket = paramTicket.Convert_ParamModel_ServiceModel(1);
+
                 //Validate kiểm tra lịch rảnh của trainer
-                var trainerFreeSLot = await _timetable.All.GetFreeSlotOnSelectedDateOfTrainer(ticket.AppointmentDate , ticket.TrainerId);
+                var trainerFreeSLot = await _timetable.All.GetFreeSlotOnSelectedDateOfTrainer(paramTicket.AppointmentDate, paramTicket.TrainerId);
                 if (trainerFreeSLot == null || !trainerFreeSLot.Any())
                 {
                     return StatusCode(StatusCodes.Status503ServiceUnavailable, "Trainer không có lịch rảnh vào slot này của ngày này");
                 }
-                if (!trainerFreeSLot.Any(x => x.Id == ticket.ActualSlotStart))
+                if (!trainerFreeSLot.Any(x => x.Id == paramTicket.ActualSlotStart))
                 {
                     return StatusCode(StatusCodes.Status503ServiceUnavailable, "Trainer không có lịch rảnh vào slot này của ngày này");
                 }
@@ -64,7 +74,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
                 //{
                 //    distance = (int)await _googlemapservice.calculatedistance(address);
                 //}
-                await _consultingService.Customer.SendConsultingTicket(ticket, distance, address, consultingType);
+                await _consultingService.Customer.SendConsultingTicket(ticket, distance);
                 return Ok();
 
             }

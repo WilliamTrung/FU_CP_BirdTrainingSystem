@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Models.ApiParamModels.AdviceConsulting;
 using Models.ServiceModels.AdviceConsultantModels;
 using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
 
@@ -8,7 +9,7 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting
     {
         [HttpPost]
         [Route("sendConsultingTicket")]
-        Task<IActionResult>SendConsultingTicket(ConsultingTicketCreateNewModel ticket, string address, string consultingType);
+        Task<IActionResult>SendConsultingTicket(ConsultingTicketCreateNewParamModel paramTicket);
 
         [HttpGet]
         [Route("listCustomerConsultingTicket")]

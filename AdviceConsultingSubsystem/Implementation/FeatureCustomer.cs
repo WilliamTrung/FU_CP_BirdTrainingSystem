@@ -23,19 +23,20 @@ namespace AdviceConsultingSubsystem.Implementation
             _mapper = mapper;
         }
 
-        public async Task SendConsultingTicket(ConsultingTicketCreateNewModel consultingTicket, int distance, decimal finalPrice, decimal discountedPrice, string address, string consultingType)
+        public async Task SendConsultingTicket(ConsultingTicketCreateNewModel consultingTicket, int distance, decimal finalPrice, decimal discountedPrice)
         {
             var customerAddress = await _unitOfWork.AddressRepository.GetFirst(x => x.CustomerId == consultingTicket.CustomerId
-                                                                    && x.AddressDetail == address);
+                                                                    && x.AddressDetail == consultingTicket.Address);
             Address newAddress = new Address();
-            if (customerAddress == null && address != null)
+            if (customerAddress == null && consultingTicket.Address != null)
             {
                 newAddress.CustomerId = consultingTicket.CustomerId;
-                newAddress.AddressDetail = address;
+                newAddress.AddressDetail = consultingTicket.Address;
                 await _unitOfWork.AddressRepository.Add(newAddress);
-            }
 
-            var type = await _unitOfWork.ConsultingTypeRepository.GetFirst(x => x.Name == consultingType);
+                customerAddress = newAddress;
+            }
+            
             var pricePolicy = await _unitOfWork.ConsultingPricePolicyRepository.GetFirst(x => x.OnlineOrOffline == consultingTicket.OnlineOrOffline);
 
             var distancePricePolicy = new DistancePrice(); 
@@ -49,14 +50,16 @@ namespace AdviceConsultingSubsystem.Implementation
             }
 
             var entity = _mapper.Map<ConsultingTicket>(consultingTicket);
-            entity.AddressId = newAddress.Id;
-            entity.ConsultingTypeId = type.Id;
+            entity.AddressId = customerAddress.Id;
+            entity.ConsultingTypeId = consultingTicket.ConsultingTypeId;
             entity.Distance = distance;
             entity.Price = finalPrice;
             entity.DiscountedPrice = discountedPrice;
             entity.Status = (int)Models.Enum.ConsultingTicket.Status.WaitingForApprove;
             entity.ConsultingPricePolicyId = pricePolicy.Id;
             entity.DistancePriceId = distancePricePolicy.Id;
+
+            entity.Address = customerAddress;
             await _unitOfWork.ConsultingTicketRepository.Add(entity);
             //Add new Consulting Ticket
         }

@@ -101,7 +101,8 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         {
             try
             {
-                var result = await _timetableService.All.GetListFreeTrainerOnSlotAndDate(date.ToDateOnly(), slotId, (int)Models.Enum.Trainer.Category.Consulting);
+                int category = (int)Models.Enum.Trainer.Category.Consulting;
+                var result = await _timetableService.All.GetListFreeTrainerOnSlotAndDate(date.ToDateOnly(), slotId, category);
                 if (result == null)
                 {
                     return StatusCode(StatusCodes.Status503ServiceUnavailable, "Khong co trainer ranh");
