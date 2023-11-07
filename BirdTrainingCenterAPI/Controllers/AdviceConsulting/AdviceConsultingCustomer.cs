@@ -27,6 +27,52 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
             _timetable = timetable;
         }
 
+        [HttpPost]
+        [Route("createNewAddress")]
+        public async Task<IActionResult> CreateNewAddress(AddressCreateNewParamModel paramAddress)
+        {
+            try
+            {
+                var accessToken = Request.DeserializeToken(_authService);
+                if (accessToken == null)
+                {
+                    return Unauthorized();
+                }
+                var customerId = Int32.Parse(accessToken.First(c => c.Type == CustomClaimTypes.Id).Value);
+                var address = paramAddress.Convert_ParamModel_ServiceModel(customerId);
+
+                var result = await _consultingService.Customer.CreateNewAddress(address);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("getListAddress")]
+        public async Task<IActionResult> GetListAddress()
+        {
+            try
+            {
+                var accessToken = Request.DeserializeToken(_authService);
+                if (accessToken == null)
+                {
+                    return Unauthorized();
+                }
+                var customerId = Int32.Parse(accessToken.First(c => c.Type == CustomClaimTypes.Id).Value);
+
+                var result = await _consultingService.Customer.GetListAddress(customerId);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
         [HttpGet]
         [Route("listCustomerConsultingTicket")]
         public async Task<IActionResult> GetListConsultingTicketByCustomerId(int customerId)
@@ -54,9 +100,10 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
                 {
                     return Unauthorized();
                 }
-                //var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
-                //var ticket = paramTicket.Convert_ParamModel_ServiceModel(Int32.Parse(customerId.Value));
-                var ticket = paramTicket.Convert_ParamModel_ServiceModel(1);
+                var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
+                var ticket = paramTicket.Convert_ParamModel_ServiceModel(Int32.Parse(customerId.Value));
+
+                //var ticket = paramTicket.Convert_ParamModel_ServiceModel(1);
 
                 //Validate kiểm tra lịch rảnh của trainer
                 var trainerFreeSLot = await _timetable.All.GetFreeSlotOnSelectedDateOfTrainer(paramTicket.AppointmentDate, paramTicket.TrainerId);

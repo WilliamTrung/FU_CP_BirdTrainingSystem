@@ -1,4 +1,5 @@
 ﻿using AdviceConsultingSubsystem;
+using Models.ServiceModels.AdviceConsultantModels;
 using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
 using System;
 using System.Collections.Generic;
@@ -36,6 +37,16 @@ namespace AppService.AdviceConsultingService.Implementation
         public async Task<bool> ValidateBeforeUsingSendConsultingTicket(int customerId)
         {
             return await _consulting.Customer.ValidateBeforeUsingSendConsultingTicket(customerId);
+        }
+
+        public async Task<AddressServiceModel> GetListAddress(int customerId)
+        {
+            return await _consulting.Customer.GetListAddress(customerId);
+        }
+
+        public async Task<bool> CreateNewAddress(CreateNewAddressServiceModel address)
+        {
+            return await _consulting.Customer.CreateNewAddress(address);
         }
     }
 }
