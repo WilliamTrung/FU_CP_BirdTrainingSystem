@@ -24,19 +24,7 @@ namespace AdviceConsultingSubsystem.Implementation
         }
 
         public async Task SendConsultingTicket(ConsultingTicketCreateNewModel consultingTicket, int distance, decimal finalPrice, decimal discountedPrice)
-        {
-            var customerAddress = await _unitOfWork.AddressRepository.GetFirst(x => x.CustomerId == consultingTicket.CustomerId
-                                                                    && x.AddressDetail == consultingTicket.Address);
-            Address newAddress = new Address();
-            if (customerAddress == null && consultingTicket.Address != null)
-            {
-                newAddress.CustomerId = consultingTicket.CustomerId;
-                newAddress.AddressDetail = consultingTicket.Address;
-                await _unitOfWork.AddressRepository.Add(newAddress);
-
-                customerAddress = newAddress;
-            }
-            
+        {   
             var pricePolicy = await _unitOfWork.ConsultingPricePolicyRepository.GetFirst(x => x.OnlineOrOffline == consultingTicket.OnlineOrOffline);
 
             var distancePricePolicy = new DistancePrice(); 
@@ -50,7 +38,7 @@ namespace AdviceConsultingSubsystem.Implementation
             }
 
             var entity = _mapper.Map<ConsultingTicket>(consultingTicket);
-            entity.AddressId = customerAddress.Id;
+            entity.AddressId = consultingTicket.AddressId;
             entity.ConsultingTypeId = consultingTicket.ConsultingTypeId;
             entity.Distance = distance;
             entity.Price = finalPrice;
@@ -59,7 +47,6 @@ namespace AdviceConsultingSubsystem.Implementation
             entity.ConsultingPricePolicyId = pricePolicy.Id;
             entity.DistancePriceId = distancePricePolicy.Id;
 
-            entity.Address = customerAddress;
             await _unitOfWork.ConsultingTicketRepository.Add(entity);
             //Add new Consulting Ticket
         }
@@ -90,6 +77,26 @@ namespace AdviceConsultingSubsystem.Implementation
             {
                 return false;
             }
+            return true;
+        }
+
+        public async Task<AddressServiceModel> GetListAddress(int customerId)
+        {
+            var entity = await _unitOfWork.AddressRepository.Get(x => x.CustomerId == customerId);
+            var model = _mapper.Map<AddressServiceModel>(entity);
+            return model;
+        }
+
+        public async Task<bool> CreateNewAddress(CreateNewAddressServiceModel address)
+        {
+            var check = await _unitOfWork.AddressRepository.GetFirst(x => x.CustomerId == address.CustomerId && x.AddressDetail == address.AddressDetail);
+            if (check != null)
+            {
+                return false;
+            }
+            var entity = _mapper.Map<Address>(address);
+            await _unitOfWork.AddressRepository.Add(entity);
+
             return true;
         }
     }

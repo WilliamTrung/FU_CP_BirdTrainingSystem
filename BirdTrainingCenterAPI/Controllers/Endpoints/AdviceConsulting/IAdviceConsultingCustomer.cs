@@ -2,6 +2,7 @@
 using Models.ApiParamModels.AdviceConsulting;
 using Models.ServiceModels.AdviceConsultantModels;
 using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
+using System.ComponentModel;
 
 namespace BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting
 {
@@ -9,7 +10,7 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting
     {
         [HttpPost]
         [Route("sendConsultingTicket")]
-        Task<IActionResult>SendConsultingTicket(ConsultingTicketCreateNewParamModel paramTicket);
+        Task<IActionResult> SendConsultingTicket(ConsultingTicketCreateNewParamModel paramTicket);
 
         [HttpGet]
         [Route("listCustomerConsultingTicket")]
@@ -18,6 +19,14 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting
         [HttpGet]
         [Route("validateBeforeUsingSendConsultingTicket")]
         Task<IActionResult> ValidateBeforeUsingSendConsultingTicket(int customerId);
+
+        [HttpGet]
+        [Route("getListAddress")]
+        Task<IActionResult> GetListAddress();
+
+        [HttpPost]
+        [Route("createNewAddress")]
+        Task<IActionResult> CreateNewAddress(AddressCreateNewParamModel paramAddress);
 
     }
 }
