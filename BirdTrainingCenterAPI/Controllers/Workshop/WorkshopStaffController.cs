@@ -71,7 +71,7 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
             }
         }
         [HttpPut]
