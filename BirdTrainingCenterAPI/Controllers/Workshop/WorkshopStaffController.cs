@@ -22,9 +22,13 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             try
             {
                 await _workshopService.Staff.CreateWorkshopClass(workshopClass);
-            } catch (Exception ex)
+            } catch (InvalidDataException ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }            
             return Ok();
         }
