@@ -20,5 +20,13 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting
         [HttpPut]
         [Route("cancelConsultingTicket")]
         Task<IActionResult> CancelConsultingTicket(int ticketId);
+
+        [HttpGet]
+        [Route("viewListNotAssignedConsultingTicket")]
+        Task<IActionResult> ViewListNotAssignedConsultingTicket();
+
+        [HttpGet]
+        [Route("viewListAssignedConsultingTicket")]
+        Task<IActionResult> ViewListAssignedConsultingTicket();
     }
 }
