@@ -26,6 +26,8 @@ namespace WorkshopSubsystem
         Task<CustomerWorkshopClass?> GetCustomerRegistrationInfo(int customerId, int workshopClassId);
         Task<PreBillingInformation> GetPreBillingInformation(int customerId, int workshopClassId);
         Task Feedback(int customerId, int workshopId, string feedback);
+        Task<string> GetFeedback(int customerId, int workshopId);
         Task Rate(int customerId, int workshopId, int rate);
+        Task<int> GetRating(int customerId, int workshopId);
     }
 }
