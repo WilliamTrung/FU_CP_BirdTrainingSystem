@@ -10,6 +10,7 @@ namespace Models.Entities
             AcquirableSkills = new HashSet<AcquirableSkill>();
             BirdCertificateSkills = new HashSet<BirdCertificateSkill>();
             TrainableSkills = new HashSet<TrainableSkill>();
+            BirdSkillReceiveds = new HashSet<BirdSkillReceived>();
         }
 
         public int Id { get; set; }
@@ -20,5 +21,6 @@ namespace Models.Entities
         public virtual ICollection<AcquirableSkill> AcquirableSkills { get; set; }
         public virtual ICollection<BirdCertificateSkill> BirdCertificateSkills { get; set; }
         public virtual ICollection<TrainableSkill> TrainableSkills { get; set; }
+        public virtual ICollection<BirdSkillReceived> BirdSkillReceiveds { get; set; }
     }
 }
