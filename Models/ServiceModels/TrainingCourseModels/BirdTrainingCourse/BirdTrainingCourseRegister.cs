@@ -24,7 +24,7 @@ namespace Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse
         //public DateTime? LastestUpdate { get; set; }
         //public int Status { get; set; }
 
-        public virtual BirdModel Bird { get; set; } = null!;
-        public virtual TrainingCourseModel TrainingCourse { get; set; } = null!;
+        //public virtual BirdModel Bird { get; set; } = null!;
+        //public virtual TrainingCourseModel TrainingCourse { get; set; } = null!;
     }
 }

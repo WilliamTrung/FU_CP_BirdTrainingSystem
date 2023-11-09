@@ -85,7 +85,6 @@ namespace TrainingCourseSubsystem.Implementation
             }
             else
             {
-                entity.LastestUpdate = DateTime.Now;
                 entity.RegisteredDate= DateTime.Now;
                 entity.Status = (int)Models.Enum.BirdTrainingCourse.Status.Registered;
                 await _unitOfWork.BirdTrainingCourseRepository.Add(entity);
@@ -103,7 +102,7 @@ namespace TrainingCourseSubsystem.Implementation
 
         public async Task<IEnumerable<BirdViewModel>> GetBirdByCustomerId(int customerId)
         {
-            var entities = await _unitOfWork.BirdRepository.GetFirst(e => e.CustomerId == customerId
+            var entities = await _unitOfWork.BirdRepository.Get(e => e.CustomerId == customerId
                                                                      , nameof(Bird.BirdSpecies)
                                                                      , nameof(Bird.Customer)
                                                                      , $"{nameof(Bird.Customer)}.{nameof(Bird.Customer.User)}");

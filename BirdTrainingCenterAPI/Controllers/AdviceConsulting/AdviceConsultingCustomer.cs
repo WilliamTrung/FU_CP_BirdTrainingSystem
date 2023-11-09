@@ -5,6 +5,7 @@ using BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting;
 using BirdTrainingCenterAPI.Helper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Models.ApiParamModels.AdviceConsulting;
 using Models.AuthModels;
 using Models.ServiceModels.AdviceConsultantModels;
 using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
@@ -26,17 +27,44 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
             _timetable = timetable;
         }
 
-        [HttpGet]
-        [Route("getFreeTrainerOnSlotDate")]
-        public async Task<IActionResult> GetListFreeTrainerOnSlotAndDate(DateTime date, int slotId)
+        [HttpPost]
+        [Route("createNewAddress")]
+        public async Task<IActionResult> CreateNewAddress(AddressCreateNewParamModel paramAddress)
         {
             try
             {
-                var result = await _timetable.All.GetListFreeTrainerOnSlotAndDate(date.ToDateOnly(), slotId, (int)Models.Enum.Trainer.Category.Consulting);
-                if (result == null)
+                var accessToken = Request.DeserializeToken(_authService);
+                if (accessToken == null)
                 {
-                    return StatusCode(StatusCodes.Status503ServiceUnavailable, "Khong co trainer ranh");
+                    return Unauthorized();
                 }
+                var customerId = Int32.Parse(accessToken.First(c => c.Type == CustomClaimTypes.Id).Value);
+                var address = paramAddress.Convert_ParamModel_ServiceModel(customerId);
+
+                var result = await _consultingService.Customer.CreateNewAddress(address);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("getListAddress")]
+        public async Task<IActionResult> GetListAddress()
+        {
+            try
+            {
+                var accessToken = Request.DeserializeToken(_authService);
+                if (accessToken == null)
+                {
+                    return Unauthorized();
+                }
+                var customerId = Int32.Parse(accessToken.First(c => c.Type == CustomClaimTypes.Id).Value);
+
+                var result = await _consultingService.Customer.GetListAddress(customerId);
+
                 return Ok(result);
             }
             catch (Exception ex)
@@ -63,17 +91,27 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
 
         [HttpPost]
         [Route("sendConsultingTicket")]
-        public async Task<IActionResult> SendConsultingTicket([FromBody] ConsultingTicketCreateNewModel ticket, string address, string consultingType)
+        public async Task<IActionResult> SendConsultingTicket([FromBody] ConsultingTicketCreateNewParamModel paramTicket)
         {
             try
             {
+                var accessToken = Request.DeserializeToken(_authService);
+                if (accessToken == null)
+                {
+                    return Unauthorized();
+                }
+                var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
+                var ticket = paramTicket.Convert_ParamModel_ServiceModel(Int32.Parse(customerId.Value));
+
+                //var ticket = paramTicket.Convert_ParamModel_ServiceModel(1);
+
                 //Validate kiểm tra lịch rảnh của trainer
-                var trainerFreeSLot = await _timetable.All.GetFreeSlotOnSelectedDateOfTrainer(ticket.AppointmentDate , ticket.TrainerId);
+                var trainerFreeSLot = await _timetable.All.GetFreeSlotOnSelectedDateOfTrainer(paramTicket.AppointmentDate, paramTicket.TrainerId);
                 if (trainerFreeSLot == null || !trainerFreeSLot.Any())
                 {
                     return StatusCode(StatusCodes.Status503ServiceUnavailable, "Trainer không có lịch rảnh vào slot này của ngày này");
                 }
-                if (!trainerFreeSLot.Any(x => x.Id == ticket.ActualSlotStart))
+                if (!trainerFreeSLot.Any(x => x.Id == paramTicket.ActualSlotStart))
                 {
                     return StatusCode(StatusCodes.Status503ServiceUnavailable, "Trainer không có lịch rảnh vào slot này của ngày này");
                 }
@@ -83,7 +121,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
                 //{
                 //    distance = (int)await _googlemapservice.calculatedistance(address);
                 //}
-                await _consultingService.Customer.SendConsultingTicket(ticket, distance, address, consultingType);
+                await _consultingService.Customer.SendConsultingTicket(ticket, distance);
                 return Ok();
 
             }
@@ -105,25 +143,6 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
                     return StatusCode(StatusCodes.Status503ServiceUnavailable, "Người dùng không thể sử dụng chức năng này vì đang bị giới hạn");
                 }
                 return Ok();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
-        }
-
-        [HttpGet]
-        [Route("getTrainerFreeSlotOnDate")]
-        public async Task<IActionResult> GetTrainerFreeSlotOnDate(DateTime date, int trainerId)
-        {
-            try
-            {
-                var trainerSlot = await _timetable.All.GetFreeSlotOnSelectedDateOfTrainer(date, trainerId);
-                if (trainerSlot == null)
-                {
-                    return StatusCode(StatusCodes.Status503ServiceUnavailable, "Trainer không có lịch rảnh vào ngày này");
-                }
-                return Ok(trainerSlot);
             }
             catch (Exception ex)
             {

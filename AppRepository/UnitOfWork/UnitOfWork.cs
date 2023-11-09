@@ -62,8 +62,6 @@ namespace AppRepository.UnitOfWork
 
         public IFeedbackRepository FeedbackRepository { get; private set; } = null!;
 
-        public IFeedbackTypeRepository FeedbackTypeRepository { get; private set; } = null!;
-
         public ILessonRepository LessonRepository { get; private set; } = null!;
         public IMembershipRankRepository MembershipRankRepository { get; private set; } = null!;
 
@@ -127,7 +125,6 @@ namespace AppRepository.UnitOfWork
             CustomerWorkshopClassRepository = new CustomerWorkshopClassRepository(_context, this);
             DistancePriceRepository = new DistancePriceRepository(_context, this);
             FeedbackRepository = new FeedbackRepository(_context, this);
-            FeedbackTypeRepository = new FeedbackTypeRepository(_context, this);
             LessonRepository = new LessonRepository(_context, this);
             MembershipRankRepository = new MembershipRankRepository(_context, this);
             OnlineCourseRepository = new OnlineCourseRepository(_context, this);

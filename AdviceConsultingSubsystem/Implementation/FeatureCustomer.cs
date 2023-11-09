@@ -1,4 +1,5 @@
-﻿using AppRepository.UnitOfWork;
+﻿using AppRepository.Repository.Implement;
+using AppRepository.UnitOfWork;
 using AutoMapper;
 using Models.Entities;
 using Models.ServiceModels.AdviceConsultantModels;
@@ -22,26 +23,29 @@ namespace AdviceConsultingSubsystem.Implementation
             _mapper = mapper;
         }
 
-        public async Task SendConsultingTicket(ConsultingTicketCreateNewModel consultingTicket, int distance, decimal finalPrice, decimal discountedPrice, string address, string consultingType)
-        {
-            var customerAddress = await _unitOfWork.AddressRepository.GetFirst(x => x.CustomerId == consultingTicket.CustomerId
-                                                                    && x.AddressDetail == address);
-            Address newAddress = new Address();
-            if (customerAddress == null && address != null)
+        public async Task SendConsultingTicket(ConsultingTicketCreateNewModel consultingTicket, int distance, decimal finalPrice, decimal discountedPrice)
+        {   
+            var pricePolicy = await _unitOfWork.ConsultingPricePolicyRepository.GetFirst(x => x.OnlineOrOffline == consultingTicket.OnlineOrOffline);
+
+            var distancePricePolicy = new DistancePrice(); 
+            if (distance != 0)
             {
-                newAddress.CustomerId = consultingTicket.CustomerId;
-                newAddress.AddressDetail = address;
-                await _unitOfWork.AddressRepository.Add(newAddress);
+                distancePricePolicy = await _unitOfWork.DistancePriceRepository.GetFirst(x => x.From < distance && x.To > distance);
             }
-            var type = await _unitOfWork.ConsultingTypeRepository.GetFirst(x => x.Name == consultingType);
+            else
+            {
+                distancePricePolicy = await _unitOfWork.DistancePriceRepository.GetFirst(x => x.PricePerKm == 0);
+            }
 
             var entity = _mapper.Map<ConsultingTicket>(consultingTicket);
-            entity.AddressId = newAddress.Id;
-            entity.ConsultingTypeId = type.Id;
+            entity.AddressId = consultingTicket.AddressId;
+            entity.ConsultingTypeId = consultingTicket.ConsultingTypeId;
             entity.Distance = distance;
             entity.Price = finalPrice;
             entity.DiscountedPrice = discountedPrice;
             entity.Status = (int)Models.Enum.ConsultingTicket.Status.WaitingForApprove;
+            entity.ConsultingPricePolicyId = pricePolicy.Id;
+            entity.DistancePriceId = distancePricePolicy.Id;
 
             await _unitOfWork.ConsultingTicketRepository.Add(entity);
             //Add new Consulting Ticket
@@ -73,6 +77,26 @@ namespace AdviceConsultingSubsystem.Implementation
             {
                 return false;
             }
+            return true;
+        }
+
+        public async Task<AddressServiceModel> GetListAddress(int customerId)
+        {
+            var entity = await _unitOfWork.AddressRepository.Get(x => x.CustomerId == customerId);
+            var model = _mapper.Map<AddressServiceModel>(entity);
+            return model;
+        }
+
+        public async Task<bool> CreateNewAddress(CreateNewAddressServiceModel address)
+        {
+            var check = await _unitOfWork.AddressRepository.GetFirst(x => x.CustomerId == address.CustomerId && x.AddressDetail == address.AddressDetail);
+            if (check != null)
+            {
+                return false;
+            }
+            var entity = _mapper.Map<Address>(address);
+            await _unitOfWork.AddressRepository.Add(entity);
+
             return true;
         }
     }

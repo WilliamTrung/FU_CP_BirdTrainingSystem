@@ -10,21 +10,6 @@ namespace AppRepository.Repository.Implement
         public BirdTrainingCourseRepository(AppCore.Context.BirdTrainingCenterSystemContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
         {
         }
-        public override Task Add(BirdTrainingCourse entity)
-        {
-            entity.LastestUpdate = DateTime.Now;
-            return base.Add(entity);
-        }
-        public override Task Update(BirdTrainingCourse entity)
-        {
-            entity.LastestUpdate = DateTime.Now;
-            return base.Add(entity);
-        }
-        public override Task Delete(BirdTrainingCourse entity)
-        {
-            entity.LastestUpdate = DateTime.Now;
-            return base.Add(entity);
-        }
         public override async Task<IEnumerable<BirdTrainingCourse>> Get(Expression<Func<BirdTrainingCourse, bool>>? expression = null, params string[] includeProperties)
         {
             var entities = await base.Get(expression, includeProperties);
@@ -32,7 +17,7 @@ namespace AppRepository.Repository.Implement
             {
                 if(entity != null)
                 {
-                    int compareDate = DateTime.Compare((DateTime)entity.ActualStartDate, DateTime.Now);
+                    int compareDate = DateTime.Compare((DateTime)entity.StartTrainingDate, DateTime.Now);
                     if(entity.Status == (int)Models.Enum.BirdTrainingCourse.Status.CheckIn && compareDate >= 0)
                     {
                         entity.Status = (int)Models.Enum.BirdTrainingCourse.Status.Training;

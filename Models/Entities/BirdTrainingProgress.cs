@@ -15,7 +15,6 @@ namespace Models.Entities
         public int TrainingCourseSkillId { get; set; }
         public int TotalTrainingSlot { get; set; }
         public int? TrainerId { get; set; }
-        public DateTime? StartTrainingDate { get; set; }
         public DateTime? TrainingDoneDate { get; set; }
         public string? Evidence { get; set; }
         public int Status { get; set; }

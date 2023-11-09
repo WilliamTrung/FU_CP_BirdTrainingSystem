@@ -10,6 +10,7 @@ namespace Models.Enum.Trainer
     {
         Consulting = 1,
         Workshop = 2,
-        Training = 3
+        Training = 3,
+        All = 4
     }
 }

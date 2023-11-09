@@ -30,7 +30,6 @@ namespace AppRepository.UnitOfWork
         public ICustomerWorkshopClassRepository CustomerWorkshopClassRepository { get; }
         public IDistancePriceRepository DistancePriceRepository { get; }
         public IFeedbackRepository FeedbackRepository { get; }
-        public IFeedbackTypeRepository FeedbackTypeRepository { get; }
         public ILessonRepository LessonRepository { get; }
         public IMembershipRankRepository MembershipRankRepository { get; }
         public IOnlineCourseRepository OnlineCourseRepository { get; }
