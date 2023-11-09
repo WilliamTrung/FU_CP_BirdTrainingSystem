@@ -38,6 +38,14 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
                 var result = await _workshopService.Trainer.GetAssignedWorkshopClasses(trainerId: Int32.Parse(trainerId.Value), workshopId: workshopId);
                 return Ok(result);
             }
+            catch (InvalidDataException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+            }
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -64,6 +72,14 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
                 var result = await _workshopService.Trainer.GetAssignedWorkshopClassDetails(trainerId: Int32.Parse(trainerId.Value), workshopClassId: workshopClassId);
                 return Ok(result);
             }
+            catch (InvalidDataException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+            }
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -89,6 +105,14 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             {
                 var result = await _workshopService.Trainer.GetAssignedWorkshops(trainerId: Int32.Parse(trainerId.Value));
                 return Ok(result);
+            }
+            catch (InvalidDataException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
             }
             catch (Exception ex)
             {

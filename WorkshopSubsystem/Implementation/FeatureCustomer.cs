@@ -2,6 +2,7 @@
 using AutoMapper;
 using Models.Entities;
 using Models.ServiceModels.WorkshopModels;
+using Models.ServiceModels.WorkshopModels.Feedback;
 using Models.ServiceModels.WorkshopModels.WorkshopClass;
 using System;
 using System.Collections.Generic;
@@ -169,24 +170,47 @@ namespace WorkshopSubsystem.Implementation
             return result;
         }
 
-        public Task Feedback(int customerId, int workshopId, string feedback)
+        public async Task DoFeedback(int customerId, FeedbackWorkshopCustomerAddModel model)
         {
-            throw new NotImplementedException();
+            var entity = await _unitOfWork.FeedbackRepository.GetFirst(c => c.CustomerId == customerId
+                                                                            && c.EntityTypeId == (int)Models.Enum.EntityType.WorkshopClass
+                                                                            && c.EntityId == model.WorkshopId);
+            if(entity == null)
+            {
+                //new feedback
+                var feedback = new Feedback()
+                {
+                    CustomerId = customerId,
+                    EntityId = model.WorkshopId,
+                    EntityTypeId = (int)Models.Enum.EntityType.WorkshopClass,
+                    FeedbackDetail = model.Feedback,
+                    Rating = model.Rating,
+                };
+                await _unitOfWork.FeedbackRepository.Add(feedback);
+            } else
+            {
+                //edit feedback
+                entity.FeedbackDetail = model.Feedback;
+                entity.Rating = model.Rating;
+                await _unitOfWork.FeedbackRepository.Update(entity);
+            }
         }
 
-        public Task<string> GetFeedback(int customerId, int workshopId)
+        public async Task<FeedbackWorkshopCustomerViewModel?> GetFeedback(int customerId, int workshopId)
         {
-            throw new NotImplementedException();
-        }
-
-        public Task Rate(int customerId, int workshopId, int rate)
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<int> GetRating(int customerId, int workshopId)
-        {
-            throw new NotImplementedException();
+            var entity = await _unitOfWork.FeedbackRepository.GetFirst(c => c.CustomerId == customerId
+                                                                            && c.EntityTypeId == (int)Models.Enum.EntityType.WorkshopClass
+                                                                            && c.EntityId == workshopId
+                                                                            , nameof(Feedback.Customer)
+                                                                            , $"{nameof(Feedback.Customer)}.{nameof(Customer.MembershipRank)}"
+                                                                            , $"{nameof(Feedback.Customer)}.{nameof(Customer.User)}");
+            if(entity != null)
+            {
+                return _mapper.Map<FeedbackWorkshopCustomerViewModel>(entity);
+            } else
+            {
+                return null;
+            }
         }
     }
 }

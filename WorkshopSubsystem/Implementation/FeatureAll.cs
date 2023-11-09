@@ -157,14 +157,34 @@ namespace WorkshopSubsystem.Implementation
             return model;
         }
 
-        public Task<List<FeedbackWorkshopCustomerViewModel>> GetFeedbacks(int workshopId)
+        public async Task<List<FeedbackWorkshopCustomerViewModel>> GetFeedbacks(int workshopId)
         {
-            throw new NotImplementedException();
+            var entities = await _unitOfWork.FeedbackRepository.Get(c =>  c.EntityTypeId == (int)Models.Enum.EntityType.WorkshopClass
+                                                                          && c.EntityId == workshopId
+                                                                          , nameof(Feedback.Customer)
+                                                                          , $"{nameof(Feedback.Customer)}.{nameof(Customer.MembershipRank)}"
+                                                                          , $"{nameof(Feedback.Customer)}.{nameof(Customer.User)}");
+            var result = _mapper.Map<List<FeedbackWorkshopCustomerViewModel>>(entities);
+            return result;  
         }
 
-        public Task<float> GetRating(int workshopId)
+        public async Task<float> GetRating(int workshopId)
         {
-            throw new NotImplementedException();
+            var entities = await _unitOfWork.FeedbackRepository.Get(c => c.EntityTypeId == (int)Models.Enum.EntityType.WorkshopClass
+                                                                          && c.EntityId == workshopId
+                                                                          && c.Rating != null);
+            float rating = 0;
+            int count = 0;
+            entities.ToList().ForEach(e =>
+            {
+                if (e.Rating.HasValue)
+                {
+                    rating += e.Rating.Value;
+                    count++;
+                }                
+            });
+            return rating/=count;
+            
         }
     }
 }
