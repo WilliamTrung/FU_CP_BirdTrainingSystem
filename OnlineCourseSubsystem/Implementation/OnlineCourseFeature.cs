@@ -21,8 +21,8 @@ namespace OnlineCourseSubsystem.Implementation
 
         public IFeatureCustomer Customer => new FeatureCustomer(_unitOfWork, _mapper);
 
-        public IFeatureStaff Staff => throw new NotImplementedException();
+        public IFeatureStaff Staff => new FeatureStaff(_unitOfWork, _mapper);
 
-        public IFeatureAll All => throw new NotImplementedException();
+        public IFeatureAll All => new FeatureAll(_unitOfWork, _mapper);
     }
 }
