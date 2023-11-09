@@ -1,4 +1,5 @@
 ﻿using Models.ServiceModels.WorkshopModels;
+using Models.ServiceModels.WorkshopModels.Feedback;
 using Models.ServiceModels.WorkshopModels.WorkshopClass;
 using System;
 using System.Collections.Generic;
@@ -64,6 +65,32 @@ namespace AppService.WorkshopService.Implementation
         {
             var result = await _workshop.Customer.GetClassesByWorkshopId(customerId, workshopId);
             return result;
+        }
+
+        public async Task DoFeedback(int customerId, FeedbackWorkshopCustomerAddModel model)
+        {
+            //check if customer has register the class and done class
+            var registered = await _workshop.Customer.GetRegisteredWorkshops(customerId);
+            if(!registered.Any(e => e.Id == model.WorkshopId))
+            {
+                throw new InvalidOperationException("Customer has not registered to workshop class!");
+            }
+            var registered_classes = await _workshop.Customer.GetRegisteredWorkshopClass(customerId, model.WorkshopId);
+            if(registered_classes != null && registered_classes.Count() > 0)
+            {
+                var classes = await _workshop.Staff.GetWorkshopClassAdminViewModels(model.WorkshopId);
+                classes = classes.Where(e => registered_classes.Any(c => c.Id == e.Id));
+                if(!classes.Any(e => e.Status == Models.Enum.Workshop.Class.Status.Completed)) {
+                    throw new InvalidOperationException("This workshop class has not completed!");
+                }
+            }
+            //do feedback
+            await _workshop.Customer.DoFeedback(customerId, model);
+        }
+
+        public async Task<FeedbackWorkshopCustomerViewModel?> GetFeedback(int customerId, int workshopId)
+        {
+            return await _workshop.Customer.GetFeedback(customerId, workshopId);
         }
     }
 }
