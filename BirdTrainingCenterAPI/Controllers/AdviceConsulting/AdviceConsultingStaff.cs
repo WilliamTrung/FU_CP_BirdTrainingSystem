@@ -74,6 +74,8 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
             }
         }
 
+        [HttpGet]
+        [Route("viewListAssignedConsultingTicket")]
         public async Task<IActionResult> ViewListAssignedConsultingTicket()
         {
             try
@@ -102,6 +104,8 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
             }
         }
 
+        [HttpGet]
+        [Route("viewListNotAssignedConsultingTicket")]
         public async Task<IActionResult> ViewListNotAssignedConsultingTicket()
         {
             try
