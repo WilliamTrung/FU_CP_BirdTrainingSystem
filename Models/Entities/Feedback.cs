@@ -11,6 +11,7 @@ namespace Models.Entities
         public int EntityTypeId { get; set; }
         public int? EntityId { get; set; }
         public string? FeedbackDetail { get; set; }
+        public int? Rating { get; set; }
 
         public virtual Customer Customer { get; set; } = null!;
     }

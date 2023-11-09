@@ -9,11 +9,11 @@ namespace Models.Entities
 {
     public class BirdSkillReceived
     {
-        public int BirdSKillId { get; set; }
+        public int BirdSkillId { get; set; }
         public int BirdId { get; set; }
-        public DateTime DateReceive { get; set; }
+        public DateTime ReceivedDate { get; set; }
 
-        public virtual Bird? Bird { get; set; }
-        public virtual BirdSkill? BirdSkill { get; set; }
+        public virtual Bird Bird { get; set; } = null!;
+        public virtual BirdSkill BirdSkill { get; set; } = null!;
     }
 }
