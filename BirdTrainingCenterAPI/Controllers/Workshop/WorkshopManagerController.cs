@@ -65,6 +65,14 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
                 var result = await _workshopService.Manager.GetDetailTemplatesByWorkshopId(workshopId);
                 return Ok(result);
             }
+            catch (InvalidDataException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+            }
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -88,9 +96,16 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
                 await _workshopService.Manager.ModifyWorkshopDetailTemplate(workshopDetail);
                 return Ok();
             }
+            catch (InvalidDataException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+            }
             catch (Exception ex)
             {
-
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
@@ -122,6 +137,14 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
                 await _workshopService.Manager.ModifyWorkshopStatus(workshop);
                 return Ok();
             }
+            catch (InvalidDataException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+            }
             catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
@@ -140,6 +163,14 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
                 };
                 await _workshopService.Manager.ModifyWorkshopStatus(workshop);
                 return Ok();
+            }
+            catch (InvalidDataException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
             }
             catch (Exception ex)
             {

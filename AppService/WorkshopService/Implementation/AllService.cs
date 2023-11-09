@@ -1,4 +1,5 @@
 ﻿using Models.ServiceModels.WorkshopModels;
+using Models.ServiceModels.WorkshopModels.Feedback;
 using Models.ServiceModels.WorkshopModels.WorkshopClass;
 using System;
 using System.Collections.Generic;
@@ -51,6 +52,15 @@ namespace AppService.WorkshopService.Implementation
         public async Task<WorkshopClassViewModel> GetWorkshopClass(int workshopClassId)
         {
             return await _workshop.All.GetWorkshopClass(workshopClassId);
+        }
+
+        public async Task<float> GetRating(int workshopId)
+        {
+            return await _workshop.All.GetRating(workshopId);
+        }
+        public async Task<List<FeedbackWorkshopCustomerViewModel>> GetFeedbacks(int workshopId)
+        {
+            return await _workshop.All.GetFeedbacks(workshopId);
         }
     }
 }

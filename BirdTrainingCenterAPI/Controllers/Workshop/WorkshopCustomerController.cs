@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Models.AuthModels;
+using Models.ServiceModels.WorkshopModels.Feedback;
 using SP_Middleware;
 using System.Security.Claims;
 
@@ -93,18 +94,89 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             var result = await _workshopService.Customer.GetBillingInformation(Int32.Parse(customerId.Value), workshopClassId);
             return Ok(result);
         }
-        [HttpPut]
+        [HttpPost]
         [Route("purchase")]
         public async Task<IActionResult> Purchase(int workshopClassId)
         {
-            var accessToken = Request.DeserializeToken(_authService);
-            if (accessToken == null)
+            try
             {
-                return Unauthorized();
+                var accessToken = Request.DeserializeToken(_authService);
+                if (accessToken == null)
+                {
+                    return Unauthorized();
+                }
+                var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
+                await _workshopService.Customer.PurchaseClass(Int32.Parse(customerId.Value), workshopClassId);
+                return Ok();
             }
-            var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
-            await _workshopService.Customer.PurchaseClass(Int32.Parse(customerId.Value), workshopClassId);
-            return Ok();
+            catch (InvalidDataException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+        [HttpPost]
+        [Route("feedback")]
+        public async Task<IActionResult> DoFeedback([FromBody] FeedbackWorkshopCustomerAddModel model)
+        {
+            try
+            {
+                var accessToken = Request.DeserializeToken(_authService);
+                if (accessToken == null)
+                {
+                    return Unauthorized();
+                }
+                var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
+                await _workshopService.Customer.DoFeedback(Int32.Parse(customerId.Value), model);
+                return Ok();
+            }
+            catch (InvalidDataException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+        [HttpGet]
+        [Route("get-feedback")]
+        public async Task<IActionResult> GetFeedback([FromQuery] int workshopId)
+        {
+            try
+            {
+                var accessToken = Request.DeserializeToken(_authService);
+                if (accessToken == null)
+                {
+                    return Unauthorized();
+                }
+                var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
+                var result = await _workshopService.Customer.GetFeedback(Int32.Parse(customerId.Value) ,workshopId); 
+                return Ok(result);
+            }
+            catch (InvalidDataException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
     }
 }
