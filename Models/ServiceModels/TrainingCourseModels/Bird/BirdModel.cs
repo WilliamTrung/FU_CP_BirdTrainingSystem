@@ -19,6 +19,6 @@ namespace Models.ServiceModels.TrainingCourseModels.Bird
         public virtual BirdSpeciesModel BirdSpecies { get; set; } = null!;
         //public virtual Customer Customer { get; set; } = null!;
         //public virtual ICollection<BirdCertificateDetail> BirdCertificateDetails { get; set; }
-        public virtual ICollection<BirdTrainingCourseModel> BirdTrainingCourses { get; set; }
+        public virtual ICollection<BirdTrainingCourseModel>? BirdTrainingCourses { get; set; }
     }
 }
