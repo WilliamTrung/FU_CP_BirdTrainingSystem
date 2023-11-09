@@ -102,9 +102,9 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
                 }
                 var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
                 var ticket = paramTicket.Convert_ParamModel_ServiceModel(Int32.Parse(customerId.Value));
-                ticket = paramTicket.Convert_ParamModel_ServiceModel(1);
 
-                //var ticket = paramTicket.Convert_ParamModel_ServiceModel(1);
+                //For Debug
+                //ticket = paramTicket.Convert_ParamModel_ServiceModel(1);
 
                 //Validate kiểm tra lịch rảnh của trainer
                 var trainerFreeSLot = await _timetable.All.GetFreeSlotOnSelectedDateOfTrainer(paramTicket.AppointmentDate, paramTicket.TrainerId);
@@ -115,6 +115,15 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
                 if (!trainerFreeSLot.Any(x => x.Id == paramTicket.ActualSlotStart))
                 {
                     return StatusCode(StatusCodes.Status503ServiceUnavailable, "Trainer không có lịch rảnh vào slot này của ngày này");
+                }
+
+                //Validate Address
+                if (paramTicket.OnlineOrOffline == false)
+                {
+                    if (string.IsNullOrWhiteSpace(paramTicket.Address))
+                    {
+                        return StatusCode(StatusCodes.Status503ServiceUnavailable, "Address đang bị trống");
+                    }
                 }
 
                 int distance = 0;
