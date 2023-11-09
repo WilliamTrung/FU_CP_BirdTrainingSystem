@@ -19,7 +19,7 @@ namespace AdviceConsultingSubsystem.Implementation
         internal readonly IUnitOfWork _unitOfWork;
         internal readonly IMapper _mapper;
         public FeatureStaff(IUnitOfWork unitOfWork, IMapper mapper)
-        {
+        { 
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
@@ -103,14 +103,15 @@ namespace AdviceConsultingSubsystem.Implementation
                 throw new KeyNotFoundException($"{nameof(entity)} not found for id: {ticketId}");
             }
 
-            //var trainerSlot = await _unitOfWork.TrainerSlotRepository.GetFirst(x => x.Date == entity.AppointmentDate
-            //                                                                && x.SlotId == entity.ActualSlotStart
-            //                                                                && x.TrainerId == entity.TrainerId);
-            //if (trainerSlot != null)
-            //{
-            //    await _unitOfWork.TrainerSlotRepository.Delete(trainerSlot);
-            //}
-            
+            var trainerSlot = await _unitOfWork.TrainerSlotRepository.GetFirst(x => x.Date == entity.AppointmentDate
+                                                                            && x.SlotId == entity.ActualSlotStart
+                                                                            && x.TrainerId == entity.TrainerId);
+            if (trainerSlot != null && trainerSlot.EntityTypeId == (int)Models.Enum.EntityType.AdviceConsulting)
+            {
+                //trainerSlot.Status = (int)Models.Enum.TrainerSlotStatus.Disabled;
+                await _unitOfWork.TrainerSlotRepository.Delete(trainerSlot);
+            }
+
             entity.Status = (int)Models.Enum.ConsultingTicket.Status.Canceled;
             await _unitOfWork.ConsultingTicketRepository.Update(entity);
         }
