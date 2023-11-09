@@ -28,6 +28,8 @@ namespace AppRepository.UnitOfWork
 
         public IBirdSkillRepository BirdSkillRepository { get; private set; } = null!;
 
+        public IBirdSkillReceivedRepository BirdSkillReceivedRepository { get; private set; } = null!;
+
         public IBirdSpeciesRepository BirdSpeciesRepository { get; private set; } = null!;
 
         public IBirdTrainingCourseRepository BirdTrainingCourseRepository { get; private set; } = null!;
@@ -108,6 +110,7 @@ namespace AppRepository.UnitOfWork
             BirdCertificateDetailRepository = new BirdCertificateDetailRepository(_context, this);
             BirdCertificateSkillRepository = new BirdCertificateSkillRepository(_context, this);
             BirdSkillRepository = new BirdSkillRepository(_context, this);
+            BirdSkillReceivedRepository = new BirdSkillReceivedRepository(_context, this);
             BirdSpeciesRepository = new BirdSpeciesRepository(_context, this);
             BirdTrainingCourseRepository = new BirdTrainingCourseRepository(_context, this);
             BirdTrainingProgressRepository = new BirdTrainingProgressRepository(_context, this);

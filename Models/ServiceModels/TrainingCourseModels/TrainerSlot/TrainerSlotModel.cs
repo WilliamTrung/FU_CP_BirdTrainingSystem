@@ -11,7 +11,7 @@ namespace Models.ServiceModels.TrainingCourseModels.TrainerSlot
     public class TrainerSlotModel
     {
         public int Id { get; set; }
-        public int TrainerId { get; set; }
+        public int? TrainerId { get; set; }
         public int SlotId { get; set; }
         public DateTime Date { get; set; }
         public string? Reason { get; set; }

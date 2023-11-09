@@ -13,7 +13,7 @@ namespace Models.Enum.BirdTrainingCourse
         CheckIn = 2, //start training
         Training = 3,
         TrainingDone = 4, //All skill progress complete, UI pending return bird
-        CheckOut = 5, //tra chim khi da training xong
-        Complete = 6 //da tra chim va thanh toan
+        //CheckOut = 5, //tra chim khi da training xong
+        Complete = 5 //da tra chim va thanh toan
     }
 }

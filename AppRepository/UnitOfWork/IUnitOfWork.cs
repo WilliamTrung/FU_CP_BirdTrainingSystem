@@ -13,6 +13,7 @@ namespace AppRepository.UnitOfWork
         public IBirdCertificateDetailRepository BirdCertificateDetailRepository { get; }
         public IBirdCertificateSkillRepository BirdCertificateSkillRepository { get; }
         public IBirdSkillRepository BirdSkillRepository { get; }
+        public IBirdSkillReceivedRepository BirdSkillReceivedRepository { get; }
         public IBirdSpeciesRepository BirdSpeciesRepository { get; }
         public IBirdTrainingCourseRepository BirdTrainingCourseRepository { get; }
         public IBirdTrainingProgressRepository BirdTrainingProgressRepository { get; }

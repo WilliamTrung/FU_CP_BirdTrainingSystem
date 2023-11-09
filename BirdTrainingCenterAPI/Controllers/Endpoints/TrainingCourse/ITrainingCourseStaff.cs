@@ -29,7 +29,7 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
         [Route("birdtrainingprogress-skill")]
         Task<IActionResult> GetTrainingCourseSkill([FromQuery] int birdTrainingCourseId);
 
-        [HttpPost]
+        [HttpGet]
         [Route("trainer")]
         Task<IActionResult> GetTrainer();
 
@@ -45,21 +45,9 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
         [Route("trainer-skill")]
         Task<IActionResult> GetTrainerByTrainerSkillId([FromQuery] int trainerSkillId);
 
-        [HttpPost]
-        [Route("assign-trainer")]
-        Task<IActionResult> AssignTrainer([FromBody] AssignTrainerToCourse assignTrainer);
-
-        [HttpPost]
-        [Route("generate-trainerslot")]
-        Task<IActionResult> GenerateTrainerTimetable([FromBody] IEnumerable<int> progressId);
-
-        [HttpPut]
-        [Route("modify-trainerslot")]
-        Task<IActionResult> ModifyTrainerSlot([FromBody] ModifyTrainerSlot trainerSlot);
-
-        [HttpPut]
-        [Route("modify-birdtrainingcourse-starttime")]
-        Task<IActionResult> InitStartTime([FromBody] BirdTrainingCourseStartTime birdTrainingCourse);
+        //[HttpPost]
+        //[Route("generate-trainerslot")]
+        //Task<IActionResult> GenerateTrainerTimetable([FromBody] IEnumerable<int> progressId);
 
         [HttpPut]
         [Route("receive-bird")]
@@ -68,6 +56,17 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
         [HttpPut]
         [Route("return-bird")]
         Task<IActionResult> ReturnBird([FromForm] ReturnBirdParamModel birdTrainingCourse);
-        //Task Update(BirdTrainingProgressModel birdTrainingProgress);
+
+        [HttpPost]
+        [Route("birdtrainingcourse-confirm")]
+        Task<IActionResult> ConfirmBirdTrainingCourse(int birdTrainingCourseId);
+
+        [HttpGet]
+        [Route("birdtrainingreport-progressid")]
+        Task<IActionResult> GetReportByProgressId(int progressId);
+
+        [HttpPut]
+        [Route("trainerslot-modify")]
+        Task<IActionResult> ModifyTrainingSlot(ReportModifyModel reportModModel);
     }
 }
