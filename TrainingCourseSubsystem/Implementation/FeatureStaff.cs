@@ -211,7 +211,6 @@ namespace TrainingCourseSubsystem.Implementation
             }
             else
             {
-                entity.DateCreate = DateTime.Now;
                 entity.Status = (int)Models.Enum.BirdTrainingReport.Status.NotYet;
                 await _unitOfWork.BirdTrainingReportRepository.Add(entity);
 
@@ -282,11 +281,11 @@ namespace TrainingCourseSubsystem.Implementation
                 else
                 {
                     entity.StaffId = birdTrainingCourse.StaffId;
-                    entity.ExpectedStartDate = DateTime.Now;
-                    DateTime expectDoneDate = DateTime.Now.AddDays(entity.TrainingCourse.TotalSlot);
-                    entity.ExpectedTrainingDoneDate = expectDoneDate;
-                    entity.ExpectedDateReturn = expectDoneDate;
-                    entity.LastestUpdate = DateTime.Now;
+                    //entity.ExpectedStartDate = DateTime.Now;
+                    //DateTime expectDoneDate = DateTime.Now.AddDays(entity.TrainingCourse.TotalSlot);
+                    //entity.ExpectedTrainingDoneDate = expectDoneDate;
+                    //entity.ExpectedDateReturn = expectDoneDate;
+                    //entity.LastestUpdate = DateTime.Now;
 
                     var assignedSkills = _unitOfWork.BirdTrainingProgressRepository.Get(e => e.BirdTrainingCourseId == entity.Id).Result.ToList();
                     if (assignedSkills.Any(e => e.TrainerId != null))
@@ -312,7 +311,7 @@ namespace TrainingCourseSubsystem.Implementation
             }
             else
             {
-                entity.ActualStartDate = startDate;
+                entity.StartTrainingDate = startDate;
                 await _unitOfWork.BirdTrainingCourseRepository.Update(entity);
             }
         }
@@ -333,11 +332,9 @@ namespace TrainingCourseSubsystem.Implementation
                 else
                 {
                     entity.ReceiveStaffId = birdTrainingCourse.ReceiveStaffId;
-                    entity.ActualStartDate = DateTime.Now;
-                    entity.DateReceivedBird = DateTime.Now;
+                    entity.DateReceived = DateTime.Now;
                     entity.ReceiveNote = birdTrainingCourse.ReceiveNote;
                     entity.ReceivePicture = birdTrainingCourse.ReceivePicture;
-                    entity.LastestUpdate = DateTime.Now;
                     entity.Status = (int)Models.Enum.BirdTrainingCourse.Status.CheckIn; //enum birdtrainingcourse status
 
                     var bird = _unitOfWork.BirdRepository.GetFirst(e => e.Id == entity.BirdId).Result;
@@ -369,10 +366,9 @@ namespace TrainingCourseSubsystem.Implementation
                 else
                 {
                     entity.ReturnStaffId = birdTrainingCourse.ReturnStaffId;
-                    entity.DateReceivedBird = DateTime.Now;
+                    entity.DateReceived = DateTime.Now;
                     entity.ReturnNote = birdTrainingCourse.ReturnNote;
                     entity.ReturnPicture = birdTrainingCourse.ReturnPicture;
-                    entity.LastestUpdate = DateTime.Now;
                     entity.Status = (int)Models.Enum.BirdTrainingCourse.Status.CheckOut;
                     await _unitOfWork.BirdTrainingCourseRepository.Update(entity);
                 }

@@ -8,6 +8,7 @@ namespace Models.Entities
         public BirdTrainingCourse()
         {
             BirdTrainingProgresses = new HashSet<BirdTrainingProgress>();
+            BirdCertificateDetails = new HashSet<BirdCertificateDetail>();
         }
 
         public int Id { get; set; }
@@ -18,20 +19,16 @@ namespace Models.Entities
         public DateTime? RegisteredDate { get; set; }
         public decimal? TotalPrice { get; set; }
         public decimal? DiscountedPrice { get; set; }
-        public DateTime? ExpectedStartDate { get; set; }
-        public DateTime? ExpectedTrainingDoneDate { get; set; }
-        public DateTime? ExpectedDateReturn { get; set; }
+        public DateTime? StartTrainingDate { get; set; }
         public int? ReceiveStaffId { get; set; }
-        public DateTime? ActualStartDate { get; set; }
-        public DateTime? DateReceivedBird { get; set; }
+        public DateTime? DateReceived { get; set; }
         public string? ReceiveNote { get; set; }
         public string? ReceivePicture { get; set; }
         public int? ReturnStaffId { get; set; }
-        public DateTime? ActualDateReturn { get; set; }
+        public DateTime? DateReturn { get; set; }
         public string? ReturnNote { get; set; }
         public string? ReturnPicture { get; set; }
         public DateTime? TrainingDoneDate { get; set; }
-        public DateTime? LastestUpdate { get; set; }
         public int Status { get; set; }
 
         public virtual Bird Bird { get; set; } = null!;
@@ -39,5 +36,6 @@ namespace Models.Entities
         public virtual User Staff { get; set; } = null!;
         public virtual TrainingCourse TrainingCourse { get; set; } = null!;
         public virtual ICollection<BirdTrainingProgress> BirdTrainingProgresses { get; set; }
+        public virtual ICollection<BirdCertificateDetail> BirdCertificateDetails { get; set; }
     }
 }

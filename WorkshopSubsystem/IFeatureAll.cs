@@ -1,4 +1,5 @@
 ﻿using Models.ServiceModels.WorkshopModels;
+using Models.ServiceModels.WorkshopModels.Feedback;
 using Models.ServiceModels.WorkshopModels.WorkshopClass;
 using System;
 using System.Collections.Generic;
@@ -22,5 +23,8 @@ namespace WorkshopSubsystem
         Task<IEnumerable<WorkshopClassDetailViewModel>> GetWorkshopClassDetailOnWorkshopClass(int workshopClassId);
         Task<IEnumerable<WorkshopRefundPolicyModel>> GetRefundPolicies();
         Task<WorkshopClassViewModel> GetWorkshopClass(int workshopClassId);
+
+        Task<List<FeedbackWorkshopCustomerViewModel>> GetFeedbacks(int workshopId);
+        Task<float> GetRating(int workshopId);
     }
 }

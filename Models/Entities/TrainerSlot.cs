@@ -12,7 +12,7 @@ namespace Models.Entities
         }
 
         public int Id { get; set; }
-        public int TrainerId { get; set; }
+        public int? TrainerId { get; set; }
         public int SlotId { get; set; }
         public DateTime Date { get; set; }
         public string? Reason { get; set; }
@@ -21,7 +21,7 @@ namespace Models.Entities
         public int Status { get; set; }
 
         public virtual Slot Slot { get; set; } = null!;
-        public virtual Trainer Trainer { get; set; } = null!;
+        public virtual Trainer? Trainer { get; set; } = null!;
         public virtual ICollection<BirdTrainingReport> BirdTrainingReports { get; set; }
         public virtual ICollection<WorkshopClassDetail> WorkshopClassDetails { get; set; }
     }
