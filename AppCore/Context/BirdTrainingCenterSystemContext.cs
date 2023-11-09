@@ -24,6 +24,7 @@ namespace AppCore.Context
         public virtual DbSet<BirdCertificateDetail> BirdCertificateDetails { get; set; } = null!;
         public virtual DbSet<BirdCertificateSkill> BirdCertificateSkills { get; set; } = null!;
         public virtual DbSet<BirdSkill> BirdSkills { get; set; } = null!;
+        public virtual DbSet<BirdSkillReceived> BirdSkillReceiveds { get; set; } = null!;
         public virtual DbSet<BirdSpecies> BirdSpecies { get; set; } = null!;
         public virtual DbSet<BirdTrainingCourse> BirdTrainingCourses { get; set; } = null!;
         public virtual DbSet<BirdTrainingProgress> BirdTrainingProgresses { get; set; } = null!;
@@ -41,7 +42,6 @@ namespace AppCore.Context
         public virtual DbSet<CustomerWorkshopClass> CustomerWorkshopClasses { get; set; } = null!;
         public virtual DbSet<DistancePrice> DistancePrices { get; set; } = null!;
         public virtual DbSet<Feedback> Feedbacks { get; set; } = null!;
-        public virtual DbSet<FeedbackType> FeedbackTypes { get; set; } = null!;
         public virtual DbSet<Lesson> Lessons { get; set; } = null!;
         public virtual DbSet<MembershipRank> MembershipRanks { get; set; } = null!;
         public virtual DbSet<OnlineCourse> OnlineCourses { get; set; } = null!;
@@ -90,7 +90,7 @@ namespace AppCore.Context
                 entity.ToTable("AcquirableSkill");
 
                 entity.Property(e => e.Condition)
-                    .HasMaxLength(30)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.HasOne(d => d.BirdSkill)
@@ -111,7 +111,7 @@ namespace AppCore.Context
                 entity.ToTable("Address");
 
                 entity.Property(e => e.AddressDetail)
-                    .HasMaxLength(50)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.HasOne(d => d.Customer)
@@ -138,7 +138,7 @@ namespace AppCore.Context
                     .IsUnicode(false);
 
                 entity.Property(e => e.Picture)
-                    .HasMaxLength(50)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.HasOne(d => d.BirdSpecies)
@@ -163,7 +163,7 @@ namespace AppCore.Context
                     .IsUnicode(false);
 
                 entity.Property(e => e.Picture)
-                    .HasMaxLength(50)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.Property(e => e.ShortDescrption)
@@ -183,8 +183,7 @@ namespace AppCore.Context
 
             modelBuilder.Entity<BirdCertificateDetail>(entity =>
             {
-                entity.HasKey(e => new { e.BirdId, e.BirdCertificateId })
-                    .HasName("PK__BirdCert__CB94077CD6544A76");
+                entity.HasKey(e => new { e.Id });
 
                 entity.ToTable("BirdCertificateDetail");
 
@@ -238,6 +237,23 @@ namespace AppCore.Context
                     .IsUnicode(false);
             });
 
+            modelBuilder.Entity<BirdSkillReceived>(entity =>
+            {
+                entity.HasKey(e => new { e.BirdSkillId, e.BirdId });
+
+                entity.ToTable("BirdSkillReceived");
+
+                entity.HasOne(d => d.Bird)
+                    .WithMany(p => p.BirdSkillReceiveds)
+                    .HasForeignKey(d => d.BirdId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+
+                entity.HasOne(d => d.BirdSkill)
+                    .WithMany(p => p.BirdSkillReceiveds)
+                    .HasForeignKey(d => d.BirdSkillId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
+
             modelBuilder.Entity<BirdSpecies>(entity =>
             {
                 entity.Property(e => e.Name)
@@ -253,28 +269,14 @@ namespace AppCore.Context
             {
                 entity.ToTable("Bird_TrainingCourse");
 
-                entity.Property(e => e.ActualDateReturn).HasColumnType("date");
-
-                entity.Property(e => e.ActualStartDate).HasColumnType("date");
-
-                entity.Property(e => e.DateReceivedBird).HasColumnType("date");
-
                 entity.Property(e => e.DiscountedPrice).HasColumnType("money");
-
-                entity.Property(e => e.ExpectedDateReturn).HasColumnType("date");
-
-                entity.Property(e => e.ExpectedStartDate).HasColumnType("date");
-
-                entity.Property(e => e.ExpectedTrainingDoneDate).HasColumnType("date");
-
-                entity.Property(e => e.LastestUpdate).HasColumnType("date");
 
                 entity.Property(e => e.ReceiveNote)
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.Property(e => e.ReceivePicture)
-                    .HasMaxLength(20)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.Property(e => e.ReturnNote)
@@ -282,7 +284,7 @@ namespace AppCore.Context
                     .IsUnicode(false);
 
                 entity.Property(e => e.ReturnPicture)
-                    .HasMaxLength(20)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.Property(e => e.TotalPrice).HasColumnType("money");
@@ -321,7 +323,7 @@ namespace AppCore.Context
                 entity.Property(e => e.BirdTrainingCourseId).HasColumnName("Bird_TrainingCourseId");
 
                 entity.Property(e => e.Evidence)
-                    .HasMaxLength(50)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.Property(e => e.TrainingCourseSkillId).HasColumnName("TrainingCourse_SkillId");
@@ -357,10 +359,8 @@ namespace AppCore.Context
                     .HasMaxLength(200)
                     .IsUnicode(false);
 
-                entity.Property(e => e.DateCreate).HasColumnType("date");
-
                 entity.Property(e => e.Evidence)
-                    .HasMaxLength(50)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.HasOne(d => d.BirdTrainingProgress)
@@ -368,12 +368,6 @@ namespace AppCore.Context
                     .HasForeignKey(d => d.BirdTrainingProgressId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKBirdTraini259515");
-
-                entity.HasOne(d => d.Trainer)
-                    .WithMany(p => p.BirdTrainingReports)
-                    .HasForeignKey(d => d.TrainerId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FKBirdTraini332709");
 
                 entity.HasOne(d => d.TrainerSlot)
                     .WithMany(p => p.BirdTrainingReports)
@@ -404,7 +398,7 @@ namespace AppCore.Context
                     .IsUnicode(false);
 
                 entity.Property(e => e.Picture)
-                    .HasMaxLength(50)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.Property(e => e.ShortDescrption)
@@ -442,11 +436,11 @@ namespace AppCore.Context
                 entity.Property(e => e.DiscountedPrice).HasColumnType("money");
 
                 entity.Property(e => e.Evidence)
-                    .HasMaxLength(50)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.Property(e => e.GgMeetLink)
-                    .HasMaxLength(20)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Price).HasColumnType("money");
@@ -653,21 +647,6 @@ namespace AppCore.Context
                     .HasForeignKey(d => d.CustomerId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKFeedback245587");
-
-                entity.HasOne(d => d.FeedbackType)
-                    .WithMany(p => p.Feedbacks)
-                    .HasForeignKey(d => d.FeedbackTypeId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FKFeedback625969");
-            });
-
-            modelBuilder.Entity<FeedbackType>(entity =>
-            {
-                entity.ToTable("FeedbackType");
-
-                entity.Property(e => e.Name)
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<Lesson>(entity =>
@@ -687,7 +666,7 @@ namespace AppCore.Context
                     .IsUnicode(false);
 
                 entity.Property(e => e.Video)
-                    .HasMaxLength(100)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.HasOne(d => d.Section)
@@ -713,7 +692,7 @@ namespace AppCore.Context
                 entity.ToTable("OnlineCourse");
 
                 entity.Property(e => e.Picture)
-                    .HasMaxLength(200)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Price).HasColumnType("money");
@@ -856,7 +835,7 @@ namespace AppCore.Context
                     .IsUnicode(false);
 
                 entity.Property(e => e.Picture)
-                    .HasMaxLength(50)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Title)
@@ -957,11 +936,11 @@ namespace AppCore.Context
                 entity.ToTable("Workshop");
 
                 entity.Property(e => e.Description)
-                    .HasMaxLength(2000)
+                    .HasMaxLength(1000)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Picture)
-                    .HasMaxLength(2000)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Price).HasColumnType("money");

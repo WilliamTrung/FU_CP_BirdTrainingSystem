@@ -31,8 +31,13 @@ namespace WorkshopSubsystem.Implementation
                 throw new InvalidOperationException($"{typeof(Workshop)} is inactive");
             }
             var entity = _mapper.Map<WorkshopClass>(workshopClass);
+            if(entity.StartTime < DateTime.Now.ToDateOnly().AddDays(BR_WorkshopConstant.StartDateCreated).ToDateTime(new TimeOnly())) {
+                throw new InvalidOperationException("Open registration day must be 5 days after from today!");
+            }
 #pragma warning disable CS8604 // Possible null reference argument.
-            entity.RegisterEndDate = DateTime.Now.AddDays(Double.Parse(workshop.RegisterEnd.ToString()));
+#pragma warning disable CS8629 // Nullable value type may be null.
+            entity.RegisterEndDate = entity.StartTime.Value.AddDays(double.Parse(workshop.RegisterEnd.ToString()));
+#pragma warning restore CS8629 // Nullable value type may be null.
 #pragma warning restore CS8604 // Possible null reference argument.
             await _unitOfWork.WorkshopClassRepository.Add(entity);
             //add workshop class details to class

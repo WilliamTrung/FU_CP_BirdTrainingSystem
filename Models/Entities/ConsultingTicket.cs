@@ -9,7 +9,6 @@ namespace Models.Entities
         public int CustomerId { get; set; }
         public int? TrainerId { get; set; }
         public int? AddressId { get; set; }
-        public string? Adddress { get; set; }
         public int ConsultingTypeId { get; set; }
         public string? ConsultingDetail { get; set; }
         public int? Distance { get; set; }

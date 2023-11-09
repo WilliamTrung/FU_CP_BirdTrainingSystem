@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
 using TimetableSubsystem;
+using AppService.TimetableService;
 
 namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
 {
@@ -12,19 +13,19 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
     [ApiController]
     public class AdviceConsultingStaff : AdviceConsultingBaseController, IAdviceConsultingStaff
     {
-        private readonly ITimetableFeature _timetable;
-        public AdviceConsultingStaff(IAdviceConsultingService adviceConsultingService, IAuthService authService, ITimetableFeature timetable) : base(adviceConsultingService, authService)
+        private readonly ITimetableService _timetable;
+        public AdviceConsultingStaff(IAdviceConsultingService adviceConsultingService, IAuthService authService, ITimetableService timetable) : base(adviceConsultingService, authService)
         {
             _timetable = timetable;
         }
         [HttpPut]
         [Route("approveConsultingTicket")]
-        public async Task<IActionResult> ApproveConsultingTicket(int ticketId, int trainerId, DateOnly date, int slotId)
+        public async Task<IActionResult> ApproveConsultingTicket(int ticketId, int trainerId, DateTime date, int slotId)
         {
             try
             {
                 //Validate kiểm tra lịch rảnh của trainer
-                var trainerFreeSLot = await _timetable.GetTrainerFreeSlotOnDate(date, trainerId);
+                var trainerFreeSLot = await _timetable.All.GetFreeSlotOnSelectedDateOfTrainer(date, trainerId);
                 if (trainerFreeSLot == null || !trainerFreeSLot.Any())
                 {
                     return StatusCode(StatusCodes.Status503ServiceUnavailable, "Trainer không có lịch rảnh vào slot này của ngày này");

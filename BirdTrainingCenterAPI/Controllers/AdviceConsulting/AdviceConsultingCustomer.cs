@@ -1,11 +1,15 @@
 ﻿using AppService;
 using AppService.AdviceConsultingService;
+using AppService.TimetableService;
 using BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting;
 using BirdTrainingCenterAPI.Helper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Models.ApiParamModels.AdviceConsulting;
 using Models.AuthModels;
+using Models.ServiceModels.AdviceConsultantModels;
 using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
+using SP_Extension;
 using System.Security.Claims;
 using TimetableSubsystem;
 
@@ -16,24 +20,51 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
     public class AdviceConsultingCustomer : AdviceConsultingBaseController, IAdviceConsultingCustomer
     {
         private readonly IGoogleMapService _googleMapService;
-        private readonly ITimetableFeature _timetable;
-        public AdviceConsultingCustomer(IAdviceConsultingService adviceConsultingService, IAuthService authService, IGoogleMapService googleMapService, ITimetableFeature timetable) : base(adviceConsultingService, authService) 
+        private readonly ITimetableService _timetable;
+        public AdviceConsultingCustomer(IAdviceConsultingService adviceConsultingService, IAuthService authService, IGoogleMapService googleMapService, ITimetableService timetable) : base(adviceConsultingService, authService) 
         {
             _googleMapService = googleMapService;
             _timetable = timetable;
         }
 
-        [HttpGet]
-        [Route("getFreeTrainerOnSlotDate")]
-        public async Task<IActionResult> GetListFreeTrainerOnSlotAndDate(DateOnly date, int slotId)
+        [HttpPost]
+        [Route("createNewAddress")]
+        public async Task<IActionResult> CreateNewAddress(AddressCreateNewParamModel paramAddress)
         {
             try
             {
-                var result = await _timetable.GetListFreeTrainerOnSlotAndDate(date, slotId, (int)Models.Enum.Trainer.Category.Consulting);
-                if (result == null)
+                var accessToken = Request.DeserializeToken(_authService);
+                if (accessToken == null)
                 {
-                    return StatusCode(StatusCodes.Status503ServiceUnavailable, "Khong co trainer ranh");
+                    return Unauthorized();
                 }
+                var customerId = Int32.Parse(accessToken.First(c => c.Type == CustomClaimTypes.Id).Value);
+                var address = paramAddress.Convert_ParamModel_ServiceModel(customerId);
+
+                var result = await _consultingService.Customer.CreateNewAddress(address);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("getListAddress")]
+        public async Task<IActionResult> GetListAddress()
+        {
+            try
+            {
+                var accessToken = Request.DeserializeToken(_authService);
+                if (accessToken == null)
+                {
+                    return Unauthorized();
+                }
+                var customerId = Int32.Parse(accessToken.First(c => c.Type == CustomClaimTypes.Id).Value);
+
+                var result = await _consultingService.Customer.GetListAddress(customerId);
+
                 return Ok(result);
             }
             catch (Exception ex)
@@ -60,26 +91,36 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
 
         [HttpPost]
         [Route("sendConsultingTicket")]
-        public async Task<IActionResult> SendConsultingTicket([FromBody] ConsultingTicketCreateNewModel ticket)
+        public async Task<IActionResult> SendConsultingTicket([FromBody] ConsultingTicketCreateNewParamModel paramTicket)
         {
             try
             {
+                var accessToken = Request.DeserializeToken(_authService);
+                if (accessToken == null)
+                {
+                    return Unauthorized();
+                }
+                var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
+                var ticket = paramTicket.Convert_ParamModel_ServiceModel(Int32.Parse(customerId.Value));
+
+                //var ticket = paramTicket.Convert_ParamModel_ServiceModel(1);
+
                 //Validate kiểm tra lịch rảnh của trainer
-                var trainerFreeSLot = await _timetable.GetTrainerFreeSlotOnDate(ticket.AppointmentDate , ticket.TrainerId);
+                var trainerFreeSLot = await _timetable.All.GetFreeSlotOnSelectedDateOfTrainer(paramTicket.AppointmentDate, paramTicket.TrainerId);
                 if (trainerFreeSLot == null || !trainerFreeSLot.Any())
                 {
                     return StatusCode(StatusCodes.Status503ServiceUnavailable, "Trainer không có lịch rảnh vào slot này của ngày này");
                 }
-                if (!trainerFreeSLot.Any(x => x.Id == ticket.ActualSlotStart))
+                if (!trainerFreeSLot.Any(x => x.Id == paramTicket.ActualSlotStart))
                 {
                     return StatusCode(StatusCodes.Status503ServiceUnavailable, "Trainer không có lịch rảnh vào slot này của ngày này");
                 }
 
                 int distance = 0;
-                if (ticket.Address != null)
-                {
-                    distance = (int)await _googleMapService.CalculateDistance(ticket.Address);
-                }
+                //if (address != null)
+                //{
+                //    distance = (int)await _googlemapservice.calculatedistance(address);
+                //}
                 await _consultingService.Customer.SendConsultingTicket(ticket, distance);
                 return Ok();
 

@@ -5,6 +5,7 @@ using BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models.Enum.Trainer;
+using SP_Extension;
 
 namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
 {
@@ -68,8 +69,8 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         {
             try
             {
-                Models.Enum.Trainer.Category stringCategory = Models.Enum.Trainer.Category.Consulting;
-                var result = await _timetableService.Trainer.GetListTrainer(stringCategory);
+                int category = (int)Models.Enum.Trainer.Category.Consulting;
+                var result = await _timetableService.All.GetListTrainer(category);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -80,11 +81,32 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
 
         [HttpGet]
         [Route("GetTrainerFreeSlotOnDate")]
-        public async Task<IActionResult> GetTrainerFreeSlotOnDate(DateOnly date, int trainerId)
+        public async Task<IActionResult> GetTrainerFreeSlotOnDate(DateTime date, int trainerId)
         {
             try
             {
-                var result = await _timetableService.All.GetFreeSlotOnSelectedDateOfTrainer(trainerId, date.ToDateTime(new TimeOnly()));
+                var result = await _timetableService.All.GetFreeSlotOnSelectedDateOfTrainer(date, trainerId);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+
+            }
+        }
+
+        [HttpGet]
+        [Route("getFreeTrainerOnSlotDate")]
+        public async Task<IActionResult> GetListFreeTrainerOnSlotAndDate(DateTime date, int slotId)
+        {
+            try
+            {
+                int category = (int)Models.Enum.Trainer.Category.Consulting;
+                var result = await _timetableService.All.GetListFreeTrainerOnSlotAndDate(date.ToDateOnly(), slotId, category);
+                if (result == null)
+                {
+                    return StatusCode(StatusCodes.Status503ServiceUnavailable, "Khong co trainer ranh");
+                }
                 return Ok(result);
             }
             catch (Exception ex)

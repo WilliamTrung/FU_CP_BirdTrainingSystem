@@ -22,9 +22,13 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             try
             {
                 await _workshopService.Staff.CreateWorkshopClass(workshopClass);
-            } catch (Exception ex)
+            } catch (InvalidDataException ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }            
             return Ok();
         }
@@ -36,6 +40,10 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             try
             {
                 var result = await _workshopService.Staff.GetWorkshopClassAdminViewModels(workshopId);
+                foreach (var model in result)
+                {
+                    model.RegistrationAmount = await _workshopService.All.GetRegistrationAmount(model.Id);
+                }
                 return Ok(result);
             } catch (Exception ex)
             {
@@ -67,7 +75,7 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
             }
         }
         [HttpPut]

@@ -49,20 +49,21 @@ namespace TimetableSubsystem.Implementation
         public async Task<IEnumerable<TrainerModel>> GetListFreeTrainerOnSlotAndDate(DateOnly date, int slotId, int category)
         {
             var trainerFreeOnSLotAndDate = new List<TrainerModel>();
-            //var freeTrainerOnDate = await _unitOfWork.TrainerRepository.Get(x => x.Category == category && !(x.TrainerSlots.Count(slot => slot.Date.Day == date.Day
-            //                                                                                && slot.Date.Month == date.Month
-            //                                                                                && slot.Date.Year == date.Year)
-            //                                                                                == 8)
-            //                                                         , nameof(Trainer.TrainerSlots)
-            //                                                         , nameof(Trainer.TrainerSkills)
-            //                                                         , nameof(Trainer.User));
-            var freeTrainerOnDate = await GetTrainerFreeOnDate(date.ToDateTime(new TimeOnly()));
-            if (freeTrainerOnDate != null)
+            var freeTrainerOnDate = await _unitOfWork.TrainerRepository.Get(x => x.Category == category && !(x.TrainerSlots.Count(slot => slot.Date.Day == date.Day
+                                                                                            && slot.Date.Month == date.Month
+                                                                                            && slot.Date.Year == date.Year)
+                                                                                            == 8)
+                                                                     , nameof(Trainer.TrainerSlots)
+                                                                     , nameof(Trainer.TrainerSkills)
+                                                                     , nameof(Trainer.User));
+            var trainerModels = _mapper.Map<List<TrainerModel>>(freeTrainerOnDate);
+
+            if (trainerModels != null)
             {
-                foreach (var freeTrainer in freeTrainerOnDate)
+                foreach (var freeTrainer in trainerModels)
                 {
                     var trainerFreeSlot = await GetTrainerFreeSlotOnDate(date, freeTrainer.Id);
-                    if (trainerFreeSlot == null)
+                    if (trainerFreeSlot != null)
                     {
                         foreach (var slot in trainerFreeSlot)
                         {
@@ -80,8 +81,7 @@ namespace TimetableSubsystem.Implementation
 
         public async Task<IEnumerable<TrainerModel>> GetListTrainer(int category)
         {
-            //var entities = await _unitOfWork.TrainerRepository.Get(x => x.Category == category); Chi bo command khi da update duoi DB co Category
-            var entities = await _unitOfWork.TrainerRepository.Get(expression: null, nameof(Trainer.User));
+            var entities = await _unitOfWork.TrainerRepository.Get(x => x.Category == category, nameof(Trainer.User));
             var models = new List<TrainerModel>();
             foreach (var entity in entities) 
             {

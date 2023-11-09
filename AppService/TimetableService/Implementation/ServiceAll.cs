@@ -1,4 +1,5 @@
-﻿using Models.ServiceModels;
+﻿using Models.Enum.Trainer;
+using Models.ServiceModels;
 using Models.ServiceModels.SlotModels;
 using SP_Extension;
 using System;
@@ -18,9 +19,9 @@ namespace AppService.TimetableService.Implementation
             _timetable = timetable;
         }
         
-        public async Task<IEnumerable<TrainerModel>> GetListTrainer(Models.Enum.Trainer.Category category)
+        public async Task<IEnumerable<TrainerModel>> GetListTrainer(int category)
         {
-            return await _timetable.GetListTrainer((int)category);
+            return await _timetable.GetListTrainer(category);
         }
 
         public async Task<IEnumerable<SlotModel>> GetSlots()
@@ -33,9 +34,15 @@ namespace AppService.TimetableService.Implementation
             var result = await _timetable.GetTrainerSlotDetail(trainerSlotId);
             return result;
         }
-        public async Task<IEnumerable<SlotModel>> GetFreeSlotOnSelectedDateOfTrainer(int trainerId, DateTime date)
+        public async Task<IEnumerable<SlotModel>> GetFreeSlotOnSelectedDateOfTrainer(DateTime date, int trainerId)
         {
             var result = await _timetable.GetTrainerFreeSlotOnDate(date.ToDateOnly(), trainerId);
+            return result;
+        }
+
+        public async Task<IEnumerable<TrainerModel>> GetListFreeTrainerOnSlotAndDate(DateOnly date, int slotId, int category)
+        {
+            var result = await _timetable.GetListFreeTrainerOnSlotAndDate(date, slotId, category);
             return result;
         }
     }

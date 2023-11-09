@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Models.ServiceModels.AdviceConsultantModels
 {
-    public class AddressServiceModel
+    public class CreateNewAddressServiceModel
     {
-        public int Id { get; set; }
         public int CustomerId { get; set; }
         public string? AddressDetail { get; set; }
     }

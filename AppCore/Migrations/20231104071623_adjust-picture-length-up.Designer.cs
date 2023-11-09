@@ -3,6 +3,7 @@ using System;
 using AppCore.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AppCore.Migrations
 {
     [DbContext(typeof(BirdTrainingCenterSystemContext))]
-    partial class BirdTrainingCenterSystemContextModelSnapshot : ModelSnapshot
+    [Migration("20231104071623_adjust-picture-length-up")]
+    partial class adjustpicturelengthup
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -157,31 +159,19 @@ namespace AppCore.Migrations
 
             modelBuilder.Entity("Models.Entities.BirdCertificateDetail", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("BirdCertificateId")
-                        .HasColumnType("integer");
-
                     b.Property<int>("BirdId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("BirdTrainingCourseId")
+                    b.Property<int>("BirdCertificateId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("ReceiveDate")
                         .HasColumnType("date");
 
-                    b.HasKey("Id");
+                    b.HasKey("BirdId", "BirdCertificateId")
+                        .HasName("PK__BirdCert__CB94077CD6544A76");
 
                     b.HasIndex("BirdCertificateId");
-
-                    b.HasIndex("BirdId");
-
-                    b.HasIndex("BirdTrainingCourseId");
 
                     b.ToTable("BirdCertificateDetail", (string)null);
                 });
@@ -291,24 +281,6 @@ namespace AppCore.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Models.Entities.BirdSkillReceived", b =>
-                {
-                    b.Property<int>("BirdSkillId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("BirdId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("ReceivedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("BirdSkillId", "BirdId");
-
-                    b.HasIndex("BirdId");
-
-                    b.ToTable("BirdSkillReceived", (string)null);
-                });
-
             modelBuilder.Entity("Models.Entities.BirdSpecies", b =>
                 {
                     b.Property<int>("Id")
@@ -341,20 +313,35 @@ namespace AppCore.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime?>("ActualDateReturn")
+                        .HasColumnType("date");
+
+                    b.Property<DateTime?>("ActualStartDate")
+                        .HasColumnType("date");
+
                     b.Property<int>("BirdId")
                         .HasColumnType("integer");
 
                     b.Property<int>("CustomerId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime?>("DateReceived")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("DateReturn")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateTime?>("DateReceivedBird")
+                        .HasColumnType("date");
 
                     b.Property<decimal?>("DiscountedPrice")
                         .HasColumnType("money");
+
+                    b.Property<DateTime?>("ExpectedDateReturn")
+                        .HasColumnType("date");
+
+                    b.Property<DateTime?>("ExpectedStartDate")
+                        .HasColumnType("date");
+
+                    b.Property<DateTime?>("ExpectedTrainingDoneDate")
+                        .HasColumnType("date");
+
+                    b.Property<DateTime?>("LastestUpdate")
+                        .HasColumnType("date");
 
                     b.Property<string>("ReceiveNote")
                         .HasMaxLength(255)
@@ -387,9 +374,6 @@ namespace AppCore.Migrations
 
                     b.Property<int>("StaffId")
                         .HasColumnType("integer");
-
-                    b.Property<DateTime?>("StartTrainingDate")
-                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");
@@ -432,6 +416,9 @@ namespace AppCore.Migrations
                         .HasMaxLength(255)
                         .IsUnicode(false)
                         .HasColumnType("character varying(255)");
+
+                    b.Property<DateTime?>("StartTrainingDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");
@@ -477,6 +464,9 @@ namespace AppCore.Migrations
                         .HasMaxLength(200)
                         .IsUnicode(false)
                         .HasColumnType("character varying(200)");
+
+                    b.Property<DateTime>("DateCreate")
+                        .HasColumnType("date");
 
                     b.Property<string>("Evidence")
                         .HasMaxLength(255)
@@ -887,17 +877,35 @@ namespace AppCore.Migrations
                         .IsUnicode(false)
                         .HasColumnType("character varying(200)");
 
-                    b.Property<int>("FeedbackType")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("Rating")
+                    b.Property<int>("FeedbackTypeId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
 
+                    b.HasIndex("FeedbackTypeId");
+
                     b.ToTable("Feedback", (string)null);
+                });
+
+            modelBuilder.Entity("Models.Entities.FeedbackType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .IsUnicode(false)
+                        .HasColumnType("character varying(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FeedbackType", (string)null);
                 });
 
             modelBuilder.Entity("Models.Entities.Lesson", b =>
@@ -1334,7 +1342,7 @@ namespace AppCore.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("TrainerId")
+                    b.Property<int>("TrainerId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -1776,17 +1784,9 @@ namespace AppCore.Migrations
                         .IsRequired()
                         .HasConstraintName("FKBirdCertif999788");
 
-                    b.HasOne("Models.Entities.BirdTrainingCourse", "BirdTrainingCourse")
-                        .WithMany("BirdCertificateDetails")
-                        .HasForeignKey("BirdTrainingCourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Bird");
 
                     b.Navigation("BirdCertificate");
-
-                    b.Navigation("BirdTrainingCourse");
                 });
 
             modelBuilder.Entity("Models.Entities.BirdCertificateSkill", b =>
@@ -1804,23 +1804,6 @@ namespace AppCore.Migrations
                         .HasConstraintName("FKBirdCertif163982");
 
                     b.Navigation("BirdCertificate");
-
-                    b.Navigation("BirdSkill");
-                });
-
-            modelBuilder.Entity("Models.Entities.BirdSkillReceived", b =>
-                {
-                    b.HasOne("Models.Entities.Bird", "Bird")
-                        .WithMany("BirdSkillReceiveds")
-                        .HasForeignKey("BirdId")
-                        .IsRequired();
-
-                    b.HasOne("Models.Entities.BirdSkill", "BirdSkill")
-                        .WithMany("BirdSkillReceiveds")
-                        .HasForeignKey("BirdSkillId")
-                        .IsRequired();
-
-                    b.Navigation("Bird");
 
                     b.Navigation("BirdSkill");
                 });
@@ -1898,8 +1881,8 @@ namespace AppCore.Migrations
                     b.HasOne("Models.Entities.Trainer", "Trainer")
                         .WithMany("BirdTrainingReports")
                         .HasForeignKey("TrainerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FKBirdTraini332709");
 
                     b.HasOne("Models.Entities.TrainerSlot", "TrainerSlot")
                         .WithMany("BirdTrainingReports")
@@ -2115,7 +2098,15 @@ namespace AppCore.Migrations
                         .IsRequired()
                         .HasConstraintName("FKFeedback245587");
 
+                    b.HasOne("Models.Entities.FeedbackType", "FeedbackType")
+                        .WithMany("Feedbacks")
+                        .HasForeignKey("FeedbackTypeId")
+                        .IsRequired()
+                        .HasConstraintName("FKFeedback625969");
+
                     b.Navigation("Customer");
+
+                    b.Navigation("FeedbackType");
                 });
 
             modelBuilder.Entity("Models.Entities.Lesson", b =>
@@ -2200,6 +2191,7 @@ namespace AppCore.Migrations
                     b.HasOne("Models.Entities.Trainer", "Trainer")
                         .WithMany("TrainerSlots")
                         .HasForeignKey("TrainerId")
+                        .IsRequired()
                         .HasConstraintName("FKTrainerSlo815026");
 
                     b.Navigation("Slot");
@@ -2325,8 +2317,6 @@ namespace AppCore.Migrations
                 {
                     b.Navigation("BirdCertificateDetails");
 
-                    b.Navigation("BirdSkillReceiveds");
-
                     b.Navigation("BirdTrainingCourses");
                 });
 
@@ -2342,8 +2332,6 @@ namespace AppCore.Migrations
                     b.Navigation("AcquirableSkills");
 
                     b.Navigation("BirdCertificateSkills");
-
-                    b.Navigation("BirdSkillReceiveds");
 
                     b.Navigation("TrainableSkills");
 
@@ -2361,8 +2349,6 @@ namespace AppCore.Migrations
 
             modelBuilder.Entity("Models.Entities.BirdTrainingCourse", b =>
                 {
-                    b.Navigation("BirdCertificateDetails");
-
                     b.Navigation("BirdTrainingProgresses");
                 });
 
@@ -2416,6 +2402,11 @@ namespace AppCore.Migrations
             modelBuilder.Entity("Models.Entities.DistancePrice", b =>
                 {
                     b.Navigation("ConsultingTickets");
+                });
+
+            modelBuilder.Entity("Models.Entities.FeedbackType", b =>
+                {
+                    b.Navigation("Feedbacks");
                 });
 
             modelBuilder.Entity("Models.Entities.Lesson", b =>

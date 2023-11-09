@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Models.ApiParamModels.AdviceConsulting;
+using Models.ServiceModels.AdviceConsultantModels;
 using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
+using System.ComponentModel;
 
 namespace BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting
 {
@@ -7,7 +10,7 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting
     {
         [HttpPost]
         [Route("sendConsultingTicket")]
-        Task<IActionResult>SendConsultingTicket([FromBody] ConsultingTicketCreateNewModel ticket);
+        Task<IActionResult> SendConsultingTicket(ConsultingTicketCreateNewParamModel paramTicket);
 
         [HttpGet]
         [Route("listCustomerConsultingTicket")]
@@ -18,7 +21,12 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting
         Task<IActionResult> ValidateBeforeUsingSendConsultingTicket(int customerId);
 
         [HttpGet]
-        [Route("getFreeTrainerOnSlotDate")]
-        Task<IActionResult> GetListFreeTrainerOnSlotAndDate(DateOnly date, int slotId);
+        [Route("getListAddress")]
+        Task<IActionResult> GetListAddress();
+
+        [HttpPost]
+        [Route("createNewAddress")]
+        Task<IActionResult> CreateNewAddress(AddressCreateNewParamModel paramAddress);
+
     }
 }
