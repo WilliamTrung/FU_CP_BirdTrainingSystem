@@ -19,8 +19,6 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.Workshop
         Task<IActionResult> GetBillingInformation(int workshopClassId);
         [Route("purchase")]
         Task<IActionResult> Purchase(int workshopClassId);
-        [Route("class-by-id")]
-        Task<IActionResult> GetClassById([FromQuery] int workshopClassId);
         [Route("feedback")]
         Task<IActionResult> DoFeedback([FromBody] FeedbackWorkshopCustomerAddModel model);
         [Route("get-feedback")]
