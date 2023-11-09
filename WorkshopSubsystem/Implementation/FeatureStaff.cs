@@ -31,7 +31,7 @@ namespace WorkshopSubsystem.Implementation
                 throw new InvalidOperationException($"{typeof(Workshop)} is inactive");
             }
             var entity = _mapper.Map<WorkshopClass>(workshopClass);
-            if(entity.StartTime < DateTime.Now.AddDays(BR_WorkshopConstant.StartDateCreated)) {
+            if(entity.StartTime < DateTime.Now.ToDateOnly().AddDays(BR_WorkshopConstant.StartDateCreated).ToDateTime(new TimeOnly())) {
                 throw new InvalidOperationException("Open registration day must be 5 days after from today!");
             }
 #pragma warning disable CS8604 // Possible null reference argument.
