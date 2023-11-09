@@ -33,7 +33,6 @@ namespace SP_AutoMapperConfig
         private void Map_BirdTrainingReport_InitReportTrainerSlot()
         {
             CreateMap<BirdTrainingReport, InitReportTrainerSlot>()
-                .ForMember(m => m.TrainerId, opt => opt.MapFrom(e => e.TrainerId))
                 .ForMember(m => m.BirdTrainingProgressId, opt => opt.MapFrom(e => e.BirdTrainingProgressId))
                 .ForMember(m => m.TrainerSlotId, opt => opt.MapFrom(e => e.TrainerSlotId));
         }

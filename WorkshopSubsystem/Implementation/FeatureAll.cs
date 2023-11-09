@@ -3,6 +3,7 @@ using AutoMapper;
 using Models.ConfigModels;
 using Models.Entities;
 using Models.ServiceModels.WorkshopModels;
+using Models.ServiceModels.WorkshopModels.Feedback;
 using Models.ServiceModels.WorkshopModels.WorkshopClass;
 using SP_Extension;
 using System;
@@ -154,6 +155,36 @@ namespace WorkshopSubsystem.Implementation
                                                                           , $"{nameof(WorkshopClass.WorkshopClassDetails)}.{nameof(WorkshopClassDetail.DaySlot)}.{nameof(TrainerSlot.Trainer)}");
             var model = _mapper.Map<WorkshopClassViewModel>(entity);
             return model;
+        }
+
+        public async Task<List<FeedbackWorkshopCustomerViewModel>> GetFeedbacks(int workshopId)
+        {
+            var entities = await _unitOfWork.FeedbackRepository.Get(c =>  c.EntityTypeId == (int)Models.Enum.EntityType.WorkshopClass
+                                                                          && c.EntityId == workshopId
+                                                                          , nameof(Feedback.Customer)
+                                                                          , $"{nameof(Feedback.Customer)}.{nameof(Customer.MembershipRank)}"
+                                                                          , $"{nameof(Feedback.Customer)}.{nameof(Customer.User)}");
+            var result = _mapper.Map<List<FeedbackWorkshopCustomerViewModel>>(entities);
+            return result;  
+        }
+
+        public async Task<float> GetRating(int workshopId)
+        {
+            var entities = await _unitOfWork.FeedbackRepository.Get(c => c.EntityTypeId == (int)Models.Enum.EntityType.WorkshopClass
+                                                                          && c.EntityId == workshopId
+                                                                          && c.Rating != null);
+            float rating = 0;
+            int count = 0;
+            entities.ToList().ForEach(e =>
+            {
+                if (e.Rating.HasValue)
+                {
+                    rating += e.Rating.Value;
+                    count++;
+                }                
+            });
+            return rating/=count;
+            
         }
     }
 }

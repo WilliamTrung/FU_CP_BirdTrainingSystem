@@ -37,6 +37,7 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
         public async Task<IActionResult> GetClassById([FromQuery] int workshopClassId)
         {
             var result = await _workshopService.All.GetWorkshopClass(workshopClassId);
+            result.Registered = await _workshopService.All.GetRegistrationAmount(workshopClassId);
             return Ok(result);
         }
         [HttpGet]
@@ -87,6 +88,28 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
         {
             var result = await _workshopService.All.GetWorkshopsGeneralInformation();            
             return Ok(result.First(e => e.Id == workshopId));
+        }
+        [HttpGet]
+        [Route("feedbacks")]
+        public async Task<IActionResult> GetFeedbacks([FromQuery] int workshopId)
+        {
+            try
+            {
+                var result = await _workshopService.All.GetFeedbacks(workshopId);
+                return Ok(result);
+            }
+            catch (InvalidDataException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
     }
 }

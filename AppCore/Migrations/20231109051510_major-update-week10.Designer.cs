@@ -3,6 +3,7 @@ using System;
 using AppCore.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AppCore.Migrations
 {
     [DbContext(typeof(BirdTrainingCenterSystemContext))]
-    partial class BirdTrainingCenterSystemContextModelSnapshot : ModelSnapshot
+    [Migration("20231109051510_major-update-week10")]
+    partial class majorupdateweek10
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,9 +33,9 @@ namespace AppCore.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Condition")
-                        .HasMaxLength(255)
+                        .HasMaxLength(30)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("character varying(30)");
 
                     b.HasKey("BirdSpeciesId", "BirdSkillId")
                         .HasName("PK__Acquirab__4802579EB257E655");
@@ -53,9 +55,9 @@ namespace AppCore.Migrations
 
                     b.Property<string>("AddressDetail")
                         .IsRequired()
-                        .HasMaxLength(255)
+                        .HasMaxLength(50)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("character varying(50)");
 
                     b.Property<int>("CustomerId")
                         .HasColumnType("integer");
@@ -100,9 +102,9 @@ namespace AppCore.Migrations
                         .HasColumnType("character varying(50)");
 
                     b.Property<string>("Picture")
-                        .HasMaxLength(255)
+                        .HasMaxLength(50)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("character varying(50)");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");
@@ -130,9 +132,9 @@ namespace AppCore.Migrations
                         .HasColumnType("character varying(100)");
 
                     b.Property<string>("Picture")
-                        .HasMaxLength(255)
+                        .HasMaxLength(50)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("character varying(50)");
 
                     b.Property<string>("ShortDescrption")
                         .HasMaxLength(500)
@@ -362,9 +364,9 @@ namespace AppCore.Migrations
                         .HasColumnType("character varying(255)");
 
                     b.Property<string>("ReceivePicture")
-                        .HasMaxLength(255)
+                        .HasMaxLength(20)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("character varying(20)");
 
                     b.Property<int?>("ReceiveStaffId")
                         .HasColumnType("integer");
@@ -378,9 +380,9 @@ namespace AppCore.Migrations
                         .HasColumnType("character varying(255)");
 
                     b.Property<string>("ReturnPicture")
-                        .HasMaxLength(255)
+                        .HasMaxLength(20)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("character varying(20)");
 
                     b.Property<int?>("ReturnStaffId")
                         .HasColumnType("integer");
@@ -429,9 +431,9 @@ namespace AppCore.Migrations
                         .HasColumnName("Bird_TrainingCourseId");
 
                     b.Property<string>("Evidence")
-                        .HasMaxLength(255)
+                        .HasMaxLength(50)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("character varying(50)");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");
@@ -479,9 +481,9 @@ namespace AppCore.Migrations
                         .HasColumnType("character varying(200)");
 
                     b.Property<string>("Evidence")
-                        .HasMaxLength(255)
+                        .HasMaxLength(50)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("character varying(50)");
 
                     b.Property<int?>("Status")
                         .HasColumnType("integer");
@@ -545,9 +547,9 @@ namespace AppCore.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Picture")
-                        .HasMaxLength(255)
+                        .HasMaxLength(50)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("character varying(50)");
 
                     b.Property<string>("ShortDescrption")
                         .HasMaxLength(500)
@@ -599,6 +601,9 @@ namespace AppCore.Migrations
                     b.Property<int>("ActualSlotStart")
                         .HasColumnType("integer");
 
+                    b.Property<string>("Adddress")
+                        .HasColumnType("text");
+
                     b.Property<int?>("AddressId")
                         .IsRequired()
                         .HasColumnType("integer");
@@ -630,14 +635,14 @@ namespace AppCore.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Evidence")
-                        .HasMaxLength(255)
+                        .HasMaxLength(50)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("character varying(50)");
 
                     b.Property<string>("GgMeetLink")
-                        .HasMaxLength(255)
+                        .HasMaxLength(20)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("character varying(20)");
 
                     b.Property<bool>("OnlineOrOffline")
                         .HasColumnType("boolean");
@@ -884,6 +889,9 @@ namespace AppCore.Migrations
                         .IsUnicode(false)
                         .HasColumnType("character varying(200)");
 
+                    b.Property<int>("FeedbackType")
+                        .HasColumnType("integer");
+
                     b.Property<int?>("Rating")
                         .HasColumnType("integer");
 
@@ -922,9 +930,9 @@ namespace AppCore.Migrations
                         .HasColumnType("character varying(300)");
 
                     b.Property<string>("Video")
-                        .HasMaxLength(255)
+                        .HasMaxLength(100)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("character varying(100)");
 
                     b.HasKey("Id");
 
@@ -989,9 +997,9 @@ namespace AppCore.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Picture")
-                        .HasMaxLength(255)
+                        .HasMaxLength(200)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("character varying(200)");
 
                     b.Property<decimal?>("Price")
                         .HasColumnType("money");
@@ -1257,9 +1265,6 @@ namespace AppCore.Migrations
                     b.Property<DateTime?>("BirthDay")
                         .HasColumnType("date");
 
-                    b.Property<int>("Category")
-                        .HasColumnType("integer");
-
                     b.Property<bool?>("Gender")
                         .HasColumnType("boolean");
 
@@ -1357,9 +1362,9 @@ namespace AppCore.Migrations
                         .HasColumnType("character varying(300)");
 
                     b.Property<string>("Picture")
-                        .HasMaxLength(255)
+                        .HasMaxLength(50)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("character varying(50)");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");
@@ -1509,14 +1514,14 @@ namespace AppCore.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
-                        .HasMaxLength(1000)
+                        .HasMaxLength(2000)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(1000)");
+                        .HasColumnType("character varying(2000)");
 
                     b.Property<string>("Picture")
-                        .HasMaxLength(255)
+                        .HasMaxLength(2000)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(255)");
+                        .HasColumnType("character varying(2000)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("money");

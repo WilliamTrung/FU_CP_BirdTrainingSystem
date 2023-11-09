@@ -2,6 +2,7 @@
 using AutoMapper;
 using Models.Entities;
 using Models.ServiceModels.WorkshopModels;
+using Models.ServiceModels.WorkshopModels.Feedback;
 using Models.ServiceModels.WorkshopModels.WorkshopClass;
 using System;
 using System.Collections.Generic;
@@ -167,6 +168,49 @@ namespace WorkshopSubsystem.Implementation
 #pragma warning restore CS8601 // Possible null reference assignment.
 #pragma warning restore CS8629 // Nullable value type may be null.
             return result;
+        }
+
+        public async Task DoFeedback(int customerId, FeedbackWorkshopCustomerAddModel model)
+        {
+            var entity = await _unitOfWork.FeedbackRepository.GetFirst(c => c.CustomerId == customerId
+                                                                            && c.EntityTypeId == (int)Models.Enum.EntityType.WorkshopClass
+                                                                            && c.EntityId == model.WorkshopId);
+            if(entity == null)
+            {
+                //new feedback
+                var feedback = new Feedback()
+                {
+                    CustomerId = customerId,
+                    EntityId = model.WorkshopId,
+                    EntityTypeId = (int)Models.Enum.EntityType.WorkshopClass,
+                    FeedbackDetail = model.Feedback,
+                    Rating = model.Rating,
+                };
+                await _unitOfWork.FeedbackRepository.Add(feedback);
+            } else
+            {
+                //edit feedback
+                entity.FeedbackDetail = model.Feedback;
+                entity.Rating = model.Rating;
+                await _unitOfWork.FeedbackRepository.Update(entity);
+            }
+        }
+
+        public async Task<FeedbackWorkshopCustomerViewModel?> GetFeedback(int customerId, int workshopId)
+        {
+            var entity = await _unitOfWork.FeedbackRepository.GetFirst(c => c.CustomerId == customerId
+                                                                            && c.EntityTypeId == (int)Models.Enum.EntityType.WorkshopClass
+                                                                            && c.EntityId == workshopId
+                                                                            , nameof(Feedback.Customer)
+                                                                            , $"{nameof(Feedback.Customer)}.{nameof(Customer.MembershipRank)}"
+                                                                            , $"{nameof(Feedback.Customer)}.{nameof(Customer.User)}");
+            if(entity != null)
+            {
+                return _mapper.Map<FeedbackWorkshopCustomerViewModel>(entity);
+            } else
+            {
+                return null;
+            }
         }
     }
 }

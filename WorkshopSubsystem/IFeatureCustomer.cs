@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using Models.Entities;
 using Models.ServiceModels.WorkshopModels;
+using Models.ServiceModels.WorkshopModels.Feedback;
 using Models.ServiceModels.WorkshopModels.WorkshopClass;
 using System;
 using System.Collections.Generic;
@@ -25,5 +26,7 @@ namespace WorkshopSubsystem
         Task OnPurchaseClass(int customerId, int workshopClassId, BillingModel billingModel);
         Task<CustomerWorkshopClass?> GetCustomerRegistrationInfo(int customerId, int workshopClassId);
         Task<PreBillingInformation> GetPreBillingInformation(int customerId, int workshopClassId);
+        Task DoFeedback(int customerId, FeedbackWorkshopCustomerAddModel model);
+        Task<FeedbackWorkshopCustomerViewModel?> GetFeedback(int customerId, int workshopId);
     }
 }

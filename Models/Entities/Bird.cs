@@ -9,6 +9,7 @@ namespace Models.Entities
         {
             BirdCertificateDetails = new HashSet<BirdCertificateDetail>();
             BirdTrainingCourses = new HashSet<BirdTrainingCourse>();
+            BirdSkillReceiveds = new HashSet<BirdSkillReceived>();
         }
 
         public int Id { get; set; }
@@ -25,5 +26,6 @@ namespace Models.Entities
         public virtual Customer Customer { get; set; } = null!;
         public virtual ICollection<BirdCertificateDetail> BirdCertificateDetails { get; set; }
         public virtual ICollection<BirdTrainingCourse> BirdTrainingCourses { get; set; }
+        public virtual ICollection<BirdSkillReceived> BirdSkillReceiveds { get; set; }
     }
 }

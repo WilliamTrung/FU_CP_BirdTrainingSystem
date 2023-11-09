@@ -37,8 +37,21 @@ namespace AdviceConsultingSubsystem.Implementation
                 distancePricePolicy = await _unitOfWork.DistancePriceRepository.GetFirst(x => x.PricePerKm == 0);
             }
 
+            var address = await _unitOfWork.AddressRepository.GetFirst(x => x.CustomerId == consultingTicket.CustomerId && x.AddressDetail == consultingTicket.AddressDetail);
+            if (address == null)
+            {
+                var newAddress = new Address()
+                {
+                    CustomerId = consultingTicket.CustomerId,
+                    AddressDetail = consultingTicket.AddressDetail
+                };
+                await _unitOfWork.AddressRepository.Add(newAddress);
+
+                address = newAddress;
+            }
+            
             var entity = _mapper.Map<ConsultingTicket>(consultingTicket);
-            entity.AddressId = consultingTicket.AddressId;
+            entity.AddressId = address.Id;
             entity.ConsultingTypeId = consultingTicket.ConsultingTypeId;
             entity.Distance = distance;
             entity.Price = finalPrice;
@@ -46,6 +59,12 @@ namespace AdviceConsultingSubsystem.Implementation
             entity.Status = (int)Models.Enum.ConsultingTicket.Status.WaitingForApprove;
             entity.ConsultingPricePolicyId = pricePolicy.Id;
             entity.DistancePriceId = distancePricePolicy.Id;
+
+            //Cập nhật trainerSlot
+            var trainerSlot = new AdviceConsultingTrainerSlotServiceModel(
+                (int)entity.TrainerId, entity.ActualSlotStart, DateOnly.FromDateTime((DateTime)entity.AppointmentDate), entity.Id);
+            var slotEntity = _mapper.Map<TrainerSlot>(trainerSlot);
+            await _unitOfWork.TrainerSlotRepository.Add(slotEntity);
 
             await _unitOfWork.ConsultingTicketRepository.Add(entity);
             //Add new Consulting Ticket
