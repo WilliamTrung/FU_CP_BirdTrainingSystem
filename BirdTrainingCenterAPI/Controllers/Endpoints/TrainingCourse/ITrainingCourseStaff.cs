@@ -58,10 +58,6 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
         Task<IActionResult> ModifyTrainerSlot([FromBody] ModifyTrainerSlot trainerSlot);
 
         [HttpPut]
-        [Route("modify-birdtrainingcourse-starttime")]
-        Task<IActionResult> InitStartTime([FromBody] BirdTrainingCourseStartTime birdTrainingCourse);
-
-        [HttpPut]
         [Route("receive-bird")]
         Task<IActionResult> ReceiveBird([FromForm] ReceiveBirdParamModel birdTrainingCourse);
 

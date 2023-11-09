@@ -19,7 +19,6 @@ namespace Models.Entities
         public DateTime? RegisteredDate { get; set; }
         public decimal? TotalPrice { get; set; }
         public decimal? DiscountedPrice { get; set; }
-        public DateTime? StartTrainingDate { get; set; }
         public int? ReceiveStaffId { get; set; }
         public DateTime? DateReceived { get; set; }
         public string? ReceiveNote { get; set; }
@@ -28,6 +27,7 @@ namespace Models.Entities
         public DateTime? DateReturn { get; set; }
         public string? ReturnNote { get; set; }
         public string? ReturnPicture { get; set; }
+        public DateTime? StartTrainingDate { get; set; }
         public DateTime? TrainingDoneDate { get; set; }
         public int Status { get; set; }
 

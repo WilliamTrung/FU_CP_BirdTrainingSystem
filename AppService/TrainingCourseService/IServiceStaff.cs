@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
 using Models.ServiceModels.TrainingCourseModels.TrainerSlot;
+using Models.ServiceModels.SlotModels;
+using Models.ApiParamModels.TrainingCourse;
 
 namespace AppService.TrainingCourseService
 {
@@ -32,24 +34,29 @@ namespace AppService.TrainingCourseService
         //Task<TrainerModel> GetTrainerById(int trainerId);//lay trainer theo id
         //Task<IEnumerable<TrainerModel>> GetTrainerByTrainerSkillId(int trainerSkillId);//lay danh sach trainer theo ki nang Trainer
 
-        Task<IEnumerable<BirdTrainingCourseModel>> GetBirdTrainingCourse();
+        Task<IEnumerable<BirdTrainingCourseListView>> GetBirdTrainingCourse();
         Task<IEnumerable<BirdTrainingCourseListView>> GetBirdTrainingCourseByCustomerId(int customerId);
-        Task<IEnumerable<BirdTrainingCourseModel>> GetBirdTrainingCourseByBirdId(int birdId);
-        Task ConfirmBirdTrainingCourse(int birdTrainingCourseId);
+        Task<IEnumerable<BirdTrainingCourseListView>> GetBirdTrainingCourseByBirdId(int birdId);
+
+        Task<IEnumerable<int>> ConfirmBirdTrainingCourse(int birdTrainingCourseId);//return list of progress
+        Task<TrainerSlotModel> CreateTrainerSlot(TrainerSlotAddModel trainerSlotModel);//non api
+        Task CreateTrainingReport(InitReportTrainerSlot report);//non api
+
         Task<IEnumerable<BirdTrainingProgressViewModel>> GetTrainingCourseSkill(int birdTrainingCourseId);
+        Task<IEnumerable<ReportModifyViewModel>> GetReportByProgressId(int progressId);
+        Task ModifyTrainingSlot(ReportModifyModel reportModModel);
+
+
         Task<IEnumerable<TrainerModel>> GetTrainer();
         Task<IEnumerable<TrainerModel>> GetTrainerByBirdSkillId(int birdSkillId);
         Task<IEnumerable<TrainerModel>> GetTrainerByTrainerSkillId(int trainerSkillId);
         Task<TrainerModel> GetTrainerById(int trainerId);
-        Task AssignTrainer(AssignTrainerToCourse assignTrainer);
-        Task GenerateTrainerTimetable(IEnumerable<int> progressId);
-        Task<IEnumerable<BirdTrainingProgressModel>> GetBirdTrainingProgress();
-        Task ModifyTrainerSlot(ModifyTrainerSlot trainerSlot);
-        Task<TrainerSlotModel> CreateTrainerSlot(TrainerSlotModel trainerSlotModel);
-        Task InitStartTime(BirdTrainingCourseStartTime birdTrainingCourse);
-        Task ModifyActualStartTime(DateTime startDate, int birdTrainingCourseId);
+
+
+        Task<IEnumerable<BirdTrainingProgressModel>> GetBirdTrainingProgress();//non api
+        Task ModifyActualStartTime(DateTime startDate, int birdTrainingCourseId);// non api
+
         Task ReceiveBird(BirdTrainingCourseReceiveBird birdTrainingCourse);
         Task ReturnBird(BirdTrainingCourseReturnBird birdTrainingCourse);
-        //Task Update(BirdTrainingProgressModel birdTrainingProgress);
     }
 }

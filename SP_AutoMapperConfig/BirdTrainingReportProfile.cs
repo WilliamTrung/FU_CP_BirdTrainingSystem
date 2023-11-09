@@ -19,6 +19,25 @@ namespace SP_AutoMapperConfig
             Map_BirdTrainingReport_BirdTrainingReportViewModel();
             Map_BirdTrainingReport_InitReportTrainerSlot();
             Map_BirdTrainingReport_TimetableReportView();
+            Map_BirdTrainingReport_ReportModifyViewModel();
+        }
+
+        private void Map_BirdTrainingReport_ReportModifyViewModel()
+        {
+            CreateMap<BirdTrainingReport, ReportModifyViewModel>()
+                .ForMember(m => m.ReportId, opt => opt.MapFrom(e => e.Id))
+                .ForMember(m => m.SlotId, opt => {
+                    opt.PreCondition(e => e.TrainerSlot != null);
+                    opt.MapFrom(e => e.TrainerSlot.SlotId);
+                })
+                .ForMember(m => m.Date, opt => {
+                    opt.PreCondition(e => e.TrainerSlot != null);
+                    opt.MapFrom(e => e.TrainerSlot.Date);
+                })
+                .ForMember(m => m.TrainerId, opt => {
+                    opt.PreCondition(e => e.TrainerSlot != null);
+                    opt.MapFrom(e => e.TrainerSlot.TrainerId);
+                });
         }
 
         private void Map_BirdTrainingReport_BirdTrainingReportViewModel()
@@ -32,7 +51,7 @@ namespace SP_AutoMapperConfig
         }
         private void Map_BirdTrainingReport_InitReportTrainerSlot()
         {
-            CreateMap<BirdTrainingReport, InitReportTrainerSlot>()
+            CreateMap<InitReportTrainerSlot, BirdTrainingReport>()
                 .ForMember(m => m.BirdTrainingProgressId, opt => opt.MapFrom(e => e.BirdTrainingProgressId))
                 .ForMember(m => m.TrainerSlotId, opt => opt.MapFrom(e => e.TrainerSlotId));
         }

@@ -98,13 +98,6 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             return Ok(result);
         }
         [HttpPut]
-        [Route("modify-birdtrainingcourse-starttime")]
-        public async Task<IActionResult> InitStartTime([FromBody] BirdTrainingCourseStartTime birdTrainingCourse)
-        {
-            await _trainingCourseService.Staff.InitStartTime(birdTrainingCourse);
-            return Ok();
-        }
-        [HttpPut]
         [Route("modify-trainerslot")]
         public async Task<IActionResult> ModifyTrainerSlot([FromBody] ModifyTrainerSlot trainerSlot)
         {
