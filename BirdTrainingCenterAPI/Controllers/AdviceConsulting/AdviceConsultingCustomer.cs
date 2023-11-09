@@ -128,7 +128,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
 
                 var ticket = paramTicket.Convert_ParamModel_ServiceModel(Int32.Parse(customerId.Value));
                 //For Debug
-                ticket = paramTicket.Convert_ParamModel_ServiceModel(1);
+                //ticket = paramTicket.Convert_ParamModel_ServiceModel(1);
 
                 int distance = 0;
                 //if (address != null)
