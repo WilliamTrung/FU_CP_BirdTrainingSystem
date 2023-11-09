@@ -10,7 +10,7 @@ namespace Models.ServiceModels.AdviceConsultantModels.ConsultingTicket
     {
         public int CustomerId { get; set; }
         public int TrainerId { get; set; }
-        public int? AddressId { get; set; }
+        public string? AddressDetail { get; set; }
         public int ConsultingTypeId { get; set; }
         public string? ConsultingDetail { get; set; }
         public bool OnlineOrOffline { get; set; }

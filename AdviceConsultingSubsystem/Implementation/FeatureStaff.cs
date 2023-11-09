@@ -91,11 +91,6 @@ namespace AdviceConsultingSubsystem.Implementation
                 throw new KeyNotFoundException($"{nameof(entity)} not found for id: {ticketId}");
             }
 
-            var trainerSlot = new AdviceConsultingTrainerSlotServiceModel(
-                (int)entity.TrainerId, entity.ActualSlotStart, DateOnly.FromDateTime((DateTime)entity.AppointmentDate), entity.Id);
-            var slotEntity = _mapper.Map<TrainerSlot>(trainerSlot);
-            await _unitOfWork.TrainerSlotRepository.Add(slotEntity);
-
             entity.Status = (int)Models.Enum.ConsultingTicket.Status.Confirmed;
             await _unitOfWork.ConsultingTicketRepository.Update(entity);
         }
