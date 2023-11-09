@@ -39,8 +39,8 @@ namespace AppService.TrainingCourseService
         Task<IEnumerable<BirdTrainingCourseListView>> GetBirdTrainingCourseByBirdId(int birdId);
 
         Task<IEnumerable<int>> ConfirmBirdTrainingCourse(int birdTrainingCourseId);//return list of progress
-        Task<TrainerSlotModel> CreateTrainerSlot(TrainerSlotAddModel trainerSlotModel);//non api
-        Task CreateTrainingReport(InitReportTrainerSlot report);//non api
+        //Task<TrainerSlotModel> CreateTrainerSlot(TrainerSlotAddModel trainerSlotModel);//non api
+        //Task CreateTrainingReport(InitReportTrainerSlot report);//non api
 
         Task<IEnumerable<BirdTrainingProgressViewModel>> GetTrainingCourseSkill(int birdTrainingCourseId);
         Task<IEnumerable<ReportModifyViewModel>> GetReportByProgressId(int progressId);
@@ -53,8 +53,8 @@ namespace AppService.TrainingCourseService
         Task<TrainerModel> GetTrainerById(int trainerId);
 
 
-        Task<IEnumerable<BirdTrainingProgressModel>> GetBirdTrainingProgress();//non api
-        Task ModifyActualStartTime(DateTime startDate, int birdTrainingCourseId);// non api
+        //Task<IEnumerable<BirdTrainingProgressModel>> GetBirdTrainingProgress();//non api
+        //Task ModifyActualStartTime(DateTime startDate, int birdTrainingCourseId);// non api
 
         Task ReceiveBird(BirdTrainingCourseReceiveBird birdTrainingCourse);
         Task ReturnBird(BirdTrainingCourseReturnBird birdTrainingCourse);

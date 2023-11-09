@@ -11,6 +11,7 @@ using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
 using SP_Middleware;
 using SP_Extension;
 using Models.ServiceModels.TrainingCourseModels.TrainerSlot;
+using System;
 
 namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
 {
@@ -25,21 +26,6 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         {
             _firebaseService = firebaseService;
             _bucket = bucket.Value;
-        }
-
-        [HttpPost]
-        [Route("assign-trainer")]
-        public async Task<IActionResult> AssignTrainer([FromBody] AssignTrainerToCourse assignTrainer)
-        {
-            await _trainingCourseService.Staff.AssignTrainer(assignTrainer);
-            return Ok();
-        }
-        [HttpPost]
-        [Route("generate-trainerslot")]
-        public async Task<IActionResult> GenerateTrainerTimetable([FromBody] IEnumerable<int> progressId)
-        {
-            await _trainingCourseService.Staff.GenerateTrainerTimetable(progressId);
-            return Ok();
         }
         [HttpGet]
         [Route("birdtrainingcourse")]
@@ -98,13 +84,6 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             return Ok(result);
         }
         [HttpPut]
-        [Route("modify-trainerslot")]
-        public async Task<IActionResult> ModifyTrainerSlot([FromBody] ModifyTrainerSlot trainerSlot)
-        {
-            await _trainingCourseService.Staff.ModifyTrainerSlot(trainerSlot);
-            return Ok();
-        }
-        [HttpPut]
         [Route("receive-bird")]
         public async Task<IActionResult> ReceiveBird([FromForm] ReceiveBirdParamModel birdTrainingCourse)
         {
@@ -157,6 +136,28 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
+        }
+        [HttpPost]
+        [Route("birdtrainingcourse-confirm")]
+        public async Task<IActionResult> ConfirmBirdTrainingCourse(int birdTrainingCourseId)
+        {
+            var result = await _trainingCourseService.Staff.ConfirmBirdTrainingCourse(birdTrainingCourseId);
+            return Ok(result);
+        }
+        [HttpGet]
+        [Route("birdtrainingreport-progressid")]
+        public async Task<IActionResult> GetReportByProgressId(int progressId)
+        {
+            var result = await _trainingCourseService.Staff.GetReportByProgressId(progressId);
+            return Ok(result);
+        }
+
+        [HttpPut]
+        [Route("trainerslot-modify")]
+        public async Task<IActionResult> ModifyTrainingSlot(ReportModifyModel reportModModel)
+        {
+            await _trainingCourseService.Staff.ModifyTrainingSlot(reportModModel);
+            return Ok();
         }
     }
 }
