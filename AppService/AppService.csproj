@@ -21,6 +21,7 @@
     <ProjectReference Include="..\AppCore\AppCore.csproj" />
     <ProjectReference Include="..\AppRepository\AppRepository.csproj" />
     <ProjectReference Include="..\AuthSubsystem\AuthSubsystem.csproj" />
+    <ProjectReference Include="..\OnlineCourseSubsystem\OnlineCourseSubsystem.csproj" />
     <ProjectReference Include="..\TimetableSubsystem\TimetableSubsystem.csproj" />
     <ProjectReference Include="..\TrainingCourseSubsystem\TrainingCourseSubsystem.csproj" />
     <ProjectReference Include="..\WorkshopSubsystem\WorkshopSubsystem.csproj" />

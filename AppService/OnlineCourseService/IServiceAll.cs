@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OnlineCourseSubsystem
+namespace AppService.OnlineCourseService
 {
-    public interface IFeatureStaff
+    public interface IServiceAll
     {
-
     }
 }
