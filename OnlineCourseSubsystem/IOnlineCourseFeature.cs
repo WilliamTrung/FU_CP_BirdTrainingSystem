@@ -8,5 +8,8 @@ namespace OnlineCourseSubsystem
 {
     public interface IOnlineCourseFeature
     {
+        IFeatureCustomer Customer { get; }
+        IFeatureStaff Staff { get; }
+        IFeatureAll All { get; }
     }
 }

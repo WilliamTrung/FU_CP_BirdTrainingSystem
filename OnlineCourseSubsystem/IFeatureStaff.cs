@@ -8,5 +8,6 @@ namespace OnlineCourseSubsystem
 {
     public interface IFeatureStaff
     {
+
     }
 }
