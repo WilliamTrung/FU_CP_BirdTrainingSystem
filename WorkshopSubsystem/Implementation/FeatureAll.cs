@@ -3,6 +3,7 @@ using AutoMapper;
 using Models.ConfigModels;
 using Models.Entities;
 using Models.ServiceModels.WorkshopModels;
+using Models.ServiceModels.WorkshopModels.Feedback;
 using Models.ServiceModels.WorkshopModels.WorkshopClass;
 using SP_Extension;
 using System;
@@ -154,6 +155,16 @@ namespace WorkshopSubsystem.Implementation
                                                                           , $"{nameof(WorkshopClass.WorkshopClassDetails)}.{nameof(WorkshopClassDetail.DaySlot)}.{nameof(TrainerSlot.Trainer)}");
             var model = _mapper.Map<WorkshopClassViewModel>(entity);
             return model;
+        }
+
+        public Task<List<FeedbackWorkshopCustomerViewModel>> GetFeedbacks(int workshopId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<float> GetRating(int workshopId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

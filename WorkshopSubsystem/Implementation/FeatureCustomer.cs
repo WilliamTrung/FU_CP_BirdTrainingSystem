@@ -168,5 +168,25 @@ namespace WorkshopSubsystem.Implementation
 #pragma warning restore CS8629 // Nullable value type may be null.
             return result;
         }
+
+        public Task Feedback(int customerId, int workshopId, string feedback)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<string> GetFeedback(int customerId, int workshopId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task Rate(int customerId, int workshopId, int rate)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<int> GetRating(int customerId, int workshopId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
