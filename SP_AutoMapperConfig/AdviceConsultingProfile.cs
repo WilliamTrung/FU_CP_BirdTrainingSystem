@@ -47,12 +47,8 @@ namespace SP_AutoMapperConfig
         private void Map_ConsultingTicketCreateNewModel_ConsultingTicket()
         {
             CreateMap<ConsultingTicketCreateNewModel, ConsultingTicket>()
-                .ForMember(e => e.AddressId, opt => opt.MapFrom(c => c.AddressId))
-                .ForMember(e => e.TrainerId, opt => opt.MapFrom(c => c.TrainerId))
-                .ForMember(e => e.ConsultingDetail, opt => opt.MapFrom(c => c.ConsultingDetail))
-                .ForMember(e => e.OnlineOrOffline, opt => opt.MapFrom(c => c.OnlineOrOffline))
-                .ForMember(e => e.AppointmentDate, opt => opt.MapFrom(c => c.AppointmentDate))
-                .ForMember(e => e.Status, opt => opt.MapFrom(c => (int)Models.Enum.ConsultingTicket.Status.WaitingForApprove));
+                .ForMember(e => e.Address, opt => opt.Ignore())
+                .AfterMap<MappingAction_ConsultingTicketCreateNewModel_ConsultingTicket>();
         }
 
         private void Map_ConsultingTicket_ConsultingTicketDetailViewModel()
@@ -84,6 +80,50 @@ namespace SP_AutoMapperConfig
         private void Map_Address_AddressServiceModel()
         {
             CreateMap<Address, CreateNewAddressServiceModel>();
+        }
+
+        public class MappingAction_ConsultingTicketCreateNewModel_ConsultingTicket : IMappingAction<ConsultingTicketCreateNewModel, ConsultingTicket>
+        {
+
+            private readonly IUnitOfWork _uow;
+            private readonly IMapper _mapper;
+
+            public MappingAction_ConsultingTicketCreateNewModel_ConsultingTicket(IUnitOfWork uow, IMapper mapper)
+            {
+                _uow = uow;
+                _mapper = mapper;
+            }
+
+            public void Process(ConsultingTicketCreateNewModel source, ConsultingTicket destination, ResolutionContext context)
+            {
+                destination.CustomerId = source.CustomerId;
+                destination.TrainerId = source.TrainerId;
+                if (source.AddressDetail != null)
+                {
+                    var address = _uow.AddressRepository.GetFirst(x => x.CustomerId == source.CustomerId && x.AddressDetail == source.AddressDetail).Result;
+                    if (address != null)
+                    {
+                        destination.AddressId = address.Id;
+                    }
+                    else
+                    {
+                        var newAddress = new Address()
+                        {
+                            CustomerId = source.CustomerId,
+                            AddressDetail = source.AddressDetail
+                        };
+
+                        _uow.AddressRepository.Add(newAddress).Wait();
+
+                        destination.AddressId = newAddress.Id;
+                    }
+                }
+                destination.ConsultingTypeId = source.ConsultingTypeId;
+                destination.ConsultingDetail = source.ConsultingDetail;
+                destination.OnlineOrOffline = source.OnlineOrOffline;
+                destination.AppointmentDate = source.AppointmentDate;
+                destination.ActualSlotStart = source.ActualSlotStart;
+            }
         }
     }
 }

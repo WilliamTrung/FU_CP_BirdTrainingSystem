@@ -91,11 +91,6 @@ namespace AdviceConsultingSubsystem.Implementation
                 throw new KeyNotFoundException($"{nameof(entity)} not found for id: {ticketId}");
             }
 
-            var trainerSlot = new AdviceConsultingTrainerSlotServiceModel(
-                (int)entity.TrainerId, entity.ActualSlotStart, DateOnly.FromDateTime((DateTime)entity.AppointmentDate), entity.Id);
-            var slotEntity = _mapper.Map<TrainerSlot>(trainerSlot);
-            await _unitOfWork.TrainerSlotRepository.Add(slotEntity);
-
             entity.Status = (int)Models.Enum.ConsultingTicket.Status.Confirmed;
             await _unitOfWork.ConsultingTicketRepository.Update(entity);
         }
@@ -118,6 +113,32 @@ namespace AdviceConsultingSubsystem.Implementation
             
             entity.Status = (int)Models.Enum.ConsultingTicket.Status.Canceled;
             await _unitOfWork.ConsultingTicketRepository.Update(entity);
+        }
+
+        public async Task<IEnumerable<ConsultingTicketListViewModel>> GetListNotAssignedConsultingTicket()
+        {
+            var entities = await _unitOfWork.ConsultingTicketRepository.Get(x => x.TrainerId == null);
+            var models = new List<ConsultingTicketListViewModel>();
+            foreach (var entity in entities)
+            {
+                var model = _mapper.Map<ConsultingTicketListViewModel>(entity);
+                models.Add(model);
+            }
+
+            return models;
+        }
+
+        public async Task<IEnumerable<ConsultingTicketListViewModel>> GetListAssignedConsultingTicket()
+        {
+            var entities = await _unitOfWork.ConsultingTicketRepository.Get(x => x.TrainerId != null);
+            var models = new List<ConsultingTicketListViewModel>();
+            foreach (var entity in entities)
+            {
+                var model = _mapper.Map<ConsultingTicketListViewModel>(entity);
+                models.Add(model);
+            }
+
+            return models;
         }
     }
 }

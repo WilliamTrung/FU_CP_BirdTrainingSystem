@@ -102,6 +102,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
                 }
                 var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
                 var ticket = paramTicket.Convert_ParamModel_ServiceModel(Int32.Parse(customerId.Value));
+                ticket = paramTicket.Convert_ParamModel_ServiceModel(1);
 
                 //var ticket = paramTicket.Convert_ParamModel_ServiceModel(1);
 

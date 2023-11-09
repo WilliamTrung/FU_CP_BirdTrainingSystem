@@ -10,7 +10,7 @@ namespace Models.ApiParamModels.AdviceConsulting
     public class ConsultingTicketCreateNewParamModel
     {
         public int TrainerId { get; set; }
-        public int? AddressId { get; set; }
+        public string? Address { get; set; }
         public int ConsultingTypeId { get; set; }
         public string? ConsultingDetail { get; set; }
         public bool OnlineOrOffline { get; set; }
@@ -22,7 +22,7 @@ namespace Models.ApiParamModels.AdviceConsulting
             var model = new ConsultingTicketCreateNewModel()
             {
                 TrainerId = TrainerId,
-                AddressId = AddressId,
+                AddressDetail = Address,
                 ConsultingTypeId = ConsultingTypeId,
                 ConsultingDetail = ConsultingDetail,
                 OnlineOrOffline = OnlineOrOffline,

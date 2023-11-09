@@ -75,6 +75,21 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         }
 
         [HttpGet]
+        [Route("viewListAssignedConsultingTicket")]
+        public async Task<IActionResult> ViewListAssignedConsultingTicket()
+        {
+            try
+            {
+                var result = await _consultingService.Staff.GetListAssignedConsultingTicket();
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet]
         [Route("viewListConsultingTicketByStatus")]
         public async Task<IActionResult> ViewListConsultingTicketByStatus(int status)
         {
@@ -84,6 +99,21 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
                 return Ok(result);
             }
             catch (Exception ex) 
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("viewListNotAssignedConsultingTicket")]
+        public async Task<IActionResult> ViewListNotAssignedConsultingTicket()
+        {
+            try
+            {
+                var result = await _consultingService.Staff.GetListNotAssignedConsultingTicket();
+                return Ok(result);
+            }
+            catch (Exception ex)
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }

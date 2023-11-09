@@ -17,5 +17,7 @@ namespace AdviceConsultingSubsystem
         Task AssignTrainer(int trainerId, int ticketId);
         Task ApproveConsultingTicket(int ticketId);
         Task CancelConsultingTicket(int ticketId);
+        Task<IEnumerable<ConsultingTicketListViewModel>> GetListNotAssignedConsultingTicket();
+        Task<IEnumerable<ConsultingTicketListViewModel>> GetListAssignedConsultingTicket();
     }
 }
