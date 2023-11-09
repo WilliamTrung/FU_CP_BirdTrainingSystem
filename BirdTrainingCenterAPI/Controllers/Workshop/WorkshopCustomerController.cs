@@ -94,18 +94,33 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             var result = await _workshopService.Customer.GetBillingInformation(Int32.Parse(customerId.Value), workshopClassId);
             return Ok(result);
         }
-        [HttpPut]
+        [HttpPost]
         [Route("purchase")]
         public async Task<IActionResult> Purchase(int workshopClassId)
         {
-            var accessToken = Request.DeserializeToken(_authService);
-            if (accessToken == null)
+            try
             {
-                return Unauthorized();
+                var accessToken = Request.DeserializeToken(_authService);
+                if (accessToken == null)
+                {
+                    return Unauthorized();
+                }
+                var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
+                await _workshopService.Customer.PurchaseClass(Int32.Parse(customerId.Value), workshopClassId);
+                return Ok();
             }
-            var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
-            await _workshopService.Customer.PurchaseClass(Int32.Parse(customerId.Value), workshopClassId);
-            return Ok();
+            catch (InvalidDataException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
         [HttpPost]
         [Route("feedback")]
