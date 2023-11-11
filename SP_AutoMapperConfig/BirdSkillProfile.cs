@@ -15,8 +15,6 @@ namespace SP_AutoMapperConfig
         {
             Map_BirdSkillAddModel_BirdSkill();
             Map_BirdSkill_BirdSkillViewModel();
-            Map_AccquirableAddModBirdSkill_AcquirableSkill();
-            Map_AcquirableSkill_AcquirableSkillViewModel();
         }
 
         private void Map_AcquirableSkill_AcquirableSkillViewModel()

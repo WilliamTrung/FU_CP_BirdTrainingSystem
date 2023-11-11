@@ -1,4 +1,5 @@
 ﻿using Models.ServiceModels.TrainingCourseModels.Bird;
+using Models.ServiceModels.TrainingCourseModels.BirdCertificate;
 using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
 using System;
 using System.Collections.Generic;
@@ -16,5 +17,6 @@ namespace TrainingCourseSubsystem
         Task<TrainingCourseViewModel> GetTrainingCoursesById(int courseId);
         //Task<IEnumerable<TrainingSkillViewModel>> GetTrainingSkillByCourseId(int courseId);
         IEnumerable<Models.Enum.BirdTrainingProgress.Status> GetEnumBirdTrainingProgressStatuses();
+        Task<IEnumerable<BirdCertificateViewModel>> GetBirdCertificates();
     }
 }

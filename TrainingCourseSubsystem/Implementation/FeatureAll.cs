@@ -3,6 +3,7 @@ using AutoMapper;
 using Models.Entities;
 using Models.Enum.BirdTrainingProgress;
 using Models.ServiceModels.TrainingCourseModels.Bird;
+using Models.ServiceModels.TrainingCourseModels.BirdCertificate;
 using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,13 @@ namespace TrainingCourseSubsystem.Implementation
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+        }
+
+        public async Task<IEnumerable<BirdCertificateViewModel>> GetBirdCertificates()
+        {
+            var entities = await _unitOfWork.BirdCertificateRepository.Get();
+            var models = _mapper.Map<List<BirdCertificateViewModel>>(entities);
+            return models;
         }
 
         public async Task<IEnumerable<BirdSpeciesViewModel>> GetBirdSpecies()
