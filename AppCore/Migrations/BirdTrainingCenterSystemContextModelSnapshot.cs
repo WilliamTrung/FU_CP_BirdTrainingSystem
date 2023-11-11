@@ -599,9 +599,6 @@ namespace AppCore.Migrations
                     b.Property<int>("ActualSlotStart")
                         .HasColumnType("integer");
 
-                    b.Property<string>("Adddress")
-                        .HasColumnType("text");
-
                     b.Property<int?>("AddressId")
                         .IsRequired()
                         .HasColumnType("integer");
@@ -886,9 +883,6 @@ namespace AppCore.Migrations
                         .HasMaxLength(200)
                         .IsUnicode(false)
                         .HasColumnType("character varying(200)");
-
-                    b.Property<int>("FeedbackType")
-                        .HasColumnType("integer");
 
                     b.Property<int?>("Rating")
                         .HasColumnType("integer");

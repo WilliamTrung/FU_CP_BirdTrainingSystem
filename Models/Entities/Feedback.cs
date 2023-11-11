@@ -6,7 +6,6 @@ namespace Models.Entities
     public partial class Feedback
     {
         public int Id { get; set; }
-        public int FeedbackType { get; set; }
         public int CustomerId { get; set; }
         public int EntityTypeId { get; set; }
         public int? EntityId { get; set; }

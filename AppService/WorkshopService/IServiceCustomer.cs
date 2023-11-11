@@ -1,4 +1,5 @@
 ﻿using Models.ServiceModels.WorkshopModels;
+using Models.ServiceModels.WorkshopModels.Feedback;
 using Models.ServiceModels.WorkshopModels.WorkshopClass;
 using System;
 using System.Collections.Generic;
@@ -16,5 +17,7 @@ namespace AppService.WorkshopService
         Task<BillingModel> GetBillingInformation(int customerId, int workshopClassId);
         Task PurchaseClass(int customerId, int workshopClassId);
         Task<IEnumerable<WorkshopClassViewModel>> GetWorkshopClassesByWorkshopId(int customerId, int workshopId);
+        Task DoFeedback(int customerId, FeedbackWorkshopCustomerAddModel model);
+        Task<FeedbackWorkshopCustomerViewModel?> GetFeedback(int customerId, int workshopId);
     }
 }

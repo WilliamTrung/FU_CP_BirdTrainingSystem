@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Models.ServiceModels.OnlineCourseModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,5 +9,7 @@ namespace OnlineCourseSubsystem
 {
     public interface IFeatureAll
     {
+        Task<IEnumerable<OnlineCourseModel>> GetListOnlineCourse();
+        Task<OnlineCourseDetailViewModel> GetOnlineCourseById(int id);
     }
 }

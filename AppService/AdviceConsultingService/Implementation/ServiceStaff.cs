@@ -35,14 +35,24 @@ namespace AppService.AdviceConsultingService.Implementation
             return await _consulting.Staff.GetConsultingTicketByID(id);
         }
 
+        public async Task<IEnumerable<ConsultingTicketListViewModel>> GetListAssignedConsultingTicket()
+        {
+            return await _consulting.Staff.GetListAssignedConsultingTicket();
+        }
+
         public async Task<IEnumerable<ConsultingTicketListViewModel>> GetListConsultingTicketsByCustomerID(int customerID)
         {
             return await _consulting.Staff.GetListConsultingTicketsByCustomerID (customerID);
         }
 
-        public async Task<IEnumerable<ConsultingTicketListViewModel>> GetListConsultingTicketsByStatus(int status)
+        public async Task<IEnumerable<ConsultingTicketListViewModel>> GetListHandledConsultingTicket()
         {
-            return await _consulting.Staff.GetListConsultingTicketsByStatus (status);
+            return await _consulting.Staff.GetListHandledConsultingTicket();
+        }
+
+        public async Task<IEnumerable<ConsultingTicketListViewModel>> GetListNotAssignedConsultingTicket()
+        {
+            return await _consulting.Staff.GetListNotAssignedConsultingTicket();
         }
     }
 }

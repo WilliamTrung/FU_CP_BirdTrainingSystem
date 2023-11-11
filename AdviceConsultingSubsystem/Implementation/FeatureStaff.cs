@@ -19,7 +19,7 @@ namespace AdviceConsultingSubsystem.Implementation
         internal readonly IUnitOfWork _unitOfWork;
         internal readonly IMapper _mapper;
         public FeatureStaff(IUnitOfWork unitOfWork, IMapper mapper)
-        {
+        { 
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
@@ -50,9 +50,9 @@ namespace AdviceConsultingSubsystem.Implementation
             return models;
         }
 
-        public async Task<IEnumerable<ConsultingTicketListViewModel>> GetListConsultingTicketsByStatus(int status)
+        public async Task<IEnumerable<ConsultingTicketListViewModel>> GetListHandledConsultingTicket()
         {
-            var entities = await _unitOfWork.ConsultingTicketRepository.Get(x => x.Status == status);
+            var entities = await _unitOfWork.ConsultingTicketRepository.Get(x => x.Status == (int)Models.Enum.ConsultingTicket.Status.Confirmed || x.Status == (int)Models.Enum.ConsultingTicket.Status.Canceled);
             var models = new List<ConsultingTicketListViewModel>();
             foreach (var entity in entities)
             {
@@ -91,11 +91,6 @@ namespace AdviceConsultingSubsystem.Implementation
                 throw new KeyNotFoundException($"{nameof(entity)} not found for id: {ticketId}");
             }
 
-            var trainerSlot = new AdviceConsultingTrainerSlotServiceModel(
-                (int)entity.TrainerId, entity.ActualSlotStart, DateOnly.FromDateTime((DateTime)entity.AppointmentDate), entity.Id);
-            var slotEntity = _mapper.Map<TrainerSlot>(trainerSlot);
-            await _unitOfWork.TrainerSlotRepository.Add(slotEntity);
-
             entity.Status = (int)Models.Enum.ConsultingTicket.Status.Confirmed;
             await _unitOfWork.ConsultingTicketRepository.Update(entity);
         }
@@ -108,16 +103,43 @@ namespace AdviceConsultingSubsystem.Implementation
                 throw new KeyNotFoundException($"{nameof(entity)} not found for id: {ticketId}");
             }
 
-            //var trainerSlot = await _unitOfWork.TrainerSlotRepository.GetFirst(x => x.Date == entity.AppointmentDate
-            //                                                                && x.SlotId == entity.ActualSlotStart
-            //                                                                && x.TrainerId == entity.TrainerId);
-            //if (trainerSlot != null)
-            //{
-            //    await _unitOfWork.TrainerSlotRepository.Delete(trainerSlot);
-            //}
-            
+            var trainerSlot = await _unitOfWork.TrainerSlotRepository.GetFirst(x => x.Date == entity.AppointmentDate
+                                                                            && x.SlotId == entity.ActualSlotStart
+                                                                            && x.TrainerId == entity.TrainerId);
+            if (trainerSlot != null && trainerSlot.EntityTypeId == (int)Models.Enum.EntityType.AdviceConsulting)
+            {
+                //trainerSlot.Status = (int)Models.Enum.TrainerSlotStatus.Disabled;
+                await _unitOfWork.TrainerSlotRepository.Delete(trainerSlot);
+            }
+
             entity.Status = (int)Models.Enum.ConsultingTicket.Status.Canceled;
             await _unitOfWork.ConsultingTicketRepository.Update(entity);
+        }
+
+        public async Task<IEnumerable<ConsultingTicketListViewModel>> GetListNotAssignedConsultingTicket()
+        {
+            var entities = await _unitOfWork.ConsultingTicketRepository.Get(x => x.TrainerId == 0);
+            var models = new List<ConsultingTicketListViewModel>();
+            foreach (var entity in entities)
+            {
+                var model = _mapper.Map<ConsultingTicketListViewModel>(entity);
+                models.Add(model);
+            }
+
+            return models;
+        }
+
+        public async Task<IEnumerable<ConsultingTicketListViewModel>> GetListAssignedConsultingTicket()
+        {
+            var entities = await _unitOfWork.ConsultingTicketRepository.Get(x => x.TrainerId != null);
+            var models = new List<ConsultingTicketListViewModel>();
+            foreach (var entity in entities)
+            {
+                var model = _mapper.Map<ConsultingTicketListViewModel>(entity);
+                models.Add(model);
+            }
+
+            return models;
         }
     }
 }
