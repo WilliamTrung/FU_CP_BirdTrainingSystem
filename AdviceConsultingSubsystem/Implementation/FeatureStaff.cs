@@ -50,9 +50,9 @@ namespace AdviceConsultingSubsystem.Implementation
             return models;
         }
 
-        public async Task<IEnumerable<ConsultingTicketListViewModel>> GetListConsultingTicketsByStatus(int status)
+        public async Task<IEnumerable<ConsultingTicketListViewModel>> GetListHandledConsultingTicket()
         {
-            var entities = await _unitOfWork.ConsultingTicketRepository.Get(x => x.Status == status);
+            var entities = await _unitOfWork.ConsultingTicketRepository.Get(x => x.Status == (int)Models.Enum.ConsultingTicket.Status.Confirmed || x.Status == (int)Models.Enum.ConsultingTicket.Status.Canceled);
             var models = new List<ConsultingTicketListViewModel>();
             foreach (var entity in entities)
             {
@@ -118,7 +118,7 @@ namespace AdviceConsultingSubsystem.Implementation
 
         public async Task<IEnumerable<ConsultingTicketListViewModel>> GetListNotAssignedConsultingTicket()
         {
-            var entities = await _unitOfWork.ConsultingTicketRepository.Get(x => x.TrainerId == null);
+            var entities = await _unitOfWork.ConsultingTicketRepository.Get(x => x.TrainerId == 0);
             var models = new List<ConsultingTicketListViewModel>();
             foreach (var entity in entities)
             {

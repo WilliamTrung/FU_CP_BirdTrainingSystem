@@ -90,12 +90,12 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         }
 
         [HttpGet]
-        [Route("viewListConsultingTicketByStatus")]
-        public async Task<IActionResult> ViewListConsultingTicketByStatus(int status)
+        [Route("viewListHandledConsultingTicket")]
+        public async Task<IActionResult> viewListHandledConsultingTicket()
         {
             try
             {
-                var result = await _consultingService.Staff.GetListConsultingTicketsByStatus(status);
+                var result = await _consultingService.Staff.GetListHandledConsultingTicket();
                 return Ok(result);
             }
             catch (Exception ex) 

@@ -10,7 +10,7 @@ namespace AppService.AdviceConsultingService
     public interface IServiceStaff : IOtherService
     {
         Task<IEnumerable<ConsultingTicketListViewModel>> GetListConsultingTicketsByCustomerID(int customerID);
-        Task<IEnumerable<ConsultingTicketListViewModel>> GetListConsultingTicketsByStatus(int status);
+        Task<IEnumerable<ConsultingTicketListViewModel>> GetListHandledConsultingTicket();
         Task<ConsultingTicketDetailViewModel> GetConsultingTicketByID(int id);
         Task AssignTrainer(int trainerId, int ticketId);
         Task ApproveConsultingTicket(int ticketId);
