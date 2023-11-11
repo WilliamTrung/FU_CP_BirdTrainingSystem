@@ -6,8 +6,8 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting
     public interface IAdviceConsultingStaff
     {
         [HttpGet]
-        [Route("viewListConsultingTicketByStatus")]
-        Task<IActionResult> ViewListConsultingTicketByStatus(int status);
+        [Route("viewListHandledConsultingTicket")]
+        Task<IActionResult> viewListHandledConsultingTicket();
 
         [HttpPut]
         [Route("assignTrainer")]

@@ -61,10 +61,13 @@ namespace AdviceConsultingSubsystem.Implementation
             entity.DistancePriceId = distancePricePolicy.Id;
 
             //Cập nhật trainerSlot
-            var trainerSlot = new AdviceConsultingTrainerSlotServiceModel(
-                (int)entity.TrainerId, entity.ActualSlotStart, DateOnly.FromDateTime((DateTime)entity.AppointmentDate), entity.Id);
-            var slotEntity = _mapper.Map<TrainerSlot>(trainerSlot);
-            await _unitOfWork.TrainerSlotRepository.Add(slotEntity);
+            if (consultingTicket.TrainerId != 0)
+            {
+                var trainerSlot = new AdviceConsultingTrainerSlotServiceModel(
+                    (int)entity.TrainerId, entity.ActualSlotStart, DateOnly.FromDateTime((DateTime)entity.AppointmentDate), entity.Id);
+                var slotEntity = _mapper.Map<TrainerSlot>(trainerSlot);
+                await _unitOfWork.TrainerSlotRepository.Add(slotEntity);
+            }
 
             await _unitOfWork.ConsultingTicketRepository.Add(entity);
             //Add new Consulting Ticket
