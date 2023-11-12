@@ -93,7 +93,7 @@ namespace TrainingCourseSubsystem.Implementation
 
         public async Task<IEnumerable<TrainingCourseViewModel>> GetTrainingCourseBySpeciesId(int birdSpeciesId)
         {
-            var entities = await _unitOfWork.TrainingCourseRepository.GetFirst(e => e.BirdSpeciesId == birdSpeciesId
+            var entities = await _unitOfWork.TrainingCourseRepository.Get(e => e.BirdSpeciesId == birdSpeciesId
                                                                                  && e.Status == (int)Models.Enum.TrainingCourse.Status.Active
                                                                                , nameof(TrainingCourse.BirdSpecies));
             var models = _mapper.Map<IEnumerable<TrainingCourseViewModel>>(entities);
