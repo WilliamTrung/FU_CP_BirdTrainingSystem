@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Models.Entities;
+using Models.ServiceModels.TrainingCourseModels.BirdCertificate;
 using Models.ServiceModels.TrainingCourseModels.BirdSkill;
 using System;
 using System.Collections.Generic;
@@ -15,8 +16,14 @@ namespace SP_AutoMapperConfig
         {
             Map_BirdSkillAddModel_BirdSkill();
             Map_BirdSkill_BirdSkillViewModel();
-            Map_AccquirableAddModBirdSkill_AcquirableSkill();
-            Map_AcquirableSkill_AcquirableSkillViewModel();
+            Map_BirdSkillReceivedAddDeleteModel_BirdSkillReceived();
+        }
+
+        private void Map_BirdSkillReceivedAddDeleteModel_BirdSkillReceived()
+        {
+            CreateMap<BirdSkillReceivedAddDeleteModel, BirdSkillReceived>()
+                .ForMember(m => m.BirdSkillId, opt => opt.MapFrom(e => e.BirdSkillId))
+                .ForMember(m => m.BirdId, opt => opt.MapFrom(e => e.BirdId));
         }
 
         private void Map_AcquirableSkill_AcquirableSkillViewModel()

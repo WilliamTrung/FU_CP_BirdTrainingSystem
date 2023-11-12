@@ -1,5 +1,6 @@
 ﻿using Models.ServiceModels.TrainingCourseModels;
 using Models.ServiceModels.TrainingCourseModels.Bird;
+using Models.ServiceModels.TrainingCourseModels.BirdCertificate;
 using Models.ServiceModels.TrainingCourseModels.BirdSkill;
 using Models.ServiceModels.TrainingCourseModels.TrainerSkill;
 using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
@@ -49,6 +50,12 @@ namespace TrainingCourseSubsystem
         Task CreateTrainableSkill(TrainableAddModSkillModel trainableSkillAdd);
         Task EditTrainableSkill(TrainableAddModSkillModel trainableSkillMod);
         Task<IEnumerable<TrainableViewSkillModel>> GetTrainableSkills();
+        #endregion
+
+        #region BirdCertificate
+
+        Task CreateBirdCertitfiCate(BirdCertificateAddModel birdCertificateAdd);
+
         #endregion
     }
 }

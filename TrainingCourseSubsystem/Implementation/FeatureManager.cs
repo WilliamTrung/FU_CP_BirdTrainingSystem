@@ -4,6 +4,7 @@ using Models.Entities;
 using Models.ServiceModels;
 using Models.ServiceModels.TrainingCourseModels;
 using Models.ServiceModels.TrainingCourseModels.Bird;
+using Models.ServiceModels.TrainingCourseModels.BirdCertificate;
 using Models.ServiceModels.TrainingCourseModels.BirdSkill;
 using Models.ServiceModels.TrainingCourseModels.TrainerSkill;
 using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
@@ -405,6 +406,37 @@ namespace TrainingCourseSubsystem.Implementation
             return models;
         }
         #endregion
+        #endregion
+        #region BirdCertificate
+
+        public async Task CreateBirdCertitfiCate(BirdCertificateAddModel birdCertificateAdd)
+        {
+            if(birdCertificateAdd == null)
+            {
+                throw new Exception("Client send null param.");
+            }
+            else
+            {
+                var entity = _mapper.Map<BirdCertificate>(birdCertificateAdd);
+                await _unitOfWork.BirdCertificateRepository.Add(entity);
+
+                var skills = _unitOfWork.TrainingCourseSkillRepository.Get(e => e.TrainingCourseId == entity.TrainingCourseId).Result.ToList();
+                if(skills != null && skills.Count() > 0)
+                {
+                    foreach( var skill in skills)
+                    {
+                        BirdCertificateSkillModifyModel skillModifyModel= new BirdCertificateSkillModifyModel()
+                        {
+                            BirdCertificateId = entity.Id,
+                            BirdSkillId = skill.BirdSkillId
+                        };
+                        var certificateSkill = _mapper.Map<BirdCertificateSkill>(skillModifyModel);
+                        await _unitOfWork.BirdCertificateSkillRepository.Add(certificateSkill);
+                    }
+                }
+            }
+        }
+
         #endregion
     }
 }
