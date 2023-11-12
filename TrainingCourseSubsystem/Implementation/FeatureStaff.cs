@@ -2,6 +2,7 @@
 using AutoMapper;
 using Models.Entities;
 using Models.ServiceModels.TrainingCourseModels;
+using Models.ServiceModels.TrainingCourseModels.BirdCertificate.BirdCertificateDetail;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
@@ -343,6 +344,19 @@ namespace TrainingCourseSubsystem.Implementation
                     entity.Status = (int)Models.Enum.BirdTrainingCourse.Status.Complete;
                     await _unitOfWork.BirdTrainingCourseRepository.Update(entity);
                 }
+            }
+        }
+
+        public async Task CreateBirdCertificateDetail(BirdCertificateDetailAddModel birdCertificateDetailAdd)
+        {
+            if(birdCertificateDetailAdd == null)
+            {
+                throw new Exception("Client send null param.");
+            }
+            else
+            {
+                var entity = _mapper.Map<BirdCertificateDetail>(birdCertificateDetailAdd);
+                await _unitOfWork.BirdCertificateDetailRepository.Add(entity);
             }
         }
     }

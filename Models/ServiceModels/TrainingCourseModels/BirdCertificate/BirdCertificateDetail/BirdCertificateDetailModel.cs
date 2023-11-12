@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Models.ServiceModels.TrainingCourseModels.BirdCertificate
+namespace Models.ServiceModels.TrainingCourseModels.BirdCertificate.BirdCertificateDetail
 {
     public class BirdCertificateDetailModel
     {

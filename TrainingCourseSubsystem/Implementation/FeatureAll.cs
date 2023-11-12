@@ -4,6 +4,7 @@ using Models.Entities;
 using Models.Enum.BirdTrainingProgress;
 using Models.ServiceModels.TrainingCourseModels.Bird;
 using Models.ServiceModels.TrainingCourseModels.BirdCertificate;
+using Models.ServiceModels.TrainingCourseModels.BirdCertificate.BirdCertificateDetail;
 using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
 using System;
 using System.Collections.Generic;
@@ -21,6 +22,53 @@ namespace TrainingCourseSubsystem.Implementation
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+        }
+
+        public async Task<IEnumerable<BirdCertificateDetailViewModel>> GetBirdCertificatesDetail()
+        {
+            var entities = await _unitOfWork.BirdCertificateDetailRepository.Get();
+            var models = _mapper.Map<IEnumerable<BirdCertificateDetailViewModel>>(entities);
+            return models;
+        }
+
+        public async Task<IEnumerable<BirdCertificateDetailViewModel>> GetBirdCertificatesDetailByBirdId(int birdId)
+        {
+            var entities = await _unitOfWork.BirdCertificateDetailRepository.Get(e => e.BirdId == birdId);
+            var models = _mapper.Map<IEnumerable<BirdCertificateDetailViewModel>>(entities);
+            return models;
+        }
+
+        public async Task CreateBirdSkillReceived(BirdSkillReceivedAddDeleteModel addDeleteModel)
+        {
+            if(addDeleteModel == null)
+            {
+                throw new Exception("Client send null param.");
+            }
+            else
+            {
+                var entity = _mapper.Map<BirdSkillReceived>(addDeleteModel);
+                await _unitOfWork.BirdSkillReceivedRepository.Add(entity);
+            }
+        }
+
+        public async Task DeleteBirdSkillReceived(BirdSkillReceivedAddDeleteModel addDeleteModel)
+        {
+            if (addDeleteModel == null)
+            {
+                throw new Exception("Client send null param.");
+            }
+            else
+            {
+                var entity = await _unitOfWork.BirdSkillReceivedRepository.GetFirst(e => e.BirdId == addDeleteModel.BirdId && e.BirdSkillId == addDeleteModel.BirdSkillId);
+                if(entity == null)
+                {
+                    throw new Exception(nameof(BirdSkillReceived) + " is not found");
+                }
+                else
+                {
+                    await _unitOfWork.BirdSkillReceivedRepository.Delete(entity);
+                }
+            }
         }
 
         public async Task<IEnumerable<BirdCertificateViewModel>> GetBirdCertificates()
