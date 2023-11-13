@@ -81,19 +81,21 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         }
         [HttpGet]
         [Route("customer-bird")]
-        public async Task<IActionResult> GetBirdByCustomerId()
+        public async Task<IActionResult> GetBirdByCustomerId([FromQuery] int customerId)
         {
-            var accessToken = Request.DeserializeToken(_authService);
-            if (accessToken == null)
-            {
-                return Unauthorized();
-            }
-            else
-            {
-                var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
-                var result = await _trainingCourseService.Customer.GetBirdByCustomerId(Int32.Parse(customerId.Value));
-                return Ok(result);
-            }
+            //var accessToken = Request.DeserializeToken(_authService);
+            //if (accessToken == null)
+            //{
+            //    return Unauthorized();
+            //}
+            //else
+            //{
+            //    var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
+            //    var result = await _trainingCourseService.Customer.GetBirdByCustomerId(Int32.Parse(customerId.Value));
+            //    return Ok(result);
+            //}
+            var result = await _trainingCourseService.Customer.GetBirdByCustomerId(customerId);
+            return Ok(result);
         }
         [HttpGet]
         [Route("trainingcourse")]
@@ -154,20 +156,22 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         }
         [HttpGet]
         [Route("registered-birdtrainingcourse")]
-        public async Task<IActionResult> GetRegisteredTrainingCourse([FromQuery] int birdId)
+        public async Task<IActionResult> GetRegisteredTrainingCourse([FromQuery] int birdId, [FromQuery] int customerId)
         {
-            var accessToken = Request.DeserializeToken(_authService);
-            if (accessToken == null)
-            {
-                return Unauthorized();
-            }
-            else
-            {
-                var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
+            //var accessToken = Request.DeserializeToken(_authService);
+            //if (accessToken == null)
+            //{
+            //    return Unauthorized();
+            //}
+            //else
+            //{
+            //    var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
 
-                var result = await _trainingCourseService.Customer.ViewRegisteredTrainingCourse(birdId: birdId, customerId: Int32.Parse(customerId.Value));
-                return Ok(result);
-            }
+            //    var result = await _trainingCourseService.Customer.ViewRegisteredTrainingCourse(birdId: birdId, customerId: Int32.Parse(customerId.Value));
+            //    return Ok(result);
+            //}
+            var result = await _trainingCourseService.Customer.ViewRegisteredTrainingCourse(birdId: birdId, customerId: customerId);
+            return Ok(result);
         }
     }
 }

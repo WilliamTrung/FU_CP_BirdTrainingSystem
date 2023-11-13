@@ -6,12 +6,11 @@ using System.Threading.Tasks;
 
 namespace Models.ServiceModels.TrainingCourseModels.TrainingCourse
 {
-    public class TrainingCourseViewModel
+    public class TrainingCourseCustomerViewModel
     {
-        public TrainingCourseViewModel()
+        public TrainingCourseCustomerViewModel()
         {
-            SkillNames= new List<string>();
-            RegisteredCustomer = new List<int>();
+            SkillNames = new List<string>();
         }
         public int Id { get; set; }
         public int BirdSpeciesId { get; set; }
@@ -21,7 +20,6 @@ namespace Models.ServiceModels.TrainingCourseModels.TrainingCourse
         public string? Picture { get; set; }
         public int TotalSlot { get; set; }
         public decimal TotalPrice { get; set; }
-        public List<string> SkillNames { get; set; }
-        public List<int> RegisteredCustomer { get; set; }
+        public IEnumerable<string> SkillNames { get; set; }
     }
 }

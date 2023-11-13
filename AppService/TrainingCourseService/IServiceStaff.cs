@@ -42,7 +42,7 @@ namespace AppService.TrainingCourseService
         Task<IEnumerable<int>> ConfirmBirdTrainingCourse(int birdTrainingCourseId);//return list of progress
         //Task<TrainerSlotModel> CreateTrainerSlot(TrainerSlotAddModel trainerSlotModel);//non api
         //Task CreateTrainingReport(InitReportTrainerSlot report);//non api
-
+        Task CancelBirdTrainingCourse(int birdTrainingCourseId);
         Task<IEnumerable<BirdTrainingProgressViewModel>> GetTrainingCourseSkill(int birdTrainingCourseId);
         Task<IEnumerable<ReportModifyViewModel>> GetReportByProgressId(int progressId);
         Task ModifyTrainingSlot(ReportModifyModel reportModModel);

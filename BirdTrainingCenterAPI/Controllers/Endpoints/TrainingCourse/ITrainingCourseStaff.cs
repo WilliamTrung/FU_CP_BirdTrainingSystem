@@ -62,6 +62,10 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
         [Route("birdtrainingcourse-confirm")]
         Task<IActionResult> ConfirmBirdTrainingCourse(int birdTrainingCourseId);
 
+        [HttpPost]
+        [Route("birdtrainingcourse-cancel")]
+        Task<IActionResult> CancelBirdTrainingCourse(int birdTrainingCourseId);
+
         [HttpGet]
         [Route("birdtrainingreport-progressid")]
         Task<IActionResult> GetReportByProgressId(int progressId);

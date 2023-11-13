@@ -77,6 +77,27 @@ namespace TrainingCourseSubsystem.Implementation
             return progressIds;
         }
 
+        public async Task CancelBirdTrainingCourse(int birdTrainingCourseId)
+        {
+            var entity = _unitOfWork.BirdTrainingCourseRepository.GetFirst(e => e.Id == birdTrainingCourseId).Result;
+            if(entity == null)
+            {
+                throw new Exception(nameof(BirdTrainingCourse) + " is not found.");
+            }
+            else
+            {
+                if(entity.Status == (int)Models.Enum.BirdTrainingCourse.Status.Registered || entity.Status == (int)Models.Enum.BirdTrainingCourse.Status.Confirmed)
+                {
+                    entity.Status = (int)Models.Enum.BirdTrainingCourse.Status.Cancel;
+                    await _unitOfWork.BirdTrainingCourseRepository.Update(entity);
+                }
+                else
+                {
+                    throw new Exception(nameof(BirdTrainingCourse) + " cannot be cancelled after check in state.");
+                }
+            }
+        }
+
         public async Task<IEnumerable<BirdTrainingProgressViewModel>> GetTrainingCourseSkill(int birdTrainingCourseId)
         {
             var entities = await _unitOfWork.BirdTrainingProgressRepository.Get(e => e.BirdTrainingCourseId == birdTrainingCourseId);
