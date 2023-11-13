@@ -45,39 +45,32 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         [Route("mark-trainingskilldone")]
         public async Task<IActionResult> MarkTrainingSkillDone([FromForm] TrainerMarkDoneParamModel markDone)
         {
-            try
+            var pictures = string.Empty;
+            if (markDone.Evidences.Any(e => !e.IsImage()))
             {
-                var pictures = string.Empty;
-                if (markDone.Evidences.Any(e => !e.IsImage()))
-                {
-                    return BadRequest("Upload image only!");
-                }
-                else if (markDone.Evidences.Any(e => !e.IsVideo()))
-                {
-                    return BadRequest("Upload video only!");
-                }
-                foreach (var file in markDone.Evidences)
-                {
-                    var temp = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
-                    pictures += $"{temp},";
-                }
-                pictures = pictures.Substring(0, pictures.Length - 1);
-                var markSkillDone = markDone.ToMarkSkill(pictures);
+                return BadRequest("Upload image only!");
+            }
+            else if (markDone.Evidences.Any(e => !e.IsVideo()))
+            {
+                return BadRequest("Upload video only!");
+            }
+            foreach (var file in markDone.Evidences)
+            {
+                var temp = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
+                pictures += $"{temp},";
+            }
+            pictures = pictures.Substring(0, pictures.Length - 1);
+            var markSkillDone = markDone.ToMarkSkill(pictures);
 
-                await _trainingCourseService.Trainer.MarkTrainingSkillDone(markSkillDone);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
+            await _trainingCourseService.Trainer.MarkTrainingSkillDone(markSkillDone);
+            return Ok();
         }
         [HttpPut]
         [Route("mark-trainingslotdone")]
         public async Task<IActionResult> MarkTrainingSlotDone([FromQuery] int birdTrainingProgressId)
         {
             var result = await _trainingCourseService.Trainer.MarkTrainingSlotDone(birdTrainingProgressId);
-            if(result == (int)Models.Enum.BirdTrainingReport.FirstOrEnd.EndSlot)
+            if (result == (int)Models.Enum.BirdTrainingReport.FirstOrEnd.EndSlot)
             {
                 return StatusCode(206);
             }
