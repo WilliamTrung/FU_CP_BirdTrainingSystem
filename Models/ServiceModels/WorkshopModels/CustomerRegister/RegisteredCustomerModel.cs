@@ -8,5 +8,9 @@ namespace Models.ServiceModels.WorkshopModels.CustomerRegister
 {
     public class RegisteredCustomerModel
     {
+        public string Avatar { get; set; } = null!;
+        public int CustomerId { get; set; }
+        public string CustomerName { get; set; } = null!;
+
     }
 }
