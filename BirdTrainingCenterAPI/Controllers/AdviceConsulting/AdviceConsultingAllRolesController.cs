@@ -114,5 +114,24 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
+        [HttpGet]
+        [Route("getConsultingTicketDetail")]
+        public async Task<IActionResult> GetConsultingTicketDetail(int ticketId)
+        {
+            try
+            {
+                var result = await _consultingService.Other.GetConsultingTicketById(ticketId);
+                if (result == null)
+                {
+                    return StatusCode(StatusCodes.Status503ServiceUnavailable, "Khong co thong tin ve ticketId nay");
+                }
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
     }
 }
