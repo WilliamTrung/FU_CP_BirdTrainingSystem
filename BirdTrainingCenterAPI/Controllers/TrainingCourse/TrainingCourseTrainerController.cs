@@ -20,7 +20,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
     {
         private readonly IFirebaseService _firebaseService;
         private readonly FirebaseBucket _bucket;
-        public TrainingCourseTrainerController(ITrainingCourseService trainingCourseService, IAuthService authService, IFirebaseService firebaseService, IOptions<FirebaseBucket> bucket) : base(trainingCourseService)
+        public TrainingCourseTrainerController(ITrainingCourseService trainingCourseService, IAuthService authService, IFirebaseService firebaseService, IOptions<FirebaseBucket> bucket) : base(trainingCourseService, authService)
         {
             _firebaseService = firebaseService;
             _bucket = bucket.Value;
@@ -74,7 +74,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         }
         [HttpPut]
         [Route("mark-trainingslotdone")]
-        public async Task<IActionResult> MarkTrainingSlotDone(int birdTrainingProgressId)
+        public async Task<IActionResult> MarkTrainingSlotDone([FromQuery] int birdTrainingProgressId)
         {
             var result = await _trainingCourseService.Trainer.MarkTrainingSlotDone(birdTrainingProgressId);
             if(result == (int)Models.Enum.BirdTrainingReport.FirstOrEnd.EndSlot)

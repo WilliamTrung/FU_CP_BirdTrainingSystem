@@ -4,6 +4,7 @@ using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
 using Models.ServiceModels.TrainingCourseModels;
 using Microsoft.AspNetCore.Mvc;
 using Models.ApiParamModels.TrainingCourse;
+using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
 
 namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
 {
@@ -19,7 +20,7 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
 
         [HttpGet]
         [Route("customer-bird")]
-        Task<IActionResult> GetBirdByCustomerId([FromQuery]int customerId);
+        Task<IActionResult> GetBirdByCustomerId();
 
         [HttpGet]
         [Route("trainingcourse")]
@@ -28,6 +29,14 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
         [HttpGet]
         [Route("trainingcourse-species")]
         Task<IActionResult> GetTrainingCourseBySpeciesId([FromQuery] int birdSpeciesId);
+
+        [HttpGet]
+        [Route("trainingcourse-birdskill")]
+        Task<IActionResult> GetTrainingCourseByBirdSkillId(int birdSkillId);
+
+        [HttpGet]
+        [Route("trainingcourse-birdspeciesskill")]
+        Task<IActionResult> GetTrainingCourseBySpeciesIdBirdSkillId(int birdSpeciesId, int birdSkillId);
 
         [HttpGet]
         [Route("trainingcourse-id")]
@@ -39,7 +48,7 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
 
         [HttpGet]
         [Route("registered-trainingcourse")]
-        Task<IActionResult> GetRegisteredTrainingCourse([FromQuery] int birdId,[FromQuery] int customerId);
+        Task<IActionResult> GetRegisteredTrainingCourse([FromQuery] int birdId);
 
         [HttpGet]
         [Route("registered-birdtrainingcourseprogress")]

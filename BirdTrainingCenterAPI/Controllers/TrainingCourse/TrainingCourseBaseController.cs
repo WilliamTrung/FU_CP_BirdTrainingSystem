@@ -1,8 +1,10 @@
-﻿using AppService.TrainingCourseService;
+﻿using AppService;
+using AppService.TrainingCourseService;
 using BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse;
 using Microsoft.AspNetCore.Mvc;
 using Models.ServiceModels.TrainingCourseModels.BirdCertificate;
 using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
+using System.Security.Claims;
 
 namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
 {
@@ -11,9 +13,22 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
     public class TrainingCourseBaseController : ControllerBase, ITrainingCourseAll
     {
         internal readonly ITrainingCourseService _trainingCourseService;
-        public TrainingCourseBaseController(ITrainingCourseService trainingCourseService)
+
+        internal readonly IAuthService _authService;
+        public TrainingCourseBaseController(ITrainingCourseService trainingCourseService, IAuthService authService)
         {
             _trainingCourseService = trainingCourseService;
+            _authService = authService;
+        }
+        internal List<Claim>? DeserializeToken()
+        {
+            var authHeader = Request.Headers["Authorization"];
+            if (authHeader.Count == 0 || !authHeader[0].StartsWith("Bearer "))
+            {
+                return null;
+            }
+            string accessToken = authHeader[0].Split(' ')[1];
+            return _authService.DeserializedToken(accessToken);
         }
         [HttpGet]
         [Route("birdspecies")]
@@ -48,7 +63,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
 
         [HttpGet]
         [Route("basetrainingcourse-id")]
-        public async Task<IActionResult> GetTrainingCoursesById(int courseId)
+        public async Task<IActionResult> GetTrainingCoursesById([FromQuery] int courseId)
         {
             var result = await _trainingCourseService.All.GetTrainingCoursesById(courseId);
             return Ok(result);
@@ -56,7 +71,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
 
         [HttpPost]
         [Route("birdskillreceived")]
-        public async Task<IActionResult> CreateBirdSkillReceived(BirdSkillReceivedAddDeleteModel addDeleteModel)
+        public async Task<IActionResult> CreateBirdSkillReceived([FromBody] BirdSkillReceivedAddDeleteModel addDeleteModel)
         {
             await _trainingCourseService.All.CreateBirdSkillReceived(addDeleteModel);
             return Ok();
@@ -64,7 +79,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
 
         [HttpDelete]
         [Route("birdskillreceived")]
-        public async Task<IActionResult> DeleteBirdSkillReceived(BirdSkillReceivedAddDeleteModel addDeleteModel)
+        public async Task<IActionResult> DeleteBirdSkillReceived([FromBody] BirdSkillReceivedAddDeleteModel addDeleteModel)
         {
             await _trainingCourseService.All.DeleteBirdSkillReceived(addDeleteModel);
             return Ok();
@@ -80,7 +95,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
 
         [HttpGet]
         [Route("birdcertificatedetail-bird")]
-        public async Task<IActionResult> GetBirdCertificatesDetailByBirdId(int birdId)
+        public async Task<IActionResult> GetBirdCertificatesDetailByBirdId([FromQuery] int birdId)
         {
             var result = await _trainingCourseService.All.GetBirdCertificatesDetailByBirdId(birdId);
             return Ok(result);
@@ -96,7 +111,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
 
         [HttpGet]
         [Route("birdskillreceived-bird")]
-        public async Task<IActionResult> GetBirdSkillReceivedsByBirdId(int birdId)
+        public async Task<IActionResult> GetBirdSkillReceivedsByBirdId([FromQuery] int birdId)
         {
             var result = await _trainingCourseService.All.GetBirdSkillReceivedsByBirdId(birdId);
             return Ok(result);
