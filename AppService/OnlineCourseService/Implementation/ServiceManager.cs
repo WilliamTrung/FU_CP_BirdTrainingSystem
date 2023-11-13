@@ -15,14 +15,14 @@ namespace AppService.OnlineCourseService.Implementation
         {
         }
 
-        public async Task AddLesson(int sectionId, OnlineCourseLessonAddModel model)
+        public async Task AddLesson(OnlineCourseLessonAddModel model)
         {
-            await _onlineCourse.Manager.AddLesson(sectionId, model);
+            await _onlineCourse.Manager.AddLesson(model);
         }
 
-        public async Task AddSection(int courseId, OnlineCourseSectionAddModel model)
+        public async Task AddSection(OnlineCourseSectionAddModel model)
         {
-            await _onlineCourse.Manager.AddSection(courseId, model);
+            await _onlineCourse.Manager.AddSection(model);
         }
 
         public async Task ChangeCourseStatus(int courseId, Status status)
@@ -45,14 +45,14 @@ namespace AppService.OnlineCourseService.Implementation
             await _onlineCourse.Manager.DeleteSection(sectionId);
         }
 
-        public async Task ModifyLesson(int lessonId, OnlineCourseLessonModifyModel model)
+        public async Task ModifyLesson(OnlineCourseLessonModifyModel model)
         {
-            await _onlineCourse.Manager.ModifyLesson(lessonId, model);
+            await _onlineCourse.Manager.ModifyLesson(model);
         }
 
-        public async Task ModifySection(int sectionId, OnlineCourseSectionModifyModel model)
+        public async Task ModifySection(OnlineCourseSectionModifyModel model)
         {
-            await _onlineCourse.Manager.ModifySection(sectionId, model);
+            await _onlineCourse.Manager.ModifySection(model);
         }
     }
 }

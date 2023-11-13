@@ -1,5 +1,5 @@
-﻿using AppCore.Models;
-using AutoMapper;
+﻿using AutoMapper;
+using Models.Entities;
 using Models.ServiceModels.OnlineCourseModels;
 using Models.ServiceModels.OnlineCourseModels.Operation;
 using System;
@@ -18,6 +18,8 @@ namespace SP_AutoMapperConfig
             Map_OnlineCourse_OnlineCourseModel();
             Map_Lesson_OnlineCourseLessonViewModel();
             Map_Section_OnlineCourseSectionViewModel();
+            Map_OnlineCourseSectionAddModel_Section();
+            Map_OnlineCourseLessonAddModel_Lesson();
         }
         private void Map_Lesson_OnlineCourseLessonViewModel()
         {
@@ -37,6 +39,14 @@ namespace SP_AutoMapperConfig
                 .ForMember(e => e.Id, opt => opt.Ignore())
                 .ForMember(e => e.Status, opt => opt.MapFrom(v => Models.Enum.OnlineCourse.Status.INACTIVE));
                 
+        }
+        private void Map_OnlineCourseSectionAddModel_Section()
+        {
+            CreateMap<OnlineCourseSectionAddModel, Section>();
+        }
+        private void Map_OnlineCourseLessonAddModel_Lesson()
+        {
+            CreateMap<OnlineCourseLessonAddModel, Lesson>();
         }
     }
 }

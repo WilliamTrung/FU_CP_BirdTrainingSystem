@@ -55,16 +55,17 @@ namespace AppService.OnlineCourseService.Implementation
         public async Task<BillingModel> GetBillingInformation(int customerId, int courseId)
         {
             var preBillingInformation = await _onlineCourse.Customer.GetPreBillingInformation(customerId, courseId);
-            var discountedPrice = await _transaction.CalculateMemberShipDiscountedPrice(customerId, preBillingInformation.CoursePrice);
-            var total = await _transaction.CalculateFinalPrice(customerId, preBillingInformation.CoursePrice);
+            var final = await _transaction.CalculateFinalPrice(customerId, preBillingInformation.CoursePrice);
+            var FinalPrice = final.GetType().GetProperty("FinalPrice").GetValue(final, null);
+            var DiscountedPrice = final.GetType().GetProperty("DiscountedPrice").GetValue(final, null);
             var billing = new BillingModel()
             {
                 CourseId = courseId,
                 CoursePrice = preBillingInformation.CoursePrice,
                 DiscountRate = preBillingInformation.DiscountPercent,
                 MembershipName = preBillingInformation.MembershipName,
-                DiscountedPrice = discountedPrice,
-                TotalPrice = total,                
+                DiscountedPrice = DiscountedPrice,
+                TotalPrice = FinalPrice,                
             };         
             return billing;
         }
@@ -81,10 +82,27 @@ namespace AppService.OnlineCourseService.Implementation
             return result;
         }
 
+        public async Task<OnlineCourseModel> GetCourseById(int customerId, int courseId)
+        {
+            var result = await GetCourseById(courseId);
+            result.Status = await CheckEnrolledCourse(customerId, courseId);
+            return result;
+        }
+
         public async Task<OnlineCourseCertificateModel> GetCourseCertificate(int customerId, int courseId)
         {
             var result = await _onlineCourse.Customer.GetCertificateModel(customerId, courseId);
             return result;
+        }
+
+        public async Task<IEnumerable<OnlineCourseModel>> GetCourses(int customerId)
+        {
+            var courses = await GetCourses();
+            foreach (var course in courses)
+            {
+                course.Status = await CheckEnrolledCourse(customerId, course.Id);
+            }
+            return courses;
         }
 
         public async Task<IEnumerable<OnlineCourseModel>> GetEnrolledCourses(int customerId)

@@ -18,13 +18,13 @@ namespace OnlineCourseSubsystem.Implementation
         {
         }
 
-        public async Task AddLesson(int sectionId, OnlineCourseLessonAddModel model)
+        public async Task AddLesson(OnlineCourseLessonAddModel model)
         {
             var lesson = _mapper.Map<Lesson>(model);  
             await _unitOfWork.LessonRepository.Add(lesson);
         }
 
-        public async Task AddSection(int courseId, OnlineCourseSectionAddModel model)
+        public async Task AddSection(OnlineCourseSectionAddModel model)
         {
             var section = _mapper.Map<Section>(model);
             await _unitOfWork.SectionRepository.Add(section);
@@ -96,9 +96,9 @@ namespace OnlineCourseSubsystem.Implementation
             await _unitOfWork.SectionRepository.Delete(section);
         }
 
-        public async Task ModifyLesson(int lessonId, OnlineCourseLessonModifyModel model)
+        public async Task ModifyLesson(OnlineCourseLessonModifyModel model)
         {
-            Lesson? lesson = await _unitOfWork.LessonRepository.GetFirst(c => c.Id == lessonId);
+            Lesson? lesson = await _unitOfWork.LessonRepository.GetFirst(c => c.Id == model.Id);
             if(lesson == null) {
                 throw new KeyNotFoundException("This lesson is not found!");
             }
@@ -121,12 +121,12 @@ namespace OnlineCourseSubsystem.Implementation
             await _unitOfWork.LessonRepository.Update(lesson);
         }
 
-        public async Task ModifySection(int sectionId, OnlineCourseSectionModifyModel model)
+        public async Task ModifySection(OnlineCourseSectionModifyModel model)
         {
-            Section? section = await _unitOfWork.SectionRepository.GetFirst(c => c.Id == sectionId);
+            Section? section = await _unitOfWork.SectionRepository.GetFirst(c => c.Id == model.Id);
             if(section == null)
             {
-                throw new KeyNotFoundException($"Section {sectionId}");
+                throw new KeyNotFoundException("Section not found!");
             }
             section.Title = model.Title;
             await _unitOfWork.SectionRepository.Update(section);

@@ -8,6 +8,7 @@ namespace Models.ServiceModels.OnlineCourseModels.Operation
 {
     public class OnlineCourseSectionModifyModel
     {
+        public int Id { get; set; }
         public string Title { get; set; } = null!;
     }
 }
