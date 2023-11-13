@@ -11,6 +11,7 @@ namespace Models.ServiceModels.TrainingCourseModels.TrainingCourse
         public TrainingCourseViewModel()
         {
             SkillNames= new List<string>();
+            RegisteredCustomer = new List<int>();
         }
         public int Id { get; set; }
         public int BirdSpeciesId { get; set; }
@@ -21,5 +22,6 @@ namespace Models.ServiceModels.TrainingCourseModels.TrainingCourse
         public int TotalSlot { get; set; }
         public decimal TotalPrice { get; set; }
         public List<string> SkillNames { get; set; }
+        public List<int> RegisteredCustomer { get; set; }
     }
 }

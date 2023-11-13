@@ -145,6 +145,13 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             var result = await _trainingCourseService.Staff.ConfirmBirdTrainingCourse(birdTrainingCourseId);
             return Ok(result);
         }
+        [HttpPost]
+        [Route("birdtrainingcourse-cancel")]
+        public async Task<IActionResult> CancelBirdTrainingCourse(int birdTrainingCourseId)
+        {
+            await _trainingCourseService.Staff.CancelBirdTrainingCourse(birdTrainingCourseId);
+            return Ok();
+        }
         [HttpGet]
         [Route("birdtrainingreport-progressid")]
         public async Task<IActionResult> GetReportByProgressId([FromQuery] int progressId)

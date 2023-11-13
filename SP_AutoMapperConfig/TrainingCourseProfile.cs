@@ -91,6 +91,16 @@ namespace SP_AutoMapperConfig
                         }
                     }
                 }
+
+                var registeredCourses = _unitOfWork.BirdTrainingCourseRepository.Get(e => e.TrainingCourseId == source.Id
+                                                                                      && e.Status != (int)Models.Enum.BirdTrainingCourse.Status.Cancel).Result.ToList();
+                foreach (var registeredCourse in registeredCourses)
+                {
+                    if (registeredCourse != null)
+                    {
+                        destination.RegisteredCustomer.Add(registeredCourse.CustomerId);
+                    }
+                }
             }
         }
     }

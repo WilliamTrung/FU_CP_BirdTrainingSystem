@@ -49,10 +49,14 @@ namespace AppService.TrainingCourseService.Implement
             await GenerateTrainerTimetable(progresses);
             return progresses;
         }
+        public async Task CancelBirdTrainingCourse(int birdTrainingCourseId)
+        {
+            await _trainingCourse.Staff.CancelBirdTrainingCourse(birdTrainingCourseId);
+        }
         private async Task GenerateTrainerTimetable(IEnumerable<int> progressId)
         {
             var progresses = await GetBirdTrainingProgress();
-            progresses = progresses.Where(e => progressId.Any(d => d == e.Id));
+            progresses = progresses.Where(e => progressId.Any(d => d == e.Id)).OrderBy(e => e.Id);
 
             var firstClass = progresses.First();
             var birdTrainingCourse = GetBirdTrainingCourse().Result.Where(m => m.Id == firstClass.BirdTrainingCourseId).First();
