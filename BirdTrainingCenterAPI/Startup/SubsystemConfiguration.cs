@@ -95,5 +95,20 @@ namespace BirdTrainingCenterAPI.Startup
             builder.Services.AddTransient<AppService.AdviceConsultingService.IServiceStaff, AppService.AdviceConsultingService.Implementation.ServiceStaff>();
             builder.Services.AddTransient<IAdviceConsultingService, AdviceConsultingSerivce>();
         }
+        public static void AddOnlineCourseFeature(this WebApplicationBuilder builder)
+        {
+            builder.Services.AddTransient<OnlineCourseSubsystem.IFeatureAll, OnlineCourseSubsystem.Implementation.FeatureAll>();
+            builder.Services.AddTransient<OnlineCourseSubsystem.IFeatureCustomer, OnlineCourseSubsystem.Implementation.FeatureCustomer>();
+            builder.Services.AddTransient<OnlineCourseSubsystem.IFeatureStaff, OnlineCourseSubsystem.Implementation.FeatureStaff>();
+            builder.Services.AddTransient<OnlineCourseSubsystem.IFeatureManager, OnlineCourseSubsystem.Implementation.FeatureManager>();
+            builder.Services.AddTransient<OnlineCourseSubsystem.IOnlineCourseFeature, OnlineCourseSubsystem.Implementation.OnlineCourseFeature>();
+
+            builder.Services.AddTransient<AppService.OnlineCourseService.IServiceAll, AppService.OnlineCourseService.Implementation.ServiceAll>();
+            builder.Services.AddTransient<AppService.OnlineCourseService.IServiceCustomer, AppService.OnlineCourseService.Implementation.ServiceCustomer>();
+            builder.Services.AddTransient<AppService.OnlineCourseService.IServiceStaff, AppService.OnlineCourseService.Implementation.ServiceStaff>();
+            builder.Services.AddTransient<AppService.OnlineCourseService.IServiceManager, AppService.OnlineCourseService.Implementation.ServiceManager>();
+            
+            builder.Services.AddTransient<AppService.OnlineCourseService.IOnlineCourseService, AppService.OnlineCourseService.OnlineCourseService>();
+        }
     }
 }
