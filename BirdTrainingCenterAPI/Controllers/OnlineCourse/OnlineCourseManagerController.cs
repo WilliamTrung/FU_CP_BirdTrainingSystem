@@ -9,11 +9,13 @@ using Microsoft.Extensions.Options;
 using Models.ApiParamModels.OnlineCourse;
 using Models.ConfigModels;
 using Models.ServiceModels.OnlineCourseModels.Operation;
+using SP_Middleware;
 
 namespace BirdTrainingCenterAPI.Controllers.OnlineCourse
 {
     [Route("api/online-course/management")]
     [ApiController]
+    [CustomAuthorize(roles: "Manager")]
     public class OnlineCourseManagerController : OnlineCourseBaseController, IOnlineCourseManager
     {
         private readonly IFirebaseService _firebaseService;
