@@ -55,16 +55,17 @@ namespace AppService.OnlineCourseService.Implementation
         public async Task<BillingModel> GetBillingInformation(int customerId, int courseId)
         {
             var preBillingInformation = await _onlineCourse.Customer.GetPreBillingInformation(customerId, courseId);
-            var discountedPrice = await _transaction.CalculateMemberShipDiscountedPrice(customerId, preBillingInformation.CoursePrice);
-            var total = await _transaction.CalculateFinalPrice(customerId, preBillingInformation.CoursePrice);
+            var final = await _transaction.CalculateFinalPrice(customerId, preBillingInformation.CoursePrice);
+            var FinalPrice = final.GetType().GetProperty("FinalPrice").GetValue(final, null);
+            var DiscountedPrice = final.GetType().GetProperty("DiscountedPrice").GetValue(final, null);
             var billing = new BillingModel()
             {
                 CourseId = courseId,
                 CoursePrice = preBillingInformation.CoursePrice,
                 DiscountRate = preBillingInformation.DiscountPercent,
                 MembershipName = preBillingInformation.MembershipName,
-                DiscountedPrice = discountedPrice,
-                TotalPrice = total,                
+                DiscountedPrice = DiscountedPrice,
+                TotalPrice = FinalPrice,                
             };         
             return billing;
         }
