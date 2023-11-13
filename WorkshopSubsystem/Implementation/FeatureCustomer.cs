@@ -1,6 +1,7 @@
 ﻿using AppRepository.UnitOfWork;
 using AutoMapper;
 using Models.Entities;
+using Models.Enum.Workshop.Class.Customer;
 using Models.ServiceModels.WorkshopModels;
 using Models.ServiceModels.WorkshopModels.Feedback;
 using Models.ServiceModels.WorkshopModels.WorkshopClass;
@@ -211,6 +212,11 @@ namespace WorkshopSubsystem.Implementation
             {
                 return null;
             }
+        }
+
+        public Task<Status?> CheckAttend(int customerId, int classSlotId)
+        {
+            throw new NotImplementedException();
         }
     }
 }
