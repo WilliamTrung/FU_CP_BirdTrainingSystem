@@ -29,55 +29,41 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         [Route("register-bird")]
         public async Task<IActionResult> RegisterBird([FromForm] BirdAddParamModel bird)
         {
-            try
+            var pictures = string.Empty;
+            if (bird.Pictures.Any(e => !e.IsImage()))
             {
-                var pictures = string.Empty;
-                if (bird.Pictures.Any(e => !e.IsImage()))
-                {
-                    return BadRequest("Upload image only!");
-                }
-                foreach (var file in bird.Pictures)
-                {
-                    var temp = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
-                    pictures += $"{temp},";
-                }
-                pictures = pictures.Substring(0, pictures.Length - 1);
-                var birdModel = bird.ToBirdAddModel(pictures);
+                return BadRequest("Upload image only!");
+            }
+            foreach (var file in bird.Pictures)
+            {
+                var temp = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
+                pictures += $"{temp},";
+            }
+            pictures = pictures.Substring(0, pictures.Length - 1);
+            var birdModel = bird.ToBirdAddModel(pictures);
 
-                await _trainingCourseService.Customer.RegisterBird(birdModel);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
+            await _trainingCourseService.Customer.RegisterBird(birdModel);
+            return Ok();
         }
         [HttpPost]
         [Route("update-bird")]
         public async Task<IActionResult> UpdateBirdProfile([FromForm] BirdModifyParamModel bird)
         {
-            try
+            var pictures = string.Empty;
+            if (bird.Pictures.Any(e => !e.IsImage()))
             {
-                var pictures = string.Empty;
-                if (bird.Pictures.Any(e => !e.IsImage()))
-                {
-                    return BadRequest("Upload image only!");
-                }
-                foreach (var file in bird.Pictures)
-                {
-                    var temp = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
-                    pictures += $"{temp},";
-                }
-                pictures = pictures.Substring(0, pictures.Length - 1);
-                var birdModel = bird.ToBirdModifyModel(pictures);
+                return BadRequest("Upload image only!");
+            }
+            foreach (var file in bird.Pictures)
+            {
+                var temp = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
+                pictures += $"{temp},";
+            }
+            pictures = pictures.Substring(0, pictures.Length - 1);
+            var birdModel = bird.ToBirdModifyModel(pictures);
 
-                await _trainingCourseService.Customer.UpdateBirdProfile(birdModel);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
+            await _trainingCourseService.Customer.UpdateBirdProfile(birdModel);
+            return Ok();
         }
         [HttpGet]
         [Route("customer-bird")]
@@ -121,7 +107,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
 
         [HttpGet]
         [Route("trainingcourse-birdspeciesskill")]
-        public async Task<IActionResult> GetTrainingCourseBySpeciesIdBirdSkillId([FromQuery]int birdSpeciesId, [FromQuery] int birdSkillId)
+        public async Task<IActionResult> GetTrainingCourseBySpeciesIdBirdSkillId([FromQuery] int birdSpeciesId, [FromQuery] int birdSkillId)
         {
             var result = await _trainingCourseService.Customer.GetTrainingCourseBySpeciesIdBirdSkillId(birdSpeciesId: birdSpeciesId, birdSkillId: birdSkillId);
             return Ok(result);
