@@ -23,5 +23,7 @@ namespace TrainingCourseSubsystem
         Task DeleteBirdSkillReceived(BirdSkillReceivedAddDeleteModel addDeleteModel);
         Task<IEnumerable<BirdCertificateDetailViewModel>> GetBirdCertificatesDetail();
         Task<IEnumerable<BirdCertificateDetailViewModel>> GetBirdCertificatesDetailByBirdId(int birdId);
+        Task<IEnumerable<BirdSkillReceivedViewModel>> GetBirdSkillReceiveds();
+        Task<IEnumerable<BirdSkillReceivedViewModel>> GetBirdSkillReceivedsByBirdId(int birdId);
     }
 }

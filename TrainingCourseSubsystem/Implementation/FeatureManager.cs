@@ -409,7 +409,7 @@ namespace TrainingCourseSubsystem.Implementation
         #endregion
         #region BirdCertificate
 
-        public async Task CreateBirdCertitfiCate(BirdCertificateAddModel birdCertificateAdd)
+        public async Task CreateBirdCertitficate(BirdCertificateAddModel birdCertificateAdd)
         {
             if(birdCertificateAdd == null)
             {
@@ -417,6 +417,11 @@ namespace TrainingCourseSubsystem.Implementation
             }
             else
             {
+                var trainingCourse = _unitOfWork.TrainingCourseRepository.GetFirst(e => e.Id == birdCertificateAdd.TrainingCourseId).Result;
+                if(trainingCourse.Status != (int)Models.Enum.TrainingCourse.Status.Active)
+                {
+                    throw new Exception("Please active training course first.");
+                }
                 var entity = _mapper.Map<BirdCertificate>(birdCertificateAdd);
                 await _unitOfWork.BirdCertificateRepository.Add(entity);
 

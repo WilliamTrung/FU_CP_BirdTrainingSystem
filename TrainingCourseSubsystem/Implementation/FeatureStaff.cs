@@ -2,6 +2,7 @@
 using AutoMapper;
 using Models.Entities;
 using Models.ServiceModels.TrainingCourseModels;
+using Models.ServiceModels.TrainingCourseModels.BirdCertificate;
 using Models.ServiceModels.TrainingCourseModels.BirdCertificate.BirdCertificateDetail;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
@@ -357,6 +358,29 @@ namespace TrainingCourseSubsystem.Implementation
             {
                 var entity = _mapper.Map<BirdCertificateDetail>(birdCertificateDetailAdd);
                 await _unitOfWork.BirdCertificateDetailRepository.Add(entity);
+
+                var birdTrainingCourse = _unitOfWork.BirdTrainingCourseRepository.GetFirst(e => e.Id == entity.BirdTrainingCourseId).Result;
+                if (birdTrainingCourse != null)
+                {
+                    var passedSkill = _unitOfWork.BirdTrainingProgressRepository.Get(e => e.BirdTrainingCourseId == birdTrainingCourse.Id
+                                                                                      && e.Status == (int)Models.Enum.BirdTrainingProgress.Status.Pass).Result.ToList();
+                    if (passedSkill != null && passedSkill.Count() > 0)
+                    {
+                        foreach (var skill in passedSkill)
+                        {
+                            if(skill != null)
+                            {
+                                BirdSkillReceivedAddDeleteModel birdSkillReceivedAddModel = new BirdSkillReceivedAddDeleteModel()
+                                {
+                                    BirdId = entity.BirdId,
+                                    BirdSkillId = skill.TrainingCourseSkillId,
+                                };
+                                var birdSkillReceivedAdd = _mapper.Map<BirdSkillReceived>(birdSkillReceivedAddModel);
+                                await _unitOfWork.BirdSkillReceivedRepository.Add(birdSkillReceivedAdd);
+                            }
+                        }
+                    }
+                }
             }
         }
     }

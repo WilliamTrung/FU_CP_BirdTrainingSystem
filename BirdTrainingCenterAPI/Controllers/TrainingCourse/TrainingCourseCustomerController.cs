@@ -51,7 +51,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
-        [HttpPut]
+        [HttpPost]
         [Route("update-bird")]
         public async Task<IActionResult> UpdateBirdProfile([FromForm] BirdModifyParamModel bird)
         {

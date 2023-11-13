@@ -4,6 +4,7 @@ using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
 using Microsoft.AspNetCore.Mvc;
 using Models.ApiParamModels.TrainingCourse;
 using Models.ServiceModels.TrainingCourseModels.TrainerSlot;
+using Models.ServiceModels.TrainingCourseModels.BirdCertificate.BirdCertificateDetail;
 
 namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
 {
@@ -68,5 +69,9 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
         [HttpPut]
         [Route("trainerslot-modify")]
         Task<IActionResult> ModifyTrainingSlot(ReportModifyModel reportModModel);
+
+        [HttpPost]
+        [Route("birdcertificatedetail")]
+        Task<IActionResult> CreateBirdCertificateDetail(BirdCertificateDetailAddModel birdCertificateDetailAdd);
     }
 }

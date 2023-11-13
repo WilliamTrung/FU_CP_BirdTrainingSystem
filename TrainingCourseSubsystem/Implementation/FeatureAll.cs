@@ -38,6 +38,24 @@ namespace TrainingCourseSubsystem.Implementation
             return models;
         }
 
+        public async Task<IEnumerable<BirdSkillReceivedViewModel>> GetBirdSkillReceiveds()
+        {
+            var entities = await _unitOfWork.BirdSkillReceivedRepository.Get(expression: null
+                                                                             , nameof(BirdSkillReceived.Bird)
+                                                                             , nameof(BirdSkillReceived.BirdSkill));
+            var models = _mapper.Map<IEnumerable<BirdSkillReceivedViewModel>>(entities);
+            return models;
+        }
+
+        public async Task<IEnumerable<BirdSkillReceivedViewModel>> GetBirdSkillReceivedsByBirdId(int birdId)
+        {
+            var entities = await _unitOfWork.BirdSkillReceivedRepository.Get(expression: e => e.BirdId == birdId
+                                                                             , nameof(BirdSkillReceived.Bird)
+                                                                             , nameof(BirdSkillReceived.BirdSkill));
+            var models = _mapper.Map<IEnumerable<BirdSkillReceivedViewModel>>(entities);
+            return models;
+        }
+
         public async Task CreateBirdSkillReceived(BirdSkillReceivedAddDeleteModel addDeleteModel)
         {
             if(addDeleteModel == null)
