@@ -86,10 +86,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.UseStaticFiles();
-app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseStaticFiles();
+app.UseHttpsRedirection();
+app.UseExceptionHandler("/error");
 app.MapControllers();
 app.UseCors("CorsPolicy");
 app.Run();

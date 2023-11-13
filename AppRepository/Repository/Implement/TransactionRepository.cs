@@ -9,5 +9,11 @@ namespace AppRepository.Repository.Implement
         public TransactionRepository(AppCore.Context.BirdTrainingCenterSystemContext context, IUnitOfWork unitOfWork) : base(context, unitOfWork)
         {
         }
+        public override Task Add(Transaction entity)
+        {
+            entity.DateCreate = DateTime.Now;
+            entity.PaymentDate = DateTime.Now.Date;
+            return base.Add(entity);
+        }
     }
 }

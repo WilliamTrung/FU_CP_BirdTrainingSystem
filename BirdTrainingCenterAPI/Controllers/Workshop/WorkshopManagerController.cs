@@ -31,52 +31,28 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
         public async Task<IActionResult> CreateWorkshop([FromForm] WorkshopAddParamModel workshop)
         {
             var pictures = string.Empty;
-            try
+            if (workshop.Pictures.Any(e => !e.IsImage()))
             {
-                if(workshop.Pictures.Any(e => !e.IsImage())) {
-                    return BadRequest("Upload image only!");
-                }
-                foreach (var file in workshop.Pictures)
-                {
-                    var temp = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.WOKRSHOP, _bucket.General);
-                    pictures += $"{temp},";
-                }
-                pictures = pictures.Substring(0, pictures.Length - 1);
-                var workshopAdd = workshop.ToWorkshopAddModel(pictures);
+                return BadRequest("Upload image only!");
+            }
+            foreach (var file in workshop.Pictures)
+            {
+                var temp = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.WOKRSHOP, _bucket.General);
+                pictures += $"{temp},";
+            }
+            pictures = pictures.Substring(0, pictures.Length - 1);
+            var workshopAdd = workshop.ToWorkshopAddModel(pictures);
 
-                var id = await _workshopService.Manager.CreateWorkshop(workshopAdd);
-                return Ok(id);
-            } catch (Exception ex)
-            {
-                foreach (var picture in pictures.Split(","))
-                {
-                    await _firebaseService.DeleteFile(picture, _bucket.General);
-                }
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }            
+            var id = await _workshopService.Manager.CreateWorkshop(workshopAdd);
+            return Ok(id);                 
         }
         [HttpGet]
         [EnableQuery]
         [Route("detail-template")]
         public async Task<IActionResult> GetWorkshopDetailTemplate([FromQuery] int workshopId)
         {
-            try
-            {
-                var result = await _workshopService.Manager.GetDetailTemplatesByWorkshopId(workshopId);
-                return Ok(result);
-            }
-            catch (InvalidDataException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-            catch (InvalidOperationException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
+            var result = await _workshopService.Manager.GetDetailTemplatesByWorkshopId(workshopId);
+            return Ok(result);
         }
         
         [HttpGet]
@@ -91,23 +67,8 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
         [Route("modify-detail-template")]
         public async Task<IActionResult> ModifyWorkshopDetail([FromBody] WorkshopDetailTemplateModiyModel workshopDetail)
         {
-            try
-            {
-                await _workshopService.Manager.ModifyWorkshopDetailTemplate(workshopDetail);
-                return Ok();
-            }
-            catch (InvalidDataException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-            catch (InvalidOperationException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
+            await _workshopService.Manager.ModifyWorkshopDetailTemplate(workshopDetail);
+            return Ok();
         }
         //[HttpPut]
         //[Route("modify-status")]
@@ -127,55 +88,25 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
         [Route("activate")]
         public async Task<IActionResult> ActivateWorkshop([FromQuery] int workshopId)
         {
-            try
+            var workshop = new WorkshopStatusModifyModel
             {
-                var workshop = new WorkshopStatusModifyModel
-                {
-                    Id = workshopId,
-                    Status = (int)Models.Enum.Workshop.Status.Active,
-                };
-                await _workshopService.Manager.ModifyWorkshopStatus(workshop);
-                return Ok();
-            }
-            catch (InvalidDataException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-            catch (InvalidOperationException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
+                Id = workshopId,
+                Status = (int)Models.Enum.Workshop.Status.Active,
+            };
+            await _workshopService.Manager.ModifyWorkshopStatus(workshop);
+            return Ok();
         }
         [HttpPut]
         [Route("deactivate")]
         public async Task<IActionResult> DeactivateWorkshop([FromQuery] int workshopId)
         {
-            try
+            var workshop = new WorkshopStatusModifyModel
             {
-                var workshop = new WorkshopStatusModifyModel
-                {
-                    Id = workshopId,
-                    Status = (int)Models.Enum.Workshop.Status.Inactive,
-                };
-                await _workshopService.Manager.ModifyWorkshopStatus(workshop);
-                return Ok();
-            }
-            catch (InvalidDataException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-            catch (InvalidOperationException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
+                Id = workshopId,
+                Status = (int)Models.Enum.Workshop.Status.Inactive,
+            };
+            await _workshopService.Manager.ModifyWorkshopStatus(workshop);
+            return Ok();
         }
        
     }

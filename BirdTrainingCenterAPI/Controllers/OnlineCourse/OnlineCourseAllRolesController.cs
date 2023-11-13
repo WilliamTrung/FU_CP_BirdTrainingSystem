@@ -34,7 +34,7 @@ namespace BirdTrainingCenterAPI.Controllers.OnlineCourse
         [HttpGet]
         [Route("course-by-id")]
         public async Task<IActionResult> GetCourseById([FromQuery] int courseId)
-        {
+        {            
             var accessToken = Request.DeserializeToken(_authService);
             if (accessToken == null)
             {

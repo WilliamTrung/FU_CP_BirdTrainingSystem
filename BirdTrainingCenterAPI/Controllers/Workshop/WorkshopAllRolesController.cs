@@ -93,23 +93,8 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
         [Route("feedbacks")]
         public async Task<IActionResult> GetFeedbacks([FromQuery] int workshopId)
         {
-            try
-            {
-                var result = await _workshopService.All.GetFeedbacks(workshopId);
-                return Ok(result);
-            }
-            catch (InvalidDataException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-            catch (InvalidOperationException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
+            var result = await _workshopService.All.GetFeedbacks(workshopId);
+            return Ok(result);
         }
     }
 }
