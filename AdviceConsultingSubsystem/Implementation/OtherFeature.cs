@@ -81,5 +81,18 @@ namespace AdviceConsultingSubsystem.Implementation
 
             return models;
         }
+
+        public async Task CheckOutDateTicket()
+        {
+            var entities = await _unitOfWork.ConsultingTicketRepository.Get();
+            foreach (var entity in entities)
+            {
+                var date = DateTime.Now;
+                if (entity.AppointmentDate < date && entity.Status == (int)Models.Enum.ConsultingTicket.Status.WaitingForApprove)
+                {
+                    entity.Status = (int)Models.Enum.ConsultingTicket.Status.Canceled;
+                }
+            }
+        }
     }
 }

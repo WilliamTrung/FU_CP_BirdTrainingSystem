@@ -118,7 +118,7 @@ namespace AdviceConsultingSubsystem.Implementation
 
         public async Task<IEnumerable<ConsultingTicketListViewModel>> GetListNotAssignedConsultingTicket()
         {
-            var entities = await _unitOfWork.ConsultingTicketRepository.Get(x => x.TrainerId == 0);
+            var entities = await _unitOfWork.ConsultingTicketRepository.Get(x => x.TrainerId == 0 && x.Status == (int)Models.Enum.ConsultingTicket.Status.WaitingForApprove);
             var models = new List<ConsultingTicketListViewModel>();
             foreach (var entity in entities)
             {
@@ -131,7 +131,7 @@ namespace AdviceConsultingSubsystem.Implementation
 
         public async Task<IEnumerable<ConsultingTicketListViewModel>> GetListAssignedConsultingTicket()
         {
-            var entities = await _unitOfWork.ConsultingTicketRepository.Get(x => x.TrainerId != null);
+            var entities = await _unitOfWork.ConsultingTicketRepository.Get(x => x.TrainerId != null && x.Status == (int)Models.Enum.ConsultingTicket.Status.WaitingForApprove);
             var models = new List<ConsultingTicketListViewModel>();
             foreach (var entity in entities)
             {
