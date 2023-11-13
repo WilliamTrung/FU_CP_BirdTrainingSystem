@@ -14,7 +14,7 @@ namespace Models.Entities
         public int Id { get; set; }
         public int BirdId { get; set; }
         public int TrainingCourseId { get; set; }
-        public int StaffId { get; set; }
+        public int? StaffId { get; set; }
         public int CustomerId { get; set; }
         public DateTime? RegisteredDate { get; set; }
         public decimal? TotalPrice { get; set; }
