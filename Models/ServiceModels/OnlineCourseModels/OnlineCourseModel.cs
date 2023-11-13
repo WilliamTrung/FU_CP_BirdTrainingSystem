@@ -13,5 +13,7 @@ namespace Models.ServiceModels.OnlineCourseModels
         public string? ShortDescription { get; set; }
         public string? Picture { get; set; }
         public decimal? Price { get; set; }
+        public Models.Enum.OnlineCourse.Customer.OnlineCourse.Status? Status { get; set; }
+        public IEnumerable<OnlineCourseSectionViewModel>? Sections { get; set; }
     }
 }

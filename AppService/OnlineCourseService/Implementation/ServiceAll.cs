@@ -1,4 +1,5 @@
-﻿using OnlineCourseSubsystem;
+﻿using Models.ServiceModels.OnlineCourseModels;
+using OnlineCourseSubsystem;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,22 @@ namespace AppService.OnlineCourseService.Implementation
 {
     public class ServiceAll : IServiceAll
     {
-        private readonly IOnlineCourseFeature _onlineCourse;
+        internal readonly IOnlineCourseFeature _onlineCourse;
         public ServiceAll(IOnlineCourseFeature onlineCourse)
         {
             _onlineCourse = onlineCourse;
+        }
+
+        public async Task<OnlineCourseModel> GetCourseById(int id)
+        {
+            var result = await _onlineCourse.All.GetCourseById(id);
+            return result;
+        }
+
+        public async Task<IEnumerable<OnlineCourseModel>> GetCourses()
+        {
+            var result = await _onlineCourse.All.GetCourses();
+            return result;
         }
     }
 }

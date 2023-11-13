@@ -11,5 +11,6 @@ namespace OnlineCourseSubsystem
         IFeatureCustomer Customer { get; }
         IFeatureStaff Staff { get; }
         IFeatureAll All { get; }
+        IFeatureManager Manager { get; }
     }
 }
