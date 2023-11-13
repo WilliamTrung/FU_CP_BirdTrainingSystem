@@ -98,85 +98,40 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
         [Route("purchase")]
         public async Task<IActionResult> Purchase(int workshopClassId)
         {
-            try
+            var accessToken = Request.DeserializeToken(_authService);
+            if (accessToken == null)
             {
-                var accessToken = Request.DeserializeToken(_authService);
-                if (accessToken == null)
-                {
-                    return Unauthorized();
-                }
-                var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
-                await _workshopService.Customer.PurchaseClass(Int32.Parse(customerId.Value), workshopClassId);
-                return Ok();
+                return Unauthorized();
             }
-            catch (InvalidDataException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-            catch (InvalidOperationException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
+            var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
+            await _workshopService.Customer.PurchaseClass(Int32.Parse(customerId.Value), workshopClassId);
+            return Ok();
         }
         [HttpPost]
         [Route("feedback")]
         public async Task<IActionResult> DoFeedback([FromBody] FeedbackWorkshopCustomerAddModel model)
         {
-            try
+            var accessToken = Request.DeserializeToken(_authService);
+            if (accessToken == null)
             {
-                var accessToken = Request.DeserializeToken(_authService);
-                if (accessToken == null)
-                {
-                    return Unauthorized();
-                }
-                var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
-                await _workshopService.Customer.DoFeedback(Int32.Parse(customerId.Value), model);
-                return Ok();
+                return Unauthorized();
             }
-            catch (InvalidDataException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-            catch (InvalidOperationException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
+            var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
+            await _workshopService.Customer.DoFeedback(Int32.Parse(customerId.Value), model);
+            return Ok();
         }
         [HttpGet]
         [Route("get-feedback")]
         public async Task<IActionResult> GetFeedback([FromQuery] int workshopId)
         {
-            try
+            var accessToken = Request.DeserializeToken(_authService);
+            if (accessToken == null)
             {
-                var accessToken = Request.DeserializeToken(_authService);
-                if (accessToken == null)
-                {
-                    return Unauthorized();
-                }
-                var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
-                var result = await _workshopService.Customer.GetFeedback(Int32.Parse(customerId.Value) ,workshopId); 
-                return Ok(result);
+                return Unauthorized();
             }
-            catch (InvalidDataException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-            catch (InvalidOperationException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
+            var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
+            var result = await _workshopService.Customer.GetFeedback(Int32.Parse(customerId.Value), workshopId);
+            return Ok(result);
         }
     }
 }

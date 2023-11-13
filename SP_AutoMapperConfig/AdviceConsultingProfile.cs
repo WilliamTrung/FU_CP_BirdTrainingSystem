@@ -53,7 +53,8 @@ namespace SP_AutoMapperConfig
 
         private void Map_ConsultingTicket_ConsultingTicketDetailViewModel()
         {
-            CreateMap<ConsultingTicket, ConsultingTicketDetailViewModel>();
+            CreateMap<ConsultingTicket, ConsultingTicketDetailViewModel>()
+                .AfterMap<MappingAction_ConsultingTicket_ConsultingTicketDetailViewModel>();
         }
 
         private void Map_ConsultingTicket_ConsultingTicketListViewModel()
@@ -84,7 +85,6 @@ namespace SP_AutoMapperConfig
 
         public class MappingAction_ConsultingTicketCreateNewModel_ConsultingTicket : IMappingAction<ConsultingTicketCreateNewModel, ConsultingTicket>
         {
-
             private readonly IUnitOfWork _uow;
             private readonly IMapper _mapper;
 
@@ -123,6 +123,41 @@ namespace SP_AutoMapperConfig
                 destination.OnlineOrOffline = source.OnlineOrOffline;
                 destination.AppointmentDate = source.AppointmentDate;
                 destination.ActualSlotStart = source.ActualSlotStart;
+            }
+        }
+
+        public class MappingAction_ConsultingTicket_ConsultingTicketDetailViewModel : IMappingAction<ConsultingTicket, ConsultingTicketDetailViewModel>
+        {
+            private readonly IUnitOfWork _uow;
+            private readonly IMapper _mapper;
+
+            public MappingAction_ConsultingTicket_ConsultingTicketDetailViewModel (IUnitOfWork uow, IMapper mapper)
+            {
+                _uow = uow;
+                _mapper = mapper;
+            }
+
+            public void Process (ConsultingTicket source, ConsultingTicketDetailViewModel destination, ResolutionContext context)
+            {
+                var customer = _uow.CustomerRepository.GetFirst(x => x.Id == source.CustomerId, nameof(User)).Result;
+                var address = _uow.AddressRepository.GetFirst(x => x.Id == source.AddressId).Result;
+                var consultingType = _uow.ConsultingTypeRepository.GetFirst(x => x.Id == source.ConsultingTypeId).Result;
+                var trainer = _uow.TrainerRepository.GetFirst(x => x.Id == source.TrainerId, nameof(User)).Result;
+
+                destination.Id = source.Id;
+                destination.CustomerName = customer.User.Name;
+                destination.AddressDetail = address.AddressDetail;
+                destination.ConsultingType = consultingType.Name;
+                destination.TrainerName = trainer.User.Name;
+                destination.ConsultingDetail = source.ConsultingDetail;
+                destination.Distance = source.Distance;
+                destination.OnlineOrOffline = source.OnlineOrOffline;
+                destination.GgMeetLink = source.GgMeetLink;
+                destination.AppointmentDate = (DateTime)source.AppointmentDate;
+                destination.ActualSlotStart = source.ActualSlotStart;
+                destination.ActualEndSlot = source.ActualEndSlot;
+                destination.Price = source.Price;
+                destination.Status = source.Status;
             }
         }
     }

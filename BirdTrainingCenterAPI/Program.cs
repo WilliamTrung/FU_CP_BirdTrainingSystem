@@ -52,6 +52,7 @@ builder.Services.AddControllers().AddOData(options => options
                        x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.BirdTrainingCourse.Status>());
                        x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.BirdTrainingReport.Status>());
                        x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.Trainer.Category>());
+                       x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.OnlineCourse.Customer.OnlineCourse.Status>());
                    }
                );
 
@@ -72,6 +73,7 @@ builder.AddWorkshopFeature();
 builder.AddAdministrativeFeature();
 builder.AddTrainingCourseFeature();
 builder.AddAdviceConsultinFeature();
+builder.AddOnlineCourseFeature();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -84,10 +86,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.UseStaticFiles();
-app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.UseStaticFiles();
+app.UseHttpsRedirection();
+app.UseExceptionHandler("/error");
 app.MapControllers();
 app.UseCors("CorsPolicy");
 app.Run();

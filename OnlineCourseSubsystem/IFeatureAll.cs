@@ -9,7 +9,7 @@ namespace OnlineCourseSubsystem
 {
     public interface IFeatureAll
     {
-        Task<IEnumerable<OnlineCourseModel>> GetListOnlineCourse();
-        Task<OnlineCourseDetailViewModel> GetOnlineCourseById(int id);
+        Task<IEnumerable<OnlineCourseModel>> GetCourses();
+        Task<OnlineCourseModel> GetCourseById(int id);
     }
 }
