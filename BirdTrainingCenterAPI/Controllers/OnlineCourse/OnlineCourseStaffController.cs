@@ -4,11 +4,13 @@ using BirdTrainingCenterAPI.Controllers.Endpoints.OnlineCourse;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
+using SP_Middleware;
 
 namespace BirdTrainingCenterAPI.Controllers.OnlineCourse
 {
     [Route("api/online-course/management")]
     [ApiController]
+    [CustomAuthorize(roles: "Manager,Staff")]
     public class OnlineCourseStaffController : OnlineCourseBaseController, IOnlineCourseStaff
     {
         public OnlineCourseStaffController(IOnlineCourseService onlineCourseService, IAuthService authService) : base(onlineCourseService, authService)

@@ -32,56 +32,42 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         [Route("create-trainingcourse")]
         public async Task<IActionResult> CreateCourse([FromForm] TrainingCourseAddParamModel trainingCourse)
         {
-            try
+            var pictures = string.Empty;
+            if (trainingCourse.Pictures.Any(e => !e.IsImage()))
             {
-                var pictures = string.Empty;
-                if (trainingCourse.Pictures.Any(e => !e.IsImage()))
-                {
-                    return BadRequest("Upload image only!");
-                }
-                foreach (var file in trainingCourse.Pictures)
-                {
-                    var temp = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
-                    pictures += $"{temp},";
-                }
-                pictures = pictures.Substring(0, pictures.Length - 1);
-                var trainingCourseModel = trainingCourse.ToTrainingCourseModel(pictures);
+                return BadRequest("Upload image only!");
+            }
+            foreach (var file in trainingCourse.Pictures)
+            {
+                var temp = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
+                pictures += $"{temp},";
+            }
+            pictures = pictures.Substring(0, pictures.Length - 1);
+            var trainingCourseModel = trainingCourse.ToTrainingCourseModel(pictures);
 
-                await _trainingCourseService.Manager.CreateCourse(trainingCourseModel);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
+            await _trainingCourseService.Manager.CreateCourse(trainingCourseModel);
+            return Ok();
         }
 
         [HttpPut]
         [Route("edit-trainingcourse")]
         public async Task<IActionResult> EditCourse([FromForm] TrainingCourseModParamModel trainingCourse)
         {
-            try
+            var pictures = string.Empty;
+            if (trainingCourse.Pictures.Any(e => !e.IsImage()))
             {
-                var pictures = string.Empty;
-                if (trainingCourse.Pictures.Any(e => !e.IsImage()))
-                {
-                    return BadRequest("Upload image only!");
-                }
-                foreach (var file in trainingCourse.Pictures)
-                {
-                    var temp = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
-                    pictures += $"{temp},";
-                }
-                pictures = pictures.Substring(0, pictures.Length - 1);
-                var trainingCourseModel = trainingCourse.ToTrainingCourseModel(pictures);
+                return BadRequest("Upload image only!");
+            }
+            foreach (var file in trainingCourse.Pictures)
+            {
+                var temp = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
+                pictures += $"{temp},";
+            }
+            pictures = pictures.Substring(0, pictures.Length - 1);
+            var trainingCourseModel = trainingCourse.ToTrainingCourseModel(pictures);
 
-                await _trainingCourseService.Manager.EditCourse(trainingCourseModel);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
+            await _trainingCourseService.Manager.EditCourse(trainingCourseModel);
+            return Ok();
         }
 
         [HttpPut]
@@ -282,28 +268,21 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         [Route("birdcertificate")]
         public async Task<IActionResult> CreateBirdCertitficate([FromForm] BirdCertificateAddParamModel birdCertificateAddParam)
         {
-            try
+            var pictures = string.Empty;
+            if (birdCertificateAddParam.Pictures.Any(e => !e.IsImage()))
             {
-                var pictures = string.Empty;
-                if (birdCertificateAddParam.Pictures.Any(e => !e.IsImage()))
-                {
-                    return BadRequest("Upload image only!");
-                }
-                foreach (var file in birdCertificateAddParam.Pictures)
-                {
-                    var temp = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
-                    pictures += $"{temp},";
-                }
-                pictures = pictures.Substring(0, pictures.Length - 1);
-                var birdCertificateAdd = birdCertificateAddParam.ToBirdCertificateAddModel(pictures);
+                return BadRequest("Upload image only!");
+            }
+            foreach (var file in birdCertificateAddParam.Pictures)
+            {
+                var temp = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
+                pictures += $"{temp},";
+            }
+            pictures = pictures.Substring(0, pictures.Length - 1);
+            var birdCertificateAdd = birdCertificateAddParam.ToBirdCertificateAddModel(pictures);
 
-                await _trainingCourseService.Manager.CreateBirdCertitficate(birdCertificateAdd);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
+            await _trainingCourseService.Manager.CreateBirdCertitficate(birdCertificateAdd);
+            return Ok();
         }
     }
 }
