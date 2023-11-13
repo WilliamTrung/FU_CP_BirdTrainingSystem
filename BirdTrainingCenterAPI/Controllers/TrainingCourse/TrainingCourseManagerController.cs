@@ -22,7 +22,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
     {
         private readonly IFirebaseService _firebaseService;
         private readonly FirebaseBucket _bucket;
-        public TrainingCourseManagerController(ITrainingCourseService trainingCourseService, IAuthService authService, IFirebaseService firebaseService, IOptions<FirebaseBucket> bucket) : base(trainingCourseService)
+        public TrainingCourseManagerController(ITrainingCourseService trainingCourseService, IAuthService authService, IFirebaseService firebaseService, IOptions<FirebaseBucket> bucket) : base(trainingCourseService, authService)
         {
             _firebaseService = firebaseService;
             _bucket = bucket.Value;
@@ -110,7 +110,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
 
         [HttpPut]
         [Route("update-trainingskill")]
-        public async Task<IActionResult> UpdateSkill(AddTrainingSkillModel trainingSkillModel)
+        public async Task<IActionResult> UpdateSkill([FromBody] AddTrainingSkillModel trainingSkillModel)
         {
             await _trainingCourseService.Manager.UpdateSkill(trainingSkillModel);
             return Ok();
@@ -118,7 +118,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
 
         [HttpDelete]
         [Route("delete-trainingskill")]
-        public async Task<IActionResult> DeleteSkill(DeleteTrainingSkillModel trainingSkillModel)
+        public async Task<IActionResult> DeleteSkill([FromBody] DeleteTrainingSkillModel trainingSkillModel)
         {
             await _trainingCourseService.Manager.DeleteSkill(trainingSkillModel);
             return Ok();
@@ -143,7 +143,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         #region BirdSkill
         [HttpPost]
         [Route("birdskill-create")]
-        public async Task<IActionResult> CreateBirdSkill(BirdSkillAddModel birdSkillAdd)
+        public async Task<IActionResult> CreateBirdSkill([FromBody] BirdSkillAddModel birdSkillAdd)
         {
             await _trainingCourseService.Manager.CreateBirdSkill(birdSkillAdd);
             return Ok();
@@ -151,7 +151,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
 
         [HttpPut]
         [Route("birdskill-update")]
-        public async Task<IActionResult> EditBirdSkill(BirdSkillModModel birdSkillMod)
+        public async Task<IActionResult> EditBirdSkill([FromBody] BirdSkillModModel birdSkillMod)
         {
             await _trainingCourseService.Manager.EditBirdSkill(birdSkillMod);
             return Ok();
@@ -167,7 +167,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
 
         [HttpGet]
         [Route("birdskill-id")]
-        public async Task<IActionResult> GetBirdSkillsById(int birdSkillId)
+        public async Task<IActionResult> GetBirdSkillsById([FromQuery] int birdSkillId)
         {
             var result = await _trainingCourseService.Manager.GetBirdSkillsById(birdSkillId);
             return Ok(result);
@@ -175,7 +175,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
 
         [HttpPost]
         [Route("acquirablebirdskill-create")]
-        public async Task<IActionResult> CreateAccquirableBirdSkill(AccquirableAddModBirdSkill accquirableAdd)
+        public async Task<IActionResult> CreateAccquirableBirdSkill([FromBody] AccquirableAddModBirdSkill accquirableAdd)
         {
             await _trainingCourseService.Manager.CreateAccquirableBirdSkill(accquirableAdd);
             return Ok();
@@ -183,7 +183,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
 
         [HttpPut]
         [Route("acquirablebirdskill-update")]
-        public async Task<IActionResult> EditAccquirableBirdSkill(AccquirableAddModBirdSkill accquirableMod)
+        public async Task<IActionResult> EditAccquirableBirdSkill([FromBody] AccquirableAddModBirdSkill accquirableMod)
         {
             await _trainingCourseService.Manager.EditAccquirableBirdSkill(accquirableMod);
             return Ok();
@@ -192,7 +192,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         #region Skill
         [HttpPost]
         [Route("skill-create")]
-        public async Task<IActionResult> CreateSkill(SkillAddModel skillAddModel)
+        public async Task<IActionResult> CreateSkill([FromBody] SkillAddModel skillAddModel)
         {
             await _trainingCourseService.Manager.CreateSkill(skillAddModel);
             return Ok();
@@ -200,7 +200,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
 
         [HttpPut]
         [Route("skill-update")]
-        public async Task<IActionResult> EditSkill(SkillViewModModel skillModModel)
+        public async Task<IActionResult> EditSkill([FromBody] SkillViewModModel skillModModel)
         {
             await _trainingCourseService.Manager.EditSkill(skillModModel);
             return Ok();
@@ -224,7 +224,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
 
         [HttpPost]
         [Route("trainerskill-create")]
-        public async Task<IActionResult> CreateTrainerSkill(TrainerSkillAddModModel trainerSkillAdd)
+        public async Task<IActionResult> CreateTrainerSkill([FromBody] TrainerSkillAddModModel trainerSkillAdd)
         {
             await _trainingCourseService.Manager.CreateTrainerSkill(trainerSkillAdd);
             return Ok();
@@ -232,7 +232,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
 
         [HttpPut]
         [Route("trainerskill-update")]
-        public async Task<IActionResult> EditTrainerSkill(TrainerSkillAddModModel trainerSkillMod)
+        public async Task<IActionResult> EditTrainerSkill([FromBody] TrainerSkillAddModModel trainerSkillMod)
         {
             await _trainingCourseService.Manager.EditTrainerSkill(trainerSkillMod);
             return Ok();
@@ -248,7 +248,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
 
         [HttpGet]
         [Route("trainerskill-trainerid")]
-        public async Task<IActionResult> GetTrainerSkillsByTrainerId(int trainerId)
+        public async Task<IActionResult> GetTrainerSkillsByTrainerId([FromQuery] int trainerId)
         {
             var result = await _trainingCourseService.Manager.GetTrainerSkillsByTrainerId(trainerId);
             return Ok(result);
@@ -256,7 +256,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
 
         [HttpPost]
         [Route("trainableskill-create")]
-        public async Task<IActionResult> CreateTrainableSkill(TrainableAddModSkillModel trainableSkillAdd)
+        public async Task<IActionResult> CreateTrainableSkill([FromBody] TrainableAddModSkillModel trainableSkillAdd)
         {
             await _trainingCourseService.Manager.CreateTrainableSkill(trainableSkillAdd);
             return Ok();
@@ -264,7 +264,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
 
         [HttpPut]
         [Route("trainableskill-udpate")]
-        public async Task<IActionResult> EditTrainableSkill(TrainableAddModSkillModel trainableSkillMod)
+        public async Task<IActionResult> EditTrainableSkill([FromBody] TrainableAddModSkillModel trainableSkillMod)
         {
             await _trainingCourseService.Manager.EditTrainableSkill(trainableSkillMod);
             return Ok();
@@ -280,7 +280,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         #endregion
         [HttpPost]
         [Route("birdcertificate")]
-        public async Task<IActionResult> CreateBirdCertitficate(BirdCertificateAddParamModel birdCertificateAddParam)
+        public async Task<IActionResult> CreateBirdCertitficate([FromForm] BirdCertificateAddParamModel birdCertificateAddParam)
         {
             try
             {

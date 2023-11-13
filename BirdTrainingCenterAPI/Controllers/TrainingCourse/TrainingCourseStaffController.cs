@@ -23,7 +23,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
     {
         private readonly IFirebaseService _firebaseService;
         private readonly FirebaseBucket _bucket;
-        public TrainingCourseStaffController(ITrainingCourseService trainingCourseService, IAuthService authService, IFirebaseService firebaseService, IOptions<FirebaseBucket> bucket) : base(trainingCourseService)
+        public TrainingCourseStaffController(ITrainingCourseService trainingCourseService, IAuthService authService, IFirebaseService firebaseService, IOptions<FirebaseBucket> bucket) : base(trainingCourseService, authService)
         {
             _firebaseService = firebaseService;
             _bucket = bucket.Value;
@@ -44,7 +44,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         }
         [HttpGet]
         [Route("birdtrainingcourse-customer")]
-        public async Task<IActionResult> GetBirdTrainingCourseByCustomerId(int customerId)
+        public async Task<IActionResult> GetBirdTrainingCourseByCustomerId([FromQuery] int customerId)
         {
             var result = await _trainingCourseService.Staff.GetBirdTrainingCourseByCustomerId(customerId);
             return Ok(result);
@@ -140,14 +140,14 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         }
         [HttpPost]
         [Route("birdtrainingcourse-confirm")]
-        public async Task<IActionResult> ConfirmBirdTrainingCourse(int birdTrainingCourseId)
+        public async Task<IActionResult> ConfirmBirdTrainingCourse([FromQuery] int birdTrainingCourseId)
         {
             var result = await _trainingCourseService.Staff.ConfirmBirdTrainingCourse(birdTrainingCourseId);
             return Ok(result);
         }
         [HttpGet]
         [Route("birdtrainingreport-progressid")]
-        public async Task<IActionResult> GetReportByProgressId(int progressId)
+        public async Task<IActionResult> GetReportByProgressId([FromQuery] int progressId)
         {
             var result = await _trainingCourseService.Staff.GetReportByProgressId(progressId);
             return Ok(result);
@@ -155,7 +155,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
 
         [HttpPut]
         [Route("trainerslot-modify")]
-        public async Task<IActionResult> ModifyTrainingSlot(ReportModifyModel reportModModel)
+        public async Task<IActionResult> ModifyTrainingSlot([FromBody] ReportModifyModel reportModModel)
         {
             await _trainingCourseService.Staff.ModifyTrainingSlot(reportModModel);
             return Ok();
@@ -163,7 +163,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
 
         [HttpPost]
         [Route("birdcertificatedetail")]
-        public async Task<IActionResult> CreateBirdCertificateDetail(BirdCertificateDetailAddModel birdCertificateDetailAdd)
+        public async Task<IActionResult> CreateBirdCertificateDetail([FromBody] BirdCertificateDetailAddModel birdCertificateDetailAdd)
         {
             await _trainingCourseService.Staff.CreateBirdCertificateDetail(birdCertificateDetailAdd);
             return Ok();

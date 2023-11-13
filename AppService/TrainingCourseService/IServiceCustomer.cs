@@ -18,6 +18,8 @@ namespace AppService.TrainingCourseService
         Task<IEnumerable<BirdViewModel>> GetBirdByCustomerId(int customerId);
         Task<IEnumerable<TrainingCourseViewModel>> GetTrainingCourse();
         Task<IEnumerable<TrainingCourseViewModel>> GetTrainingCourseBySpeciesId(int birdSpeciesId);
+        Task<IEnumerable<TrainingCourseViewModel>> GetTrainingCourseByBirdSkillId(int birdSkillId);
+        Task<IEnumerable<TrainingCourseViewModel>> GetTrainingCourseBySpeciesIdBirdSkillId(int birdSpeciesId, int birdSkillId);
         Task<TrainingCourseViewModel> GetTrainingCourseById(int trainingCourseId);
         Task RegisterTrainingCourse(BirdTrainingCourseRegister birdTrainingCourseRegister);
         Task<IEnumerable<BirdTrainingCourseViewModel>> ViewRegisteredTrainingCourse(int birdId, int customerId);

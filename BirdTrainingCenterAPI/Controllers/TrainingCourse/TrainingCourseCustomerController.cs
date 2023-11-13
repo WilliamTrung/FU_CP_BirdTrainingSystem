@@ -1,13 +1,14 @@
 ﻿using AppService;
 using AppService.TrainingCourseService;
 using BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse;
+using BirdTrainingCenterAPI.Helper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Models.ApiParamModels.TrainingCourse;
+using Models.AuthModels;
 using Models.ConfigModels;
 using Models.ServiceModels.TrainingCourseModels;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
-using SP_Extension;
 using SP_Middleware;
 
 namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
@@ -19,7 +20,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
     {
         private readonly IFirebaseService _firebaseService;
         private readonly FirebaseBucket _bucket;
-        public TrainingCourseCustomerController(ITrainingCourseService trainingCourseService, IAuthService authService, IFirebaseService firebaseService, IOptions<FirebaseBucket> bucket) : base(trainingCourseService)
+        public TrainingCourseCustomerController(ITrainingCourseService trainingCourseService, IAuthService authService, IFirebaseService firebaseService, IOptions<FirebaseBucket> bucket) : base(trainingCourseService, authService)
         {
             _firebaseService = firebaseService;
             _bucket = bucket.Value;
@@ -80,10 +81,19 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         }
         [HttpGet]
         [Route("customer-bird")]
-        public async Task<IActionResult> GetBirdByCustomerId([FromQuery] int customerId)
+        public async Task<IActionResult> GetBirdByCustomerId()
         {
-            var result = await _trainingCourseService.Customer.GetBirdByCustomerId(customerId);
-            return Ok(result);
+            var accessToken = Request.DeserializeToken(_authService);
+            if (accessToken == null)
+            {
+                return Unauthorized();
+            }
+            else
+            {
+                var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
+                var result = await _trainingCourseService.Customer.GetBirdByCustomerId(Int32.Parse(customerId.Value));
+                return Ok(result);
+            }
         }
         [HttpGet]
         [Route("trainingcourse")]
@@ -100,6 +110,21 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             return Ok(result);
         }
         [HttpGet]
+        [Route("trainingcourse-birdskill")]
+        public async Task<IActionResult> GetTrainingCourseByBirdSkillId([FromQuery] int birdSkillId)
+        {
+            var result = await _trainingCourseService.Customer.GetTrainingCourseByBirdSkillId(birdSkillId);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("trainingcourse-birdspeciesskill")]
+        public async Task<IActionResult> GetTrainingCourseBySpeciesIdBirdSkillId([FromQuery]int birdSpeciesId, [FromQuery] int birdSkillId)
+        {
+            var result = await _trainingCourseService.Customer.GetTrainingCourseBySpeciesIdBirdSkillId(birdSpeciesId: birdSpeciesId, birdSkillId: birdSkillId);
+            return Ok(result);
+        }
+        [HttpGet]
         [Route("trainingcourse-id")]
         public async Task<IActionResult> GetTrainingCourseById([FromQuery] int trainingCourseId)
         {
@@ -108,7 +133,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         }
         [HttpPost]
         [Route("register-trainingcourse")]
-        public async Task<IActionResult> RegisterTrainingCourse(BirdTrainingCourseRegister birdTrainingCourseRegister)
+        public async Task<IActionResult> RegisterTrainingCourse([FromBody] BirdTrainingCourseRegister birdTrainingCourseRegister)
         {
             await _trainingCourseService.Customer.RegisterTrainingCourse(birdTrainingCourseRegister);
             return Ok();
@@ -129,10 +154,20 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         }
         [HttpGet]
         [Route("registered-birdtrainingcourse")]
-        public async Task<IActionResult> GetRegisteredTrainingCourse([FromQuery] int birdId, [FromQuery] int customerId)
+        public async Task<IActionResult> GetRegisteredTrainingCourse([FromQuery] int birdId)
         {
-            var result = await _trainingCourseService.Customer.ViewRegisteredTrainingCourse(birdId: birdId, customerId: customerId);
-            return Ok(result);
+            var accessToken = Request.DeserializeToken(_authService);
+            if (accessToken == null)
+            {
+                return Unauthorized();
+            }
+            else
+            {
+                var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
+
+                var result = await _trainingCourseService.Customer.ViewRegisteredTrainingCourse(birdId: birdId, customerId: Int32.Parse(customerId.Value));
+                return Ok(result);
+            }
         }
     }
 }

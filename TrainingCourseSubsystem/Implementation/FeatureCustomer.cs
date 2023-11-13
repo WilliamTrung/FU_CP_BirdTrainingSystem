@@ -152,5 +152,28 @@ namespace TrainingCourseSubsystem.Implementation
             }
             return models;
         }
+
+        public async Task<IEnumerable<TrainingCourseViewModel>> GetTrainingCourseByBirdSkillId(int birdSkillId)
+        {
+            var entities = await _unitOfWork.TrainingCourseRepository.Get(e => e.Status == (int)Models.Enum.TrainingCourse.Status.Active
+                                                                               , nameof(TrainingCourse.BirdSpecies));
+            var trainingSkill = _unitOfWork.TrainingCourseSkillRepository.Get(e => e.BirdSkillId == birdSkillId).Result.ToList();
+            var models = _mapper.Map<IEnumerable<TrainingCourseViewModel>>(entities);
+            models = models.Where(e => trainingSkill.Any(m => m.TrainingCourseId == e.Id)).ToList();
+            return models;
+        }
+
+        public async Task<IEnumerable<TrainingCourseViewModel>> GetTrainingCourseBySpeciesIdBirdSkillId(int birdSpeciesId, int birdSkillId)
+        {
+            var entities = await _unitOfWork.TrainingCourseRepository.Get(e => e.BirdSpeciesId == birdSpeciesId 
+                                                                            && e.Status == (int)Models.Enum.TrainingCourse.Status.Active
+                                                                               , nameof(TrainingCourse.BirdSpecies));
+
+            var trainingSkill = _unitOfWork.TrainingCourseSkillRepository.Get(e => e.BirdSkillId == birdSkillId).Result.ToList();
+
+            var models = _mapper.Map<IEnumerable<TrainingCourseViewModel>>(entities);
+            models = models.Where(e => trainingSkill.Any(m => m.TrainingCourseId == e.Id)).ToList();
+            return models;
+        }
     }
 }

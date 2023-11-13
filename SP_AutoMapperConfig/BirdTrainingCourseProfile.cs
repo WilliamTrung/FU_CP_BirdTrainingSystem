@@ -19,7 +19,7 @@ namespace SP_AutoMapperConfig
         }
         private void Map_BirdTrainingCourse_BirdTrainingCourseRegister()
         {
-            CreateMap<BirdTrainingCourse, BirdTrainingCourseRegister>()
+            CreateMap<BirdTrainingCourseRegister, BirdTrainingCourse>()
                 .ForMember(m => m.BirdId, opt => opt.MapFrom(e => e.BirdId))
                 .ForMember(m => m.TrainingCourseId, opt => opt.MapFrom(e => e.TrainingCourseId))
                 .ForMember(m => m.CustomerId, opt => opt.MapFrom(e => e.CustomerId))
