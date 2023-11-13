@@ -33,7 +33,7 @@ namespace Models.Entities
 
         public virtual Bird Bird { get; set; } = null!;
         public virtual Customer Customer { get; set; } = null!;
-        public virtual User Staff { get; set; } = null!;
+        public virtual User? Staff { get; set; }
         public virtual TrainingCourse TrainingCourse { get; set; } = null!;
         public virtual ICollection<BirdTrainingProgress> BirdTrainingProgresses { get; set; }
         public virtual ICollection<BirdCertificateDetail> BirdCertificateDetails { get; set; }
