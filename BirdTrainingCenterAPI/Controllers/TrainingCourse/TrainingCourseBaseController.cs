@@ -1,6 +1,7 @@
 ﻿using AppService.TrainingCourseService;
 using BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse;
 using Microsoft.AspNetCore.Mvc;
+using Models.ServiceModels.TrainingCourseModels.BirdCertificate;
 using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
 
 namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
@@ -50,6 +51,54 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         public async Task<IActionResult> GetTrainingCoursesById(int courseId)
         {
             var result = await _trainingCourseService.All.GetTrainingCoursesById(courseId);
+            return Ok(result);
+        }
+
+        [HttpPost]
+        [Route("birdskillreceived")]
+        public async Task<IActionResult> CreateBirdSkillReceived(BirdSkillReceivedAddDeleteModel addDeleteModel)
+        {
+            await _trainingCourseService.All.CreateBirdSkillReceived(addDeleteModel);
+            return Ok();
+        }
+
+        [HttpDelete]
+        [Route("birdskillreceived")]
+        public async Task<IActionResult> DeleteBirdSkillReceived(BirdSkillReceivedAddDeleteModel addDeleteModel)
+        {
+            await _trainingCourseService.All.DeleteBirdSkillReceived(addDeleteModel);
+            return Ok();
+        }
+
+        [HttpGet]
+        [Route("birdcertificatedetail")]
+        public async Task<IActionResult> GetBirdCertificatesDetail()
+        {
+            var result = await _trainingCourseService.All.GetBirdCertificatesDetail();
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("birdcertificatedetail-bird")]
+        public async Task<IActionResult> GetBirdCertificatesDetailByBirdId(int birdId)
+        {
+            var result = await _trainingCourseService.All.GetBirdCertificatesDetailByBirdId(birdId);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("birdskillreceived")]
+        public async Task<IActionResult> GetBirdSkillReceiveds()
+        {
+            var result = await _trainingCourseService.All.GetBirdSkillReceiveds();
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("birdskillreceived-bird")]
+        public async Task<IActionResult> GetBirdSkillReceivedsByBirdId(int birdId)
+        {
+            var result = await _trainingCourseService.All.GetBirdSkillReceivedsByBirdId(birdId);
             return Ok(result);
         }
     }

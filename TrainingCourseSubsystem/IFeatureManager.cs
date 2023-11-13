@@ -54,7 +54,7 @@ namespace TrainingCourseSubsystem
 
         #region BirdCertificate
 
-        Task CreateBirdCertitfiCate(BirdCertificateAddModel birdCertificateAdd);
+        Task CreateBirdCertitficate(BirdCertificateAddModel birdCertificateAdd);
 
         #endregion
     }

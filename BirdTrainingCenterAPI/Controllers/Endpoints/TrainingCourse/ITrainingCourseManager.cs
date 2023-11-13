@@ -2,6 +2,7 @@
 using Models.ApiParamModels.TrainingCourse;
 using Models.ServiceModels.TrainingCourseModels;
 using Models.ServiceModels.TrainingCourseModels.Bird;
+using Models.ServiceModels.TrainingCourseModels.BirdCertificate;
 using Models.ServiceModels.TrainingCourseModels.BirdSkill;
 using Models.ServiceModels.TrainingCourseModels.TrainerSkill;
 using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
@@ -117,6 +118,13 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
         [HttpGet]
         [Route("trainableskill")]
         Task<IActionResult> GetTrainableSkills();
+        #endregion
+
+        #region BirdCertificate
+
+        [HttpPost]
+        [Route("birdcertificate")]
+        Task<IActionResult> CreateBirdCertitficate(BirdCertificateAddParamModel birdCertificateAddParam);
         #endregion
     }
 }

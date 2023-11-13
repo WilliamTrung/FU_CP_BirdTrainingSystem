@@ -278,5 +278,32 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             return Ok(result);
         }
         #endregion
+        [HttpPost]
+        [Route("birdcertificate")]
+        public async Task<IActionResult> CreateBirdCertitficate(BirdCertificateAddParamModel birdCertificateAddParam)
+        {
+            try
+            {
+                var pictures = string.Empty;
+                if (birdCertificateAddParam.Pictures.Any(e => !e.IsImage()))
+                {
+                    return BadRequest("Upload image only!");
+                }
+                foreach (var file in birdCertificateAddParam.Pictures)
+                {
+                    var temp = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
+                    pictures += $"{temp},";
+                }
+                pictures = pictures.Substring(0, pictures.Length - 1);
+                var birdCertificateAdd = birdCertificateAddParam.ToBirdCertificateAddModel(pictures);
+
+                await _trainingCourseService.Manager.CreateBirdCertitficate(birdCertificateAdd);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
     }
 }

@@ -10,6 +10,7 @@ using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
 using Models.ServiceModels.TrainingCourseModels.TrainerSlot;
 using Models.ServiceModels.SlotModels;
 using Models.ApiParamModels.TrainingCourse;
+using Models.ServiceModels.TrainingCourseModels.BirdCertificate.BirdCertificateDetail;
 
 namespace AppService.TrainingCourseService
 {
@@ -58,5 +59,6 @@ namespace AppService.TrainingCourseService
 
         Task ReceiveBird(BirdTrainingCourseReceiveBird birdTrainingCourse);
         Task ReturnBird(BirdTrainingCourseReturnBird birdTrainingCourse);
+        Task CreateBirdCertificateDetail(BirdCertificateDetailAddModel birdCertificateDetailAdd);
     }
 }

@@ -1,5 +1,7 @@
 ﻿using Models.Enum.BirdTrainingProgress;
 using Models.ServiceModels.TrainingCourseModels.Bird;
+using Models.ServiceModels.TrainingCourseModels.BirdCertificate;
+using Models.ServiceModels.TrainingCourseModels.BirdCertificate.BirdCertificateDetail;
 using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
 using System;
 using System.Collections.Generic;
@@ -19,6 +21,36 @@ namespace AppService.TrainingCourseService.Implement
         {
             _timetable = timetable;
             _trainingCourse = trainingCourse;
+        }
+
+        public async Task CreateBirdSkillReceived(BirdSkillReceivedAddDeleteModel addDeleteModel)
+        {
+            await _trainingCourse.All.CreateBirdSkillReceived(addDeleteModel);
+        }
+
+        public async Task DeleteBirdSkillReceived(BirdSkillReceivedAddDeleteModel addDeleteModel)
+        {
+            await _trainingCourse.All.DeleteBirdSkillReceived(addDeleteModel);
+        }
+
+        public async Task<IEnumerable<BirdCertificateDetailViewModel>> GetBirdCertificatesDetail()
+        {
+            return await _trainingCourse.All.GetBirdCertificatesDetail();
+        }
+
+        public async Task<IEnumerable<BirdCertificateDetailViewModel>> GetBirdCertificatesDetailByBirdId(int birdId)
+        {
+            return await _trainingCourse.All.GetBirdCertificatesDetailByBirdId(birdId);
+        }
+
+        public async Task<IEnumerable<BirdSkillReceivedViewModel>> GetBirdSkillReceiveds()
+        {
+            return await _trainingCourse.All.GetBirdSkillReceiveds();
+        }
+
+        public async Task<IEnumerable<BirdSkillReceivedViewModel>> GetBirdSkillReceivedsByBirdId(int birdId)
+        {
+            return await _trainingCourse.All.GetBirdSkillReceivedsByBirdId(birdId);
         }
 
         public async Task<IEnumerable<BirdSpeciesViewModel>> GetBirdSpecies()

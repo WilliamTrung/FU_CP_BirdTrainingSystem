@@ -1,6 +1,7 @@
 ﻿using Models.ApiParamModels.TrainingCourse;
 using Models.ServiceModels.SlotModels;
 using Models.ServiceModels.TrainingCourseModels;
+using Models.ServiceModels.TrainingCourseModels.BirdCertificate.BirdCertificateDetail;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
@@ -226,6 +227,11 @@ namespace AppService.TrainingCourseService.Implement
             {
                 throw new Exception("Client send null param.");
             }
+        }
+
+        public async Task CreateBirdCertificateDetail(BirdCertificateDetailAddModel birdCertificateDetailAdd)
+        {
+            await _trainingCourse.Staff.CreateBirdCertificateDetail(birdCertificateDetailAdd);
         }
     }
 }

@@ -17,13 +17,31 @@ namespace SP_AutoMapperConfig
             Map_BirdSkillAddModel_BirdSkill();
             Map_BirdSkill_BirdSkillViewModel();
             Map_BirdSkillReceivedAddDeleteModel_BirdSkillReceived();
+            Map_BirdSkillReceived_BirdSkillReceivedViewModel();
+        }
+
+        private void Map_BirdSkillReceived_BirdSkillReceivedViewModel()
+        {
+            CreateMap<BirdSkillReceived, BirdSkillReceivedViewModel>()
+                .ForMember(m => m.BirdId, opt => opt.MapFrom(e => e.BirdId))
+                .ForMember(m => m.BirdName, opt => {
+                    opt.PreCondition(e => e.Bird != null);
+                    opt.MapFrom(e => e.Bird.Name);
+                })
+                .ForMember(m => m.BirdSkillId, opt => opt.MapFrom(e => e.BirdSkillId))
+                .ForMember(m => m.BirdSkillName, opt => {
+                    opt.PreCondition(e => e.BirdSkill != null);
+                    opt.MapFrom(e => e.BirdSkill.Name);
+                })
+                .ForMember(m => m.ReceivedDate, opt => opt.MapFrom(e => e.ReceivedDate));
         }
 
         private void Map_BirdSkillReceivedAddDeleteModel_BirdSkillReceived()
         {
             CreateMap<BirdSkillReceivedAddDeleteModel, BirdSkillReceived>()
                 .ForMember(m => m.BirdSkillId, opt => opt.MapFrom(e => e.BirdSkillId))
-                .ForMember(m => m.BirdId, opt => opt.MapFrom(e => e.BirdId));
+                .ForMember(m => m.BirdId, opt => opt.MapFrom(e => e.BirdId))
+                .ForMember(m => m.ReceivedDate, opt => opt.MapFrom(e => DateTime.Now));
         }
 
         private void Map_AcquirableSkill_AcquirableSkillViewModel()

@@ -12,6 +12,7 @@ using SP_Middleware;
 using SP_Extension;
 using Models.ServiceModels.TrainingCourseModels.TrainerSlot;
 using System;
+using Models.ServiceModels.TrainingCourseModels.BirdCertificate.BirdCertificateDetail;
 
 namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
 {
@@ -157,6 +158,14 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         public async Task<IActionResult> ModifyTrainingSlot(ReportModifyModel reportModModel)
         {
             await _trainingCourseService.Staff.ModifyTrainingSlot(reportModModel);
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("birdcertificatedetail")]
+        public async Task<IActionResult> CreateBirdCertificateDetail(BirdCertificateDetailAddModel birdCertificateDetailAdd)
+        {
+            await _trainingCourseService.Staff.CreateBirdCertificateDetail(birdCertificateDetailAdd);
             return Ok();
         }
     }
