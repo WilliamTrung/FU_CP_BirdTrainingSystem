@@ -1,4 +1,5 @@
-﻿using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
+﻿using Models.ServiceModels;
+using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,11 +13,7 @@ namespace TransactionSubsystem
         Task<decimal> CalculateDistancePrice(int distance);
         Task<decimal> CalculateMemberShipDiscountedPrice(int customerId, decimal price);
         Task<dynamic> CalculateConsultingTicketFinalPrice(ConsultingTicketCreateNewModel consultingTicket, int distance);
-    //return new
-    //{
-    //  FinalPrice = finalPrice,
-    //  DiscountedPrice = discountedPrice
-    //};
-    Task<dynamic> CalculateFinalPrice(int customerId, decimal price);
+        Task<dynamic> CalculateFinalPrice(int customerId, decimal price);
+        Task AddTransaction(TransactionAddModel transaction);
     }
 }

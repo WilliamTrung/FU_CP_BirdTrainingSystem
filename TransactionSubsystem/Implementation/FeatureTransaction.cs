@@ -1,6 +1,7 @@
 ﻿using AppRepository.UnitOfWork;
 using AutoMapper;
 using Models.Entities;
+using Models.ServiceModels;
 using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,12 @@ namespace TransactionSubsystem.Implementation
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+        }
+
+        public async Task AddTransaction(TransactionAddModel transaction)
+        {
+            var entity = _mapper.Map<Transaction>(transaction);
+            await _unitOfWork.TransactionRepository.Add(entity);
         }
 
         public async Task<dynamic> CalculateConsultingTicketFinalPrice(ConsultingTicketCreateNewModel consultingTicket, int distance)
