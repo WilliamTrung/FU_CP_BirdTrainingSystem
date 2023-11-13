@@ -12,6 +12,8 @@ namespace AppService.OnlineCourseService
 {
     public interface IServiceCustomer : IServiceAll
     {
+        Task<IEnumerable<OnlineCourseModel>> GetCourses(int customerId);
+        Task<OnlineCourseModel> GetCourseById(int customerId, int courseId);
         Task<BillingModel> GetBillingInformation(int customerId, int courseId);
         Task EnrollCourse(int customerId,BillingModel billing);
         Task<IEnumerable<OnlineCourseModel>> GetEnrolledCourses(int customerId);

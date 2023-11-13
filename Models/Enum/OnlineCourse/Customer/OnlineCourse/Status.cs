@@ -8,8 +8,8 @@ namespace Models.Enum.OnlineCourse.Customer.OnlineCourse
 {
     public enum Status
     {
-        NONE = -1,
-        ENROLLED = 0,
-        COMPLETED = 1
+        Unenrolled = -1,
+        Enrolled = 0,
+        Completed = 1
     }
 }

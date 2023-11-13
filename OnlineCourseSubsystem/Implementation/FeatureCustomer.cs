@@ -42,7 +42,7 @@ namespace OnlineCourseSubsystem.Implementation
                     throw new InvalidOperationException("Customer must complete all sections!");
                 }                
             }
-            entity.Status = (int)Models.Enum.OnlineCourse.Customer.OnlineCourse.Status.COMPLETED;
+            entity.Status = (int)Models.Enum.OnlineCourse.Customer.OnlineCourse.Status.Completed;
             await _unitOfWork.CustomerOnlineCourseDetailRepository.Update(entity);
         }
 
@@ -84,7 +84,7 @@ namespace OnlineCourseSubsystem.Implementation
                                                                                           && c.OnlineCourseId == courseId);
             if (entity == null)
             {
-                return Models.Enum.OnlineCourse.Customer.OnlineCourse.Status.NONE;
+                return Models.Enum.OnlineCourse.Customer.OnlineCourse.Status.Unenrolled;
             } else
             {
                 return (Models.Enum.OnlineCourse.Customer.OnlineCourse.Status)entity.Status;
@@ -104,7 +104,7 @@ namespace OnlineCourseSubsystem.Implementation
                 OnlineCourseId = billing.CourseId,
                 DiscountedPrice = billing.DiscountedPrice,
                 Price = billing.CoursePrice,
-                Status = (int)Models.Enum.OnlineCourse.Customer.OnlineCourse.Status.ENROLLED
+                Status = (int)Models.Enum.OnlineCourse.Customer.OnlineCourse.Status.Enrolled
             };
             await _unitOfWork.CustomerOnlineCourseDetailRepository.Add(customerCourse);
             var course = await _unitOfWork.OnlineCourseRepository.GetFirst(c => c.Id == billing.CourseId
@@ -231,7 +231,7 @@ namespace OnlineCourseSubsystem.Implementation
                 throw new InvalidOperationException("Customer has not enrolled to course!");
             }
             var progressStatus = await _unitOfWork.CustomerOnlineCourseDetailRepository.GetFirst(c => c.CustomerId == customerId && c.OnlineCourseId == courseId);
-            if(progressStatus.Status != (int)Models.Enum.OnlineCourse.Customer.OnlineCourse.Status.COMPLETED)
+            if(progressStatus.Status != (int)Models.Enum.OnlineCourse.Customer.OnlineCourse.Status.Completed)
             {
                 throw new InvalidOperationException("Customer has not completed the course!");
             }
@@ -246,7 +246,7 @@ namespace OnlineCourseSubsystem.Implementation
                                                                                        , $"{nameof(CustomerCertificateDetail.Customer)}.{nameof(Customer.User)}"
                                                                                        , $"{nameof(CustomerCertificateDetail.Certificate)}.{nameof(Certificate.OnlineCourse)}"
                                                                                        , $"{nameof(CustomerCertificateDetail.Certificate)}.{nameof(Certificate.OnlineCourse)}.{nameof(OnlineCourse.CustomerOnlineCourseDetails)}");
-            certs = certs.Where(c => c.Certificate.OnlineCourse.CustomerOnlineCourseDetails.Any(e => e.Status == (int)Models.Enum.OnlineCourse.Customer.OnlineCourse.Status.COMPLETED));
+            certs = certs.Where(c => c.Certificate.OnlineCourse.CustomerOnlineCourseDetails.Any(e => e.Status == (int)Models.Enum.OnlineCourse.Customer.OnlineCourse.Status.Completed));
             var models = _mapper.Map<List<OnlineCourseCertificateModel>>(certs);
             return models;
         }
@@ -254,7 +254,7 @@ namespace OnlineCourseSubsystem.Implementation
         public async Task<IEnumerable<OnlineCourseModel>> GetCompletedCourse(int customerId)
         {
             var completedEnrolled = await _unitOfWork.CustomerOnlineCourseDetailRepository.Get(c => c.CustomerId == customerId
-                                                                                                && c.Status == (int)Models.Enum.OnlineCourse.Customer.OnlineCourse.Status.COMPLETED,
+                                                                                                && c.Status == (int)Models.Enum.OnlineCourse.Customer.OnlineCourse.Status.Completed,
                                                                                                 nameof(CustomerOnlineCourseDetail.OnlineCourse));
             var models = _mapper.Map<List<OnlineCourseModel>>(completedEnrolled.Select(e => e.OnlineCourse));
             return models;

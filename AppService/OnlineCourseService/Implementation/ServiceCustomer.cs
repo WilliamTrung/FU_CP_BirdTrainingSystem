@@ -81,10 +81,27 @@ namespace AppService.OnlineCourseService.Implementation
             return result;
         }
 
+        public async Task<OnlineCourseModel> GetCourseById(int customerId, int courseId)
+        {
+            var result = await GetCourseById(courseId);
+            result.Status = await CheckEnrolledCourse(customerId, courseId);
+            return result;
+        }
+
         public async Task<OnlineCourseCertificateModel> GetCourseCertificate(int customerId, int courseId)
         {
             var result = await _onlineCourse.Customer.GetCertificateModel(customerId, courseId);
             return result;
+        }
+
+        public async Task<IEnumerable<OnlineCourseModel>> GetCourses(int customerId)
+        {
+            var courses = await GetCourses();
+            foreach (var course in courses)
+            {
+                course.Status = await CheckEnrolledCourse(customerId, course.Id);
+            }
+            return courses;
         }
 
         public async Task<IEnumerable<OnlineCourseModel>> GetEnrolledCourses(int customerId)
