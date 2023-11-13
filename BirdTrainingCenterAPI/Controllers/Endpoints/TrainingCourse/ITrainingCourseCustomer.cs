@@ -20,7 +20,7 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
 
         [HttpGet]
         [Route("customer-bird")]
-        Task<IActionResult> GetBirdByCustomerId();
+        Task<IActionResult> GetBirdByCustomerId(int customerId);
 
         [HttpGet]
         [Route("trainingcourse")]
@@ -48,7 +48,7 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
 
         [HttpGet]
         [Route("registered-trainingcourse")]
-        Task<IActionResult> GetRegisteredTrainingCourse([FromQuery] int birdId);
+        Task<IActionResult> GetRegisteredTrainingCourse([FromQuery] int birdId, int customerId);
 
         [HttpGet]
         [Route("registered-birdtrainingcourseprogress")]
