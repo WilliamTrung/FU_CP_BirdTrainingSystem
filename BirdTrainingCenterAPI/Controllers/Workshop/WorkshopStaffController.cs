@@ -19,21 +19,7 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
         [Route("create-class")]
         public async Task<IActionResult> CreateWorkshopClass([FromBody] WorkshopClassAddModel workshopClass)
         {
-            try
-            {
-                await _workshopService.Staff.CreateWorkshopClass(workshopClass);
-            } catch (InvalidDataException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-            catch (InvalidOperationException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }            
+            await _workshopService.Staff.CreateWorkshopClass(workshopClass);
             return Ok();
         }
         [HttpGet]
@@ -41,138 +27,48 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
         [Route("get-classes")]
         public async Task<IActionResult> GetClassesByWorkshop([FromQuery] int workshopId)
         {
-            try
+            var result = await _workshopService.Staff.GetWorkshopClassAdminViewModels(workshopId);
+            foreach (var model in result)
             {
-                var result = await _workshopService.Staff.GetWorkshopClassAdminViewModels(workshopId);
-                foreach (var model in result)
-                {
-                    model.RegistrationAmount = await _workshopService.All.GetRegistrationAmount(model.Id);
-                }
-                return Ok(result);
+                model.RegistrationAmount = await _workshopService.All.GetRegistrationAmount(model.Id);
             }
-            catch (InvalidDataException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-            catch (InvalidOperationException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
+            return Ok(result);
         }
         [HttpGet]
         [Route("get-class-details")]
         [EnableQuery]
         public async Task<IActionResult> GetDetailsByClass([FromQuery] int workshopClassId)
         {
-            try
-            {
-                var result = await _workshopService.Staff.GetWorkshopClassDetailByWorkshopClassId(workshopClassId);
-                return Ok(result);
-            }
-            catch (InvalidDataException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-            catch (InvalidOperationException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
+            var result = await _workshopService.Staff.GetWorkshopClassDetailByWorkshopClassId(workshopClassId);
+            return Ok(result);
         }
         [HttpPut]
         [Route("modify-trainer")]
         public async Task<IActionResult> ModifyTrainerForDetail([FromBody] WorkshopClassDetailTrainerSlotModifyModel workshopClassDetail)
         {
-            try
-            {
-                await _workshopService.Staff.ModifyWorkshopClassDetailTrainerSlot(workshopClassDetail);
-                return Ok();
-            }
-            catch (InvalidDataException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-            catch (InvalidOperationException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
+            await _workshopService.Staff.ModifyWorkshopClassDetailTrainerSlot(workshopClassDetail);
+            return Ok();
         }
         [HttpPut]
         [Route("modify-slot")]
         public async Task<IActionResult> ModifyTrainerForDetailSlot([FromBody] WorkshopClassDetailTrainerSlotOnlyModifyModel workshopClassDetail)
         {
-            try
-            {
-                await _workshopService.Staff.ModifyWorkshopClassDetailSlotOnly(workshopClassDetail);
-                return Ok();
-            }
-            catch (InvalidDataException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-            catch (InvalidOperationException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
+            await _workshopService.Staff.ModifyWorkshopClassDetailSlotOnly(workshopClassDetail);
+            return Ok();
         }
         [HttpPut]
         [Route("cancel")]
         public async Task<IActionResult> CancelWorkshopClass([FromQuery] int workshopClassId)
         {
-            try
-            {
-                await _workshopService.Staff.CancelWorkshopClass(workshopClassId);
-                return Ok();
-            }
-            catch (InvalidDataException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-            catch (InvalidOperationException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
+            await _workshopService.Staff.CancelWorkshopClass(workshopClassId);
+            return Ok();
         }
         [HttpPut]
         [Route("complete")]
         public async Task<IActionResult> CompleteWorkshopClass([FromQuery] int workshopClassId)
         {
-            try
-            {
-                await _workshopService.Staff.CompleteWorkshopClass(workshopClassId);
-                return Ok();
-            }
-            catch (InvalidDataException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-            catch (InvalidOperationException ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
+            await _workshopService.Staff.CompleteWorkshopClass(workshopClassId);
+            return Ok();
         }
         [HttpGet]
         [EnableQuery]
