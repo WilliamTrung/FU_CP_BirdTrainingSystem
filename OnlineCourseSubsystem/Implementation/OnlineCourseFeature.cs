@@ -1,5 +1,6 @@
 ﻿using AppRepository.UnitOfWork;
 using AutoMapper;
+using AutoMapper.Features;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,19 +11,18 @@ namespace OnlineCourseSubsystem.Implementation
 {
     public class OnlineCourseFeature : IOnlineCourseFeature
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-
-        public OnlineCourseFeature(IUnitOfWork unitOfWork, IMapper mapper)
+        public OnlineCourseFeature(IFeatureManager managerFeature, IFeatureCustomer customerFeature, IFeatureStaff staffFeature, IFeatureAll allFeature)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
+            Manager = managerFeature;
+            Customer = customerFeature;
+            Staff = staffFeature;
+            All = allFeature;
         }
+        public IFeatureManager Manager { get; private set; }
+        public IFeatureCustomer Customer { get; private set; }
 
-        public IFeatureCustomer Customer => new FeatureCustomer(_unitOfWork, _mapper);
+        public IFeatureStaff Staff { get; private set; } 
 
-        public IFeatureStaff Staff => new FeatureStaff(_unitOfWork, _mapper);
-
-        public IFeatureAll All => new FeatureAll(_unitOfWork, _mapper);
+        public IFeatureAll All { get; private set; }
     }
 }

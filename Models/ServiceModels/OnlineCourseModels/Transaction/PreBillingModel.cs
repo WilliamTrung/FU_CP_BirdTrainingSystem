@@ -1,0 +1,15 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Models.ServiceModels.OnlineCourseModels.Transaction
+{
+    public class PreBillingModel
+    {
+        public string MembershipName { get; set; } = null!;
+        public float DiscountPercent { get; set; }
+        public decimal CoursePrice { get; set; }
+    }
+}

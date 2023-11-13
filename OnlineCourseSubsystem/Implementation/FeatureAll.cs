@@ -11,8 +11,8 @@ namespace OnlineCourseSubsystem.Implementation
 {
     public class FeatureAll : IFeatureAll
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
+        internal readonly IUnitOfWork _unitOfWork;
+        internal readonly IMapper _mapper;
 
         public FeatureAll (IUnitOfWork unitOfWork, IMapper mapper)
         {
@@ -20,24 +20,21 @@ namespace OnlineCourseSubsystem.Implementation
             _mapper = mapper;
         }
 
-        public async Task<IEnumerable<OnlineCourseModel>> GetListOnlineCourse()
+        public virtual async Task<IEnumerable<OnlineCourseModel>> GetCourses()
         {
             var entities = await _unitOfWork.OnlineCourseRepository.Get(expression: null);
-            var models = new List<OnlineCourseModel>();
-            foreach (var entity in entities)
-            {
-                var model = _mapper.Map<OnlineCourseModel>(entity);
-                models.Add(model);
-            }
-
+            var models = _mapper.Map<List<OnlineCourseModel>>(entities);
             return models;  
         }
 
-        public async Task<OnlineCourseDetailViewModel> GetOnlineCourseById(int id)
+        public virtual async Task<OnlineCourseModel> GetCourseById(int id)
         {
-            var entites = await _unitOfWork.OnlineCourseRepository.GetFirst(x => x.Id == id);
-            var model = _mapper.Map<OnlineCourseDetailViewModel>(entites);
-
+            var entity = await _unitOfWork.OnlineCourseRepository.GetFirst(e => e.Id == id);
+            if(entity == null)
+            {
+                throw new KeyNotFoundException("This course is not found!");
+            }
+            var model = _mapper.Map<OnlineCourseModel>(entity);
             return model;
         }
     }
