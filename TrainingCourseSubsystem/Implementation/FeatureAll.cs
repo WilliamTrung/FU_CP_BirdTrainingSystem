@@ -5,6 +5,8 @@ using Models.Enum.BirdTrainingProgress;
 using Models.ServiceModels.TrainingCourseModels.Bird;
 using Models.ServiceModels.TrainingCourseModels.BirdCertificate;
 using Models.ServiceModels.TrainingCourseModels.BirdCertificate.BirdCertificateDetail;
+using Models.ServiceModels.TrainingCourseModels.BirdSkill;
+using Models.ServiceModels.TrainingCourseModels.TrainerSkill;
 using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
 using System;
 using System.Collections.Generic;
@@ -58,7 +60,7 @@ namespace TrainingCourseSubsystem.Implementation
 
         public async Task CreateBirdSkillReceived(BirdSkillReceivedAddDeleteModel addDeleteModel)
         {
-            if(addDeleteModel == null)
+            if (addDeleteModel == null)
             {
                 throw new Exception("Client send null param.");
             }
@@ -78,7 +80,7 @@ namespace TrainingCourseSubsystem.Implementation
             else
             {
                 var entity = await _unitOfWork.BirdSkillReceivedRepository.GetFirst(e => e.BirdId == addDeleteModel.BirdId && e.BirdSkillId == addDeleteModel.BirdSkillId);
-                if(entity == null)
+                if (entity == null)
                 {
                     throw new Exception(nameof(BirdSkillReceived) + " is not found");
                 }
@@ -129,6 +131,80 @@ namespace TrainingCourseSubsystem.Implementation
                                                                                , nameof(TrainingCourse.BirdSpecies));
             var models = _mapper.Map<TrainingCourseViewModel>(entities);
             return models;
+        }
+
+        public async Task<IEnumerable<TrainerSkillViewModel>> GetTrainerSkills()
+        {
+            var entities = await _unitOfWork.TrainerSkillRepository.Get(expression: null
+                                                                        , nameof(TrainerSkill.Skill)
+                                                                        , nameof(TrainerSkill.Trainer)
+                                                                        , $"{nameof(TrainerSkill.Trainer)}.{nameof(TrainerSkill.Trainer.User)}");
+            var models = _mapper.Map<IEnumerable<TrainerSkillViewModel>>(entities);
+            return models;
+        }
+
+        public async Task<IEnumerable<TrainerSkillViewModel>> GetTrainerSkillsByTrainerId(int trainerId)
+        {
+            var entities = await _unitOfWork.TrainerSkillRepository.Get(e => e.TrainerId == trainerId
+                                                                        , nameof(TrainerSkill.Skill)
+                                                                        , nameof(TrainerSkill.Trainer)
+                                                                        , $"{nameof(TrainerSkill.Trainer)}.{nameof(TrainerSkill.Trainer.User)}");
+            var models = _mapper.Map<IEnumerable<TrainerSkillViewModel>>(entities);
+            return models;
+        }
+
+        public async Task<IEnumerable<TrainableViewSkillModel>> GetTrainableSkills()
+        {
+            var entities = await _unitOfWork.TrainableSkillRepository.Get(expression: null
+                                                                        , nameof(TrainableSkill.Skill)
+                                                                        , nameof(TrainableSkill.BirdSkill));
+            var models = _mapper.Map<IEnumerable<TrainableViewSkillModel>>(entities);
+            return models;
+        }
+
+        public async Task<IEnumerable<AcquirableSkillViewModel>> GetAccquirableBirdSkill()
+        {
+            var entities = await _unitOfWork.AcquirableSkillRepository.Get(expression: null
+                                                                        , nameof(AcquirableSkill.BirdSpecies)
+                                                                        , nameof(AcquirableSkill.BirdSkill));
+            var models = _mapper.Map<IEnumerable<AcquirableSkillViewModel>>(entities);
+            return models;
+        }
+
+        public async Task<IEnumerable<AcquirableSkillViewModel>> GetAccquirableBirdSkillByBirdId(int birdSpeciesId)
+        {
+            var entities = await _unitOfWork.AcquirableSkillRepository.Get(expression: e => e.BirdSpeciesId == birdSpeciesId
+                                                                        , nameof(AcquirableSkill.BirdSpecies)
+                                                                        , nameof(AcquirableSkill.BirdSkill));
+            var models = _mapper.Map<IEnumerable<AcquirableSkillViewModel>>(entities);
+            return models;
+        }
+        public async Task<IEnumerable<SkillViewModModel>> GetSkills()
+        {
+            var entities = await _unitOfWork.SkillRepository.Get();
+            var models = _mapper.Map<IEnumerable<SkillViewModModel>>(entities);
+            return models;
+        }
+
+        public async Task<SkillViewModModel> GetSkillById(int skillId)
+        {
+            var entity = await _unitOfWork.SkillRepository.GetFirst(e => e.Id == skillId);
+            var model = _mapper.Map<SkillViewModModel>(entity);
+            return model;
+        }
+
+        public async Task<IEnumerable<BirdSkillViewModel>> GetBirdSkills()
+        {
+            var entities = await _unitOfWork.BirdSkillRepository.Get();
+            var models = _mapper.Map<IEnumerable<BirdSkillViewModel>>(entities);
+            return models;
+        }
+
+        public async Task<BirdSkillViewModel> GetBirdSkillsById(int birdSkillId)
+        {
+            var entity = await _unitOfWork.BirdSkillRepository.GetFirst(e => e.Id == birdSkillId);
+            var model = _mapper.Map<BirdSkillViewModel>(entity);
+            return model;
         }
     }
 }

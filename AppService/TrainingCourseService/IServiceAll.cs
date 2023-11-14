@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Models.ServiceModels.TrainingCourseModels.BirdSkill;
+using Models.ServiceModels.TrainingCourseModels.TrainerSkill;
 
 namespace AppService.TrainingCourseService
 {
@@ -25,5 +27,14 @@ namespace AppService.TrainingCourseService
         Task<IEnumerable<BirdCertificateDetailViewModel>> GetBirdCertificatesDetailByBirdId(int birdId);
         Task<IEnumerable<BirdSkillReceivedViewModel>> GetBirdSkillReceiveds();
         Task<IEnumerable<BirdSkillReceivedViewModel>> GetBirdSkillReceivedsByBirdId(int birdId);
+        Task<IEnumerable<AcquirableSkillViewModel>> GetAccquirableBirdSkill();
+        Task<IEnumerable<AcquirableSkillViewModel>> GetAccquirableBirdSkillByBirdId(int birdId);
+        Task<IEnumerable<TrainerSkillViewModel>> GetTrainerSkills();
+        Task<IEnumerable<TrainerSkillViewModel>> GetTrainerSkillsByTrainerId(int trainerId);
+        Task<IEnumerable<TrainableViewSkillModel>> GetTrainableSkills();
+        Task<IEnumerable<BirdSkillViewModel>> GetBirdSkills();
+        Task<BirdSkillViewModel> GetBirdSkillsById(int birdSkillId);
+        Task<IEnumerable<SkillViewModModel>> GetSkills();
+        Task<SkillViewModModel> GetSkillById(int skillId);
     }
 }

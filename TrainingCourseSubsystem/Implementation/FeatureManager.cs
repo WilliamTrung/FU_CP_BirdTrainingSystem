@@ -104,11 +104,14 @@ namespace TrainingCourseSubsystem.Implementation
             }
             else
             {
+                var accquirableSkills = _unitOfWork.AcquirableSkillRepository.GetFirst(e => e.BirdSkillId == trainingCourseSkill.BirdSkillId
+                                                                                            && e.BirdSpeciesId == trainingCourse.BirdSpeciesId).Result;
+                if(accquirableSkills == null)
+                {
+                    throw new Exception($"Can not add {nameof(BirdSkill)} because it's not suitable for {nameof(BirdSpecies)}");
+                }
                 trainingCourse.TotalSlot += entity.TotalSlot;
-            }
-            if (entity == null)
-            {
-                throw new Exception("Mapping is failed.");
+                trainingCourse.Status = (int)Models.Enum.TrainingCourse.Status.Modifying;
             }
             await _unitOfWork.TrainingCourseSkillRepository.Add(entity);
             await _unitOfWork.TrainingCourseRepository.Update(trainingCourse);
@@ -130,6 +133,7 @@ namespace TrainingCourseSubsystem.Implementation
             {
                 trainingCourse.TotalSlot -= entity.TotalSlot;
                 trainingCourse.TotalSlot += trainingSkillModel.TotalSlot;
+                trainingCourse.Status = (int)Models.Enum.TrainingCourse.Status.Modifying;
             }
             await _unitOfWork.TrainingCourseSkillRepository.Update(entity);
             await _unitOfWork.TrainingCourseRepository.Update(trainingCourse);
@@ -150,6 +154,7 @@ namespace TrainingCourseSubsystem.Implementation
             else
             {
                 trainingCourse.TotalSlot -= entity.TotalSlot;
+                trainingCourse.Status = (int)Models.Enum.TrainingCourse.Status.Modifying;
             }
             await _unitOfWork.TrainingCourseSkillRepository.Delete(entity);
             await _unitOfWork.TrainingCourseRepository.Update(trainingCourse);
@@ -219,21 +224,7 @@ namespace TrainingCourseSubsystem.Implementation
             }
         }
 
-        public async Task<IEnumerable<BirdSkillViewModel>> GetBirdSkills()
-        {
-            var entities = await _unitOfWork.BirdSkillRepository.Get();
-            var models = _mapper.Map<IEnumerable<BirdSkillViewModel>>(entities);
-            return models;
-        }
-
-        public async Task<BirdSkillViewModel> GetBirdSkillsById(int birdSkillId)
-        {
-            var entity = await _unitOfWork.BirdSkillRepository.GetFirst(e => e.Id == birdSkillId);
-            var model = _mapper.Map<BirdSkillViewModel>(entity);
-            return model;
-        }
-
-        public async Task CreateAccquirableBirdSkill(AccquirableAddModBirdSkill accquirableAdd)
+        public async Task CreateAccquirableBirdSkill(AcquirableAddModBirdSkill accquirableAdd)
         {
             if (accquirableAdd == null)
             {
@@ -247,7 +238,7 @@ namespace TrainingCourseSubsystem.Implementation
             await _unitOfWork.AcquirableSkillRepository.Add(entity);
         }
 
-        public async Task EditAccquirableBirdSkill(AccquirableAddModBirdSkill accquirableMod)
+        public async Task EditAccquirableBirdSkill(AcquirableAddModBirdSkill accquirableMod)
         {
             if (accquirableMod == null)
             {
@@ -298,19 +289,6 @@ namespace TrainingCourseSubsystem.Implementation
                 await _unitOfWork.SkillRepository.Update(entity);
             }
         }
-        public async Task<IEnumerable<SkillViewModModel>> GetSkills()
-        {
-            var entities = await _unitOfWork.SkillRepository.Get();
-            var models = _mapper.Map<IEnumerable<SkillViewModModel>>(entities);
-            return models;
-        }
-
-        public async Task<SkillViewModModel> GetSkillById(int skillId)
-        {
-            var entity = await _unitOfWork.BirdSkillRepository.GetFirst(e => e.Id == skillId);
-            var model = _mapper.Map<SkillViewModModel>(entity);
-            return model;
-        }
 
         public async Task CreateTrainerSkill(TrainerSkillAddModModel trainerSkillAdd)
         {
@@ -344,25 +322,6 @@ namespace TrainingCourseSubsystem.Implementation
                 await _unitOfWork.TrainerSkillRepository.Update(entity);
             }
         }
-        public async Task<IEnumerable<TrainerSkillViewModel>> GetTrainerSkills()
-        {
-            var entities = await _unitOfWork.TrainerSkillRepository.Get(expression: null
-                                                                        , nameof(TrainerSkill.Skill)
-                                                                        , nameof(TrainerSkill.Trainer)
-                                                                        , $"{nameof(TrainerSkill.Trainer)}.{nameof(TrainerSkill.Trainer.User)}");
-            var models = _mapper.Map<IEnumerable<TrainerSkillViewModel>>(entities);
-            return models;
-        }
-
-        public async Task<IEnumerable<TrainerSkillViewModel>> GetTrainerSkillsByTrainerId(int trainerId)
-        {
-            var entities = await _unitOfWork.TrainerSkillRepository.Get(e => e.TrainerId == trainerId
-                                                                        , nameof(TrainerSkill.Skill)
-                                                                        , nameof(TrainerSkill.Trainer)
-                                                                        , $"{nameof(TrainerSkill.Trainer)}.{nameof(TrainerSkill.Trainer.User)}");
-            var models = _mapper.Map<IEnumerable<TrainerSkillViewModel>>(entities);
-            return models;
-        }
 
         public async Task CreateTrainableSkill(TrainableAddModSkillModel trainableSkillAdd)
         {
@@ -395,15 +354,6 @@ namespace TrainingCourseSubsystem.Implementation
                 entity.ShortDescription = trainableSkillMod.ShortDescription;
                 await _unitOfWork.TrainableSkillRepository.Update(entity);
             }
-        }
-
-        public async Task<IEnumerable<TrainableViewSkillModel>> GetTrainableSkills()
-        {
-            var entities = await _unitOfWork.TrainableSkillRepository.Get(expression: null
-                                                                        , nameof(TrainableSkill.Skill)
-                                                                        , nameof(TrainableSkill.BirdSkill));
-            var models = _mapper.Map<IEnumerable<TrainableViewSkillModel>>(entities);
-            return models;
         }
         #endregion
         #endregion

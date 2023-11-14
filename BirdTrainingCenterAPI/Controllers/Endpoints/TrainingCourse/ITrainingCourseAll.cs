@@ -54,5 +54,33 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
         [HttpGet]
         [Route("birdskillreceived-bird")]
         Task<IActionResult> GetBirdSkillReceivedsByBirdId(int birdId);
+
+        [HttpGet]
+        [Route("trainerskill")]
+        Task<IActionResult> GetTrainerSkills();
+
+        [HttpGet]
+        [Route("trainerskill-trainerid")]
+        Task<IActionResult> GetTrainerSkillsByTrainerId(int trainerId);
+
+        [HttpGet]
+        [Route("trainableskill")]
+        Task<IActionResult> GetTrainableSkills();
+
+        [HttpGet]
+        [Route("birdskill")]
+        Task<IActionResult> GetBirdSkills();
+
+        [HttpGet]
+        [Route("birdskill-id")]
+        Task<IActionResult> GetBirdSkillsById(int birdSkillId);
+
+        [HttpGet]
+        [Route("skill")]
+        Task<IActionResult> GetSkills();
+
+        [HttpGet]
+        [Route("skill-id")]
+        Task<IActionResult> GetSkillById(int skillId);
     }
 }

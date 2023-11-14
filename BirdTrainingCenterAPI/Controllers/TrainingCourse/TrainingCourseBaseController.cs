@@ -116,5 +116,61 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             var result = await _trainingCourseService.All.GetBirdSkillReceivedsByBirdId(birdId);
             return Ok(result);
         }
+
+        [HttpGet]
+        [Route("birdskill")]
+        public async Task<IActionResult> GetBirdSkills()
+        {
+            var result = await _trainingCourseService.All.GetBirdSkills();
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("birdskill-id")]
+        public async Task<IActionResult> GetBirdSkillsById([FromQuery] int birdSkillId)
+        {
+            var result = await _trainingCourseService.All.GetBirdSkillsById(birdSkillId);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("skill")]
+        public async Task<IActionResult> GetSkills()
+        {
+            var result = await _trainingCourseService.All.GetSkills();
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("skill-id")]
+        public async Task<IActionResult> GetSkillById(int skillId)
+        {
+            var result = await _trainingCourseService.All.GetSkillById(skillId);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("trainableskill")]
+        public async Task<IActionResult> GetTrainableSkills()
+        {
+            var result = await _trainingCourseService.All.GetTrainableSkills();
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("trainerskill")]
+        public async Task<IActionResult> GetTrainerSkills()
+        {
+            var result = await _trainingCourseService.All.GetTrainerSkills();
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("trainerskill-trainerid")]
+        public async Task<IActionResult> GetTrainerSkillsByTrainerId([FromQuery] int trainerId)
+        {
+            var result = await _trainingCourseService.All.GetTrainerSkillsByTrainerId(trainerId);
+            return Ok(result);
+        }
     }
 }
