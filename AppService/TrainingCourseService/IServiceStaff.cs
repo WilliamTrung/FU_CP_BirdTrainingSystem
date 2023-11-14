@@ -60,5 +60,7 @@ namespace AppService.TrainingCourseService
         Task ReceiveBird(BirdTrainingCourseReceiveBird birdTrainingCourse);
         Task ReturnBird(BirdTrainingCourseReturnBird birdTrainingCourse);
         Task CreateBirdCertificateDetail(BirdCertificateDetailAddModel birdCertificateDetailAdd);
+
+        Task GenerateTrainerTimetable(IEnumerable<int> progressId);
     }
 }

@@ -99,6 +99,7 @@ namespace SP_AutoMapperConfig
                     if (registeredCourse != null)
                     {
                         destination.RegisteredCustomer.Add(registeredCourse.CustomerId);
+                        destination.RegisteredCustomer = destination.RegisteredCustomer.Distinct().ToList();
                     }
                 }
             }

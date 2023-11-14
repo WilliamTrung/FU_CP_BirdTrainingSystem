@@ -43,7 +43,7 @@ namespace TrainingCourseSubsystem
         Task<TrainerModel> GetTrainerById(int trainerId);
 
 
-        Task<IEnumerable<BirdTrainingProgressModel>> GetBirdTrainingProgress();//non api
+        Task<IEnumerable<BirdTrainingProgressViewModel>> GetBirdTrainingProgress();//non api
         Task ModifyActualStartTime(DateTime startDate, int birdTrainingCourseId);// non api
 
         Task ReceiveBird(BirdTrainingCourseReceiveBird birdTrainingCourse);

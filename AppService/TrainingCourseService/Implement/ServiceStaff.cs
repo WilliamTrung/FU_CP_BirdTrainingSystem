@@ -53,10 +53,10 @@ namespace AppService.TrainingCourseService.Implement
         {
             await _trainingCourse.Staff.CancelBirdTrainingCourse(birdTrainingCourseId);
         }
-        private async Task GenerateTrainerTimetable(IEnumerable<int> progressId)
+        public async Task GenerateTrainerTimetable(IEnumerable<int> progressId)
         {
             var progresses = await GetBirdTrainingProgress();
-            progresses = progresses.Where(e => progressId.Any(d => d == e.Id)).OrderBy(e => e.Id);
+            progresses = progresses.Where(e => progressId.Any(d => d == e.Id)).OrderBy(e => e.Id).ToList();
 
             var firstClass = progresses.First();
             var birdTrainingCourse = GetBirdTrainingCourse().Result.Where(m => m.Id == firstClass.BirdTrainingCourseId).First();
@@ -83,14 +83,14 @@ namespace AppService.TrainingCourseService.Implement
             //await _trainingCourse.Staff.GenerateTrainerTimetable(report);
         }
 
-        private IEnumerable<TrainerSlotModel> AutoCreateTimetable(ref DateTime start, BirdTrainingProgressModel progress)
+        private IEnumerable<TrainerSlotModel> AutoCreateTimetable(ref DateTime start, BirdTrainingProgressViewModel progress)
         {
             List<TrainerSlotModel> trainerSlots = new List<TrainerSlotModel>(); //day1
             var totalSlot = progress.TotalTrainingSlot; //10
             while (totalSlot > 0)
             {
                 DateTime current = start; //day1
-                List<SlotModel> slotModels = _timetable.GetTrainerFreeSlotOnDate(DateOnly.FromDateTime(current), (int)progress.TrainerId).Result.ToList();
+                List<SlotModel> slotModels = _timetable.GetSlotData().Result.ToList();
                 SlotModel autoFill = slotModels.First();
 
                 if (autoFill != null)
@@ -193,7 +193,7 @@ namespace AppService.TrainingCourseService.Implement
         //}
 
         
-        public async Task<IEnumerable<BirdTrainingProgressModel>> GetBirdTrainingProgress()
+        public async Task<IEnumerable<BirdTrainingProgressViewModel>> GetBirdTrainingProgress()
         {
             return await _trainingCourse.Staff.GetBirdTrainingProgress();
         }

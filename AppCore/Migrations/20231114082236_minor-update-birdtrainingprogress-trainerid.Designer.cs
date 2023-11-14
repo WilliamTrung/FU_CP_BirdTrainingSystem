@@ -3,6 +3,7 @@ using System;
 using AppCore.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AppCore.Migrations
 {
     [DbContext(typeof(BirdTrainingCenterSystemContext))]
-    partial class BirdTrainingCenterSystemContextModelSnapshot : ModelSnapshot
+    [Migration("20231114082236_minor-update-birdtrainingprogress-trainerid")]
+    partial class minorupdatebirdtrainingprogresstrainerid
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1384,12 +1386,6 @@ namespace AppCore.Migrations
 
             modelBuilder.Entity("Models.Entities.TrainingCourseSkill", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
                     b.Property<int>("BirdSkillId")
                         .HasColumnType("integer");
 
@@ -1399,9 +1395,8 @@ namespace AppCore.Migrations
                     b.Property<int>("TrainingCourseId")
                         .HasColumnType("integer");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("BirdSkillId");
+                    b.HasKey("BirdSkillId")
+                        .HasName("PK__Training__1D80EC183F24C734");
 
                     b.HasIndex("TrainingCourseId");
 
@@ -2220,14 +2215,16 @@ namespace AppCore.Migrations
             modelBuilder.Entity("Models.Entities.TrainingCourseSkill", b =>
                 {
                     b.HasOne("Models.Entities.BirdSkill", "BirdSkill")
-                        .WithMany("TrainingCourseSkills")
-                        .HasForeignKey("BirdSkillId")
-                        .IsRequired();
+                        .WithOne("TrainingCourseSkill")
+                        .HasForeignKey("Models.Entities.TrainingCourseSkill", "BirdSkillId")
+                        .IsRequired()
+                        .HasConstraintName("FKTrainingCo551235");
 
                     b.HasOne("Models.Entities.TrainingCourse", "TrainingCourse")
                         .WithMany("TrainingCourseSkills")
                         .HasForeignKey("TrainingCourseId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("FKTrainingCo866476");
 
                     b.Navigation("BirdSkill");
 
@@ -2346,7 +2343,7 @@ namespace AppCore.Migrations
 
                     b.Navigation("TrainableSkills");
 
-                    b.Navigation("TrainingCourseSkills");
+                    b.Navigation("TrainingCourseSkill");
                 });
 
             modelBuilder.Entity("Models.Entities.BirdSpecies", b =>

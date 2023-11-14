@@ -78,10 +78,10 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             return Ok(result);
         }
         [HttpGet]
-        [Route("birdtrainingcourse-skill")]
-        public async Task<IActionResult> GetTrainingCourseSkill([FromQuery] int trainingCourseId)
+        [Route("birdtrainingprogress-requestedId")]
+        public async Task<IActionResult> GetBirdTrainingCourseProgressByBirdTrainingCourseId([FromQuery] int birdTrainingCourseId)
         {
-            var result = await _trainingCourseService.Staff.GetTrainingCourseSkill(trainingCourseId);
+            var result = await _trainingCourseService.Staff.GetTrainingCourseSkill(birdTrainingCourseId);
             return Ok(result);
         }
         [HttpPut]
@@ -159,6 +159,14 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         public async Task<IActionResult> CreateBirdCertificateDetail([FromBody] BirdCertificateDetailAddModel birdCertificateDetailAdd)
         {
             await _trainingCourseService.Staff.CreateBirdCertificateDetail(birdCertificateDetailAdd);
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("generatedprogresstimetable-confirm")]
+        public async Task<IActionResult> Generatedprogresstimetable(List<int> birdTrainingProgressId)
+        {
+            await _trainingCourseService.Staff.GenerateTrainerTimetable(birdTrainingProgressId);
             return Ok();
         }
     }

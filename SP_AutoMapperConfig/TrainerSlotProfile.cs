@@ -14,6 +14,20 @@ namespace SP_AutoMapperConfig
         public TrainerSlotProfile()
         {
             Map_TrainerSlotAddModel_TrainerSlot();
+            Map_TrainerSlot_TrainerSlotModel();
+        }
+
+        private void Map_TrainerSlot_TrainerSlotModel()
+        {
+            CreateMap<TrainerSlot, TrainerSlotModel>()
+                .ForMember(e => e.Id, opt => opt.MapFrom(m => m.Id))
+                .ForMember(e => e.TrainerId, opt => opt.MapFrom(m => m.TrainerId))
+                .ForMember(e => e.SlotId, opt => opt.MapFrom(m => m.SlotId))
+                .ForMember(e => e.Date, opt => opt.MapFrom(m => m.Date))
+                .ForMember(e => e.Reason, opt => opt.MapFrom(m => m.Reason))
+                .ForMember(e => e.EntityTypeId, opt => opt.MapFrom(m => m.EntityTypeId))
+                .ForMember(e => e.EntityId, opt => opt.MapFrom(m => m.EntityId))
+                .ForMember(e => e.Status, opt => opt.MapFrom(m => (int)Models.Enum.TrainerSlotStatus.Enabled));
         }
 
         private void Map_TrainerSlotAddModel_TrainerSlot()
