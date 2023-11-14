@@ -20,7 +20,7 @@ namespace Models.Entities
         public int Status { get; set; }
 
         public virtual BirdTrainingCourse BirdTrainingCourse { get; set; } = null!;
-        public virtual Trainer Trainer { get; set; } = null!;
+        public virtual Trainer? Trainer { get; set; } = null!;
         public virtual TrainingCourseSkill TrainingCourseSkill { get; set; } = null!;
         public virtual ICollection<BirdTrainingReport> BirdTrainingReports { get; set; }
     }

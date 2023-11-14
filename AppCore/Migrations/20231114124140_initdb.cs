@@ -82,19 +82,6 @@ namespace AppCore.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "FeedbackType",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "character varying(100)", unicode: false, maxLength: 100, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FeedbackType", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "MembershipRank",
                 columns: table => new
                 {
@@ -117,7 +104,7 @@ namespace AppCore.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Title = table.Column<string>(type: "character varying(300)", unicode: false, maxLength: 300, nullable: true),
                     ShortDescription = table.Column<string>(type: "character varying(1000)", unicode: false, maxLength: 1000, nullable: true),
-                    Picture = table.Column<string>(type: "character varying(50)", unicode: false, maxLength: 50, nullable: true),
+                    Picture = table.Column<string>(type: "character varying(255)", unicode: false, maxLength: 255, nullable: true),
                     Price = table.Column<decimal>(type: "money", nullable: true),
                     Status = table.Column<int>(type: "integer", nullable: false)
                 },
@@ -163,13 +150,32 @@ namespace AppCore.Migrations
                     Name = table.Column<string>(type: "character varying(100)", unicode: false, maxLength: 100, nullable: true),
                     Email = table.Column<string>(type: "character varying(100)", unicode: false, maxLength: 100, nullable: false),
                     PhoneNumber = table.Column<decimal>(type: "numeric(18,0)", nullable: true),
-                    Avatar = table.Column<string>(type: "character varying(20)", unicode: false, maxLength: 20, nullable: true),
+                    Avatar = table.Column<string>(type: "character varying(255)", unicode: false, maxLength: 255, nullable: true),
                     Password = table.Column<string>(type: "character varying(255)", unicode: false, maxLength: 255, nullable: false),
                     RoleId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_User", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Workshop",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Title = table.Column<string>(type: "character varying(300)", unicode: false, maxLength: 300, nullable: false),
+                    Description = table.Column<string>(type: "character varying(1000)", unicode: false, maxLength: 1000, nullable: true),
+                    Picture = table.Column<string>(type: "character varying(255)", unicode: false, maxLength: 255, nullable: true),
+                    RegisterEnd = table.Column<int>(type: "integer", nullable: true),
+                    Price = table.Column<decimal>(type: "money", nullable: false),
+                    TotalSlot = table.Column<int>(type: "integer", nullable: false),
+                    Status = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Workshop", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -192,7 +198,7 @@ namespace AppCore.Migrations
                 {
                     BirdSpeciesId = table.Column<int>(type: "integer", nullable: false),
                     BirdSkillId = table.Column<int>(type: "integer", nullable: false),
-                    Condition = table.Column<string>(type: "character varying(30)", unicode: false, maxLength: 30, nullable: true)
+                    Condition = table.Column<string>(type: "character varying(255)", unicode: false, maxLength: 255, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -218,7 +224,7 @@ namespace AppCore.Migrations
                     BirdSpeciesId = table.Column<int>(type: "integer", nullable: false),
                     Title = table.Column<string>(type: "character varying(100)", unicode: false, maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "character varying(300)", unicode: false, maxLength: 300, nullable: true),
-                    Picture = table.Column<string>(type: "character varying(50)", unicode: false, maxLength: 50, nullable: true),
+                    Picture = table.Column<string>(type: "character varying(255)", unicode: false, maxLength: 255, nullable: true),
                     TotalSlot = table.Column<int>(type: "integer", nullable: false),
                     TotalPrice = table.Column<decimal>(type: "money", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false)
@@ -243,7 +249,7 @@ namespace AppCore.Migrations
                     BirdCenterName = table.Column<string>(type: "character varying(100)", unicode: false, maxLength: 100, nullable: false),
                     Title = table.Column<string>(type: "character varying(300)", unicode: false, maxLength: 300, nullable: true),
                     ShortDescrption = table.Column<string>(type: "character varying(500)", unicode: false, maxLength: 500, nullable: true),
-                    Picture = table.Column<string>(type: "character varying(50)", unicode: false, maxLength: 50, nullable: true)
+                    Picture = table.Column<string>(type: "character varying(255)", unicode: false, maxLength: 255, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -355,6 +361,7 @@ namespace AppCore.Migrations
                     BirthDay = table.Column<DateTime>(type: "date", nullable: true),
                     Gender = table.Column<bool>(type: "boolean", nullable: true),
                     IsFullTime = table.Column<bool>(type: "boolean", nullable: false),
+                    Category = table.Column<int>(type: "integer", nullable: false),
                     Status = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -368,28 +375,45 @@ namespace AppCore.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Workshop",
+                name: "WorkshopClass",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    WorkshopRefundPolicyId = table.Column<int>(type: "integer", nullable: false),
-                    Title = table.Column<string>(type: "character varying(300)", unicode: false, maxLength: 300, nullable: false),
-                    Description = table.Column<string>(type: "character varying(2000)", unicode: false, maxLength: 2000, nullable: true),
-                    Picture = table.Column<string>(type: "character varying(50)", unicode: false, maxLength: 50, nullable: true),
-                    RegisterEnd = table.Column<int>(type: "integer", nullable: true),
-                    Price = table.Column<decimal>(type: "money", nullable: false),
-                    TotalSlot = table.Column<int>(type: "integer", nullable: false),
+                    WorkshopId = table.Column<int>(type: "integer", nullable: false),
+                    CreateDate = table.Column<DateTime>(type: "date", nullable: true),
+                    RegisterEndDate = table.Column<DateTime>(type: "date", nullable: true),
+                    StartTime = table.Column<DateTime>(type: "date", nullable: true),
                     Status = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Workshop", x => x.Id);
+                    table.PrimaryKey("PK_WorkshopClass", x => x.Id);
                     table.ForeignKey(
-                        name: "FKWorkshop234277",
-                        column: x => x.WorkshopRefundPolicyId,
-                        principalTable: "WorkshopRefundPolicy",
+                        name: "FKWorkshopCl950556",
+                        column: x => x.WorkshopId,
+                        principalTable: "Workshop",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WorkshopDetailTemplate",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    WorkshopId = table.Column<int>(type: "integer", nullable: false),
+                    Detail = table.Column<string>(type: "character varying(500)", unicode: false, maxLength: 500, nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WorkshopDetailTemplate", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_WorkshopDetailTemplate_Workshop_WorkshopId",
+                        column: x => x.WorkshopId,
+                        principalTable: "Workshop",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -402,7 +426,7 @@ namespace AppCore.Migrations
                     BirdCenterName = table.Column<string>(type: "character varying(100)", unicode: false, maxLength: 100, nullable: true),
                     Title = table.Column<string>(type: "character varying(300)", unicode: false, maxLength: 300, nullable: false),
                     ShortDescrption = table.Column<string>(type: "character varying(500)", unicode: false, maxLength: 500, nullable: true),
-                    Picture = table.Column<string>(type: "character varying(50)", unicode: false, maxLength: 50, nullable: true)
+                    Picture = table.Column<string>(type: "character varying(255)", unicode: false, maxLength: 255, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -418,20 +442,22 @@ namespace AppCore.Migrations
                 name: "TrainingCourseSkill",
                 columns: table => new
                 {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     BirdSkillId = table.Column<int>(type: "integer", nullable: false),
                     TrainingCourseId = table.Column<int>(type: "integer", nullable: false),
                     TotalSlot = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__Training__1D80EC183F24C734", x => x.BirdSkillId);
+                    table.PrimaryKey("PK_TrainingCourseSkill", x => x.Id);
                     table.ForeignKey(
-                        name: "FKTrainingCo551235",
+                        name: "FK_TrainingCourseSkill_BirdSkill_BirdSkillId",
                         column: x => x.BirdSkillId,
                         principalTable: "BirdSkill",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FKTrainingCo866476",
+                        name: "FK_TrainingCourseSkill_TrainingCourse_TrainingCourseId",
                         column: x => x.TrainingCourseId,
                         principalTable: "TrainingCourse",
                         principalColumn: "Id");
@@ -447,7 +473,7 @@ namespace AppCore.Migrations
                     Title = table.Column<string>(type: "character varying(300)", unicode: false, maxLength: 300, nullable: false),
                     Description = table.Column<string>(type: "character varying(1000)", unicode: false, maxLength: 1000, nullable: true),
                     Detail = table.Column<string>(type: "character varying(1000)", unicode: false, maxLength: 1000, nullable: true),
-                    Video = table.Column<string>(type: "character varying(100)", unicode: false, maxLength: 100, nullable: true)
+                    Video = table.Column<string>(type: "character varying(255)", unicode: false, maxLength: 255, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -466,7 +492,7 @@ namespace AppCore.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CustomerId = table.Column<int>(type: "integer", nullable: false),
-                    AddressDetail = table.Column<string>(type: "character varying(50)", unicode: false, maxLength: 50, nullable: false)
+                    AddressDetail = table.Column<string>(type: "character varying(255)", unicode: false, maxLength: 255, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -488,7 +514,7 @@ namespace AppCore.Migrations
                     BirdSpeciesId = table.Column<int>(type: "integer", nullable: false),
                     Name = table.Column<string>(type: "character varying(50)", unicode: false, maxLength: 50, nullable: true),
                     Color = table.Column<string>(type: "character varying(30)", unicode: false, maxLength: 30, nullable: true),
-                    Picture = table.Column<string>(type: "character varying(50)", unicode: false, maxLength: 50, nullable: true),
+                    Picture = table.Column<string>(type: "character varying(255)", unicode: false, maxLength: 255, nullable: true),
                     Description = table.Column<string>(type: "character varying(255)", unicode: false, maxLength: 255, nullable: true),
                     IsDefault = table.Column<bool>(type: "boolean", nullable: true),
                     Status = table.Column<int>(type: "integer", nullable: false)
@@ -585,11 +611,11 @@ namespace AppCore.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    FeedbackTypeId = table.Column<int>(type: "integer", nullable: false),
                     CustomerId = table.Column<int>(type: "integer", nullable: false),
                     EntityTypeId = table.Column<int>(type: "integer", nullable: false),
                     EntityId = table.Column<int>(type: "integer", nullable: true),
-                    FeedbackDetail = table.Column<string>(type: "character varying(200)", unicode: false, maxLength: 200, nullable: true)
+                    FeedbackDetail = table.Column<string>(type: "character varying(200)", unicode: false, maxLength: 200, nullable: true),
+                    Rating = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -598,11 +624,6 @@ namespace AppCore.Migrations
                         name: "FKFeedback245587",
                         column: x => x.CustomerId,
                         principalTable: "Customer",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FKFeedback625969",
-                        column: x => x.FeedbackTypeId,
-                        principalTable: "FeedbackType",
                         principalColumn: "Id");
                 });
 
@@ -662,7 +683,7 @@ namespace AppCore.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    TrainerId = table.Column<int>(type: "integer", nullable: false),
+                    TrainerId = table.Column<int>(type: "integer", nullable: true),
                     SlotId = table.Column<int>(type: "integer", nullable: false),
                     Date = table.Column<DateTime>(type: "date", nullable: false),
                     Reason = table.Column<string>(type: "character varying(100)", unicode: false, maxLength: 100, nullable: true),
@@ -686,45 +707,35 @@ namespace AppCore.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "WorkshopClass",
+                name: "Customer_WorkshopClass",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    WorkshopId = table.Column<int>(type: "integer", nullable: false),
-                    CreateDate = table.Column<DateTime>(type: "date", nullable: true),
-                    RegisterEndDate = table.Column<DateTime>(type: "date", nullable: true),
-                    StartTime = table.Column<DateTime>(type: "date", nullable: true),
+                    CustomerId = table.Column<int>(type: "integer", nullable: false),
+                    WorkshopClassId = table.Column<int>(type: "integer", nullable: false),
+                    WorkshopRefundPolicyId = table.Column<int>(type: "integer", nullable: true),
+                    Price = table.Column<decimal>(type: "money", nullable: true),
+                    DiscountedPrice = table.Column<decimal>(type: "money", nullable: true),
+                    RefundRate = table.Column<float>(type: "real", nullable: true),
                     Status = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_WorkshopClass", x => x.Id);
+                    table.PrimaryKey("PK__Customer__7EEF8348DE684159", x => new { x.CustomerId, x.WorkshopClassId });
                     table.ForeignKey(
-                        name: "FKWorkshopCl950556",
-                        column: x => x.WorkshopId,
-                        principalTable: "Workshop",
+                        name: "FK_Customer_WorkshopClass_WorkshopRefundPolicy_WorkshopRefundP~",
+                        column: x => x.WorkshopRefundPolicyId,
+                        principalTable: "WorkshopRefundPolicy",
                         principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "WorkshopDetailTemplate",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    WorkshopId = table.Column<int>(type: "integer", nullable: false),
-                    Detail = table.Column<string>(type: "character varying(500)", unicode: false, maxLength: 500, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_WorkshopDetailTemplate", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_WorkshopDetailTemplate_Workshop_WorkshopId",
-                        column: x => x.WorkshopId,
-                        principalTable: "Workshop",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        name: "FKCustomer_W257990",
+                        column: x => x.WorkshopClassId,
+                        principalTable: "WorkshopClass",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FKCustomer_W416862",
+                        column: x => x.CustomerId,
+                        principalTable: "Customer",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -780,17 +791,17 @@ namespace AppCore.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     CustomerId = table.Column<int>(type: "integer", nullable: false),
-                    TrainerId = table.Column<int>(type: "integer", nullable: false),
+                    TrainerId = table.Column<int>(type: "integer", nullable: true),
                     AddressId = table.Column<int>(type: "integer", nullable: false),
                     ConsultingTypeId = table.Column<int>(type: "integer", nullable: false),
                     ConsultingDetail = table.Column<string>(type: "character varying(1000)", unicode: false, maxLength: 1000, nullable: true),
                     Distance = table.Column<int>(type: "integer", nullable: true),
                     OnlineOrOffline = table.Column<bool>(type: "boolean", nullable: false),
-                    GgMeetLink = table.Column<string>(type: "character varying(20)", unicode: false, maxLength: 20, nullable: true),
+                    GgMeetLink = table.Column<string>(type: "character varying(255)", unicode: false, maxLength: 255, nullable: true),
                     AppointmentDate = table.Column<DateTime>(type: "date", nullable: true),
-                    ActualSlotStart = table.Column<int>(type: "integer", nullable: true),
+                    ActualSlotStart = table.Column<int>(type: "integer", nullable: false),
                     ActualEndSlot = table.Column<int>(type: "integer", nullable: true),
-                    Evidence = table.Column<string>(type: "character varying(50)", unicode: false, maxLength: 50, nullable: true),
+                    Evidence = table.Column<string>(type: "character varying(255)", unicode: false, maxLength: 255, nullable: true),
                     Price = table.Column<decimal>(type: "money", nullable: true),
                     DiscountedPrice = table.Column<decimal>(type: "money", nullable: true),
                     Status = table.Column<int>(type: "integer", nullable: false),
@@ -840,24 +851,21 @@ namespace AppCore.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     BirdId = table.Column<int>(type: "integer", nullable: false),
                     TrainingCourseId = table.Column<int>(type: "integer", nullable: false),
-                    StaffId = table.Column<int>(type: "integer", nullable: false),
+                    StaffId = table.Column<int>(type: "integer", nullable: true),
                     CustomerId = table.Column<int>(type: "integer", nullable: false),
+                    RegisteredDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     TotalPrice = table.Column<decimal>(type: "money", nullable: true),
                     DiscountedPrice = table.Column<decimal>(type: "money", nullable: true),
-                    ExpectedStartDate = table.Column<DateTime>(type: "date", nullable: true),
-                    ExpectedTrainingDoneDate = table.Column<DateTime>(type: "date", nullable: true),
-                    ExpectedDateReturn = table.Column<DateTime>(type: "date", nullable: true),
                     ReceiveStaffId = table.Column<int>(type: "integer", nullable: true),
-                    ActualStartDate = table.Column<DateTime>(type: "date", nullable: true),
-                    DateReceivedBird = table.Column<DateTime>(type: "date", nullable: true),
+                    DateReceived = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     ReceiveNote = table.Column<string>(type: "character varying(255)", unicode: false, maxLength: 255, nullable: true),
-                    ReceivePicture = table.Column<string>(type: "character varying(20)", unicode: false, maxLength: 20, nullable: true),
+                    ReceivePicture = table.Column<string>(type: "character varying(255)", unicode: false, maxLength: 255, nullable: true),
                     ReturnStaffId = table.Column<int>(type: "integer", nullable: true),
-                    ActualDateReturn = table.Column<DateTime>(type: "date", nullable: true),
+                    DateReturn = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     ReturnNote = table.Column<string>(type: "character varying(255)", unicode: false, maxLength: 255, nullable: true),
-                    ReturnPicture = table.Column<string>(type: "character varying(20)", unicode: false, maxLength: 20, nullable: true),
+                    ReturnPicture = table.Column<string>(type: "character varying(255)", unicode: false, maxLength: 255, nullable: true),
+                    StartTrainingDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     TrainingDoneDate = table.Column<DateTime>(type: "date", nullable: true),
-                    LastestUpdate = table.Column<DateTime>(type: "date", nullable: true),
                     Status = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
@@ -886,76 +894,25 @@ namespace AppCore.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BirdCertificateDetail",
+                name: "BirdSkillReceived",
                 columns: table => new
                 {
+                    BirdSkillId = table.Column<int>(type: "integer", nullable: false),
                     BirdId = table.Column<int>(type: "integer", nullable: false),
-                    BirdCertificateId = table.Column<int>(type: "integer", nullable: false),
-                    ReceiveDate = table.Column<DateTime>(type: "date", nullable: false)
+                    ReceivedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__BirdCert__CB94077CD6544A76", x => new { x.BirdId, x.BirdCertificateId });
+                    table.PrimaryKey("PK_BirdSkillReceived", x => new { x.BirdSkillId, x.BirdId });
                     table.ForeignKey(
-                        name: "FKBirdCertif464427",
-                        column: x => x.BirdCertificateId,
-                        principalTable: "BirdCertificate",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FKBirdCertif999788",
+                        name: "FK_BirdSkillReceived_Bird_BirdId",
                         column: x => x.BirdId,
                         principalTable: "Bird",
                         principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Customer_WorkshopClass",
-                columns: table => new
-                {
-                    CustomerId = table.Column<int>(type: "integer", nullable: false),
-                    WorkshopClassId = table.Column<int>(type: "integer", nullable: false),
-                    Price = table.Column<decimal>(type: "money", nullable: true),
-                    DiscountedPrice = table.Column<decimal>(type: "money", nullable: true),
-                    RefundRate = table.Column<float>(type: "real", nullable: true),
-                    Status = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK__Customer__7EEF8348DE684159", x => new { x.CustomerId, x.WorkshopClassId });
                     table.ForeignKey(
-                        name: "FKCustomer_W257990",
-                        column: x => x.WorkshopClassId,
-                        principalTable: "WorkshopClass",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FKCustomer_W416862",
-                        column: x => x.CustomerId,
-                        principalTable: "Customer",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "WorkshopAttendance",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    AttendDate = table.Column<DateTime>(type: "date", nullable: true),
-                    CustomerId = table.Column<int>(type: "integer", nullable: false),
-                    WorkshopClassId = table.Column<int>(type: "integer", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_WorkshopAttendance", x => x.Id);
-                    table.ForeignKey(
-                        name: "FKWorkshopAt124181",
-                        column: x => x.CustomerId,
-                        principalTable: "Customer",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FKWorkshopAt172557",
-                        column: x => x.WorkshopClassId,
-                        principalTable: "WorkshopClass",
+                        name: "FK_BirdSkillReceived_BirdSkill_BirdSkillId",
+                        column: x => x.BirdSkillId,
+                        principalTable: "BirdSkill",
                         principalColumn: "Id");
                 });
 
@@ -967,7 +924,7 @@ namespace AppCore.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     WorkshopClassId = table.Column<int>(type: "integer", nullable: false),
                     DetailId = table.Column<int>(type: "integer", nullable: false),
-                    DaySlotId = table.Column<int>(type: "integer", nullable: true),
+                    DaySlotId = table.Column<int>(type: "integer", nullable: false),
                     UpdateDate = table.Column<DateTime>(type: "date", nullable: true)
                 },
                 constraints: table =>
@@ -982,7 +939,8 @@ namespace AppCore.Migrations
                         name: "FKWorkshopCl382995",
                         column: x => x.DaySlotId,
                         principalTable: "TrainerSlot",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FKWorkshopCl957106",
                         column: x => x.DetailId,
@@ -999,19 +957,20 @@ namespace AppCore.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Bird_TrainingCourseId = table.Column<int>(type: "integer", nullable: false),
                     TrainingCourse_SkillId = table.Column<int>(type: "integer", nullable: false),
-                    TrainerId = table.Column<int>(type: "integer", nullable: false),
+                    TotalTrainingSlot = table.Column<int>(type: "integer", nullable: false),
+                    TrainerId = table.Column<int>(type: "integer", nullable: true),
                     TrainingDoneDate = table.Column<DateTime>(type: "date", nullable: true),
-                    Evidence = table.Column<string>(type: "character varying(50)", unicode: false, maxLength: 50, nullable: true),
-                    IsComplete = table.Column<bool>(type: "boolean", nullable: true)
+                    Evidence = table.Column<string>(type: "character varying(255)", unicode: false, maxLength: 255, nullable: true),
+                    Status = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Bird_TrainingProgress", x => x.Id);
                     table.ForeignKey(
-                        name: "FKBird_Train174512",
+                        name: "FK_Bird_TrainingProgress_TrainingCourseSkill_TrainingCourse_Sk~",
                         column: x => x.TrainingCourse_SkillId,
                         principalTable: "TrainingCourseSkill",
-                        principalColumn: "BirdSkillId");
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FKBird_Train409415",
                         column: x => x.Bird_TrainingCourseId,
@@ -1025,31 +984,89 @@ namespace AppCore.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "BirdCertificateDetail",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    BirdId = table.Column<int>(type: "integer", nullable: false),
+                    BirdTrainingCourseId = table.Column<int>(type: "integer", nullable: false),
+                    BirdCertificateId = table.Column<int>(type: "integer", nullable: false),
+                    ReceiveDate = table.Column<DateTime>(type: "date", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_BirdCertificateDetail", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_BirdCertificateDetail_Bird_TrainingCourse_BirdTrainingCours~",
+                        column: x => x.BirdTrainingCourseId,
+                        principalTable: "Bird_TrainingCourse",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FKBirdCertif464427",
+                        column: x => x.BirdCertificateId,
+                        principalTable: "BirdCertificate",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FKBirdCertif999788",
+                        column: x => x.BirdId,
+                        principalTable: "Bird",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WorkshopAttendance",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    CustomerId = table.Column<int>(type: "integer", nullable: false),
+                    WorkshopClassDetailId = table.Column<int>(type: "integer", nullable: false),
+                    Status = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WorkshopAttendance", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_WorkshopAttendance_WorkshopClassDetail_WorkshopClassDetailId",
+                        column: x => x.WorkshopClassDetailId,
+                        principalTable: "WorkshopClassDetail",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FKWorkshopAt124181",
+                        column: x => x.CustomerId,
+                        principalTable: "Customer",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "BirdTrainingReport",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    TrainerId = table.Column<int>(type: "integer", nullable: false),
                     Bird_TrainingProgressId = table.Column<int>(type: "integer", nullable: false),
                     TrainerSlotId = table.Column<int>(type: "integer", nullable: false),
                     Comment = table.Column<string>(type: "character varying(200)", unicode: false, maxLength: 200, nullable: true),
-                    Evidence = table.Column<string>(type: "character varying(50)", unicode: false, maxLength: 50, nullable: true),
-                    DateCreate = table.Column<DateTime>(type: "date", nullable: false),
-                    Status = table.Column<int>(type: "integer", nullable: true)
+                    Evidence = table.Column<string>(type: "character varying(255)", unicode: false, maxLength: 255, nullable: true),
+                    Status = table.Column<int>(type: "integer", nullable: true),
+                    TrainerId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_BirdTrainingReport", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_BirdTrainingReport_Trainer_TrainerId",
+                        column: x => x.TrainerId,
+                        principalTable: "Trainer",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
                         name: "FKBirdTraini259515",
                         column: x => x.Bird_TrainingProgressId,
                         principalTable: "Bird_TrainingProgress",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FKBirdTraini332709",
-                        column: x => x.TrainerId,
-                        principalTable: "Trainer",
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FKBirdTraini696869",
@@ -1110,6 +1127,17 @@ namespace AppCore.Migrations
                     { 6, new TimeSpan(0, 14, 45, 0, 0), new TimeSpan(0, 14, 0, 0, 0) },
                     { 7, new TimeSpan(0, 15, 45, 0, 0), new TimeSpan(0, 15, 0, 0, 0) },
                     { 8, new TimeSpan(0, 16, 45, 0, 0), new TimeSpan(0, 16, 0, 0, 0) }
+                });
+
+            migrationBuilder.InsertData(
+                table: "WorkshopRefundPolicy",
+                columns: new[] { "Id", "RefundRate", "TotalDayBeforeStart" },
+                values: new object[,]
+                {
+                    { 1, 0f, 13 },
+                    { 2, 0.5f, 29 },
+                    { 3, 0.75f, 30 },
+                    { 4, 1f, -1 }
                 });
 
             migrationBuilder.InsertData(
@@ -1195,9 +1223,24 @@ namespace AppCore.Migrations
                 column: "BirdCertificateId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_BirdCertificateDetail_BirdId",
+                table: "BirdCertificateDetail",
+                column: "BirdId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BirdCertificateDetail_BirdTrainingCourseId",
+                table: "BirdCertificateDetail",
+                column: "BirdTrainingCourseId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_BirdCertificateSkill_BirdCertificateId",
                 table: "BirdCertificateSkill",
                 column: "BirdCertificateId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_BirdSkillReceived_BirdId",
+                table: "BirdSkillReceived",
+                column: "BirdId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_BirdTrainingReport_Bird_TrainingProgressId",
@@ -1290,14 +1333,14 @@ namespace AppCore.Migrations
                 column: "WorkshopClassId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Customer_WorkshopClass_WorkshopRefundPolicyId",
+                table: "Customer_WorkshopClass",
+                column: "WorkshopRefundPolicyId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Feedback_CustomerId",
                 table: "Feedback",
                 column: "CustomerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Feedback_FeedbackTypeId",
-                table: "Feedback",
-                column: "FeedbackTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Lesson_SectionId",
@@ -1340,6 +1383,11 @@ namespace AppCore.Migrations
                 column: "BirdSpeciesId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_TrainingCourseSkill_BirdSkillId",
+                table: "TrainingCourseSkill",
+                column: "BirdSkillId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TrainingCourseSkill_TrainingCourseId",
                 table: "TrainingCourseSkill",
                 column: "TrainingCourseId");
@@ -1362,19 +1410,14 @@ namespace AppCore.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Workshop_WorkshopRefundPolicyId",
-                table: "Workshop",
-                column: "WorkshopRefundPolicyId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_WorkshopAttendance_CustomerId",
                 table: "WorkshopAttendance",
                 column: "CustomerId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_WorkshopAttendance_WorkshopClassId",
+                name: "IX_WorkshopAttendance_WorkshopClassDetailId",
                 table: "WorkshopAttendance",
-                column: "WorkshopClassId");
+                column: "WorkshopClassDetailId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_WorkshopClass_WorkshopId",
@@ -1412,6 +1455,9 @@ namespace AppCore.Migrations
 
             migrationBuilder.DropTable(
                 name: "BirdCertificateSkill");
+
+            migrationBuilder.DropTable(
+                name: "BirdSkillReceived");
 
             migrationBuilder.DropTable(
                 name: "BirdTrainingReport");
@@ -1453,9 +1499,6 @@ namespace AppCore.Migrations
                 name: "WorkshopAttendance");
 
             migrationBuilder.DropTable(
-                name: "WorkshopClassDetail");
-
-            migrationBuilder.DropTable(
                 name: "BirdCertificate");
 
             migrationBuilder.DropTable(
@@ -1480,19 +1523,13 @@ namespace AppCore.Migrations
                 name: "Lesson");
 
             migrationBuilder.DropTable(
-                name: "FeedbackType");
+                name: "WorkshopRefundPolicy");
 
             migrationBuilder.DropTable(
                 name: "Skill");
 
             migrationBuilder.DropTable(
-                name: "WorkshopClass");
-
-            migrationBuilder.DropTable(
-                name: "TrainerSlot");
-
-            migrationBuilder.DropTable(
-                name: "WorkshopDetailTemplate");
+                name: "WorkshopClassDetail");
 
             migrationBuilder.DropTable(
                 name: "TrainingCourseSkill");
@@ -1504,13 +1541,13 @@ namespace AppCore.Migrations
                 name: "Section");
 
             migrationBuilder.DropTable(
-                name: "Trainer");
+                name: "WorkshopClass");
 
             migrationBuilder.DropTable(
-                name: "Slot");
+                name: "TrainerSlot");
 
             migrationBuilder.DropTable(
-                name: "Workshop");
+                name: "WorkshopDetailTemplate");
 
             migrationBuilder.DropTable(
                 name: "BirdSkill");
@@ -1525,7 +1562,13 @@ namespace AppCore.Migrations
                 name: "OnlineCourse");
 
             migrationBuilder.DropTable(
-                name: "WorkshopRefundPolicy");
+                name: "Trainer");
+
+            migrationBuilder.DropTable(
+                name: "Slot");
+
+            migrationBuilder.DropTable(
+                name: "Workshop");
 
             migrationBuilder.DropTable(
                 name: "Customer");
