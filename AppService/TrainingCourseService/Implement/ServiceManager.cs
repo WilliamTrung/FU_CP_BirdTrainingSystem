@@ -74,22 +74,12 @@ namespace AppService.TrainingCourseService.Implement
             await _trainingCourse.Manager.EditBirdSkill(birdSkillMod);
         }
 
-        public async Task<IEnumerable<BirdSkillViewModel>> GetBirdSkills()
-        {
-            return await _trainingCourse.Manager.GetBirdSkills();
-        }
-
-        public async Task<BirdSkillViewModel> GetBirdSkillsById(int birdSkillId)
-        {
-            return await _trainingCourse.Manager.GetBirdSkillsById(birdSkillId);
-        }
-
-        public async Task CreateAccquirableBirdSkill(AccquirableAddModBirdSkill accquirableAdd)
+        public async Task CreateAccquirableBirdSkill(AcquirableAddModBirdSkill accquirableAdd)
         {
             await _trainingCourse.Manager.CreateAccquirableBirdSkill(accquirableAdd);
         }
 
-        public async Task EditAccquirableBirdSkill(AccquirableAddModBirdSkill accquirableMod)
+        public async Task EditAccquirableBirdSkill(AcquirableAddModBirdSkill accquirableMod)
         {
             await _trainingCourse.Manager.EditAccquirableBirdSkill(accquirableMod);
         }
@@ -104,16 +94,6 @@ namespace AppService.TrainingCourseService.Implement
             await _trainingCourse.Manager.EditSkill(skillModModel);
         }
 
-        public async Task<IEnumerable<SkillViewModModel>> GetSkills()
-        {
-            return await _trainingCourse.Manager.GetSkills();
-        }
-
-        public async Task<SkillViewModModel> GetSkillById(int skillId)
-        {
-            return await _trainingCourse.Manager.GetSkillById(skillId);
-        }
-
         public async Task CreateTrainerSkill(TrainerSkillAddModModel trainerSkillAdd)
         {
             await _trainingCourse.Manager.CreateTrainerSkill(trainerSkillAdd);
@@ -124,16 +104,6 @@ namespace AppService.TrainingCourseService.Implement
             await _trainingCourse.Manager.EditTrainerSkill(trainerSkillMod);
         }
 
-        public async Task<IEnumerable<TrainerSkillViewModel>> GetTrainerSkills()
-        {
-            return await _trainingCourse.Manager.GetTrainerSkills();
-        }
-
-        public async Task<IEnumerable<TrainerSkillViewModel>> GetTrainerSkillsByTrainerId(int trainerId)
-        {
-            return await _trainingCourse.Manager.GetTrainerSkillsByTrainerId((int)trainerId);
-        }
-
         public async Task CreateTrainableSkill(TrainableAddModSkillModel trainableSkillAdd)
         {
             await _trainingCourse.Manager.CreateTrainableSkill(trainableSkillAdd);
@@ -142,11 +112,6 @@ namespace AppService.TrainingCourseService.Implement
         public async Task EditTrainableSkill(TrainableAddModSkillModel trainableSkillMod)
         {
             await _trainingCourse.Manager.EditTrainableSkill(trainableSkillMod);
-        }
-
-        public async Task<IEnumerable<TrainableViewSkillModel>> GetTrainableSkills()
-        {
-            return await _trainingCourse.Manager.GetTrainableSkills();
         }
         #endregion
         #endregion

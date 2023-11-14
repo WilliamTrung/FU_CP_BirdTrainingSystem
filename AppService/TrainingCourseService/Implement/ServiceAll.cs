@@ -2,6 +2,8 @@
 using Models.ServiceModels.TrainingCourseModels.Bird;
 using Models.ServiceModels.TrainingCourseModels.BirdCertificate;
 using Models.ServiceModels.TrainingCourseModels.BirdCertificate.BirdCertificateDetail;
+using Models.ServiceModels.TrainingCourseModels.BirdSkill;
+using Models.ServiceModels.TrainingCourseModels.TrainerSkill;
 using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
 using System;
 using System.Collections.Generic;
@@ -33,6 +35,16 @@ namespace AppService.TrainingCourseService.Implement
             await _trainingCourse.All.DeleteBirdSkillReceived(addDeleteModel);
         }
 
+        public async Task<IEnumerable<AcquirableSkillViewModel>> GetAccquirableBirdSkill()
+        {
+            return await _trainingCourse.All.GetAccquirableBirdSkill();
+        }
+
+        public async Task<IEnumerable<AcquirableSkillViewModel>> GetAccquirableBirdSkillByBirdSpeciesId(int birdSpeciesId)
+        {
+            return await _trainingCourse.All.GetAccquirableBirdSkillByBirdSpeciesId(birdSpeciesId);
+        }
+
         public async Task<IEnumerable<BirdCertificateDetailViewModel>> GetBirdCertificatesDetail()
         {
             return await _trainingCourse.All.GetBirdCertificatesDetail();
@@ -53,6 +65,16 @@ namespace AppService.TrainingCourseService.Implement
             return await _trainingCourse.All.GetBirdSkillReceivedsByBirdId(birdId);
         }
 
+        public async Task<IEnumerable<BirdSkillViewModel>> GetBirdSkills()
+        {
+            return await _trainingCourse.All.GetBirdSkills();
+        }
+
+        public async Task<BirdSkillViewModel> GetBirdSkillsById(int birdSkillId)
+        {
+            return await _trainingCourse.All.GetBirdSkillsById(birdSkillId);
+        }
+
         public async Task<IEnumerable<BirdSpeciesViewModel>> GetBirdSpecies()
         {
             return await _trainingCourse.All.GetBirdSpecies();
@@ -66,6 +88,31 @@ namespace AppService.TrainingCourseService.Implement
         public IEnumerable<Status> GetEnumBirdTrainingProgressStatuses()
         {
             return _trainingCourse.Staff.GetEnumBirdTrainingProgressStatuses();
+        }
+
+        public async Task<SkillViewModModel> GetSkillById(int skillId)
+        {
+            return await _trainingCourse.All.GetSkillById(skillId);
+        }
+
+        public async Task<IEnumerable<SkillViewModModel>> GetSkills()
+        {
+            return await _trainingCourse.All.GetSkills();
+        }
+
+        public async Task<IEnumerable<TrainableViewSkillModel>> GetTrainableSkills()
+        {
+            return await _trainingCourse.All.GetTrainableSkills();
+        }
+
+        public async Task<IEnumerable<TrainerSkillViewModel>> GetTrainerSkills()
+        {
+            return await _trainingCourse.All.GetTrainerSkills();
+        }
+
+        public async Task<IEnumerable<TrainerSkillViewModel>> GetTrainerSkillsByTrainerId(int trainerId)
+        {
+            return await _trainingCourse.All.GetTrainerSkillsByTrainerId(trainerId);
         }
 
         public Task<IEnumerable<TrainingCourseViewModel>> GetTrainingCourses()

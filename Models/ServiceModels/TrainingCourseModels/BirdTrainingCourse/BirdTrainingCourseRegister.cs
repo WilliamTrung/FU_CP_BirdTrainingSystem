@@ -20,6 +20,6 @@ namespace Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse
         public int TrainingCourseId { get; set; }
         public int CustomerId { get; set; }
         public decimal? TotalPrice { get; set; }
-        public decimal? DiscountedPrice { get; set; }
+        //public decimal? DiscountedPrice { get; set; }
     }
 }

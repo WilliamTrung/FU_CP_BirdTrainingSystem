@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using AppRepository.UnitOfWork;
+using AutoMapper;
 using Models.Entities;
 using Models.ServiceModels.SlotModels;
 using Models.ServiceModels.TrainingCourseModels;
@@ -100,22 +101,29 @@ namespace SP_AutoMapperConfig
         public class MappingAction_Trainer_TrainerModel : IMappingAction<Trainer, TrainerModel>
         {
             private readonly IMapper _mapper;
-            public MappingAction_Trainer_TrainerModel(IMapper mapper)
+            private readonly IUnitOfWork _unitOfWork;
+            public MappingAction_Trainer_TrainerModel(IMapper mapper, IUnitOfWork unitOfWork)
             {
-                _mapper=mapper;
+                _mapper = mapper;
+                _unitOfWork = unitOfWork;
             }
-            public void Process(Trainer source, TrainerModel destination, ResolutionContext context)
+            public async void Process(Trainer source, TrainerModel destination, ResolutionContext context)
             {
                 destination.Id = source.Id;
                 destination.Name = source.User.Name;
                 destination.Email = source.User.Email;
                 destination.Avatar = source.User.Avatar;
-                List<TrainerSkillViewModel> trainerSkillModels = new List<TrainerSkillViewModel>();
-                foreach (TrainerSkill skill in source.TrainerSkills)
-                {
-                    var trainerSkillModel = _mapper.Map<TrainerSkillViewModel>(skill);
-                    trainerSkillModels.Add(trainerSkillModel);
-                }
+                //List<TrainerSkillViewModel> trainerSkillModels = new List<TrainerSkillViewModel>();
+                //foreach (TrainerSkill skill in source.TrainerSkills)
+                //{
+                //    var trainerSkillModel = _mapper.Map<TrainerSkillViewModel>(skill);
+                //    trainerSkillModels.Add(trainerSkillModel);
+                //}
+                var trainerSkill = _unitOfWork.TrainerSkillRepository.Get(e => e.TrainerId == source.Id
+                                                                            , nameof(TrainerSkill.Skill)
+                                                                            , nameof(TrainerSkill.Trainer)
+                                                                            , $"{nameof(TrainerSkill.Trainer)}.{nameof(TrainerSkill.Trainer.User)}").Result;
+                var trainerSkillModels = _mapper.Map<List<TrainerSkillViewModel>>(trainerSkill);
                 destination.TrainerSkillModels = trainerSkillModels;
             }
         }

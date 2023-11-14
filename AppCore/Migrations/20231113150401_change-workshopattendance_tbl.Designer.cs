@@ -3,6 +3,7 @@ using System;
 using AppCore.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AppCore.Migrations
 {
     [DbContext(typeof(BirdTrainingCenterSystemContext))]
-    partial class BirdTrainingCenterSystemContextModelSnapshot : ModelSnapshot
+    [Migration("20231113150401_change-workshopattendance_tbl")]
+    partial class changeworkshopattendance_tbl
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -386,6 +388,7 @@ namespace AppCore.Migrations
                         .HasColumnType("integer");
 
                     b.Property<int?>("StaffId")
+                        .IsRequired()
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("StartTrainingDate")
@@ -1552,9 +1555,6 @@ namespace AppCore.Migrations
                     b.Property<int>("CustomerId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
-
                     b.Property<int>("WorkshopClassDetailId")
                         .HasColumnType("integer");
 
@@ -1837,6 +1837,7 @@ namespace AppCore.Migrations
                     b.HasOne("Models.Entities.User", "Staff")
                         .WithMany("BirdTrainingCourses")
                         .HasForeignKey("StaffId")
+                        .IsRequired()
                         .HasConstraintName("FKBird_Train934485");
 
                     b.HasOne("Models.Entities.TrainingCourse", "TrainingCourse")

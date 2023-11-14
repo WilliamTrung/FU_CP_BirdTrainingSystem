@@ -3,6 +3,7 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Models.ConfigModels;
 using Models.Entities;
+using Models.ServiceModels.WorkshopModels.CustomerRegister;
 using Models.ServiceModels.WorkshopModels.WorkshopClass;
 using SP_Extension;
 using System;
@@ -228,6 +229,16 @@ namespace WorkshopSubsystem.Implementation
             entity.Status = (int)Models.Enum.Workshop.Class.Status.Completed;
             await _unitOfWork.WorkshopClassRepository.Update(entity);
             //26-10-2023 - TrungNT - Add End
+        }
+
+        public Task<IEnumerable<RegisteredCustomerModel>> GetListRegistered(int classSlotId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task CheckAttendance(int classSlotId, CheckAttendanceCredentials customerCredentials)
+        {
+            throw new NotImplementedException();
         }
     }
 }

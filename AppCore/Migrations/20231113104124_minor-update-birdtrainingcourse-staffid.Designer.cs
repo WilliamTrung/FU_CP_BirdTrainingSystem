@@ -3,6 +3,7 @@ using System;
 using AppCore.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AppCore.Migrations
 {
     [DbContext(typeof(BirdTrainingCenterSystemContext))]
-    partial class BirdTrainingCenterSystemContextModelSnapshot : ModelSnapshot
+    [Migration("20231113104124_minor-update-birdtrainingcourse-staffid")]
+    partial class minorupdatebirdtrainingcoursestaffid
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1549,20 +1551,20 @@ namespace AppCore.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime?>("AttendDate")
+                        .HasColumnType("date");
+
                     b.Property<int>("CustomerId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("WorkshopClassDetailId")
+                    b.Property<int>("WorkshopClassId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
 
-                    b.HasIndex("WorkshopClassDetailId");
+                    b.HasIndex("WorkshopClassId");
 
                     b.ToTable("WorkshopAttendance", (string)null);
                 });
@@ -1606,7 +1608,6 @@ namespace AppCore.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("DaySlotId")
-                        .IsRequired()
                         .HasColumnType("integer");
 
                     b.Property<int>("DetailId")
@@ -2250,15 +2251,15 @@ namespace AppCore.Migrations
                         .IsRequired()
                         .HasConstraintName("FKWorkshopAt124181");
 
-                    b.HasOne("Models.Entities.WorkshopClassDetail", "WorkshopClassDetail")
+                    b.HasOne("Models.Entities.WorkshopClass", "WorkshopClass")
                         .WithMany("WorkshopAttendances")
-                        .HasForeignKey("WorkshopClassDetailId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("WorkshopClassId")
+                        .IsRequired()
+                        .HasConstraintName("FKWorkshopAt172557");
 
                     b.Navigation("Customer");
 
-                    b.Navigation("WorkshopClassDetail");
+                    b.Navigation("WorkshopClass");
                 });
 
             modelBuilder.Entity("Models.Entities.WorkshopClass", b =>
@@ -2277,8 +2278,6 @@ namespace AppCore.Migrations
                     b.HasOne("Models.Entities.TrainerSlot", "DaySlot")
                         .WithMany("WorkshopClassDetails")
                         .HasForeignKey("DaySlotId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
                         .HasConstraintName("FKWorkshopCl382995");
 
                     b.HasOne("Models.Entities.WorkshopDetailTemplate", "WorkshopDetailTemplate")
@@ -2508,12 +2507,9 @@ namespace AppCore.Migrations
                 {
                     b.Navigation("CustomerWorkshopClasses");
 
-                    b.Navigation("WorkshopClassDetails");
-                });
-
-            modelBuilder.Entity("Models.Entities.WorkshopClassDetail", b =>
-                {
                     b.Navigation("WorkshopAttendances");
+
+                    b.Navigation("WorkshopClassDetails");
                 });
 
             modelBuilder.Entity("Models.Entities.WorkshopDetailTemplate", b =>

@@ -2,6 +2,7 @@
 using Models.ServiceModels.TrainingCourseModels.BirdCertificate.BirdCertificateDetail;
 using Models.ServiceModels.TrainingCourseModels.BirdCertificate;
 using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
+using Models.ServiceModels.TrainingCourseModels.BirdSkill;
 
 namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
 {
@@ -54,5 +55,41 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
         [HttpGet]
         [Route("birdskillreceived-bird")]
         Task<IActionResult> GetBirdSkillReceivedsByBirdId(int birdId);
+
+        [HttpGet]
+        [Route("trainerskill")]
+        Task<IActionResult> GetTrainerSkills();
+
+        [HttpGet]
+        [Route("trainerskill-trainerid")]
+        Task<IActionResult> GetTrainerSkillsByTrainerId(int trainerId);
+
+        [HttpGet]
+        [Route("trainableskill")]
+        Task<IActionResult> GetTrainableSkills();
+
+        [HttpGet]
+        [Route("birdskill")]
+        Task<IActionResult> GetBirdSkills();
+
+        [HttpGet]
+        [Route("birdskill-id")]
+        Task<IActionResult> GetBirdSkillsById(int birdSkillId);
+
+        [HttpGet]
+        [Route("skill")]
+        Task<IActionResult> GetSkills();
+
+        [HttpGet]
+        [Route("skill-id")]
+        Task<IActionResult> GetSkillById(int skillId);
+
+        [HttpGet]
+        [Route("accquirablebirdskill")]
+        Task<IActionResult> GetAccquirableBirdSkill();
+
+        [HttpGet]
+        [Route("accquirablebirdskill-birdspecies")]
+        Task<IActionResult> GetAccquirableBirdSkillByBirdSpeciesId(int birdSpeciesId);
     }
 }

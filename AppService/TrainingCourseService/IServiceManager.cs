@@ -28,25 +28,18 @@ namespace AppService.TrainingCourseService
         #region BirdSkill
         Task CreateBirdSkill(BirdSkillAddModel birdSkillAdd);
         Task EditBirdSkill(BirdSkillModModel birdSkillMod);
-        Task<IEnumerable<BirdSkillViewModel>> GetBirdSkills();
-        Task<BirdSkillViewModel> GetBirdSkillsById(int birdSkillId);
-        Task CreateAccquirableBirdSkill(AccquirableAddModBirdSkill accquirableAdd);
-        Task EditAccquirableBirdSkill(AccquirableAddModBirdSkill accquirableMod);
+        Task CreateAccquirableBirdSkill(AcquirableAddModBirdSkill accquirableAdd);
+        Task EditAccquirableBirdSkill(AcquirableAddModBirdSkill accquirableMod);
         #endregion
 
         #region Skill
         Task CreateSkill(SkillAddModel skillAddModel);
         Task EditSkill(SkillViewModModel skillModModel);
-        Task<IEnumerable<SkillViewModModel>> GetSkills();
-        Task<SkillViewModModel> GetSkillById(int skillId);
         Task CreateTrainerSkill(TrainerSkillAddModModel trainerSkillAdd);
         Task EditTrainerSkill(TrainerSkillAddModModel trainerSkillMod);
-        Task<IEnumerable<TrainerSkillViewModel>> GetTrainerSkills();
-        Task<IEnumerable<TrainerSkillViewModel>> GetTrainerSkillsByTrainerId(int trainerId);
 
         Task CreateTrainableSkill(TrainableAddModSkillModel trainableSkillAdd);
         Task EditTrainableSkill(TrainableAddModSkillModel trainableSkillMod);
-        Task<IEnumerable<TrainableViewSkillModel>> GetTrainableSkills();
         #endregion
 
         #region BirdCertificate

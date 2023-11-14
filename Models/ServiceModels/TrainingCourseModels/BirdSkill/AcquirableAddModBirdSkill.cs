@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Models.ServiceModels.TrainingCourseModels.BirdSkill
 {
-    public class AccquirableAddModBirdSkill
+    public class AcquirableAddModBirdSkill
     {
         public int BirdSpeciesId { get; set; }
         public int BirdSkillId { get; set; }
