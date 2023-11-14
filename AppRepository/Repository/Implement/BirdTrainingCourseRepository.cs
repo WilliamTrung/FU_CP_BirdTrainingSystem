@@ -17,11 +17,14 @@ namespace AppRepository.Repository.Implement
             {
                 if(entity != null)
                 {
-                    int compareDate = DateTime.Compare((DateTime)entity.StartTrainingDate, DateTime.Now);
-                    if(entity.Status == (int)Models.Enum.BirdTrainingCourse.Status.CheckIn && compareDate >= 0)
+                    if (entity.StartTrainingDate != null)
                     {
-                        entity.Status = (int)Models.Enum.BirdTrainingCourse.Status.Training;
-                        await Update(entity);
+                        int compareDate = DateTime.Compare((DateTime)entity.StartTrainingDate, DateTime.Now);
+                        if (entity.Status == (int)Models.Enum.BirdTrainingCourse.Status.CheckIn && compareDate >= 0)
+                        {
+                            entity.Status = (int)Models.Enum.BirdTrainingCourse.Status.Training;
+                            await Update(entity);
+                        }
                     }
                 }
             }

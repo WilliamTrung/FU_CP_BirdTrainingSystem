@@ -57,21 +57,13 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
         [Route("birdskill-update")]
         Task<IActionResult> EditBirdSkill(BirdSkillModModel birdSkillMod);
 
-        [HttpGet]
-        [Route("birdskill")]
-        Task<IActionResult> GetBirdSkills();
-
-        [HttpGet]
-        [Route("birdskill-id")]
-        Task<IActionResult> GetBirdSkillsById(int birdSkillId);
-
         [HttpPost]
         [Route("acquirablebirdskill-create")]
-        Task<IActionResult> CreateAccquirableBirdSkill(AccquirableAddModBirdSkill accquirableAdd);
+        Task<IActionResult> CreateAccquirableBirdSkill(AcquirableAddModBirdSkill accquirableAdd);
 
         [HttpPut]
         [Route("acquirablebirdskill-update")]
-        Task<IActionResult> EditAccquirableBirdSkill(AccquirableAddModBirdSkill accquirableMod);
+        Task<IActionResult> EditAccquirableBirdSkill(AcquirableAddModBirdSkill accquirableMod);
         #endregion
 
         #region Skill
@@ -83,14 +75,6 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
         [Route("skill-update")]
         Task<IActionResult> EditSkill(SkillViewModModel skillModModel);
 
-        [HttpGet]
-        [Route("skill")]
-        Task<IActionResult> GetSkills();
-
-        [HttpGet]
-        [Route("skill-id")]
-        Task<IActionResult> GetSkillById(int skillId);
-
         [HttpPost]
         [Route("trainerskill-create")]
         Task<IActionResult> CreateTrainerSkill(TrainerSkillAddModModel trainerSkillAdd);
@@ -99,14 +83,6 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
         [Route("trainerskill-update")]
         Task<IActionResult> EditTrainerSkill(TrainerSkillAddModModel trainerSkillMod);
 
-        [HttpGet]
-        [Route("trainerskill")]
-        Task<IActionResult> GetTrainerSkills();
-
-        [HttpGet]
-        [Route("trainerskill-trainerid")]
-        Task<IActionResult> GetTrainerSkillsByTrainerId(int trainerId);
-
         [HttpPost]
         [Route("trainableskill-create")]
         Task<IActionResult> CreateTrainableSkill(TrainableAddModSkillModel trainableSkillAdd);
@@ -114,10 +90,6 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
         [HttpPut]
         [Route("trainableskill-udpate")]
         Task<IActionResult> EditTrainableSkill(TrainableAddModSkillModel trainableSkillMod);
-
-        [HttpGet]
-        [Route("trainableskill")]
-        Task<IActionResult> GetTrainableSkills();
         #endregion
 
         #region BirdCertificate

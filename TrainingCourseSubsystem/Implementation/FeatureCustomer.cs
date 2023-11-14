@@ -88,6 +88,17 @@ namespace TrainingCourseSubsystem.Implementation
             {
                 entity.RegisteredDate= DateTime.Now;
                 entity.Status = (int)Models.Enum.BirdTrainingCourse.Status.Registered;
+
+                var customer = _unitOfWork.CustomerRepository.GetFirst(e => e.Id == entity.CustomerId
+                                                                        ,nameof(Customer.MembershipRank)).Result;
+                if (customer == null) throw new Exception(nameof(Customer) + " is not found.");
+                else
+                {
+                    var discount = customer.MembershipRank.Discount.HasValue ? customer.MembershipRank.Discount.Value : 0;
+                    var discountedPrice = entity.TotalPrice - entity.TotalPrice * (decimal)discount;
+                    entity.DiscountedPrice = discountedPrice;
+                }
+
                 await _unitOfWork.BirdTrainingCourseRepository.Add(entity);
             }
         }

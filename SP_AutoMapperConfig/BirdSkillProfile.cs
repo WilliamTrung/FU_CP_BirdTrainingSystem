@@ -62,7 +62,7 @@ namespace SP_AutoMapperConfig
 
         private void Map_AccquirableAddModBirdSkill_AcquirableSkill()
         {
-            CreateMap<AccquirableAddModBirdSkill, AcquirableSkill>()
+            CreateMap<AcquirableAddModBirdSkill, AcquirableSkill>()
                 .ForMember(m => m.BirdSpeciesId, opt => opt.MapFrom(e => e.BirdSpeciesId))
                 .ForMember(m => m.BirdSkillId, opt => opt.MapFrom(e => e.BirdSkillId))
                 .ForMember(m => m.Condition, opt => opt.MapFrom(e => e.Condition));
