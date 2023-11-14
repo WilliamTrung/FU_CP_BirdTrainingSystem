@@ -1,4 +1,5 @@
-﻿using Models.ServiceModels.WorkshopModels.WorkshopClass;
+﻿using Models.ServiceModels.WorkshopModels.CustomerRegister;
+using Models.ServiceModels.WorkshopModels.WorkshopClass;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -180,6 +181,15 @@ namespace AppService.WorkshopService.Implementation
         public async Task CompleteWorkshopClass(int workshopClassId)
         {
             await _workshop.Staff.CompleteWorkshopClass(workshopClassId);
+        }
+        public async Task<IEnumerable<RegisteredCustomerModel>> GetAttendeesInSlot(int classSlotId)
+        {
+            var result = await _workshop.Staff.GetListRegistered(classSlotId);
+            return result;
+        }
+        public async Task SubmitAttendance(int classSlotId, List<CheckAttendanceCredentials> customerCredentials)
+        {
+            await _workshop.Staff.CheckAttendance(classSlotId, customerCredentials);
         }
     }
 }

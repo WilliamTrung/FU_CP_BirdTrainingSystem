@@ -242,6 +242,10 @@ namespace WorkshopSubsystem.Implementation
 
         public async Task CheckAttendance(int classSlotId, List<CheckAttendanceCredentials> customerCredentials)
         {
+            if(!await IsAbleToCheckAttendance(classSlotId))
+            {
+                throw new InvalidOperationException("This class slot is not be able to check attendance!");
+            }
             customerCredentials.ForEach(e =>
             {
                 if(e.PhoneNumber == null && e.Email == null)
@@ -300,6 +304,25 @@ namespace WorkshopSubsystem.Implementation
                 entity.Status = (int)Models.Enum.Workshop.Class.Customer.Status.Attended;
                 await _unitOfWork.WorkshopAttendanceRepository.Update(entity);
             }
+        }
+        private async Task<bool> IsAbleToCheckAttendance(int classSlotId)
+        {
+            var classSlot = await _unitOfWork.WorkshopClassDetailRepository.GetFirst(c => c.Id == classSlotId 
+                                                                                        && c.WorkshopClass.Status == (int)Models.Enum.Workshop.Class.Status.OnGoing
+                                                                                        , nameof(WorkshopClassDetail.DaySlot)
+                                                                                        , nameof(WorkshopClassDetail.WorkshopClass)
+                                                                                        , $"{nameof(WorkshopClassDetail.DaySlot)}.{nameof(TrainerSlot.Slot)}");
+            if(classSlot == null) return false;
+            //check start time and end time to current time
+#pragma warning disable CS8629 // Nullable value type may be null.
+            DateTime startTime = classSlot.DaySlot.Date.AddTicks(classSlot.DaySlot.Slot.StartTime.Value.Ticks);
+            if(DateTime.Now > startTime)
+            {
+                DateTime endTime = classSlot.DaySlot.Date.AddTicks(classSlot.DaySlot.Slot.EndTime.Value.Ticks).AddHours(24);
+                if (DateTime.Now > endTime) return false;
+            }                        
+#pragma warning restore CS8629 // Nullable value type may be null.            
+            return true;
         }
     }
 }

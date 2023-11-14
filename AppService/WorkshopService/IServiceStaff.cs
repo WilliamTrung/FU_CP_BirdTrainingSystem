@@ -1,4 +1,5 @@
-﻿using Models.ServiceModels.WorkshopModels.WorkshopClass;
+﻿using Models.ServiceModels.WorkshopModels.CustomerRegister;
+using Models.ServiceModels.WorkshopModels.WorkshopClass;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,5 +18,7 @@ namespace AppService.WorkshopService
         Task ModifyWorkshopClassDetailSlotOnly(WorkshopClassDetailTrainerSlotOnlyModifyModel workshopClassDetail);
         Task CancelWorkshopClass(int workshopClassId);
         Task CompleteWorkshopClass(int workshopClassId);
+        Task<IEnumerable<RegisteredCustomerModel>> GetAttendeesInSlot(int classSlotId);
+        Task SubmitAttendance(int classSlotId, List<CheckAttendanceCredentials> customerCredentials);
     }
 }

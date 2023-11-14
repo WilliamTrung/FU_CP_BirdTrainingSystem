@@ -17,6 +17,24 @@ namespace WorkshopSubsystem.Implementation
         {
         }
 
+        public async Task<bool> CheckHostingClassSlot(int trainerId, int classSlotId)
+        {
+            var classSlot = await _unitOfWork.WorkshopClassDetailRepository.GetFirst(c => c.Id == classSlotId, nameof(WorkshopClassDetail.DaySlot));
+            if(classSlot == null)
+            {
+                return false;
+            } else if(classSlot.DaySlot == null)
+            {
+                return false;
+            } else if(classSlot.DaySlot.TrainerId == trainerId)
+            {
+                return true;
+            } else
+            {
+                return false;
+            }
+        }
+
         public async Task<IEnumerable<WorkshopClassDetailViewModel>> GetAssignedWorkshopClassDetails(int trainerId, int workshopClassId)
         {
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
