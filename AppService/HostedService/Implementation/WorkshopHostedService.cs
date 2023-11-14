@@ -58,5 +58,10 @@ namespace AppService.HostedService.Implementation
             Dispose(disposing: true);
             GC.SuppressFinalize(this);
         }
+
+        public async Task LateCheckAttendance()
+        {
+            await _workshop.Staff.LateCheckAttendance();
+        }
     }
 }

@@ -135,7 +135,7 @@ namespace WorkshopSubsystem.Implementation
                                                                                     , nameof(WorkshopClassDetail.WorkshopClass));
             if(entity == null)
             {
-                throw new KeyNotFoundException($"{nameof(entity)} not found for id: {workshopClass.Id}");
+                throw new KeyNotFoundException($"WorkshopClass not found for id: {workshopClass.Id}");
             }
             if(entity.DaySlot == null)
             {
@@ -164,7 +164,7 @@ namespace WorkshopSubsystem.Implementation
                                                                                     , nameof(WorkshopClassDetail.WorkshopClass));
             if(entity == null)
             {
-                throw new KeyNotFoundException($"{typeof(WorkshopClassDetail)} not found at id: {workshopClass.Id}");
+                throw new KeyNotFoundException($"Workshop Class not found at id: {workshopClass.Id}");
             }
             if(entity.DaySlot == null)
             {
@@ -231,14 +231,75 @@ namespace WorkshopSubsystem.Implementation
             //26-10-2023 - TrungNT - Add End
         }
 
-        public Task<IEnumerable<RegisteredCustomerModel>> GetListRegistered(int classSlotId)
+        public async Task<IEnumerable<RegisteredCustomerModel>> GetListRegistered(int classSlotId)
         {
-            throw new NotImplementedException();
+            var entities = await _unitOfWork.WorkshopAttendanceRepository.Get(c => c.WorkshopClassDetailId == classSlotId
+                                                                                , nameof(WorkshopAttendance.Customer)
+                                                                                , $"{nameof(WorkshopAttendance.Customer)}.{nameof(Customer.User)}");
+            var models = _mapper.Map<List<RegisteredCustomerModel>>(entities);
+            return models;
         }
 
-        public Task CheckAttendance(int classSlotId, CheckAttendanceCredentials customerCredentials)
+        public async Task CheckAttendance(int classSlotId, List<CheckAttendanceCredentials> customerCredentials)
         {
-            throw new NotImplementedException();
+            customerCredentials.ForEach(e =>
+            {
+                if(e.PhoneNumber == null && e.Email == null)
+                {
+                    throw new InvalidDataException("Invalid data: phonenumber and email is null");
+                }
+            });
+            foreach (var customerCredential in customerCredentials)
+            {                
+                var entity = await _unitOfWork.WorkshopAttendanceRepository.GetFirst(c => c.WorkshopClassDetailId == classSlotId
+                                                                                && (customerCredential.Email == null ? false : c.Customer.User.Email == customerCredential.Email
+                                                                                    || customerCredential.PhoneNumber == null ? false : c.Customer.User.PhoneNumber == Decimal.Parse(customerCredential.PhoneNumber))
+                                                                                , nameof(WorkshopAttendance.Customer)
+                                                                                , $"{nameof(WorkshopAttendance.Customer)}.{nameof(Customer.User)}");
+                if (entity == null)
+                {
+                    throw new KeyNotFoundException("This account does not exist in list attendees!");
+                }
+                if (customerCredential.IsPresent)
+                {
+                    entity.Status = (int)Models.Enum.Workshop.Class.Customer.Status.Attended;
+                }
+                else
+                {
+                    entity.Status = (int)Models.Enum.Workshop.Class.Customer.Status.Absent;
+                }
+                await _unitOfWork.WorkshopAttendanceRepository.Update(entity);
+            }            
+        }
+
+        public async Task GenerateWorkshopAttendance(int customerId, int workshopClassId)
+        {
+            var classSlots = await _unitOfWork.WorkshopClassDetailRepository.Get(c => c.WorkshopClassId == workshopClassId);
+            foreach (var classSlot in classSlots)
+            {
+                var workshopAttend = new WorkshopAttendance()
+                {
+                    CustomerId = customerId,
+                    WorkshopClassDetailId = classSlot.Id,
+                    Status = (int)Models.Enum.Workshop.Class.Customer.Status.NotYet
+                };
+                await _unitOfWork.WorkshopAttendanceRepository.Add(workshopAttend);
+            }           
+        }
+
+        public async Task LateCheckAttendance()
+        {
+            var entities = await _unitOfWork.WorkshopAttendanceRepository.Get(c => c.WorkshopClassDetail.DaySlot.Date <= DateTime.Today
+                                                                                && c.WorkshopClassDetail.DaySlot.Slot.EndTime < DateTime.Now.TimeOfDay
+                                                                                && c.Status == (int)Models.Enum.Workshop.Class.Customer.Status.NotYet
+                                                                                , nameof(WorkshopAttendance.WorkshopClassDetail)
+                                                                                , $"{nameof(WorkshopAttendance.WorkshopClassDetail)}.{nameof(WorkshopClassDetail.DaySlot)}"
+                                                                                , $"{nameof(WorkshopAttendance.WorkshopClassDetail)}.{nameof(WorkshopClassDetail.DaySlot)}.{nameof(TrainerSlot.Slot)}");
+            foreach (var entity  in entities)
+            {
+                entity.Status = (int)Models.Enum.Workshop.Class.Customer.Status.Attended;
+                await _unitOfWork.WorkshopAttendanceRepository.Update(entity);
+            }
         }
     }
 }

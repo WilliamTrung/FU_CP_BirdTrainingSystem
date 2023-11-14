@@ -30,8 +30,12 @@ namespace WorkshopSubsystem.Implementation
             foreach (var entity in entities)
             {
                 var model = _mapper.Map<WorkshopClassViewModel>(entity.WorkshopClass);
+                foreach (var classSlot in model.ClassSlots)
+                {
+                    classSlot.Status = await CheckAttend(customerId, classSlot.Id);
+                }
                 models.Add(model);
-            }
+            }            
             return models;
         }
         public async Task<IEnumerable<WorkshopModel>> GetRegisteredWorkshops(int customerId)
@@ -124,7 +128,7 @@ namespace WorkshopSubsystem.Implementation
             //    EntityId = customerRegistered.WorkshopClassId,
             //    EntityTypeId = (int)Models.Enum.EntityType.WorkshopClass,
                 
-            //};
+            //};            
         }
 
         public async Task<CustomerWorkshopClass?> GetCustomerRegistrationInfo(int customerId, int workshopClassId)
@@ -214,9 +218,14 @@ namespace WorkshopSubsystem.Implementation
             }
         }
 
-        public Task<Status?> CheckAttend(int customerId, int classSlotId)
+        public async Task<Models.Enum.Workshop.Class.Customer.Status?> CheckAttend(int customerId, int classSlotId)
         {
-            throw new NotImplementedException();
+            var entity = await _unitOfWork.WorkshopAttendanceRepository.GetFirst(c => c.WorkshopClassDetailId == classSlotId && c.CustomerId == customerId);
+            if(entity == null)
+            {
+                return null;
+            }
+            return (Status)entity.Status;
         }
     }
 }

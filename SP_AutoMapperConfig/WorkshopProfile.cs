@@ -3,6 +3,7 @@ using AutoMapper;
 using Models.ApiParamModels.Workshop;
 using Models.Entities;
 using Models.ServiceModels.WorkshopModels;
+using Models.ServiceModels.WorkshopModels.CustomerRegister;
 using Models.ServiceModels.WorkshopModels.WorkshopClass;
 using System;
 using System.Collections.Generic;
@@ -27,6 +28,12 @@ namespace SP_AutoMapperConfig
             Map_Workshop_WorkshopAdminModel();
             Map_WorkshopClassDetailTrainerSlotModifyModel_TrainerSlot();
             Map_WorkshopClass_WorkshopClassViewModel();
+            Map_WorkshopAttendance_RegisteredCustomerModel();
+        }
+        private void Map_WorkshopAttendance_RegisteredCustomerModel()
+        {
+            CreateMap<WorkshopAttendance, RegisteredCustomerModel>()
+                .AfterMap<MappingAction_WorkshopAttendance_RegisterCustomerModel>();
         }
         private void Map_WorkshopClassDetailTrainerSlotModifyModel_TrainerSlot()
         {
@@ -190,10 +197,12 @@ namespace SP_AutoMapperConfig
                 
             } else
             {
+#pragma warning disable CS8601 // Possible null reference assignment.
                 source.DaySlot = _uow.TrainerSlotRepository.GetFirst(c => c.Id == source.DaySlotId
                                                                         , nameof(TrainerSlot.Trainer)
                                                                         , nameof(TrainerSlot.Slot)
                                                                         , $"{nameof(TrainerSlot.Trainer)}.{nameof(Trainer.User)}").Result;
+#pragma warning restore CS8601 // Possible null reference assignment.
                 destination.Trainer = _mapper.Map<TrainerWorkshopModel>(source.DaySlot.Trainer);
                 destination.Date = (DateTime)source.DaySlot.Date;
                 destination.StartTime = (TimeSpan)source.DaySlot.Slot.StartTime;
@@ -225,6 +234,18 @@ namespace SP_AutoMapperConfig
             }
             destination.ClassSlots = _mapper.Map<List<WorkshopClassDetailViewModel>>(source.WorkshopClassDetails);
 
+        }
+    }
+    public class MappingAction_WorkshopAttendance_RegisterCustomerModel : IMappingAction<WorkshopAttendance, RegisteredCustomerModel>
+    {
+        public void Process(WorkshopAttendance source, RegisteredCustomerModel destination, ResolutionContext context)
+        {
+            destination.Avatar = source.Customer.User.Avatar;
+            destination.CustomerId = source.CustomerId;
+            destination.CustomerName = source.Customer.User.Name;
+            destination.Email = source.Customer.User.Email;
+            destination.Status = (Models.Enum.Workshop.Class.Customer.Status)source.Status;
+            destination.WorkshopClassDetailId = source.WorkshopClassDetailId;
         }
     }
 }

@@ -58,12 +58,24 @@ namespace AppService.WorkshopService.Implementation
         public async Task PurchaseClass(int customerId, int workshopClassId)
         {
             //var customerRegistered = await _workshop.Customer.GetCustomerRegistrationInfo(customerId, workshopClassId);
+            if (await _workshop.All.SetWorkshopClassFull(workshopClassId))
+            {
+                throw new InvalidOperationException("This workshop class is full!");
+            }            
             var billingInfo = await GetBillingInformation(customerId, workshopClassId);
             await _workshop.Customer.OnPurchaseClass(customerId, workshopClassId, billingInfo);
+            await _workshop.Staff.GenerateWorkshopAttendance(customerId, workshopClassId);
         }
         public async Task<IEnumerable<WorkshopClassViewModel>> GetWorkshopClassesByWorkshopId(int customerId, int workshopId)
         {
             var result = await _workshop.Customer.GetClassesByWorkshopId(customerId, workshopId);
+            foreach (var workshopClass in result)
+            {
+                foreach (var classSlot in workshopClass.ClassSlots)
+                {
+                    classSlot.Status = await _workshop.Customer.CheckAttend(customerId, classSlot.Id);
+                }
+            }
             return result;
         }
 
