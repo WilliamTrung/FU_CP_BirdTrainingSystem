@@ -53,7 +53,7 @@ namespace AppCore.Context
         public virtual DbSet<TrainerSkill> TrainerSkills { get; set; } = null!;
         public virtual DbSet<TrainerSlot> TrainerSlots { get; set; } = null!;
         public virtual DbSet<TrainingCourse> TrainingCourses { get; set; } = null!;
-        //public virtual DbSet<TrainingCourseSkill> TrainingCourseSkills { get; set; } = null!;
+        public virtual DbSet<TrainingCourseSkill> TrainingCourseSkills { get; set; } = null!;
         public virtual DbSet<Transaction> Transactions { get; set; } = null!;
         public virtual DbSet<User> Users { get; set; } = null!;
         public virtual DbSet<Workshop> Workshops { get; set; } = null!;
@@ -326,8 +326,6 @@ namespace AppCore.Context
                     .HasMaxLength(255)
                     .IsUnicode(false);
 
-                //entity.Property(e => e.TrainingCourseSkillId).HasColumnName("TrainingCourse_SkillId");
-
                 entity.Property(e => e.TrainingDoneDate).HasColumnType("date");
 
                 entity.HasOne(d => d.BirdTrainingCourse)
@@ -342,11 +340,11 @@ namespace AppCore.Context
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKBird_Train934988");
 
-                //entity.HasOne(d => d.TrainingCourseSkill)
-                //    .WithMany(p => p.BirdTrainingProgresses)
-                //    .HasForeignKey(d => d.TrainingCourseSkillId)
-                //    .OnDelete(DeleteBehavior.ClientSetNull)
-                //    .HasConstraintName("FKBird_Train174512");
+                entity.HasOne(d => d.TrainingCourseSkill)
+                    .WithMany(p => p.BirdTrainingProgresses)
+                    .HasForeignKey(d => d.TrainingCourseSkillId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FKBird_Train174512");
             });
 
             modelBuilder.Entity<BirdTrainingReport>(entity =>
@@ -851,22 +849,22 @@ namespace AppCore.Context
                     .HasConstraintName("FKTrainingCo245376");
             });
 
-            //modelBuilder.Entity<TrainingCourseSkill>(entity =>
-            //{
-            //    entity.HasKey(e => e.Id);
+            modelBuilder.Entity<TrainingCourseSkill>(entity =>
+            {
+                entity.HasKey(e => e.Id);
 
-            //    entity.ToTable("TrainingCourseSkillDetail");
+                entity.ToTable("TrainingCourseSkill");
 
-            //    entity.HasOne(d => d.BirdSkill)
-            //        .WithMany(p => p.TrainingCourseSkills)
-            //        .HasForeignKey(d => d.BirdSkillId)
-            //        .OnDelete(DeleteBehavior.ClientSetNull);
+                entity.HasOne(d => d.BirdSkill)
+                    .WithMany(p => p.TrainingCourseSkills)
+                    .HasForeignKey(d => d.BirdSkillId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
-            //    entity.HasOne(d => d.TrainingCourse)
-            //        .WithMany(p => p.TrainingCourseSkills)
-            //        .HasForeignKey(d => d.TrainingCourseId)
-            //        .OnDelete(DeleteBehavior.ClientSetNull);
-            //});
+                entity.HasOne(d => d.TrainingCourse)
+                    .WithMany(p => p.TrainingCourseSkills)
+                    .HasForeignKey(d => d.TrainingCourseId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
+            });
 
             modelBuilder.Entity<Transaction>(entity =>
             {
