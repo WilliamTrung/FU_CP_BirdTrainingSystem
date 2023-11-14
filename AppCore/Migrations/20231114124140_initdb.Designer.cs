@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AppCore.Migrations
 {
     [DbContext(typeof(BirdTrainingCenterSystemContext))]
-    [Migration("20231113072923_minor-birdtrainingcourse-staffidnullable")]
-    partial class minorbirdtrainingcoursestaffidnullable
+    [Migration("20231114124140_initdb")]
+    partial class initdb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -388,7 +388,6 @@ namespace AppCore.Migrations
                         .HasColumnType("integer");
 
                     b.Property<int?>("StaffId")
-                        .IsRequired()
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("StartTrainingDate")
@@ -443,7 +442,6 @@ namespace AppCore.Migrations
                         .HasColumnType("integer");
 
                     b.Property<int?>("TrainerId")
-                        .IsRequired()
                         .HasColumnType("integer");
 
                     b.Property<int>("TrainingCourseSkillId")
@@ -1388,6 +1386,12 @@ namespace AppCore.Migrations
 
             modelBuilder.Entity("Models.Entities.TrainingCourseSkill", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
                     b.Property<int>("BirdSkillId")
                         .HasColumnType("integer");
 
@@ -1397,8 +1401,9 @@ namespace AppCore.Migrations
                     b.Property<int>("TrainingCourseId")
                         .HasColumnType("integer");
 
-                    b.HasKey("BirdSkillId")
-                        .HasName("PK__Training__1D80EC183F24C734");
+                    b.HasKey("Id");
+
+                    b.HasIndex("BirdSkillId");
 
                     b.HasIndex("TrainingCourseId");
 
@@ -1552,20 +1557,20 @@ namespace AppCore.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("AttendDate")
-                        .HasColumnType("date");
-
                     b.Property<int>("CustomerId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("WorkshopClassId")
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("WorkshopClassDetailId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
 
-                    b.HasIndex("WorkshopClassId");
+                    b.HasIndex("WorkshopClassDetailId");
 
                     b.ToTable("WorkshopAttendance", (string)null);
                 });
@@ -1609,6 +1614,7 @@ namespace AppCore.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("DaySlotId")
+                        .IsRequired()
                         .HasColumnType("integer");
 
                     b.Property<int>("DetailId")
@@ -1839,7 +1845,6 @@ namespace AppCore.Migrations
                     b.HasOne("Models.Entities.User", "Staff")
                         .WithMany("BirdTrainingCourses")
                         .HasForeignKey("StaffId")
-                        .IsRequired()
                         .HasConstraintName("FKBird_Train934485");
 
                     b.HasOne("Models.Entities.TrainingCourse", "TrainingCourse")
@@ -1868,14 +1873,12 @@ namespace AppCore.Migrations
                     b.HasOne("Models.Entities.Trainer", "Trainer")
                         .WithMany("BirdTrainingProgresses")
                         .HasForeignKey("TrainerId")
-                        .IsRequired()
                         .HasConstraintName("FKBird_Train934988");
 
                     b.HasOne("Models.Entities.TrainingCourseSkill", "TrainingCourseSkill")
                         .WithMany("BirdTrainingProgresses")
                         .HasForeignKey("TrainingCourseSkillId")
-                        .IsRequired()
-                        .HasConstraintName("FKBird_Train174512");
+                        .IsRequired();
 
                     b.Navigation("BirdTrainingCourse");
 
@@ -2218,16 +2221,14 @@ namespace AppCore.Migrations
             modelBuilder.Entity("Models.Entities.TrainingCourseSkill", b =>
                 {
                     b.HasOne("Models.Entities.BirdSkill", "BirdSkill")
-                        .WithOne("TrainingCourseSkill")
-                        .HasForeignKey("Models.Entities.TrainingCourseSkill", "BirdSkillId")
-                        .IsRequired()
-                        .HasConstraintName("FKTrainingCo551235");
+                        .WithMany("TrainingCourseSkills")
+                        .HasForeignKey("BirdSkillId")
+                        .IsRequired();
 
                     b.HasOne("Models.Entities.TrainingCourse", "TrainingCourse")
                         .WithMany("TrainingCourseSkills")
                         .HasForeignKey("TrainingCourseId")
-                        .IsRequired()
-                        .HasConstraintName("FKTrainingCo866476");
+                        .IsRequired();
 
                     b.Navigation("BirdSkill");
 
@@ -2253,15 +2254,15 @@ namespace AppCore.Migrations
                         .IsRequired()
                         .HasConstraintName("FKWorkshopAt124181");
 
-                    b.HasOne("Models.Entities.WorkshopClass", "WorkshopClass")
+                    b.HasOne("Models.Entities.WorkshopClassDetail", "WorkshopClassDetail")
                         .WithMany("WorkshopAttendances")
-                        .HasForeignKey("WorkshopClassId")
-                        .IsRequired()
-                        .HasConstraintName("FKWorkshopAt172557");
+                        .HasForeignKey("WorkshopClassDetailId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Customer");
 
-                    b.Navigation("WorkshopClass");
+                    b.Navigation("WorkshopClassDetail");
                 });
 
             modelBuilder.Entity("Models.Entities.WorkshopClass", b =>
@@ -2280,6 +2281,8 @@ namespace AppCore.Migrations
                     b.HasOne("Models.Entities.TrainerSlot", "DaySlot")
                         .WithMany("WorkshopClassDetails")
                         .HasForeignKey("DaySlotId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("FKWorkshopCl382995");
 
                     b.HasOne("Models.Entities.WorkshopDetailTemplate", "WorkshopDetailTemplate")
@@ -2344,7 +2347,7 @@ namespace AppCore.Migrations
 
                     b.Navigation("TrainableSkills");
 
-                    b.Navigation("TrainingCourseSkill");
+                    b.Navigation("TrainingCourseSkills");
                 });
 
             modelBuilder.Entity("Models.Entities.BirdSpecies", b =>
@@ -2509,9 +2512,12 @@ namespace AppCore.Migrations
                 {
                     b.Navigation("CustomerWorkshopClasses");
 
-                    b.Navigation("WorkshopAttendances");
-
                     b.Navigation("WorkshopClassDetails");
+                });
+
+            modelBuilder.Entity("Models.Entities.WorkshopClassDetail", b =>
+                {
+                    b.Navigation("WorkshopAttendances");
                 });
 
             modelBuilder.Entity("Models.Entities.WorkshopDetailTemplate", b =>

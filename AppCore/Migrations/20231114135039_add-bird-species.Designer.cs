@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AppCore.Migrations
 {
     [DbContext(typeof(BirdTrainingCenterSystemContext))]
-    [Migration("20231114105737_alter-clusteredkey-trainingcourseskill")]
-    partial class alterclusteredkeytrainingcourseskill
+    [Migration("20231114135039_add-bird-species")]
+    partial class addbirdspecies
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -333,6 +333,68 @@ namespace AppCore.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("BirdSpecies");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Parakeet",
+                            ShortDetail = "Small, colorful parakeets known for their friendly and social nature."
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Cockatiel",
+                            ShortDetail = "Medium-sized parrots that are easy to tame and often enjoy human interaction."
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Canary",
+                            ShortDetail = "Small songbirds known for their melodious singing."
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Lovebird",
+                            ShortDetail = "Small parrots that are highly social and form strong bonds with their owners."
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Cockatoo",
+                            ShortDetail = "Large parrots known for their playful and affectionate personalities."
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Finch",
+                            ShortDetail = "Small, active birds typically kept in aviaries or spacious cages."
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Canary-winged Parakeet",
+                            ShortDetail = "Docile parakeets that are often considered good pets."
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "Parrotlet",
+                            ShortDetail = "Tiny parrots with big personalities, known for their inquisitive and playful behavior."
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Name = "Budgerigar (Budgie)",
+                            ShortDetail = "Small parakeets that make excellent in-home pets, easy to care for and enjoy human interaction."
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Name = "Quaker Parrot (Monk Parakeet)",
+                            ShortDetail = "Medium-sized parrots known for their social nature and ability to mimic words."
+                        });
                 });
 
             modelBuilder.Entity("Models.Entities.BirdTrainingCourse", b =>
@@ -1878,8 +1940,7 @@ namespace AppCore.Migrations
                     b.HasOne("Models.Entities.TrainingCourseSkill", "TrainingCourseSkill")
                         .WithMany("BirdTrainingProgresses")
                         .HasForeignKey("TrainingCourseSkillId")
-                        .IsRequired()
-                        .HasConstraintName("FKBird_Train174512");
+                        .IsRequired();
 
                     b.Navigation("BirdTrainingCourse");
 

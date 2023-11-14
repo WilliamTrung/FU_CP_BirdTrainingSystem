@@ -331,6 +331,68 @@ namespace AppCore.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("BirdSpecies");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Parakeet",
+                            ShortDetail = "Small, colorful parakeets known for their friendly and social nature."
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Cockatiel",
+                            ShortDetail = "Medium-sized parrots that are easy to tame and often enjoy human interaction."
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Canary",
+                            ShortDetail = "Small songbirds known for their melodious singing."
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Lovebird",
+                            ShortDetail = "Small parrots that are highly social and form strong bonds with their owners."
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Cockatoo",
+                            ShortDetail = "Large parrots known for their playful and affectionate personalities."
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Finch",
+                            ShortDetail = "Small, active birds typically kept in aviaries or spacious cages."
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Canary-winged Parakeet",
+                            ShortDetail = "Docile parakeets that are often considered good pets."
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "Parrotlet",
+                            ShortDetail = "Tiny parrots with big personalities, known for their inquisitive and playful behavior."
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Name = "Budgerigar (Budgie)",
+                            ShortDetail = "Small parakeets that make excellent in-home pets, easy to care for and enjoy human interaction."
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Name = "Quaker Parrot (Monk Parakeet)",
+                            ShortDetail = "Medium-sized parrots known for their social nature and ability to mimic words."
+                        });
                 });
 
             modelBuilder.Entity("Models.Entities.BirdTrainingCourse", b =>
@@ -442,8 +504,9 @@ namespace AppCore.Migrations
                     b.Property<int?>("TrainerId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("TrainingCourseSkillId")
-                        .HasColumnType("integer");
+                    b.Property<int>("TrainingCourseSkillId")
+                        .HasColumnType("integer")
+                        .HasColumnName("TrainingCourse_SkillId");
 
                     b.Property<DateTime?>("TrainingDoneDate")
                         .HasColumnType("date");
@@ -1404,7 +1467,7 @@ namespace AppCore.Migrations
 
                     b.HasIndex("TrainingCourseId");
 
-                    b.ToTable("TrainingCourseSkill");
+                    b.ToTable("TrainingCourseSkill", (string)null);
                 });
 
             modelBuilder.Entity("Models.Entities.Transaction", b =>
@@ -1872,13 +1935,16 @@ namespace AppCore.Migrations
                         .HasForeignKey("TrainerId")
                         .HasConstraintName("FKBird_Train934988");
 
-                    b.HasOne("Models.Entities.TrainingCourseSkill", null)
+                    b.HasOne("Models.Entities.TrainingCourseSkill", "TrainingCourseSkill")
                         .WithMany("BirdTrainingProgresses")
-                        .HasForeignKey("TrainingCourseSkillId");
+                        .HasForeignKey("TrainingCourseSkillId")
+                        .IsRequired();
 
                     b.Navigation("BirdTrainingCourse");
 
                     b.Navigation("Trainer");
+
+                    b.Navigation("TrainingCourseSkill");
                 });
 
             modelBuilder.Entity("Models.Entities.BirdTrainingReport", b =>
@@ -2217,13 +2283,11 @@ namespace AppCore.Migrations
                     b.HasOne("Models.Entities.BirdSkill", "BirdSkill")
                         .WithMany("TrainingCourseSkills")
                         .HasForeignKey("BirdSkillId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Models.Entities.TrainingCourse", "TrainingCourse")
                         .WithMany("TrainingCourseSkills")
                         .HasForeignKey("TrainingCourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("BirdSkill");
