@@ -28,7 +28,7 @@ namespace TrainingCourseSubsystem
         Task<IEnumerable<BirdSkillReceivedViewModel>> GetBirdSkillReceiveds();
         Task<IEnumerable<BirdSkillReceivedViewModel>> GetBirdSkillReceivedsByBirdId(int birdId);
         Task<IEnumerable<AcquirableSkillViewModel>> GetAccquirableBirdSkill();
-        Task<IEnumerable<AcquirableSkillViewModel>> GetAccquirableBirdSkillByBirdId(int birdId);
+        Task<IEnumerable<AcquirableSkillViewModel>> GetAccquirableBirdSkillByBirdSpeciesId(int birdSpeciesId);
         Task<IEnumerable<TrainerSkillViewModel>> GetTrainerSkills();
         Task<IEnumerable<TrainerSkillViewModel>> GetTrainerSkillsByTrainerId(int trainerId);
         Task<IEnumerable<TrainableViewSkillModel>> GetTrainableSkills();

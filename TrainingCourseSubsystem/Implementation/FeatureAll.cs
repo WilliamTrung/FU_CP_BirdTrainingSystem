@@ -171,7 +171,7 @@ namespace TrainingCourseSubsystem.Implementation
             return models;
         }
 
-        public async Task<IEnumerable<AcquirableSkillViewModel>> GetAccquirableBirdSkillByBirdId(int birdSpeciesId)
+        public async Task<IEnumerable<AcquirableSkillViewModel>> GetAccquirableBirdSkillByBirdSpeciesId(int birdSpeciesId)
         {
             var entities = await _unitOfWork.AcquirableSkillRepository.Get(expression: e => e.BirdSpeciesId == birdSpeciesId
                                                                         , nameof(AcquirableSkill.BirdSpecies)

@@ -2,6 +2,7 @@
 using Models.ServiceModels.TrainingCourseModels.BirdCertificate.BirdCertificateDetail;
 using Models.ServiceModels.TrainingCourseModels.BirdCertificate;
 using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
+using Models.ServiceModels.TrainingCourseModels.BirdSkill;
 
 namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
 {
@@ -82,5 +83,13 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
         [HttpGet]
         [Route("skill-id")]
         Task<IActionResult> GetSkillById(int skillId);
+
+        [HttpGet]
+        [Route("accquirablebirdskill")]
+        Task<IActionResult> GetAccquirableBirdSkill();
+
+        [HttpGet]
+        [Route("accquirablebirdskill-birdspecies")]
+        Task<IActionResult> GetAccquirableBirdSkillByBirdSpeciesId(int birdSpeciesId);
     }
 }

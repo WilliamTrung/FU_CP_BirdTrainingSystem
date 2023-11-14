@@ -40,9 +40,9 @@ namespace AppService.TrainingCourseService.Implement
             return await _trainingCourse.All.GetAccquirableBirdSkill();
         }
 
-        public async Task<IEnumerable<AcquirableSkillViewModel>> GetAccquirableBirdSkillByBirdId(int birdId)
+        public async Task<IEnumerable<AcquirableSkillViewModel>> GetAccquirableBirdSkillByBirdSpeciesId(int birdSpeciesId)
         {
-            return await _trainingCourse.All.GetAccquirableBirdSkillByBirdId(birdId);
+            return await _trainingCourse.All.GetAccquirableBirdSkillByBirdSpeciesId(birdSpeciesId);
         }
 
         public async Task<IEnumerable<BirdCertificateDetailViewModel>> GetBirdCertificatesDetail()
