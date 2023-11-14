@@ -24,6 +24,8 @@ namespace WorkshopSubsystem
         Task CancelWorkshopClass(int workshopClassId);
         Task CompleteWorkshopClass(int workshopClassId);
         Task<IEnumerable<RegisteredCustomerModel>> GetListRegistered(int classSlotId);
-        Task CheckAttendance(int classSlotId, CheckAttendanceCredentials customerCredentials);
+        Task CheckAttendance(int classSlotId, List<CheckAttendanceCredentials> customerCredentials);
+        Task GenerateWorkshopAttendance(int customerId, int workshopClassId);
+        Task LateCheckAttendance();
     }
 }

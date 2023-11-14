@@ -1,4 +1,5 @@
 ﻿using Models.ServiceModels.WorkshopModels;
+using Models.ServiceModels.WorkshopModels.CustomerRegister;
 using Models.ServiceModels.WorkshopModels.WorkshopClass;
 using System;
 using System.Collections.Generic;
@@ -14,5 +15,7 @@ namespace AppService.WorkshopService
         Task<IEnumerable<WorkshopModel>> GetAssignedWorkshops(int trainerId);
         Task<IEnumerable<WorkshopClassAdminViewModel>> GetAssignedWorkshopClasses(int trainerId, int workshopId);
         Task<IEnumerable<WorkshopClassDetailViewModel>> GetAssignedWorkshopClassDetails(int trainerId, int workshopClassId);
+        Task<IEnumerable<RegisteredCustomerModel>> GetAttendeesInSlot(int trainerId, int classSlotId);
+        Task SubmitAttendance(int trainerId, int classSlotId, List<CheckAttendanceCredentials> customerCredentials);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Models.ServiceModels.WorkshopModels;
+using Models.ServiceModels.WorkshopModels.CustomerRegister;
 using Models.ServiceModels.WorkshopModels.WorkshopClass;
 using System;
 using System.Collections.Generic;
@@ -32,6 +33,29 @@ namespace AppService.WorkshopService.Implementation
         {
             var result = await _workshop.Trainer.GetAssignedWorkshops(trainerId);
             return result;
+        }
+
+        public async Task<IEnumerable<RegisteredCustomerModel>> GetAttendeesInSlot(int trainerId, int classSlotId)
+        {
+            if(await _workshop.Trainer.CheckHostingClassSlot(trainerId, classSlotId))
+            {
+                return await _workshop.Staff.GetListRegistered(classSlotId);
+            } else
+            {
+                throw new InvalidOperationException("This trainer is not authorized for this class slot!");
+            }
+        }
+
+        public async Task SubmitAttendance(int trainerId, int classSlotId, List<CheckAttendanceCredentials> customerCredentials)
+        {
+            if (await _workshop.Trainer.CheckHostingClassSlot(trainerId, classSlotId))
+            {
+                await _workshop.Staff.CheckAttendance(classSlotId, customerCredentials);
+            }
+            else
+            {
+                throw new InvalidOperationException("This trainer is not authorized for this class slot!");
+            }
         }
 
         //public async Task ModifyWorkshopClassSlotDetail(int trainerId, WorkshopClassDetailModifyModel workshopClassDetail)
