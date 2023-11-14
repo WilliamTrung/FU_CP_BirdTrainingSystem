@@ -965,19 +965,16 @@ namespace AppCore.Context
             {
                 entity.ToTable("WorkshopAttendance");
 
-                entity.Property(e => e.AttendDate).HasColumnType("date");
-
                 entity.HasOne(d => d.Customer)
                     .WithMany(p => p.WorkshopAttendances)
                     .HasForeignKey(d => d.CustomerId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKWorkshopAt124181");
 
-                entity.HasOne(d => d.WorkshopClass)
+                entity.HasOne(d => d.WorkshopClassDetail)
                     .WithMany(p => p.WorkshopAttendances)
-                    .HasForeignKey(d => d.WorkshopClassId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FKWorkshopAt172557");
+                    .HasForeignKey(d => d.WorkshopClassDetailId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
             modelBuilder.Entity<WorkshopClass>(entity =>
@@ -1019,6 +1016,10 @@ namespace AppCore.Context
                     .HasForeignKey(d => d.WorkshopClassId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKWorkshopCl141743");
+                entity.HasMany(d => d.WorkshopAttendances)
+                    .WithOne(p => p.WorkshopClassDetail)
+                    .OnDelete(DeleteBehavior.Cascade);
+                    
             });
             modelBuilder.Entity<WorkshopRefundPolicy>(entity =>
             {

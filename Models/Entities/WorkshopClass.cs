@@ -7,8 +7,7 @@ namespace Models.Entities
     {
         public WorkshopClass()
         {
-            CustomerWorkshopClasses = new HashSet<CustomerWorkshopClass>();
-            WorkshopAttendances = new HashSet<WorkshopAttendance>();
+            CustomerWorkshopClasses = new HashSet<CustomerWorkshopClass>();           
             WorkshopClassDetails = new HashSet<WorkshopClassDetail>();
         }
 
@@ -21,7 +20,7 @@ namespace Models.Entities
 
         public virtual Workshop Workshop { get; set; } = null!;
         public virtual ICollection<CustomerWorkshopClass> CustomerWorkshopClasses { get; set; }
-        public virtual ICollection<WorkshopAttendance> WorkshopAttendances { get; set; }
+        //public virtual ICollection<WorkshopAttendance> WorkshopAttendances { get; set; }
         public virtual ICollection<WorkshopClassDetail> WorkshopClassDetails { get; set; }
     }
 }

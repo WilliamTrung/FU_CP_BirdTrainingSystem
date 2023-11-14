@@ -36,7 +36,7 @@ namespace BirdTrainingCenterAPI.Controllers.Timetable
             try
             {
                 var categoryEnum = (Models.Enum.Trainer.Category)Enum.Parse(typeof(Models.Enum.Trainer.Category), category, true);
-                var result = await _timetableService.All.GetListFreeTrainerOnSlotAndDate(model.date, model.slotId, (int)categoryEnum);
+                var result = await _timetableService.All.GetListFreeTrainerOnSlotAndDate(model.date, model.slotId, categoryEnum);
                 return Ok(result);
             }
             catch (Exception ex)

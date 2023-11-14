@@ -69,8 +69,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         {
             try
             {
-                int category = (int)Models.Enum.Trainer.Category.Consulting;
-                var result = await _timetableService.All.GetListTrainer(category);
+                var result = await _timetableService.All.GetListTrainer(Models.Enum.Trainer.Category.Consulting);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -101,8 +100,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         {
             try
             {
-                int category = (int)Models.Enum.Trainer.Category.Consulting;
-                var result = await _timetableService.All.GetListFreeTrainerOnSlotAndDate(date.ToDateOnly(), slotId, category);
+                var result = await _timetableService.All.GetListFreeTrainerOnSlotAndDate(date.ToDateOnly(), slotId, Models.Enum.Trainer.Category.Consulting);
                 if (result == null)
                 {
                     return StatusCode(StatusCodes.Status503ServiceUnavailable, "Khong co trainer ranh");

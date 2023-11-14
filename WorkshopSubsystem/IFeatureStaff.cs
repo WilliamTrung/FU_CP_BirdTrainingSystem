@@ -1,5 +1,6 @@
 ﻿using Models.Entities;
 using Models.ServiceModels.WorkshopModels;
+using Models.ServiceModels.WorkshopModels.CustomerRegister;
 using Models.ServiceModels.WorkshopModels.WorkshopClass;
 using System;
 using System.Collections.Generic;
@@ -22,5 +23,7 @@ namespace WorkshopSubsystem
         Task<WorkshopClassDetailViewModel?> GetFollowingWorkshopClassDetail(int workshopClassDetailId);
         Task CancelWorkshopClass(int workshopClassId);
         Task CompleteWorkshopClass(int workshopClassId);
+        Task<IEnumerable<RegisteredCustomerModel>> GetListRegistered(int classSlotId);
+        Task CheckAttendance(int classSlotId, CheckAttendanceCredentials customerCredentials);
     }
 }
