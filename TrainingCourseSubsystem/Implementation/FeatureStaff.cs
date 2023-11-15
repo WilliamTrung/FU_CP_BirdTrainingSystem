@@ -459,18 +459,23 @@ namespace TrainingCourseSubsystem.Implementation
 
             foreach (var progress in progresses)
             {
-                //progress.StartTrainingDate = start;
-                var listTrainerSlot = AutoCreateTimetable(ref start, progress).ToList();
-                if (listTrainerSlot.Count > 0)
+                var reports = _unitOfWork.BirdTrainingReportRepository.Get(e => e.BirdTrainingProgressId == progress.Id).Result.ToList();
+                if (reports.Count() != progress.TotalTrainingSlot)
                 {
-                    foreach (var trainerSlot in listTrainerSlot)
+                    var listTrainerSlot = AutoCreateTimetable(ref start, progress).ToList();
+                    if (listTrainerSlot.Count > 0)
                     {
-                        InitReportTrainerSlot report = new InitReportTrainerSlot
+                        foreach (var trainerSlot in listTrainerSlot)
                         {
-                            BirdTrainingProgressId = progress.Id,
-                            TrainerSlotId = trainerSlot.Id
-                        };
-                        await CreateTrainingReport(report);
+                            InitReportTrainerSlot report = new InitReportTrainerSlot
+                            {
+                                BirdTrainingProgressId = progress.Id,
+                                TrainerSlotId = trainerSlot.Id
+                            };
+                            await CreateTrainingReport(report);
+                        }
+                        progress.Status = (int)Models.Enum.BirdTrainingProgress.Status.WaitingForAssign;
+                        await _unitOfWork.BirdTrainingProgressRepository.Update(progress);
                     }
                 }
             }
