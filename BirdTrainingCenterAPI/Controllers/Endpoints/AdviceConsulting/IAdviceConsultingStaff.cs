@@ -15,7 +15,7 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting
 
         [HttpPut]
         [Route("approveConsultingTicket")]
-        Task<IActionResult> ApproveConsultingTicket(int ticketId, int trainerId, DateTime date, int slotId);
+        Task<IActionResult> ApproveConsultingTicket(int ticketId, DateTime date, int slotId);
 
         [HttpPut]
         [Route("cancelConsultingTicket")]
