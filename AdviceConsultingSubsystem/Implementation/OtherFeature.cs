@@ -94,5 +94,12 @@ namespace AdviceConsultingSubsystem.Implementation
                 }
             }
         }
+
+        public async Task<int> GetTrainerIdByTicketId(int ticketId)
+        {
+            var entity = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id == ticketId);
+            var trainerId = (int)entity.TrainerId;
+            return trainerId;
+        }
     }
 }

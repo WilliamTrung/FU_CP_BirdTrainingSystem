@@ -15,5 +15,6 @@ namespace AppService.AdviceConsultingService
         Task<IEnumerable<ConsultingPricePolicyServiceModel>> GetConsultingPricePolicy();
         Task<IEnumerable<DistancePriceServiceModel>> GetDistancePrice();
         Task<IEnumerable<ConsultingTypeServiceModel>> GetConsultingType();
+        Task<int> GetTrainerIdByTicketId(int ticketId);
     }
 }
