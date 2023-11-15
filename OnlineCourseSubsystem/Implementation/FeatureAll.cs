@@ -23,6 +23,10 @@ namespace OnlineCourseSubsystem.Implementation
         public virtual async Task<IEnumerable<OnlineCourseModel>> GetCourses()
         {
             var entities = await _unitOfWork.OnlineCourseRepository.Get(expression: null);
+            entities.ToList().ForEach(entity =>
+            {
+                entity.Status = -1;
+            });
             var models = _mapper.Map<List<OnlineCourseModel>>(entities);
             return models;  
         }
@@ -34,6 +38,7 @@ namespace OnlineCourseSubsystem.Implementation
             {
                 throw new KeyNotFoundException("This course is not found!");
             }
+            entity.Status = -1;
             var model = _mapper.Map<OnlineCourseModel>(entity);
             return model;
         }

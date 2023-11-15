@@ -40,9 +40,19 @@ namespace BirdTrainingCenterAPI.Controllers.OnlineCourse
         }
         [HttpPost]
         [Route("add-section")]
-        public async Task<IActionResult> AddSection([FromForm] OnlineCourseSectionAddModel model)
+        public async Task<IActionResult> AddSection([FromForm] OnlineCourseSectionAddParamModel model)
         {
-            await _onlineCourseService.Manager.AddSection(model);
+            string? files = null;
+            if (model.ResourceFiles != null && model.ResourceFiles.Count > 0)
+            {
+                foreach (var file in model.ResourceFiles)
+                {
+                    var temp = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.ONLINECOURSE_RESOURCE, _bucket.General);
+                    files += $"{temp},";
+                }
+                files = files.Substring(0, files.Length - 1);
+            }
+            await _onlineCourseService.Manager.AddSection(model.ToOnlineCourseLessonModifyModel(files));
             return Ok();
         }
         [HttpPost]
@@ -60,11 +70,28 @@ namespace BirdTrainingCenterAPI.Controllers.OnlineCourse
         }
         [HttpPut]
         [Route("modify-section")]
-        public async Task<IActionResult> ModifySection([FromForm] OnlineCourseSectionModifyModel model)
+        public async Task<IActionResult> ModifySection([FromForm] OnlineCourseSectionModifyParamModel model)
         {
-            await _onlineCourseService.Manager.ModifySection(model);
+            string? files = null;
+            if (model.ResourceFiles != null && model.ResourceFiles.Count > 0)
+            {
+                foreach (var file in model.ResourceFiles)
+                {
+                    var temp = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.ONLINECOURSE_RESOURCE, _bucket.General);
+                    files += $"{temp},";
+                }
+                files = files.Substring(0, files.Length - 1);
+            }
+            await _onlineCourseService.Manager.ModifySection(model.ToOnlineCourseLessonModifyModel(files));
             return Ok();
         }
+        //[HttpDelete]
+        //[Route("delete-resource")]
+        //public async Task<IActionResult> DeleteResourcesInSection([FromBody] int sectionId)
+        //{
+        //    var section = _onlineCourseService.Manager.GetSectionById(sectionId);
+
+        //}
         [HttpPut]
         [Route("modify-lesson")]
         public async Task<IActionResult> ModifyLesson([FromForm] OnlineCourseLessonModifyParamModel model)

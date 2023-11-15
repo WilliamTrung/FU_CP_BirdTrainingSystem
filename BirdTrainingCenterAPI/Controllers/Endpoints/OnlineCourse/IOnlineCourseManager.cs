@@ -11,13 +11,13 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.OnlineCourse
         Task<IActionResult> CreateOnlineCourse([FromForm] OnlineCourseAddParamModel model);
         [HttpPost]
         [Route("/add-section")]
-        Task<IActionResult> AddSection([FromForm] OnlineCourseSectionAddModel model);
+        Task<IActionResult> AddSection([FromForm] OnlineCourseSectionAddParamModel model);
         [HttpPost]
         [Route("/add-lesson")]
         Task<IActionResult> AddLesson([FromForm] OnlineCourseLessonAddParamModel model);
         [HttpPut]
         [Route("/modify-section")]
-        Task<IActionResult> ModifySection([FromForm] OnlineCourseSectionModifyModel model);
+        Task<IActionResult> ModifySection([FromForm] OnlineCourseSectionModifyParamModel model);
         [HttpPut]
         [Route("/modify-lesson")]
         Task<IActionResult> ModifyLesson([FromForm] OnlineCourseLessonModifyParamModel model);
