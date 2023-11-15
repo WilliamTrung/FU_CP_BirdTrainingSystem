@@ -85,13 +85,20 @@ namespace BirdTrainingCenterAPI.Controllers.OnlineCourse
             await _onlineCourseService.Manager.ModifySection(model.ToOnlineCourseLessonModifyModel(files));
             return Ok();
         }
-        //[HttpDelete]
-        //[Route("delete-resource")]
-        //public async Task<IActionResult> DeleteResourcesInSection([FromBody] int sectionId)
-        //{
-        //    var section = _onlineCourseService.Manager.GetSectionById(sectionId);
-
-        //}
+        [HttpDelete]
+        [Route("delete-resource")]
+        public async Task<IActionResult> DeleteResourcesInSection([FromBody] int sectionId)
+        {
+            var section = await _onlineCourseService.Manager.GetSectionById(sectionId);
+            if(section.ResourceFiles != null)
+            {
+                foreach (var link in section.ResourceFiles.Split(","))
+                {
+                    await _firebaseService.DeleteFile(link, _bucket.General);
+                }
+            }
+            return Ok();
+        }
         [HttpPut]
         [Route("modify-lesson")]
         public async Task<IActionResult> ModifyLesson([FromForm] OnlineCourseLessonModifyParamModel model)
