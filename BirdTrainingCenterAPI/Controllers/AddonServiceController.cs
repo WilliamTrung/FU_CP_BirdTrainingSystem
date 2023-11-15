@@ -43,6 +43,9 @@ namespace BirdTrainingCenterAPI.Controllers
             } else if(file.IsVideo())
             {
                 url = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.VIDEO, _bucket.General);
+            } else
+            {
+                url = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.TEST, _bucket.General);
             }
             if(url != string.Empty)
             {

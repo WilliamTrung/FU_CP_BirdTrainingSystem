@@ -10,6 +10,7 @@ namespace Models.ServiceModels.OnlineCourseModels
     {
         public int Id { get; set; }
         public string Title { get; set; } = null!;
+        public string Description { get; set; } = null!;
         public IEnumerable<OnlineCourseLessonViewModel>? Lessions { get; set; } 
     }
 }
