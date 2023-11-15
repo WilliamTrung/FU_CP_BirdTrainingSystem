@@ -1,4 +1,5 @@
-﻿using Models.Enum.OnlineCourse.Customer.OnlineCourse;
+﻿using GoogleApi.Entities.Maps.StreetView.Request.Enums;
+using Models.Enum.OnlineCourse.Customer.OnlineCourse;
 using Models.ServiceModels.OnlineCourseModels;
 using Models.ServiceModels.OnlineCourseModels.Certificate;
 using Models.ServiceModels.OnlineCourseModels.Feedback;
@@ -49,11 +50,19 @@ namespace AppService.OnlineCourseService.Implementation
 
         public async Task EnrollCourse(int customerId, BillingModel billing)
         {
+            if (await _onlineCourse.Customer.CheckEnrolledCourse(customerId, billing.CourseId) != Models.Enum.OnlineCourse.Customer.OnlineCourse.Status.Unenrolled)
+            {
+                throw new InvalidOperationException("Customer has enrolled to course!");
+            }
             await _onlineCourse.Customer.EnrollCourse(customerId, billing);
         }
 
         public async Task<BillingModel> GetBillingInformation(int customerId, int courseId)
         {
+            if(await _onlineCourse.Customer.CheckEnrolledCourse(customerId, courseId) != Models.Enum.OnlineCourse.Customer.OnlineCourse.Status.Unenrolled)
+            {
+                throw new InvalidOperationException("Customer has enrolled to course!");
+            }
             var preBillingInformation = await _onlineCourse.Customer.GetPreBillingInformation(customerId, courseId);
             var final = await _transaction.CalculateFinalPrice(customerId, preBillingInformation.CoursePrice);
             var FinalPrice = final.GetType().GetProperty("FinalPrice").GetValue(final, null);
@@ -84,8 +93,8 @@ namespace AppService.OnlineCourseService.Implementation
 
         public async Task<OnlineCourseModel> GetCourseById(int customerId, int courseId)
         {
-            var result = await GetCourseById(courseId);
-            result.Status = await CheckEnrolledCourse(customerId, courseId);
+            var result = await _onlineCourse.Customer.GetCourseById(customerId, courseId);
+            result.Status = await CheckEnrolledCourse(customerId, result.Id);
             return result;
         }
 
@@ -108,6 +117,10 @@ namespace AppService.OnlineCourseService.Implementation
         public async Task<IEnumerable<OnlineCourseModel>> GetEnrolledCourses(int customerId)
         {
             var result = await _onlineCourse.Customer.GetEnrolledCourses(customerId);
+            foreach (var item in result)
+            {
+                item.Status = await CheckEnrolledCourse(customerId, item.Id);
+            }
             return result;
         }
 
