@@ -49,11 +49,19 @@ namespace AppService.OnlineCourseService.Implementation
 
         public async Task EnrollCourse(int customerId, BillingModel billing)
         {
+            if (await _onlineCourse.Customer.CheckEnrolledCourse(customerId, billing.CourseId) != Models.Enum.OnlineCourse.Customer.OnlineCourse.Status.Unenrolled)
+            {
+                throw new InvalidOperationException("Customer has enrolled to course!");
+            }
             await _onlineCourse.Customer.EnrollCourse(customerId, billing);
         }
 
         public async Task<BillingModel> GetBillingInformation(int customerId, int courseId)
         {
+            if(await _onlineCourse.Customer.CheckEnrolledCourse(customerId, courseId) != Models.Enum.OnlineCourse.Customer.OnlineCourse.Status.Unenrolled)
+            {
+                throw new InvalidOperationException("Customer has enrolled to course!");
+            }
             var preBillingInformation = await _onlineCourse.Customer.GetPreBillingInformation(customerId, courseId);
             var final = await _transaction.CalculateFinalPrice(customerId, preBillingInformation.CoursePrice);
             var FinalPrice = final.GetType().GetProperty("FinalPrice").GetValue(final, null);
