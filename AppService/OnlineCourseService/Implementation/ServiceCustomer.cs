@@ -116,6 +116,10 @@ namespace AppService.OnlineCourseService.Implementation
         public async Task<IEnumerable<OnlineCourseModel>> GetEnrolledCourses(int customerId)
         {
             var result = await _onlineCourse.Customer.GetEnrolledCourses(customerId);
+            foreach (var item in result)
+            {
+                item.Status = await CheckEnrolledCourse(customerId, item.Id);
+            }
             return result;
         }
 
