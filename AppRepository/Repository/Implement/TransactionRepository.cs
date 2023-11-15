@@ -13,6 +13,7 @@ namespace AppRepository.Repository.Implement
         {
             entity.DateCreate = DateTime.Now;
             entity.PaymentDate = DateTime.Now.Date;
+            entity.Status = (int)Models.Enum.Transaction.Status.Unpaid;
             return base.Add(entity);
         }
     }

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
 using TimetableSubsystem;
 using AppService.TimetableService;
+using BirdTrainingCenterAPI.Helper;
 
 namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
 {
@@ -20,10 +21,18 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         }
         [HttpPut]
         [Route("approveConsultingTicket")]
-        public async Task<IActionResult> ApproveConsultingTicket(int ticketId, int trainerId, DateTime date, int slotId)
+        public async Task<IActionResult> ApproveConsultingTicket(int ticketId, DateTime date, int slotId)
         {
             try
             {
+                var accessToken = Request.DeserializeToken(_authService);
+                if (accessToken == null)
+                {
+                    return Unauthorized();
+                }
+
+                var trainerId = await _consultingService.Other.GetTrainerIdByTicketId(ticketId);
+
                 //Validate kiểm tra lịch rảnh của trainer
                 var trainerFreeSLot = await _timetable.All.GetFreeSlotOnSelectedDateOfTrainer(date, trainerId);
                 if (trainerFreeSLot == null || !trainerFreeSLot.Any())
@@ -50,6 +59,11 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         {
             try
             {
+                var accessToken = Request.DeserializeToken(_authService);
+                if (accessToken == null)
+                {
+                    return Unauthorized();
+                }
                 await _consultingService.Staff.AssignTrainer(trainerId, ticketId);
                 return Ok();
             }
@@ -65,6 +79,11 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         {
             try
             {
+                var accessToken = Request.DeserializeToken(_authService);
+                if (accessToken == null)
+                {
+                    return Unauthorized();
+                }
                 await _consultingService.Staff.CancelConsultingTicket(ticketId);
                 return Ok();
             }

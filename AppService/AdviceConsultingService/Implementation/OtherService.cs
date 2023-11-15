@@ -46,5 +46,10 @@ namespace AppService.AdviceConsultingService.Implementation
         {
             return await _consulting.Other.GetDistancePricePolicy();
         }
+
+        public async Task<int> GetTrainerIdByTicketId(int ticketId)
+        {
+            return await _consulting.Other.GetTrainerIdByTicketId(ticketId);
+        }
     }
 }
