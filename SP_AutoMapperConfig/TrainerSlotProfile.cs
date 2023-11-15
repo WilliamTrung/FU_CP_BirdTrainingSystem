@@ -27,7 +27,7 @@ namespace SP_AutoMapperConfig
                 .ForMember(e => e.Reason, opt => opt.MapFrom(m => m.Reason))
                 .ForMember(e => e.EntityTypeId, opt => opt.MapFrom(m => m.EntityTypeId))
                 .ForMember(e => e.EntityId, opt => opt.MapFrom(m => m.EntityId))
-                .ForMember(e => e.Status, opt => opt.MapFrom(m => (int)Models.Enum.TrainerSlotStatus.Enabled));
+                .ForMember(e => e.Status, opt => opt.MapFrom(m => m.Status));
         }
 
         private void Map_TrainerSlotAddModel_TrainerSlot()
