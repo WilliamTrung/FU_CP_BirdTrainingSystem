@@ -129,6 +129,7 @@ namespace OnlineCourseSubsystem.Implementation
                 throw new KeyNotFoundException("Section not found!");
             }
             section.Title = model.Title;
+            section.Description = model.Description;
             await _unitOfWork.SectionRepository.Update(section);
         }
         private async Task GenerateCertificateOnCreateCourse(OnlineCourse course)

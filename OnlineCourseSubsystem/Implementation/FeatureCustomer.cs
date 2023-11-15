@@ -259,5 +259,19 @@ namespace OnlineCourseSubsystem.Implementation
             var models = _mapper.Map<List<OnlineCourseModel>>(completedEnrolled.Select(e => e.OnlineCourse));
             return models;
         }
+        public async Task<OnlineCourseModel> GetCourseById(int customerId, int courseId)
+        {
+            var courseRegistered = await _unitOfWork.CustomerOnlineCourseDetailRepository.GetFirst(c => c.CustomerId == customerId
+                                                                                            && c.OnlineCourseId == courseId
+                                                                                            , nameof(CustomerOnlineCourseDetail.OnlineCourse)
+                                                                                            , $"{nameof(CustomerOnlineCourseDetail.OnlineCourse)}.{nameof(OnlineCourse.Sections)}"
+                                                                                            , $"{nameof(CustomerOnlineCourseDetail.OnlineCourse)}.{nameof(OnlineCourse.Sections)}.{nameof(Section.Lessons)}");
+            if(courseRegistered == null )
+            {
+                throw new InvalidOperationException("Customer has not enrolled to course!");
+            }            
+            var model = _mapper.Map<OnlineCourseModel>(courseRegistered.OnlineCourse);
+            return model;
+        }
     }
 }

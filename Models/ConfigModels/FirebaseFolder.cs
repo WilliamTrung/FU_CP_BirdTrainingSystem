@@ -16,5 +16,6 @@ namespace Models.ConfigModels
         public static string WOKRSHOP = "workshops";
         public static string TRAININGCOURSE = "trainingcourses";
         public static string CONSULTINGTICKET = "consulting-ticket";
+        public static string ONLINECOURSE_RESOURCE = "online-course-resources";
     }
 }

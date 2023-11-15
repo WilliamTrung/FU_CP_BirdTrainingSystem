@@ -14,6 +14,8 @@ namespace Models.Entities
         public int Id { get; set; }
         public int OnlineCourseId { get; set; }
         public string Title { get; set; } = null!;
+        public string Description { get; set; } = null!;
+        public string? ResourceFiles { get; set; }
 
         public virtual OnlineCourse OnlineCourse { get; set; } = null!;
         public virtual ICollection<CustomerSectionDetail> CustomerSectionDetails { get; set; }
