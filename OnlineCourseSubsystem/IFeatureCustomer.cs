@@ -29,5 +29,6 @@ namespace OnlineCourseSubsystem
         Task<IEnumerable<OnlineCourseModel>> GetCompletedCourse(int customerId);        
         Task<OnlineCourseCertificateModel> GetCertificateModel(int customerId, int courseId);
         Task<IEnumerable<OnlineCourseCertificateModel>> GetCertificates(int customerId);
+        Task<OnlineCourseModel> GetCourseById(int customerId, int courseId);
     }
 }

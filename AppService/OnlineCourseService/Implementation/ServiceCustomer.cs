@@ -1,4 +1,5 @@
-﻿using Models.Enum.OnlineCourse.Customer.OnlineCourse;
+﻿using GoogleApi.Entities.Maps.StreetView.Request.Enums;
+using Models.Enum.OnlineCourse.Customer.OnlineCourse;
 using Models.ServiceModels.OnlineCourseModels;
 using Models.ServiceModels.OnlineCourseModels.Certificate;
 using Models.ServiceModels.OnlineCourseModels.Feedback;
@@ -92,8 +93,8 @@ namespace AppService.OnlineCourseService.Implementation
 
         public async Task<OnlineCourseModel> GetCourseById(int customerId, int courseId)
         {
-            var result = await GetCourseById(courseId);
-            result.Status = await CheckEnrolledCourse(customerId, courseId);
+            var result = await _onlineCourse.Customer.GetCourseById(customerId, courseId);
+            result.Status = await CheckEnrolledCourse(customerId, result.Id);
             return result;
         }
 
