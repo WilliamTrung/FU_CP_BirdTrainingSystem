@@ -3,6 +3,7 @@ using System;
 using AppCore.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AppCore.Migrations
 {
     [DbContext(typeof(BirdTrainingCenterSystemContext))]
-    partial class BirdTrainingCenterSystemContextModelSnapshot : ModelSnapshot
+    [Migration("20231115054308_add-description-into-section")]
+    partial class adddescriptionintosection
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -1090,9 +1092,6 @@ namespace AppCore.Migrations
                     b.Property<int>("OnlineCourseId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("ResourceFiles")
-                        .HasColumnType("text");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(300)
@@ -1681,6 +1680,7 @@ namespace AppCore.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("DaySlotId")
+                        .IsRequired()
                         .HasColumnType("integer");
 
                     b.Property<int>("DetailId")
@@ -2347,6 +2347,8 @@ namespace AppCore.Migrations
                     b.HasOne("Models.Entities.TrainerSlot", "DaySlot")
                         .WithMany("WorkshopClassDetails")
                         .HasForeignKey("DaySlotId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("FKWorkshopCl382995");
 
                     b.HasOne("Models.Entities.WorkshopDetailTemplate", "WorkshopDetailTemplate")

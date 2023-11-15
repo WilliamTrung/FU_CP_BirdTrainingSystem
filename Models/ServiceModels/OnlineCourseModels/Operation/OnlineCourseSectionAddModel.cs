@@ -10,6 +10,8 @@ namespace Models.ServiceModels.OnlineCourseModels.Operation
     {
         public int CourseId { get; set; }
         public string Title { get; set; } = null!;
+        public string Description { get; set; } = null!;
+        public string? ResourceFiles { get; set; }
 
     }
 }

@@ -32,7 +32,8 @@ namespace WorkshopSubsystem.Implementation
                 throw new InvalidOperationException($"{typeof(Workshop)} is inactive");
             }
             var entity = _mapper.Map<WorkshopClass>(workshopClass);
-            if(entity.StartTime < DateTime.Now.ToDateOnly().AddDays(BR_WorkshopConstant.StartDateCreated).ToDateTime(new TimeOnly())) {
+            var temp = DateTime.Now.ToDateOnly().AddDays(BR_WorkshopConstant.StartDateCreated).ToDateTime(new TimeOnly());
+            if (entity.StartTime < temp) {
                 throw new InvalidOperationException("Open registration day must be 5 days after from today!");
             }
 #pragma warning disable CS8604 // Possible null reference argument.
@@ -55,6 +56,7 @@ namespace WorkshopSubsystem.Implementation
                 });
             }
             entity.WorkshopClassDetails = classDetails;
+            //await _unitOfWork.WorkshopClassDetailRepository.a
             await _unitOfWork.WorkshopClassRepository.Update(entity);
         }
 
