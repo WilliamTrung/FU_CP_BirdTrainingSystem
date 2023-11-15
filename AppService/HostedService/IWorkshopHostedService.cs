@@ -12,5 +12,6 @@ namespace AppService.HostedService
         Task CheckExceedRegistrationTime();
         Task CheckOpenClasses();
         Task CheckCompleteClasses();
+        Task LateCheckAttendance();
     }
 }

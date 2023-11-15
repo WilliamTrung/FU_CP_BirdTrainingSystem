@@ -9,7 +9,7 @@ namespace Models.Entities
         {
             BirdTrainingProgresses = new HashSet<BirdTrainingProgress>();
         }
-
+        public int Id { get; set; }
         public int BirdSkillId { get; set; }
         public int TrainingCourseId { get; set; }
         public int TotalSlot { get; set; }

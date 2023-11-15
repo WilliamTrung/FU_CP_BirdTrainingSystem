@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using AppRepository.UnitOfWork;
+using AutoMapper;
 using Models.Entities;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
 using System;
@@ -18,7 +19,7 @@ namespace SP_AutoMapperConfig
         }
         private void Map_BirdTrainingProgress_GenerateCourseProgress()
         {
-            CreateMap<BirdTrainingProgress, GenerateCourseProgress>()
+            CreateMap<GenerateCourseProgress, BirdTrainingProgress>()
                 //.ForMember(m => m.Id, opt => opt.MapFrom(e => e.Id))
                 .ForMember(m => m.BirdTrainingCourseId, opt => opt.MapFrom(e => e.BirdTrainingCourseId))
                 .ForMember(m => m.TrainingCourseSkillId, opt => opt.MapFrom(e => e.TrainingCourseSkillId));
@@ -26,21 +27,63 @@ namespace SP_AutoMapperConfig
         private void Map_BirdTrainingProgress_BirdTrainingProgressViewModel()
         {
             CreateMap<BirdTrainingProgress, BirdTrainingProgressViewModel>()
-                .ForMember(m => m.Id, opt => opt.MapFrom(e => e.Id))
-                .ForMember(m => m.BirdTrainingCourseId, opt => opt.MapFrom(e => e.BirdTrainingCourseId))
-                .ForMember(m => m.SkillName, opt => {
-                    opt.PreCondition(e => e.TrainingCourseSkill != null);
-                    opt.PreCondition(e => e.TrainingCourseSkill.BirdSkill != null);
-                    opt.MapFrom(e => e.TrainingCourseSkill.BirdSkill.Name);
-                })
-                .ForMember(m => m.TrainerId, opt => opt.MapFrom(e => e.TrainerId))
-                .ForMember(m => m.TrainerName, opt => {
-                    opt.PreCondition(e => e.Trainer != null);
-                    opt.PreCondition(e => e.Trainer.User != null);
-                    opt.MapFrom(e => e.Trainer.User.Name);
-                })
-                .ForMember(m => m.Evidence, opt => opt.MapFrom(e => e.Evidence))
-                .ForMember(m => m.Status, opt => opt.MapFrom(e => e.Status));
+                .AfterMap<MapAction_BirdTrainingProgress_BirdTrainingProgressViewModel>();
+            //        .ForMember(m => m.Id, opt => opt.MapFrom(e => e.Id))
+            //        .ForMember(m => m.BirdTrainingCourseId, opt => opt.MapFrom(e => e.BirdTrainingCourseId))
+            //        .ForMember(m => m.SkillName, opt => {
+            //            opt.PreCondition(e => e.TrainingCourseSkill != null);
+            //            opt.PreCondition(e => e.TrainingCourseSkill.BirdSkill != null);
+            //            opt.MapFrom(e => e.TrainingCourseSkill.BirdSkill.Name);
+            //        })
+            //        .ForMember(m => m.TrainerId, opt => opt.MapFrom(e => e.TrainerId))
+            //        .ForMember(m => m.TrainerName, opt => {
+            //            opt.PreCondition(e => e.Trainer != null);
+            //            opt.PreCondition(e => e.Trainer.User != null);
+            //            opt.MapFrom(e => e.Trainer.User.Name);
+            //        })
+            //        .ForMember(m => m.Evidence, opt => opt.MapFrom(e => e.Evidence))
+            //        .ForMember(m => m.TotalTrainingSlot, opt => opt.MapFrom(e => e.TotalTrainingSlot))
+            //        .ForMember(m => m.Status, opt => opt.MapFrom(e => e.Status));
+        }
+        public class MapAction_BirdTrainingProgress_BirdTrainingProgressViewModel : IMappingAction<BirdTrainingProgress, BirdTrainingProgressViewModel>
+        {
+            private readonly IUnitOfWork _unitOfWork;
+            public MapAction_BirdTrainingProgress_BirdTrainingProgressViewModel(IUnitOfWork unitOfWork)
+            {
+                _unitOfWork = unitOfWork;
+            }
+
+            public void Process(BirdTrainingProgress source, BirdTrainingProgressViewModel destination, ResolutionContext context)
+            {
+                destination.Id = source.Id;
+                destination.BirdTrainingCourseId = source.BirdTrainingCourseId;
+                destination.TrainingCourseSkillId = source.TrainingCourseSkillId;
+                destination.TrainerId = source.TrainerId;
+                destination.Evidence = source.Evidence;
+                destination.TotalTrainingSlot = source.TotalTrainingSlot;
+                destination.Status = (Models.Enum.BirdTrainingProgress.Status)source.Status;
+
+                var skill = _unitOfWork.BirdSkillRepository.GetFirst(e => e.Id == source.TrainingCourseSkillId).Result;
+                if(skill != null)
+                {
+                    destination.SkillName = skill.Name;
+                }
+                if(source.TrainerId != null)
+                {
+                    var trainer = _unitOfWork.TrainerRepository.GetFirst(e => e.Id == source.TrainerId
+                                                                            , nameof(Trainer.User)).Result;
+                    if(trainer != null)
+                    {
+                        destination.TrainerId = source.TrainerId;
+                        destination.TrainerName = trainer.User.Name;
+                    }
+                }
+                else
+                {
+                    destination.TrainerId = null;
+                    destination.TrainerName = null;
+                }
+            }
         }
     }
 }

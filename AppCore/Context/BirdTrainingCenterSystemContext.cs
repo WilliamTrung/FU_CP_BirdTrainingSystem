@@ -82,6 +82,7 @@ namespace AppCore.Context
             modelBuilder.AddSlots();
             modelBuilder.AddTrainerSkills();
             modelBuilder.AddWorkshopRefundPolicies();
+            modelBuilder.AddBirdSpecies();
             modelBuilder.Entity<AcquirableSkill>(entity =>
             {
                 entity.HasKey(e => new { e.BirdSpeciesId, e.BirdSkillId })
@@ -345,8 +346,7 @@ namespace AppCore.Context
                 entity.HasOne(d => d.TrainingCourseSkill)
                     .WithMany(p => p.BirdTrainingProgresses)
                     .HasForeignKey(d => d.TrainingCourseSkillId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FKBird_Train174512");
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
             modelBuilder.Entity<BirdTrainingReport>(entity =>
@@ -853,24 +853,19 @@ namespace AppCore.Context
 
             modelBuilder.Entity<TrainingCourseSkill>(entity =>
             {
-                entity.HasKey(e => e.BirdSkillId)
-                    .HasName("PK__Training__1D80EC183F24C734");
+                entity.HasKey(e => e.Id);
 
                 entity.ToTable("TrainingCourseSkill");
 
-                entity.Property(e => e.BirdSkillId).ValueGeneratedNever();
-
                 entity.HasOne(d => d.BirdSkill)
-                    .WithOne(p => p.TrainingCourseSkill)
-                    .HasForeignKey<TrainingCourseSkill>(d => d.BirdSkillId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FKTrainingCo551235");
+                    .WithMany(p => p.TrainingCourseSkills)
+                    .HasForeignKey(d => d.BirdSkillId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
 
                 entity.HasOne(d => d.TrainingCourse)
                     .WithMany(p => p.TrainingCourseSkills)
                     .HasForeignKey(d => d.TrainingCourseId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FKTrainingCo866476");
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
             modelBuilder.Entity<Transaction>(entity =>

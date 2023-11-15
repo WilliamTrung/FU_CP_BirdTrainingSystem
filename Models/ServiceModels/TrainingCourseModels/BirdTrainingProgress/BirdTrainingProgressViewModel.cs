@@ -10,10 +10,12 @@ namespace Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress
     {
         public int Id { get; set; }
         public int BirdTrainingCourseId { get; set; }
-        public string SkillName { get; set; }
+        public int TrainingCourseSkillId { get; set; }
+        public string SkillName { get; set; } = null!;
         public int? TrainerId { get; set; }
         public string? TrainerName { get; set; }
         public string? Evidence { get; set; }
+        public int TotalTrainingSlot { get; set; }
         public Models.Enum.BirdTrainingProgress.Status Status { get; set; }
     }
 }

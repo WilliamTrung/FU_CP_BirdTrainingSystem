@@ -11,6 +11,9 @@ namespace Models.ServiceModels.WorkshopModels.CustomerRegister
         public string Avatar { get; set; } = null!;
         public int CustomerId { get; set; }
         public string CustomerName { get; set; } = null!;
-
+        public string PhoneNumber { get; set; } = null!;
+        public string Email { get; set; } = null!;
+        public Models.Enum.Workshop.Class.Customer.Status Status { get; set; }
+        public int WorkshopClassDetailId { get; set; }
     }
 }

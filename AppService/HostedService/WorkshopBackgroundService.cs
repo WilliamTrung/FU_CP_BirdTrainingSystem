@@ -28,6 +28,7 @@ namespace AppService.HostedService
                     await _tasks.CheckOpenClasses();
                     await _tasks.CheckCompleteClasses();
                     await _tasks.CheckExceedRegistrationTime();
+                    await _tasks.LateCheckAttendance();
                 }
                 await Task.Delay(TimeSpan.FromMinutes(5), stoppingToken);
             }

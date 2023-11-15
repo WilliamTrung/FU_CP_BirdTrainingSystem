@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace AppCore.Migrations
 {
     [DbContext(typeof(BirdTrainingCenterSystemContext))]
-    [Migration("20231025055431_minor_trainer-trainerskills")]
-    partial class minor_trainertrainerskills
+    [Migration("20231114135039_add-bird-species")]
+    partial class addbirdspecies
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -33,9 +33,9 @@ namespace AppCore.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Condition")
-                        .HasMaxLength(30)
+                        .HasMaxLength(255)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(30)");
+                        .HasColumnType("character varying(255)");
 
                     b.HasKey("BirdSpeciesId", "BirdSkillId")
                         .HasName("PK__Acquirab__4802579EB257E655");
@@ -55,9 +55,9 @@ namespace AppCore.Migrations
 
                     b.Property<string>("AddressDetail")
                         .IsRequired()
-                        .HasMaxLength(50)
+                        .HasMaxLength(255)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("character varying(255)");
 
                     b.Property<int>("CustomerId")
                         .HasColumnType("integer");
@@ -102,9 +102,9 @@ namespace AppCore.Migrations
                         .HasColumnType("character varying(50)");
 
                     b.Property<string>("Picture")
-                        .HasMaxLength(50)
+                        .HasMaxLength(255)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("character varying(255)");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");
@@ -132,9 +132,9 @@ namespace AppCore.Migrations
                         .HasColumnType("character varying(100)");
 
                     b.Property<string>("Picture")
-                        .HasMaxLength(50)
+                        .HasMaxLength(255)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("character varying(255)");
 
                     b.Property<string>("ShortDescrption")
                         .HasMaxLength(500)
@@ -159,19 +159,31 @@ namespace AppCore.Migrations
 
             modelBuilder.Entity("Models.Entities.BirdCertificateDetail", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("BirdCertificateId")
+                        .HasColumnType("integer");
+
                     b.Property<int>("BirdId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("BirdCertificateId")
+                    b.Property<int>("BirdTrainingCourseId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("ReceiveDate")
                         .HasColumnType("date");
 
-                    b.HasKey("BirdId", "BirdCertificateId")
-                        .HasName("PK__BirdCert__CB94077CD6544A76");
+                    b.HasKey("Id");
 
                     b.HasIndex("BirdCertificateId");
+
+                    b.HasIndex("BirdId");
+
+                    b.HasIndex("BirdTrainingCourseId");
 
                     b.ToTable("BirdCertificateDetail", (string)null);
                 });
@@ -281,6 +293,24 @@ namespace AppCore.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Models.Entities.BirdSkillReceived", b =>
+                {
+                    b.Property<int>("BirdSkillId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("BirdId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("ReceivedDate")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("BirdSkillId", "BirdId");
+
+                    b.HasIndex("BirdId");
+
+                    b.ToTable("BirdSkillReceived", (string)null);
+                });
+
             modelBuilder.Entity("Models.Entities.BirdSpecies", b =>
                 {
                     b.Property<int>("Id")
@@ -303,6 +333,68 @@ namespace AppCore.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("BirdSpecies");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Parakeet",
+                            ShortDetail = "Small, colorful parakeets known for their friendly and social nature."
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Cockatiel",
+                            ShortDetail = "Medium-sized parrots that are easy to tame and often enjoy human interaction."
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Canary",
+                            ShortDetail = "Small songbirds known for their melodious singing."
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Lovebird",
+                            ShortDetail = "Small parrots that are highly social and form strong bonds with their owners."
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Cockatoo",
+                            ShortDetail = "Large parrots known for their playful and affectionate personalities."
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Finch",
+                            ShortDetail = "Small, active birds typically kept in aviaries or spacious cages."
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Canary-winged Parakeet",
+                            ShortDetail = "Docile parakeets that are often considered good pets."
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "Parrotlet",
+                            ShortDetail = "Tiny parrots with big personalities, known for their inquisitive and playful behavior."
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Name = "Budgerigar (Budgie)",
+                            ShortDetail = "Small parakeets that make excellent in-home pets, easy to care for and enjoy human interaction."
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Name = "Quaker Parrot (Monk Parakeet)",
+                            ShortDetail = "Medium-sized parrots known for their social nature and ability to mimic words."
+                        });
                 });
 
             modelBuilder.Entity("Models.Entities.BirdTrainingCourse", b =>
@@ -313,35 +405,20 @@ namespace AppCore.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("ActualDateReturn")
-                        .HasColumnType("date");
-
-                    b.Property<DateTime?>("ActualStartDate")
-                        .HasColumnType("date");
-
                     b.Property<int>("BirdId")
                         .HasColumnType("integer");
 
                     b.Property<int>("CustomerId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime?>("DateReceivedBird")
-                        .HasColumnType("date");
+                    b.Property<DateTime?>("DateReceived")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("DateReturn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<decimal?>("DiscountedPrice")
                         .HasColumnType("money");
-
-                    b.Property<DateTime?>("ExpectedDateReturn")
-                        .HasColumnType("date");
-
-                    b.Property<DateTime?>("ExpectedStartDate")
-                        .HasColumnType("date");
-
-                    b.Property<DateTime?>("ExpectedTrainingDoneDate")
-                        .HasColumnType("date");
-
-                    b.Property<DateTime?>("LastestUpdate")
-                        .HasColumnType("date");
 
                     b.Property<string>("ReceiveNote")
                         .HasMaxLength(255)
@@ -349,12 +426,15 @@ namespace AppCore.Migrations
                         .HasColumnType("character varying(255)");
 
                     b.Property<string>("ReceivePicture")
-                        .HasMaxLength(20)
+                        .HasMaxLength(255)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(20)");
+                        .HasColumnType("character varying(255)");
 
                     b.Property<int?>("ReceiveStaffId")
                         .HasColumnType("integer");
+
+                    b.Property<DateTime?>("RegisteredDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ReturnNote")
                         .HasMaxLength(255)
@@ -362,15 +442,18 @@ namespace AppCore.Migrations
                         .HasColumnType("character varying(255)");
 
                     b.Property<string>("ReturnPicture")
-                        .HasMaxLength(20)
+                        .HasMaxLength(255)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(20)");
+                        .HasColumnType("character varying(255)");
 
                     b.Property<int?>("ReturnStaffId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("StaffId")
+                    b.Property<int?>("StaffId")
                         .HasColumnType("integer");
+
+                    b.Property<DateTime?>("StartTrainingDate")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");
@@ -410,14 +493,17 @@ namespace AppCore.Migrations
                         .HasColumnName("Bird_TrainingCourseId");
 
                     b.Property<string>("Evidence")
-                        .HasMaxLength(50)
+                        .HasMaxLength(255)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("character varying(255)");
 
-                    b.Property<bool?>("IsComplete")
-                        .HasColumnType("boolean");
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
-                    b.Property<int>("TrainerId")
+                    b.Property<int>("TotalTrainingSlot")
+                        .HasColumnType("integer");
+
+                    b.Property<int?>("TrainerId")
                         .HasColumnType("integer");
 
                     b.Property<int>("TrainingCourseSkillId")
@@ -455,13 +541,10 @@ namespace AppCore.Migrations
                         .IsUnicode(false)
                         .HasColumnType("character varying(200)");
 
-                    b.Property<DateTime>("DateCreate")
-                        .HasColumnType("date");
-
                     b.Property<string>("Evidence")
-                        .HasMaxLength(50)
+                        .HasMaxLength(255)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("character varying(255)");
 
                     b.Property<int?>("Status")
                         .HasColumnType("integer");
@@ -525,9 +608,9 @@ namespace AppCore.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Picture")
-                        .HasMaxLength(50)
+                        .HasMaxLength(255)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("character varying(255)");
 
                     b.Property<string>("ShortDescrption")
                         .HasMaxLength(500)
@@ -576,10 +659,11 @@ namespace AppCore.Migrations
                     b.Property<int?>("ActualEndSlot")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("ActualSlotStart")
+                    b.Property<int>("ActualSlotStart")
                         .HasColumnType("integer");
 
-                    b.Property<int>("AddressId")
+                    b.Property<int?>("AddressId")
+                        .IsRequired()
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("AppointmentDate")
@@ -609,14 +693,14 @@ namespace AppCore.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Evidence")
-                        .HasMaxLength(50)
+                        .HasMaxLength(255)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("character varying(255)");
 
                     b.Property<string>("GgMeetLink")
-                        .HasMaxLength(20)
+                        .HasMaxLength(255)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(20)");
+                        .HasColumnType("character varying(255)");
 
                     b.Property<bool>("OnlineOrOffline")
                         .HasColumnType("boolean");
@@ -627,7 +711,7 @@ namespace AppCore.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
-                    b.Property<int>("TrainerId")
+                    b.Property<int?>("TrainerId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -863,35 +947,14 @@ namespace AppCore.Migrations
                         .IsUnicode(false)
                         .HasColumnType("character varying(200)");
 
-                    b.Property<int>("FeedbackTypeId")
+                    b.Property<int?>("Rating")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
 
-                    b.HasIndex("FeedbackTypeId");
-
                     b.ToTable("Feedback", (string)null);
-                });
-
-            modelBuilder.Entity("Models.Entities.FeedbackType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .IsUnicode(false)
-                        .HasColumnType("character varying(100)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("FeedbackType", (string)null);
                 });
 
             modelBuilder.Entity("Models.Entities.Lesson", b =>
@@ -922,9 +985,9 @@ namespace AppCore.Migrations
                         .HasColumnType("character varying(300)");
 
                     b.Property<string>("Video")
-                        .HasMaxLength(100)
+                        .HasMaxLength(255)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(255)");
 
                     b.HasKey("Id");
 
@@ -989,9 +1052,9 @@ namespace AppCore.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Picture")
-                        .HasMaxLength(50)
+                        .HasMaxLength(255)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("character varying(255)");
 
                     b.Property<decimal?>("Price")
                         .HasColumnType("money");
@@ -1257,6 +1320,9 @@ namespace AppCore.Migrations
                     b.Property<DateTime?>("BirthDay")
                         .HasColumnType("date");
 
+                    b.Property<int>("Category")
+                        .HasColumnType("integer");
+
                     b.Property<bool?>("Gender")
                         .HasColumnType("boolean");
 
@@ -1325,7 +1391,7 @@ namespace AppCore.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
-                    b.Property<int>("TrainerId")
+                    b.Property<int?>("TrainerId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -1354,9 +1420,9 @@ namespace AppCore.Migrations
                         .HasColumnType("character varying(300)");
 
                     b.Property<string>("Picture")
-                        .HasMaxLength(50)
+                        .HasMaxLength(255)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("character varying(255)");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");
@@ -1382,6 +1448,12 @@ namespace AppCore.Migrations
 
             modelBuilder.Entity("Models.Entities.TrainingCourseSkill", b =>
                 {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
                     b.Property<int>("BirdSkillId")
                         .HasColumnType("integer");
 
@@ -1391,8 +1463,9 @@ namespace AppCore.Migrations
                     b.Property<int>("TrainingCourseId")
                         .HasColumnType("integer");
 
-                    b.HasKey("BirdSkillId")
-                        .HasName("PK__Training__1D80EC183F24C734");
+                    b.HasKey("Id");
+
+                    b.HasIndex("BirdSkillId");
 
                     b.HasIndex("TrainingCourseId");
 
@@ -1459,9 +1532,9 @@ namespace AppCore.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Avatar")
-                        .HasMaxLength(20)
+                        .HasMaxLength(255)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(20)");
+                        .HasColumnType("character varying(255)");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -1506,14 +1579,14 @@ namespace AppCore.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Description")
-                        .HasMaxLength(2000)
+                        .HasMaxLength(1000)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(2000)");
+                        .HasColumnType("character varying(1000)");
 
                     b.Property<string>("Picture")
-                        .HasMaxLength(2000)
+                        .HasMaxLength(255)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(2000)");
+                        .HasColumnType("character varying(255)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("money");
@@ -1546,20 +1619,20 @@ namespace AppCore.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime?>("AttendDate")
-                        .HasColumnType("date");
-
                     b.Property<int>("CustomerId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("WorkshopClassId")
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("WorkshopClassDetailId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CustomerId");
 
-                    b.HasIndex("WorkshopClassId");
+                    b.HasIndex("WorkshopClassDetailId");
 
                     b.ToTable("WorkshopAttendance", (string)null);
                 });
@@ -1603,6 +1676,7 @@ namespace AppCore.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("DaySlotId")
+                        .IsRequired()
                         .HasColumnType("integer");
 
                     b.Property<int>("DetailId")
@@ -1767,9 +1841,17 @@ namespace AppCore.Migrations
                         .IsRequired()
                         .HasConstraintName("FKBirdCertif999788");
 
+                    b.HasOne("Models.Entities.BirdTrainingCourse", "BirdTrainingCourse")
+                        .WithMany("BirdCertificateDetails")
+                        .HasForeignKey("BirdTrainingCourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Bird");
 
                     b.Navigation("BirdCertificate");
+
+                    b.Navigation("BirdTrainingCourse");
                 });
 
             modelBuilder.Entity("Models.Entities.BirdCertificateSkill", b =>
@@ -1791,6 +1873,23 @@ namespace AppCore.Migrations
                     b.Navigation("BirdSkill");
                 });
 
+            modelBuilder.Entity("Models.Entities.BirdSkillReceived", b =>
+                {
+                    b.HasOne("Models.Entities.Bird", "Bird")
+                        .WithMany("BirdSkillReceiveds")
+                        .HasForeignKey("BirdId")
+                        .IsRequired();
+
+                    b.HasOne("Models.Entities.BirdSkill", "BirdSkill")
+                        .WithMany("BirdSkillReceiveds")
+                        .HasForeignKey("BirdSkillId")
+                        .IsRequired();
+
+                    b.Navigation("Bird");
+
+                    b.Navigation("BirdSkill");
+                });
+
             modelBuilder.Entity("Models.Entities.BirdTrainingCourse", b =>
                 {
                     b.HasOne("Models.Entities.Bird", "Bird")
@@ -1808,7 +1907,6 @@ namespace AppCore.Migrations
                     b.HasOne("Models.Entities.User", "Staff")
                         .WithMany("BirdTrainingCourses")
                         .HasForeignKey("StaffId")
-                        .IsRequired()
                         .HasConstraintName("FKBird_Train934485");
 
                     b.HasOne("Models.Entities.TrainingCourse", "TrainingCourse")
@@ -1837,14 +1935,12 @@ namespace AppCore.Migrations
                     b.HasOne("Models.Entities.Trainer", "Trainer")
                         .WithMany("BirdTrainingProgresses")
                         .HasForeignKey("TrainerId")
-                        .IsRequired()
                         .HasConstraintName("FKBird_Train934988");
 
                     b.HasOne("Models.Entities.TrainingCourseSkill", "TrainingCourseSkill")
                         .WithMany("BirdTrainingProgresses")
                         .HasForeignKey("TrainingCourseSkillId")
-                        .IsRequired()
-                        .HasConstraintName("FKBird_Train174512");
+                        .IsRequired();
 
                     b.Navigation("BirdTrainingCourse");
 
@@ -1864,8 +1960,8 @@ namespace AppCore.Migrations
                     b.HasOne("Models.Entities.Trainer", "Trainer")
                         .WithMany("BirdTrainingReports")
                         .HasForeignKey("TrainerId")
-                        .IsRequired()
-                        .HasConstraintName("FKBirdTraini332709");
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Models.Entities.TrainerSlot", "TrainerSlot")
                         .WithMany("BirdTrainingReports")
@@ -1937,7 +2033,6 @@ namespace AppCore.Migrations
                     b.HasOne("Models.Entities.Trainer", "Trainer")
                         .WithMany("ConsultingTickets")
                         .HasForeignKey("TrainerId")
-                        .IsRequired()
                         .HasConstraintName("FKConsulting31098");
 
                     b.Navigation("Address");
@@ -2082,15 +2177,7 @@ namespace AppCore.Migrations
                         .IsRequired()
                         .HasConstraintName("FKFeedback245587");
 
-                    b.HasOne("Models.Entities.FeedbackType", "FeedbackType")
-                        .WithMany("Feedbacks")
-                        .HasForeignKey("FeedbackTypeId")
-                        .IsRequired()
-                        .HasConstraintName("FKFeedback625969");
-
                     b.Navigation("Customer");
-
-                    b.Navigation("FeedbackType");
                 });
 
             modelBuilder.Entity("Models.Entities.Lesson", b =>
@@ -2175,7 +2262,6 @@ namespace AppCore.Migrations
                     b.HasOne("Models.Entities.Trainer", "Trainer")
                         .WithMany("TrainerSlots")
                         .HasForeignKey("TrainerId")
-                        .IsRequired()
                         .HasConstraintName("FKTrainerSlo815026");
 
                     b.Navigation("Slot");
@@ -2197,16 +2283,14 @@ namespace AppCore.Migrations
             modelBuilder.Entity("Models.Entities.TrainingCourseSkill", b =>
                 {
                     b.HasOne("Models.Entities.BirdSkill", "BirdSkill")
-                        .WithOne("TrainingCourseSkill")
-                        .HasForeignKey("Models.Entities.TrainingCourseSkill", "BirdSkillId")
-                        .IsRequired()
-                        .HasConstraintName("FKTrainingCo551235");
+                        .WithMany("TrainingCourseSkills")
+                        .HasForeignKey("BirdSkillId")
+                        .IsRequired();
 
                     b.HasOne("Models.Entities.TrainingCourse", "TrainingCourse")
                         .WithMany("TrainingCourseSkills")
                         .HasForeignKey("TrainingCourseId")
-                        .IsRequired()
-                        .HasConstraintName("FKTrainingCo866476");
+                        .IsRequired();
 
                     b.Navigation("BirdSkill");
 
@@ -2232,15 +2316,15 @@ namespace AppCore.Migrations
                         .IsRequired()
                         .HasConstraintName("FKWorkshopAt124181");
 
-                    b.HasOne("Models.Entities.WorkshopClass", "WorkshopClass")
+                    b.HasOne("Models.Entities.WorkshopClassDetail", "WorkshopClassDetail")
                         .WithMany("WorkshopAttendances")
-                        .HasForeignKey("WorkshopClassId")
-                        .IsRequired()
-                        .HasConstraintName("FKWorkshopAt172557");
+                        .HasForeignKey("WorkshopClassDetailId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Customer");
 
-                    b.Navigation("WorkshopClass");
+                    b.Navigation("WorkshopClassDetail");
                 });
 
             modelBuilder.Entity("Models.Entities.WorkshopClass", b =>
@@ -2259,6 +2343,8 @@ namespace AppCore.Migrations
                     b.HasOne("Models.Entities.TrainerSlot", "DaySlot")
                         .WithMany("WorkshopClassDetails")
                         .HasForeignKey("DaySlotId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("FKWorkshopCl382995");
 
                     b.HasOne("Models.Entities.WorkshopDetailTemplate", "WorkshopDetailTemplate")
@@ -2301,6 +2387,8 @@ namespace AppCore.Migrations
                 {
                     b.Navigation("BirdCertificateDetails");
 
+                    b.Navigation("BirdSkillReceiveds");
+
                     b.Navigation("BirdTrainingCourses");
                 });
 
@@ -2317,9 +2405,11 @@ namespace AppCore.Migrations
 
                     b.Navigation("BirdCertificateSkills");
 
+                    b.Navigation("BirdSkillReceiveds");
+
                     b.Navigation("TrainableSkills");
 
-                    b.Navigation("TrainingCourseSkill");
+                    b.Navigation("TrainingCourseSkills");
                 });
 
             modelBuilder.Entity("Models.Entities.BirdSpecies", b =>
@@ -2333,6 +2423,8 @@ namespace AppCore.Migrations
 
             modelBuilder.Entity("Models.Entities.BirdTrainingCourse", b =>
                 {
+                    b.Navigation("BirdCertificateDetails");
+
                     b.Navigation("BirdTrainingProgresses");
                 });
 
@@ -2386,11 +2478,6 @@ namespace AppCore.Migrations
             modelBuilder.Entity("Models.Entities.DistancePrice", b =>
                 {
                     b.Navigation("ConsultingTickets");
-                });
-
-            modelBuilder.Entity("Models.Entities.FeedbackType", b =>
-                {
-                    b.Navigation("Feedbacks");
                 });
 
             modelBuilder.Entity("Models.Entities.Lesson", b =>
@@ -2487,9 +2574,12 @@ namespace AppCore.Migrations
                 {
                     b.Navigation("CustomerWorkshopClasses");
 
-                    b.Navigation("WorkshopAttendances");
-
                     b.Navigation("WorkshopClassDetails");
+                });
+
+            modelBuilder.Entity("Models.Entities.WorkshopClassDetail", b =>
+                {
+                    b.Navigation("WorkshopAttendances");
                 });
 
             modelBuilder.Entity("Models.Entities.WorkshopDetailTemplate", b =>

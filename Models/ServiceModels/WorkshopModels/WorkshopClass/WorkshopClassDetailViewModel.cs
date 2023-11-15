@@ -28,5 +28,6 @@ namespace Models.ServiceModels.WorkshopModels.WorkshopClass
         public TimeSpan? EndTime { get  ; set  ; }
         public DateTime? Date { get  ; set  ; }
         public TrainerWorkshopModel? Trainer { get; set; }
+        public Models.Enum.Workshop.Class.Customer.Status? Status { get; set; }
     }
 }

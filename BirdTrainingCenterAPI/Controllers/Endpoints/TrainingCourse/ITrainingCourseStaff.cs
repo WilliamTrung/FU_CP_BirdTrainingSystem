@@ -27,8 +27,8 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
         //Task ConfirmBirdTrainingCourse(int birdTrainingCourseId);
 
         [HttpGet]
-        [Route("birdtrainingprogress-skill")]
-        Task<IActionResult> GetTrainingCourseSkill([FromQuery] int birdTrainingCourseId);
+        [Route("birdtrainingprogress-requestedId")]
+        Task<IActionResult> GetBirdTrainingCourseProgressByBirdTrainingCourseId([FromQuery] int birdTrainingCourseId);
 
         [HttpGet]
         [Route("trainer")]
@@ -61,6 +61,10 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
         [HttpPost]
         [Route("birdtrainingcourse-confirm")]
         Task<IActionResult> ConfirmBirdTrainingCourse(int birdTrainingCourseId);
+
+        [HttpPost]
+        [Route("generatedprogresstimetable-confirm")]
+        Task<IActionResult> Generatedprogresstimetable(List<int> birdTrainingProgressId);
 
         [HttpPost]
         [Route("birdtrainingcourse-cancel")]
