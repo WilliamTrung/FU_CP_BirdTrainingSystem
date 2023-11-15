@@ -22,13 +22,6 @@ namespace AppService.TrainingCourseService.Implement
         public ServiceStaff(ITrainingCourseFeature trainingCourse, ITimetableFeature timetable) : base(trainingCourse, timetable)
         {
         }
-        private bool IsTrainerFree(int trainerSlotId, int trainerId)
-        {
-            var trainerSlot = _timetable.GetTrainerSlotDetail(trainerSlotId).Result;
-            var freeSlot = _timetable.GetTrainerFreeSlotOnDate(DateOnly.FromDateTime((DateTime)trainerSlot.Date), trainerId).Result;
-            bool result = freeSlot.Any(e => e.StartTime == trainerSlot.StartTime);
-            return result;
-        }
         public async Task<IEnumerable<BirdTrainingCourseListView>> GetBirdTrainingCourse()
         {
             return await _trainingCourse.Staff.GetBirdTrainingCourse();
@@ -160,6 +153,31 @@ namespace AppService.TrainingCourseService.Implement
         public async Task<IEnumerable<ReportModifyViewModel>> GetReportByProgressId(int progressId)
         {
             return await _trainingCourse.Staff.GetReportByProgressId(progressId);
+        }
+
+        public async Task<BirdTrainingProgressModel> AssignTrainer(int progressId, int trainerId)
+        {
+            var reports = GetReportByProgressId(progressId).Result;
+            bool IsAssignable = true;
+            if(reports != null)
+            {
+                foreach(var report in reports)
+                {
+                    var trainerFree = _timetable.CheckTrainerFree(trainerId, report.Date, report.SlotId).Result;
+                    if (!trainerFree)
+                    {
+                        IsAssignable = false;
+                    }
+                }
+            }
+            if(IsAssignable)
+            {
+                return await _trainingCourse.Staff.AssignTrainer(progressId, trainerId);
+            }
+            else
+            {
+                throw new Exception("Trainer is not free to assign.");
+            }
         }
 
         public async Task ModifyTrainingSlot(ReportModifyModel reportModModel)

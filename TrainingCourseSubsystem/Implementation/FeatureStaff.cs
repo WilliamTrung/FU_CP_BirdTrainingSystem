@@ -272,7 +272,6 @@ namespace TrainingCourseSubsystem.Implementation
                 if (entity.TrainerSlot.TrainerId == null || entity.TrainerSlot.TrainerId != reportModModel.TrainerId)
                 {
                     entity.TrainerSlot.TrainerId = reportModModel.TrainerId;
-                    await AssignTrainer(entity.Id, reportModModel.TrainerId);
                 }
 
                 entity.TrainerSlot.SlotId = reportModModel.SlotId;
@@ -290,7 +289,7 @@ namespace TrainingCourseSubsystem.Implementation
             await ModifyActualStartTime(startTraining, birdTrainingProgress.BirdTrainingCourseId);
         }
 
-        private async Task<BirdTrainingProgressModel> AssignTrainer(int reportId, int trainerId)
+        public async Task<BirdTrainingProgressModel> AssignTrainer(int progressId, int trainerId)
         {
             var report = await _unitOfWork.BirdTrainingReportRepository.GetFirst(e => e.Id == reportId);
             if (report == null)
