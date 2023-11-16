@@ -9,9 +9,13 @@ namespace AppService.HostedService
 {
     public interface IWorkshopHostedService : IDisposable
     {
-        Task CheckExceedRegistrationTime();
-        Task CheckOpenClasses();
-        Task CheckCompleteClasses();
+        //Task CheckExceedRegistrationTime(); -- staff will do
+        //Task CheckOpenClasses(); -- staff will do
+
+        //check full customer
+
+        Task CheckCompleteClasses(); 
         Task LateCheckAttendance();
+        //Task CheckOpenRegistration(); -- staff will do
     }
 }

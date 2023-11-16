@@ -76,6 +76,12 @@ namespace AppService.WorkshopService.Implementation
             await Task.WhenAll(validatedTasks);
             //end validating
             await _workshop.Staff.ModifyWorkshopClassDetailSlotOnly(workshopClassDetail);
+
+            var checkSlot = await _workshop.Staff.CheckSlotFulfill(current_slot.Id);
+            if (checkSlot)
+            {
+                await _workshop.Staff.SetOpenRegistrationForClass(current_slot.Id);
+            }
         }
 
         public async Task ModifyWorkshopClassDetailTrainerSlot(WorkshopClassDetailTrainerSlotModifyModel workshopClassDetail)
@@ -127,6 +133,12 @@ namespace AppService.WorkshopService.Implementation
             await Task.WhenAll(validatedTasks);
             //end validating
             await _workshop.Staff.ModifyWorkshopClassDetailTrainerSlot(workshopClassDetail);
+
+            var checkSlot = await _workshop.Staff.CheckSlotFulfill(current_slot.Id);
+            if (checkSlot)
+            {
+                await _workshop.Staff.SetOpenRegistrationForClass(current_slot.Id);
+            }
         }
 
         private Task CompareCurrentDate(WorkshopClassDetailViewModel slotDetail)
@@ -190,6 +202,22 @@ namespace AppService.WorkshopService.Implementation
         public async Task SubmitAttendance(int classSlotId, List<CheckAttendanceCredentials> customerCredentials)
         {
             await _workshop.Staff.CheckAttendance(classSlotId, customerCredentials);
+        }
+
+        public async Task<WorkshopClassAdminViewModel> GetClassAdminViewById(int classId)
+        {
+            var result = await _workshop.Staff.GetClassAdminViewById(classId);
+            return result;
+        }
+
+        public async Task SetWorkshopClassOngoing(int workshopClassId)
+        {
+            await _workshop.Staff.SetClassOngoing(workshopClassId);
+        }
+
+        public async Task CloseRegistrationWorkshopClass(int workshopClassId)
+        {
+            await _workshop.Staff.SetClosedRegistrationForClass(workshopClassId);
         }
     }
 }

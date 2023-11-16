@@ -22,10 +22,16 @@ namespace WorkshopSubsystem
         Task<WorkshopClassDetailViewModel?> GetPreviousWorkshopClassDetail(int workshopClassDetailId);
         Task<WorkshopClassDetailViewModel?> GetFollowingWorkshopClassDetail(int workshopClassDetailId);
         Task CancelWorkshopClass(int workshopClassId);
-        Task CompleteWorkshopClass(int workshopClassId);
+        
         Task<IEnumerable<RegisteredCustomerModel>> GetListRegistered(int classSlotId);
         Task CheckAttendance(int classSlotId, List<CheckAttendanceCredentials> customerCredentials);
         Task GenerateWorkshopAttendance(int customerId, int workshopClassId);
         Task LateCheckAttendance();
+        Task SetClassOngoing(int classId);
+        Task SetOpenRegistrationForClass(int classId);
+        Task SetClosedRegistrationForClass(int classId);
+        Task CompleteWorkshopClass(int workshopClassId);
+        Task<bool> CheckSlotFulfill(int workshopClassId);
+        Task<WorkshopClassAdminViewModel> GetClassAdminViewById(int classId);
     }
 }

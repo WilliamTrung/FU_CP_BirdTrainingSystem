@@ -25,10 +25,11 @@ namespace AppService.HostedService
             {
                 using (var _tasks = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<IWorkshopHostedService>())
                 {
-                    await _tasks.CheckOpenClasses();
+                    //await _tasks.CheckOpenClasses();
                     await _tasks.CheckCompleteClasses();
-                    await _tasks.CheckExceedRegistrationTime();
+                    //await _tasks.CheckExceedRegistrationTime();
                     await _tasks.LateCheckAttendance();
+                    //await _tasks.CheckFullClass();
                 }
                 await Task.Delay(TimeSpan.FromMinutes(5), stoppingToken);
             }
