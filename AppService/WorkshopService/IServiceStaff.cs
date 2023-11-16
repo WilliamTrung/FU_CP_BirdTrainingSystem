@@ -18,7 +18,10 @@ namespace AppService.WorkshopService
         Task ModifyWorkshopClassDetailSlotOnly(WorkshopClassDetailTrainerSlotOnlyModifyModel workshopClassDetail);
         Task CancelWorkshopClass(int workshopClassId);
         Task CompleteWorkshopClass(int workshopClassId);
+        Task CloseRegistrationWorkshopClass(int workshopClassId);
+        Task SetWorkshopClassOngoing(int workshopClassId);
         Task<IEnumerable<RegisteredCustomerModel>> GetAttendeesInSlot(int classSlotId);
         Task SubmitAttendance(int classSlotId, List<CheckAttendanceCredentials> customerCredentials);
+        Task<WorkshopClassAdminViewModel> GetClassAdminViewById(int classId);
     }
 }

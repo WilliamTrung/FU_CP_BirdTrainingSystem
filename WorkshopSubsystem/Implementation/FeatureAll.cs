@@ -39,7 +39,7 @@ namespace WorkshopSubsystem.Implementation
         public async Task<WorkshopClassDetailViewModel> GetWorkshopClassDetail(int workshopClassDetailId)
         {
             var entity = await _unitOfWork.WorkshopClassDetailRepository.GetFirst(c => c.Id == workshopClassDetailId
-                                                                                    && c.WorkshopClass.Workshop.Status != (int)Models.Enum.Workshop.Status.Inactive
+                                                                                    && c.WorkshopClass.Workshop.Status != (int)Models.Enum.Workshop.Status.Inactive                                                                                    
                                                                                     , nameof(WorkshopClassDetail.DaySlot)
                                                                                     , nameof(WorkshopClassDetail.WorkshopDetailTemplate));
             var model = _mapper.Map<WorkshopClassDetailViewModel>(entity);
@@ -85,8 +85,9 @@ namespace WorkshopSubsystem.Implementation
 
         public async Task SetWorkshopClassOngoing()
         {
-            var entities = await _unitOfWork.WorkshopClassRepository.Get(c => c.RegisterEndDate >= DateTime.Now && (c.Status == (int)Models.Enum.Workshop.Class.Status.OpenRegistration || c.Status == (int)Models.Enum.Workshop.Class.Status.ClosedRegistration));
-            foreach (var entity in entities)
+            var entities = await _unitOfWork.WorkshopClassRepository.Get(c => DateTime.Now > c.RegisterEndDate
+                                                                            && c.Status == (int)Models.Enum.Workshop.Class.Status.ClosedRegistration);                                                                           
+             foreach (var entity in entities)
             {
                 entity.Status = (int)Models.Enum.Workshop.Class.Status.OnGoing;
                 await _unitOfWork.WorkshopClassRepository.Update(entity);
@@ -126,10 +127,11 @@ namespace WorkshopSubsystem.Implementation
 
         public async Task SetWorkshopClassOpenRegistration()
         {
-            var entities = await _unitOfWork.WorkshopClassRepository.Get(c => c.Status == (int)Models.Enum.Workshop.Class.Status.Pending);
+            var entities = await _unitOfWork.WorkshopClassRepository.Get(c => c.Status == (int)Models.Enum.Workshop.Class.Status.Pending 
+                                                                            && c.StartTime < DateTime.Now);
             foreach (var entity in entities)
             {
-                entity.Status = (int)Models.Enum.Workshop.Class.Status.Cancelled;
+                entity.Status = (int)Models.Enum.Workshop.Class.Status.OpenRegistration;
                 await _unitOfWork.WorkshopClassRepository.Update(entity);
             }
         }
@@ -185,6 +187,13 @@ namespace WorkshopSubsystem.Implementation
             });
             return rating/=count;
             
+        }
+
+        public async Task SetClassCloseRegistrationOnFull(int workshopClassId)
+        {
+            var entities = await _unitOfWork.WorkshopClassRepository.Get(c => c.Id == workshopClassId 
+                                                                            && c.Status == (int)Models.Enum.Workshop.Class.Status.OpenRegistration);
+
         }
     }
 }
