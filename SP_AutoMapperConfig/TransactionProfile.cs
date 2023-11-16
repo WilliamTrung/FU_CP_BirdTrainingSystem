@@ -1,5 +1,5 @@
-﻿using AppCore.Models;
-using AutoMapper;
+﻿using AutoMapper;
+using Models.Entities;
 using Models.ServiceModels;
 using System;
 using System.Collections.Generic;
@@ -13,6 +13,7 @@ namespace SP_AutoMapperConfig
     {
         public TransactionProfile() 
         {
+            Map_TransactionAddModel_Transaction();
         }
 
         private void Map_TransactionAddModel_Transaction()
