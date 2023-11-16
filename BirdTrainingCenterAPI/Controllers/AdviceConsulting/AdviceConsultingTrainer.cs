@@ -31,6 +31,11 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         {
             try
             {
+                var accessToken = Request.DeserializeToken(_authService);
+                if (accessToken == null)
+                {
+                    return Unauthorized();
+                }
                 var evidence = string.Empty;
                 foreach (var file in consultingTicket.Evidence)
                 {
@@ -55,6 +60,11 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         {
             try
             {
+                var accessToken = Request.DeserializeToken(_authService);
+                if (accessToken == null)
+                {
+                    return Unauthorized();
+                }
                 await _consultingService.Trainer.UpdateAppointment(ticketId, ggmeetLink);
                 return Ok();
             }

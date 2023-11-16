@@ -151,6 +151,11 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         {
             try
             {
+                var accessToken = Request.DeserializeToken(_authService);
+                if (accessToken == null)
+                {
+                    return Unauthorized();
+                }
                 var validate = await _consultingService.Customer.ValidateBeforeUsingSendConsultingTicket(customerId);
                 if (validate == false)
                 {
