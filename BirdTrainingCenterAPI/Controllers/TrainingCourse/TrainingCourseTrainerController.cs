@@ -67,9 +67,9 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         }
         [HttpPut]
         [Route("mark-trainingslotdone")]
-        public async Task<IActionResult> MarkTrainingSlotDone([FromQuery] int birdTrainingProgressId)
+        public async Task<IActionResult> MarkTrainingSlotDone([FromQuery] int birdTrainingReportId)
         {
-            var result = await _trainingCourseService.Trainer.MarkTrainingSlotDone(birdTrainingProgressId);
+            var result = await _trainingCourseService.Trainer.MarkTrainingSlotDone(birdTrainingReportId);
             if (result == (int)Models.Enum.BirdTrainingReport.FirstOrEnd.EndSlot)
             {
                 return StatusCode(206);

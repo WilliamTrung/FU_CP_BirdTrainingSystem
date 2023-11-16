@@ -155,7 +155,7 @@ namespace AppService.TrainingCourseService.Implement
             return await _trainingCourse.Staff.GetReportByProgressId(progressId);
         }
 
-        public async Task<BirdTrainingProgressModel> AssignTrainer(int progressId, int trainerId)
+        public async Task<BirdTrainingProgressViewModel> AssignTrainer(int progressId, int trainerId)
         {
             var reports = GetReportByProgressId(progressId).Result;
             bool IsAssignable = true;
