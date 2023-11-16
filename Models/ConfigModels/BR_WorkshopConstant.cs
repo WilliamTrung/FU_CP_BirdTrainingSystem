@@ -11,7 +11,7 @@ namespace Models.ConfigModels
         public static int StartDateCreated { get; } = 5;
         public static int DeadlineDateModifySlotDetail { get; } = 3;
         public static int DeadlineDateModifyDetail { get; } = 2;
-        public static int MaximumRegisteredCustomer { get; } = 20;
-        public static int MinimumRegisteredCustomer { get; } = 10;
+        public static int MaximumRegisteredCustomer { get; } = 10;
+        public static int MinimumRegisteredCustomer { get; } = 5;
     }
 }

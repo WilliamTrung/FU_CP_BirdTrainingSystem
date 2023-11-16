@@ -54,6 +54,8 @@ builder.Services.AddControllers().AddOData(options => options
                        x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.Trainer.Category>());
                        x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.OnlineCourse.Customer.OnlineCourse.Status>());
                        x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.Workshop.Class.Customer.Status>());
+                       x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.OnlineCourse.Customer.Section.Status>());
+                       x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.OnlineCourse.Customer.Lesson.Status>());
                    }
                );
 
@@ -75,6 +77,7 @@ builder.AddAdministrativeFeature();
 builder.AddTrainingCourseFeature();
 builder.AddAdviceConsultinFeature();
 builder.AddOnlineCourseFeature();
+builder.AddWorkshopHostedService();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -1,4 +1,5 @@
-﻿using AppRepository.UnitOfWork;
+﻿//using AppCore.Models;
+using AppRepository.UnitOfWork;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Models.ConfigModels;
@@ -114,8 +115,8 @@ namespace WorkshopSubsystem.Implementation
 
         public async Task<IEnumerable<WorkshopClassAdminViewModel>> GetWorkshopClassAdminViewModels(int workshopId)
         {
-            var entities = await _unitOfWork.WorkshopClassRepository.Get(c => c.WorkshopId == workshopId 
-                                                                           && c.Status != (int)Models.Enum.Workshop.Class.Status.Cancelled);
+            var entities = await _unitOfWork.WorkshopClassRepository.Get(c => c.WorkshopId == workshopId);
+                                                                           //&& c.Status != (int)Models.Enum.Workshop.Class.Status.Cancelled);
             var models = _mapper.Map<List<WorkshopClassAdminViewModel>>(entities);
             return models;
         }
@@ -295,12 +296,12 @@ namespace WorkshopSubsystem.Implementation
 
         public async Task LateCheckAttendance()
         {
-            var entities = await _unitOfWork.WorkshopAttendanceRepository.Get(c => c.WorkshopClassDetail.DaySlot.Date <= DateTime.Today
-                                                                                && c.WorkshopClassDetail.DaySlot.Slot.EndTime < DateTime.Now.TimeOfDay
-                                                                                && c.Status == (int)Models.Enum.Workshop.Class.Customer.Status.NotYet
+            var entities = await _unitOfWork.WorkshopAttendanceRepository.Get(c => c.Status == (int)Models.Enum.Workshop.Class.Customer.Status.NotYet
                                                                                 , nameof(WorkshopAttendance.WorkshopClassDetail)
                                                                                 , $"{nameof(WorkshopAttendance.WorkshopClassDetail)}.{nameof(WorkshopClassDetail.DaySlot)}"
                                                                                 , $"{nameof(WorkshopAttendance.WorkshopClassDetail)}.{nameof(WorkshopClassDetail.DaySlot)}.{nameof(TrainerSlot.Slot)}");
+            entities = entities.Where(c => c.WorkshopClassDetail.DaySlot.Date <= DateTime.Today
+                                        && c.WorkshopClassDetail.DaySlot.Slot.EndTime < DateTime.Now.TimeOfDay);
             foreach (var entity  in entities)
             {
                 entity.Status = (int)Models.Enum.Workshop.Class.Customer.Status.Attended;
@@ -325,6 +326,60 @@ namespace WorkshopSubsystem.Implementation
             }                        
 #pragma warning restore CS8629 // Nullable value type may be null.            
             return true;
+        }
+
+        public async Task<WorkshopClassAdminViewModel> GetClassAdminViewById(int classId)
+        {
+            var entity = await _unitOfWork.WorkshopClassRepository.GetFirst(c => c.Id == classId);
+            //&& c.Status != (int)Models.Enum.Workshop.Class.Status.Cancelled);
+            var model = _mapper.Map<WorkshopClassAdminViewModel>(entity);
+            return model;
+        }
+
+        public async Task SetClassOngoing(int classId)
+        {
+            var entity = await _unitOfWork.WorkshopClassRepository.GetFirst(c => c.Id == classId);
+            if (entity.Status != (int)Models.Enum.Workshop.Class.Status.ClosedRegistration)
+            {
+                throw new InvalidOperationException("Workshop class must be at closed registration state!");
+            }
+            entity.Status = (int)Models.Enum.Workshop.Class.Status.OnGoing;
+            await _unitOfWork.WorkshopClassRepository.Update(entity);
+        }
+
+        public async Task SetOpenRegistrationForClass(int classId)
+        {
+            var entity = await _unitOfWork.WorkshopClassRepository.GetFirst(c => c.Id == classId);
+            if (entity.Status != (int)Models.Enum.Workshop.Class.Status.Pending)
+            {
+                throw new InvalidOperationException("Workshop class must be at pending state!");
+            }
+            entity.Status = (int)Models.Enum.Workshop.Class.Status.OpenRegistration;
+            await _unitOfWork.WorkshopClassRepository.Update(entity);
+        }
+
+        public async Task SetClosedRegistrationForClass(int classId)
+        {
+            var entity = await _unitOfWork.WorkshopClassRepository.GetFirst(c => c.Id == classId);
+            if (entity.Status != (int)Models.Enum.Workshop.Class.Status.OpenRegistration)
+            {
+                throw new InvalidOperationException("Workshop class must be at open registration state!");
+            }
+            entity.Status = (int)Models.Enum.Workshop.Class.Status.ClosedRegistration;
+            await _unitOfWork.WorkshopClassRepository.Update(entity);
+        }
+
+        public async Task<bool> CheckSlotFulfill(int workshopClassId)
+        {
+            var entities = await _unitOfWork.WorkshopClassRepository.GetFirst(c => c.Id == workshopClassId
+                                                                                , nameof(WorkshopClass.WorkshopClassDetails)
+                                                                                , nameof(WorkshopClass.Workshop));
+            var fulfilled = entities.WorkshopClassDetails.Where(c => c.DaySlot != null);
+            if(fulfilled.Count() == entities.Workshop.TotalSlot)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

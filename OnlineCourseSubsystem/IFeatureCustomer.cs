@@ -16,6 +16,8 @@ namespace OnlineCourseSubsystem
         Task EnrollCourse(int customerId, BillingModel billing);
         Task<IEnumerable<OnlineCourseSectionViewModel>> GetSections(int customerId, int courseId);
         Task<Models.Enum.OnlineCourse.Customer.OnlineCourse.Status> CheckEnrolledCourse(int customerId, int courseId);
+        Task<Models.Enum.OnlineCourse.Customer.Lesson.Status> CheckStatusLesson(int customerId, int lessonId);
+        Task<Models.Enum.OnlineCourse.Customer.Section.Status> CheckStatusSection(int customerId, int sectionId);
         Task<IEnumerable<OnlineCourseModel>> GetEnrolledCourses(int customerId);
         Task<IEnumerable<OnlineCourseLessonViewModel>> GetLessonsBySection(int customerId, int sectionId);
         Task<OnlineCourseLessonViewModel> GetLessionByLessonId(int customerId, int lessonId);

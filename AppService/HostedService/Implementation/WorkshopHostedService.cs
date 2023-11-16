@@ -63,5 +63,10 @@ namespace AppService.HostedService.Implementation
         {
             await _workshop.Staff.LateCheckAttendance();
         }
+
+        public async Task CheckOpenRegistration()
+        {
+            await _workshop.All.SetWorkshopClassOpenRegistration();
+        }
     }
 }
