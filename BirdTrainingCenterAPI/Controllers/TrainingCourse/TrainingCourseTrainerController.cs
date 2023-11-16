@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Models.ApiParamModels.TrainingCourse;
 using Models.ConfigModels;
-using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
 using SP_Extension;
 using SP_Middleware;
 
@@ -56,7 +55,8 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             }
             foreach (var file in markDone.Evidences)
             {
-                var temp = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
+                string fileName = $"{nameof(MarkTrainingSkillDone)}-{markDone.Id}-{DateTime.Now.ToString("yyyyMMdd-HHmmss")}";
+                var temp = await _firebaseService.UploadFile(file, fileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
                 pictures += $"{temp},";
             }
             pictures = pictures.Substring(0, pictures.Length - 1);

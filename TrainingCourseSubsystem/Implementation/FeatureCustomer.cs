@@ -79,6 +79,15 @@ namespace TrainingCourseSubsystem.Implementation
         {
             if (birdTrainingCourseRegister == null)
                 throw new Exception("Client send null model.");
+            var bird = _unitOfWork.BirdRepository.GetFirst(e => e.Id == birdTrainingCourseRegister.BirdId).Result;
+            var trainingCourse = _unitOfWork.TrainingCourseRepository.GetFirst(e => e.Id == birdTrainingCourseRegister.TrainingCourseId).Result;
+            if (trainingCourse != null && bird != null)
+            {
+                if(bird.BirdSpeciesId != trainingCourse.BirdSpeciesId)
+                {
+                    throw new Exception("Bird can not learn this course because of species difference.");
+                }
+            }
             var entity = _mapper.Map<BirdTrainingCourse>(birdTrainingCourseRegister);
             if (entity == null)
             {
