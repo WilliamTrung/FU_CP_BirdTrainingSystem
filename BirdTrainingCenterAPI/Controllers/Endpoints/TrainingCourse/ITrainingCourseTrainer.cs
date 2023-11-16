@@ -21,6 +21,6 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
 
         [HttpPut]
         [Route("mark-trainingslotdone")]
-        Task<IActionResult> MarkTrainingSlotDone(int birdTrainingProgressId);
+        Task<IActionResult> MarkTrainingSlotDone(int birdTrainingReportId);
     }
 }

@@ -289,7 +289,7 @@ namespace TrainingCourseSubsystem.Implementation
             await ModifyActualStartTime(startTraining, birdTrainingProgress.BirdTrainingCourseId);
         }
 
-        public async Task<BirdTrainingProgressModel> AssignTrainer(int progressId, int trainerId)
+        public async Task<BirdTrainingProgressViewModel> AssignTrainer(int progressId, int trainerId)
         {
             var birdTrainingClass = await _unitOfWork.BirdTrainingProgressRepository.GetFirst(e => e.Id == progressId
                                                                                                   , nameof(BirdTrainingProgress.BirdTrainingCourse));
@@ -316,7 +316,7 @@ namespace TrainingCourseSubsystem.Implementation
                 {
                     birdTrainingClass.BirdTrainingCourse.Status = (int)Models.Enum.BirdTrainingCourse.Status.Confirmed;
                 }
-                return _mapper.Map<BirdTrainingProgressModel>(birdTrainingClass);
+                return _mapper.Map<BirdTrainingProgressViewModel>(birdTrainingClass);
             }
         }
         private bool IsAssignForAllClass(int birdTrainingCourseId)

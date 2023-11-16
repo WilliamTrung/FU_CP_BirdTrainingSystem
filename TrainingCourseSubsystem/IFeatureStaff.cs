@@ -34,7 +34,7 @@ namespace TrainingCourseSubsystem
 
         Task<IEnumerable<BirdTrainingProgressViewModel>> GetTrainingCourseSkill(int birdTrainingCourseId);
         Task<IEnumerable<ReportModifyViewModel>> GetReportByProgressId(int progressId);
-        Task<BirdTrainingProgressModel> AssignTrainer(int progressId, int trainerId);
+        Task<BirdTrainingProgressViewModel> AssignTrainer(int progressId, int trainerId);
         Task ModifyTrainingSlot(ReportModifyModel reportModModel);
 
 
