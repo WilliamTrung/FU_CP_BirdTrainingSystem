@@ -10,7 +10,6 @@ using Models.ConfigModels;
 using Models.ServiceModels.TrainingCourseModels;
 using Models.ServiceModels.TrainingCourseModels.Bird;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
-using SP_Middleware;
 
 namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
 {
@@ -37,7 +36,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             }
             foreach (var file in bird.Pictures)
             {
-                string fileName = $"{nameof(BirdModel)}-{bird.Name}-{bird.CustomerId}-{DateTime.Now}";
+                string fileName = $"{nameof(BirdModel)}-{bird.Name}-{bird.CustomerId}-{DateTime.Now.ToString("yyyyMMdd-HHmmss")}";
                 var temp = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
                 pictures += $"{temp},";
             }
@@ -58,7 +57,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             }
             foreach (var file in bird.Pictures)
             {
-                string fileName = $"{nameof(BirdModel)}-{bird.Id}-{DateTime.Now}";
+                string fileName = $"{nameof(BirdModel)}-{bird.Id}-{DateTime.Now.ToString("yyyyMMdd-HHmmss")}";
                 var temp = await _firebaseService.UploadFile(file, fileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
                 pictures += $"{temp},";
             }
