@@ -66,28 +66,28 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
         }
         [HttpPut]
         [Route("cancel")]
-        public async Task<IActionResult> CancelWorkshopClass([FromQuery] int workshopClassId)
+        public async Task<IActionResult> CancelWorkshopClass([FromBody] int workshopClassId)
         {
             await _workshopService.Staff.CancelWorkshopClass(workshopClassId);
             return Ok();
         }
         [HttpPut]
         [Route("complete")]
-        public async Task<IActionResult> CompleteWorkshopClass([FromQuery] int workshopClassId)
+        public async Task<IActionResult> CompleteWorkshopClass([FromBody] int workshopClassId)
         {
             await _workshopService.Staff.CompleteWorkshopClass(workshopClassId);
             return Ok();
         }
         [HttpPut]
         [Route("on-going")]
-        public async Task<IActionResult> SetWorkshopClassOnGoing([FromQuery] int workshopClassId)
+        public async Task<IActionResult> SetWorkshopClassOnGoing([FromBody] int workshopClassId)
         {
             await _workshopService.Staff.SetWorkshopClassOngoing(workshopClassId);
             return Ok();
         }
         [HttpPut]
         [Route("close-registration")]
-        public async Task<IActionResult> CloseRegistrationWorkshopClass([FromQuery] int workshopClassId)
+        public async Task<IActionResult> CloseRegistrationWorkshopClass([FromBody] int workshopClassId)
         {
             await _workshopService.Staff.CloseRegistrationWorkshopClass(workshopClassId);
             return Ok();
