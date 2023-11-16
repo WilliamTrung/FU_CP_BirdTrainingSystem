@@ -56,6 +56,7 @@ namespace SP_AutoMapperConfig
             CreateMap<BirdTrainingCourse, BirdTrainingCourseListView>()
                 .ForMember(m => m.Id, opt => opt.MapFrom(e => e.Id))
                 .ForMember(m => m.TrainingCourseId, opt => opt.MapFrom(e => e.TrainingCourseId))
+                .ForMember(m => m.BirdId, opt => opt.MapFrom(e => e.BirdId))
                 .ForMember(m => m.BirdName, opt => {
                     opt.PreCondition(e => e.Bird != null);
                     opt.MapFrom(e => e.Bird.Name);

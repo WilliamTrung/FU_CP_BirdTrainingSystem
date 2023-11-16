@@ -291,17 +291,16 @@ namespace TrainingCourseSubsystem.Implementation
 
         public async Task<BirdTrainingProgressModel> AssignTrainer(int progressId, int trainerId)
         {
-            var report = await _unitOfWork.BirdTrainingReportRepository.GetFirst(e => e.Id == reportId);
-            if (report == null)
+            var birdTrainingClass = await _unitOfWork.BirdTrainingProgressRepository.GetFirst(e => e.Id == progressId
+                                                                                                  , nameof(BirdTrainingProgress.BirdTrainingCourse));
+            var reports = await _unitOfWork.BirdTrainingReportRepository.Get(e => e.BirdTrainingProgressId == birdTrainingClass.Id
+                                                                             , nameof(BirdTrainingReport.TrainerSlot));
+            if (birdTrainingClass == null)
             {
-                throw new Exception("Client send null models");
+                throw new Exception(nameof(BirdTrainingProgress) + " is not found.");
             }
             else
             {
-                var birdTrainingClass = await _unitOfWork.BirdTrainingProgressRepository.GetFirst(e => e.Id == report.BirdTrainingProgressId
-                                                                                                  , nameof(BirdTrainingProgress.BirdTrainingCourse));
-                var reports = await _unitOfWork.BirdTrainingReportRepository.Get(e => e.BirdTrainingProgressId == birdTrainingClass.Id
-                                                                                 , nameof(BirdTrainingReport.TrainerSlot));
                 foreach (var item in reports.ToList())
                 {
                     if (item != null)
