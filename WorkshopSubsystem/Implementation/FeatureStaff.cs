@@ -161,13 +161,13 @@ namespace WorkshopSubsystem.Implementation
 
         public async Task ModifyWorkshopClassDetailTrainerSlot(WorkshopClassDetailTrainerSlotModifyModel workshopClass)
         {
-            var entity = await _unitOfWork.WorkshopClassDetailRepository.GetFirst(c => c.Id == workshopClass.Id
+            var entity = await _unitOfWork.WorkshopClassDetailRepository.GetFirst(c => c.Id == workshopClass.ClassId
                                                                                     && c.WorkshopClass.Status != (int)Models.Enum.Workshop.Class.Status.Cancelled
                                                                                     , nameof(WorkshopClassDetail.DaySlot)
                                                                                     , nameof(WorkshopClassDetail.WorkshopClass));
             if(entity == null)
             {
-                throw new KeyNotFoundException($"Workshop Class not found at id: {workshopClass.Id}");
+                throw new KeyNotFoundException($"Workshop Class not found at id: {workshopClass.ClassId}");
             }
             if(entity.DaySlot == null)
             {
@@ -209,6 +209,17 @@ namespace WorkshopSubsystem.Implementation
             //26-10-2023 - TrungNT - Add End
             entity.Status = (int)Models.Enum.Workshop.Class.Status.Cancelled;
             await _unitOfWork.WorkshopClassRepository.Update(entity);
+
+            var slots = await _unitOfWork.WorkshopClassDetailRepository.Get(c => c.WorkshopClassId ==  workshopClassId
+                                                                            , nameof(WorkshopClassDetail.DaySlot));
+            foreach (var slot in slots)
+            {
+                if(slot.DaySlot != null)
+                {
+                    slot.DaySlot.Status = (int)Models.Enum.TrainerSlotStatus.Disabled;
+                }                
+                await _unitOfWork.WorkshopClassDetailRepository.Update(slot);
+            }
         }
 
         public async Task<bool> CheckPassEndRegistrationDay(int workshopClassDetailId, DateOnly compareDate)
@@ -347,15 +358,15 @@ namespace WorkshopSubsystem.Implementation
             await _unitOfWork.WorkshopClassRepository.Update(entity);
         }
 
-        public async Task SetOpenRegistrationForClass(int classId)
+        public async Task SetOpenRegistrationForClass(int classSlotId)
         {
-            var entity = await _unitOfWork.WorkshopClassRepository.GetFirst(c => c.Id == classId);
-            if (entity.Status != (int)Models.Enum.Workshop.Class.Status.Pending)
+            var entity = await _unitOfWork.WorkshopClassDetailRepository.GetFirst(c => c.Id == classSlotId, nameof(WorkshopClassDetail.WorkshopClass));
+            if (entity.WorkshopClass.Status != (int)Models.Enum.Workshop.Class.Status.Pending)
             {
                 throw new InvalidOperationException("Workshop class must be at pending state!");
             }
-            entity.Status = (int)Models.Enum.Workshop.Class.Status.OpenRegistration;
-            await _unitOfWork.WorkshopClassRepository.Update(entity);
+            entity.WorkshopClass.Status = (int)Models.Enum.Workshop.Class.Status.OpenRegistration;
+            await _unitOfWork.WorkshopClassRepository.Update(entity.WorkshopClass);
         }
 
         public async Task SetClosedRegistrationForClass(int classId)
@@ -369,13 +380,14 @@ namespace WorkshopSubsystem.Implementation
             await _unitOfWork.WorkshopClassRepository.Update(entity);
         }
 
-        public async Task<bool> CheckSlotFulfill(int workshopClassId)
+        public async Task<bool> CheckSlotFulfill(int classSlotId)
         {
-            var entities = await _unitOfWork.WorkshopClassRepository.GetFirst(c => c.Id == workshopClassId
-                                                                                , nameof(WorkshopClass.WorkshopClassDetails)
-                                                                                , nameof(WorkshopClass.Workshop));
-            var fulfilled = entities.WorkshopClassDetails.Where(c => c.DaySlot != null);
-            if(fulfilled.Count() == entities.Workshop.TotalSlot)
+            var entity = await _unitOfWork.WorkshopClassDetailRepository.GetFirst(c => c.Id == classSlotId
+                                                                                    , nameof(WorkshopClassDetail.WorkshopClass)
+                                                                                    , $"{nameof(WorkshopClassDetail.WorkshopClass)}.{nameof(WorkshopClass.WorkshopClassDetails)}"
+                                                                                    , $"{nameof(WorkshopClassDetail.WorkshopClass)}.{nameof(WorkshopClass.Workshop)}");          
+            var fulfilled = entity.WorkshopClass.WorkshopClassDetails.Where(c => c.DaySlot != null);
+            if(fulfilled.Count() == entity.WorkshopClass.Workshop.TotalSlot)
             {
                 return true;
             }

@@ -38,11 +38,12 @@ namespace SP_AutoMapperConfig
         private void Map_WorkshopClassDetailTrainerSlotModifyModel_TrainerSlot()
         {
             CreateMap<WorkshopClassDetailTrainerSlotModifyModel, TrainerSlot>()
+                .ForMember(e => e.Id, opt => opt.Ignore())
                 .ForMember(e => e.SlotId, opt => opt.MapFrom(m => m.SlotId))
                 .ForMember(e => e.Date, opt => opt.MapFrom(m => m.Date.ToDateTime(new TimeOnly(0,0,0))))
                 .ForMember(e => e.TrainerId, opt => opt.MapFrom(m => m.TrainerId))
                 .ForMember(e => e.Status, opt => opt.MapFrom(m => (int)Models.Enum.TrainerSlotStatus.Enabled))
-                .ForMember(e => e.EntityId, opt => opt.MapFrom(m => m.Id))
+                .ForMember(e => e.EntityId, opt => opt.MapFrom(m => m.ClassId))
                 .ForMember(e => e.EntityTypeId, opt => opt.MapFrom(m => (int)Models.Enum.EntityType.WorkshopClass))
                 .ForMember(e => e.Reason, opt => opt.MapFrom(m => "Host workshop class slot"));
         }
