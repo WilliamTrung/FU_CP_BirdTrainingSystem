@@ -153,7 +153,13 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             await _trainingCourseService.Staff.ModifyTrainingSlot(reportModModel);
             return Ok();
         }
-
+        [HttpPut]
+        [Route("assigntrainertoprogress")]
+        public async Task<IActionResult> AssignTrainer(int progressId, int trainerId)
+        {
+            var result = await _trainingCourseService.Staff.AssignTrainer(progressId, trainerId);
+            return Ok(result);
+        }
         [HttpPost]
         [Route("birdcertificatedetail")]
         public async Task<IActionResult> CreateBirdCertificateDetail([FromBody] BirdCertificateDetailAddModel birdCertificateDetailAdd)

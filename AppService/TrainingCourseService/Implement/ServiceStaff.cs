@@ -22,13 +22,6 @@ namespace AppService.TrainingCourseService.Implement
         public ServiceStaff(ITrainingCourseFeature trainingCourse, ITimetableFeature timetable) : base(trainingCourse, timetable)
         {
         }
-        private bool IsTrainerFree(int trainerSlotId, int trainerId)
-        {
-            var trainerSlot = _timetable.GetTrainerSlotDetail(trainerSlotId).Result;
-            var freeSlot = _timetable.GetTrainerFreeSlotOnDate(DateOnly.FromDateTime((DateTime)trainerSlot.Date), trainerId).Result;
-            bool result = freeSlot.Any(e => e.StartTime == trainerSlot.StartTime);
-            return result;
-        }
         public async Task<IEnumerable<BirdTrainingCourseListView>> GetBirdTrainingCourse()
         {
             return await _trainingCourse.Staff.GetBirdTrainingCourse();
@@ -55,58 +48,7 @@ namespace AppService.TrainingCourseService.Implement
         }
         public async Task GenerateTrainerTimetable(IEnumerable<int> progressId)
         {
-            var progresses = await GetBirdTrainingProgress();
-            progresses = progresses.Where(e => progressId.Any(d => d == e.Id)).OrderBy(e => e.Id).ToList();
-
-            var firstClass = progresses.First();
-            var birdTrainingCourse = GetBirdTrainingCourse().Result.Where(m => m.Id == firstClass.BirdTrainingCourseId).First();
-            DateTime start = DateTime.Now.AddDays(3);
-            await _trainingCourse.Staff.ModifyActualStartTime(start, firstClass.BirdTrainingCourseId);
-
-            foreach (var progress in progresses)
-            {
-                //progress.StartTrainingDate = start;
-                var listTrainerSlot = AutoCreateTimetable(ref start, progress).ToList();
-                if (listTrainerSlot.Count > 0)
-                {
-                    foreach (var trainerSlot in listTrainerSlot)
-                    {
-                        InitReportTrainerSlot report = new InitReportTrainerSlot
-                        {
-                            BirdTrainingProgressId = progress.Id,
-                            TrainerSlotId = trainerSlot.Id
-                        };
-                        await _trainingCourse.Staff.CreateTrainingReport(report);
-                    }
-                }
-            }
-            //await _trainingCourse.Staff.GenerateTrainerTimetable(report);
-        }
-
-        private IEnumerable<TrainerSlotModel> AutoCreateTimetable(ref DateTime start, BirdTrainingProgressViewModel progress)
-        {
-            List<TrainerSlotModel> trainerSlots = new List<TrainerSlotModel>(); //day1
-            var totalSlot = progress.TotalTrainingSlot; //10
-            while (totalSlot > 0)
-            {
-                DateTime current = start; //day1
-                List<SlotModel> slotModels = _timetable.GetSlotData().Result.ToList();
-                SlotModel autoFill = slotModels.First();
-
-                if (autoFill != null)
-                {
-                    TrainerSlotAddModel model = new TrainerSlotAddModel();
-                    model.SlotId = autoFill.Id;
-                    model.Date = current;
-                    model.EntityTypeId = (int)Models.Enum.EntityType.TrainingCourse;
-                    model.EntityId = progress.Id;
-                    var entityModel = _trainingCourse.Staff.CreateTrainerSlot(model).Result;
-                    trainerSlots.Add(entityModel);
-                    totalSlot--;
-                }
-                start = start.AddDays(1);
-            }
-            return trainerSlots;
+            await _trainingCourse.Staff.GenerateTrainerTimetable(progressId);
         }
         public async Task<IEnumerable<BirdTrainingProgressViewModel>> GetTrainingCourseSkill(int trainingCourseId)
         {
@@ -211,6 +153,31 @@ namespace AppService.TrainingCourseService.Implement
         public async Task<IEnumerable<ReportModifyViewModel>> GetReportByProgressId(int progressId)
         {
             return await _trainingCourse.Staff.GetReportByProgressId(progressId);
+        }
+
+        public async Task<BirdTrainingProgressModel> AssignTrainer(int progressId, int trainerId)
+        {
+            var reports = GetReportByProgressId(progressId).Result;
+            bool IsAssignable = true;
+            if(reports != null)
+            {
+                foreach(var report in reports)
+                {
+                    var trainerFree = _timetable.CheckTrainerFree(trainerId, report.Date, report.SlotId).Result;
+                    if (!trainerFree)
+                    {
+                        IsAssignable = false;
+                    }
+                }
+            }
+            if(IsAssignable)
+            {
+                return await _trainingCourse.Staff.AssignTrainer(progressId, trainerId);
+            }
+            else
+            {
+                throw new Exception("Trainer is not free to assign.");
+            }
         }
 
         public async Task ModifyTrainingSlot(ReportModifyModel reportModModel)

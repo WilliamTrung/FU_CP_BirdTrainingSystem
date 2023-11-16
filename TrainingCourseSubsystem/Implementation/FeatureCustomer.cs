@@ -125,7 +125,6 @@ namespace TrainingCourseSubsystem.Implementation
         public async Task<IEnumerable<BirdTrainingCourseViewModel>> ViewRegisteredTrainingCourse(int birdId, int customerId)
         {
             var entities = await _unitOfWork.BirdTrainingCourseRepository.Get(expression:e => e.CustomerId == customerId && e.BirdId == birdId
-                                                                                 && e.Status == (int)Models.Enum.TrainingCourse.Status.Active
                                                                                  , nameof(TrainingCourse));
             List<BirdTrainingCourseViewModel> models = new List<BirdTrainingCourseViewModel>();
             foreach(var entity in entities)

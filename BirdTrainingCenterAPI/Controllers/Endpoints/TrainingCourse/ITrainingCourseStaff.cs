@@ -75,6 +75,10 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
         Task<IActionResult> GetReportByProgressId(int progressId);
 
         [HttpPut]
+        [Route("assigntrainertoprogress")]
+        Task<IActionResult> AssignTrainer(int progressId, int trainerId);
+
+        [HttpPut]
         [Route("trainerslot-modify")]
         Task<IActionResult> ModifyTrainingSlot(ReportModifyModel reportModModel);
 

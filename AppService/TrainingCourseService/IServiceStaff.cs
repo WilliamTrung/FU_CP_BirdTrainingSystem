@@ -45,6 +45,7 @@ namespace AppService.TrainingCourseService
         Task CancelBirdTrainingCourse(int birdTrainingCourseId);
         Task<IEnumerable<BirdTrainingProgressViewModel>> GetTrainingCourseSkill(int birdTrainingCourseId);
         Task<IEnumerable<ReportModifyViewModel>> GetReportByProgressId(int progressId);
+        Task<BirdTrainingProgressModel> AssignTrainer(int progressId, int trainerId);
         Task ModifyTrainingSlot(ReportModifyModel reportModModel);
 
 

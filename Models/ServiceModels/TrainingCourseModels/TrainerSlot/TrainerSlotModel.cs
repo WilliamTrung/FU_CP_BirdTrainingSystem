@@ -17,10 +17,10 @@ namespace Models.ServiceModels.TrainingCourseModels.TrainerSlot
         public string? Reason { get; set; }
         public int EntityTypeId { get; set; }
         public int? EntityId { get; set; }
-        public int Status { get; set; } = (int)Enum.TrainerSlotStatus.Enabled;
+        public int Status { get; set; }
 
-        public virtual SlotModel Slot { get; set; } = null!;
-        public virtual TrainerModel Trainer { get; set; } = null!;
-        public virtual ICollection<BirdTrainingReportModel> BirdTrainingReports { get; set; }
+        //public virtual SlotModel Slot { get; set; } = null!;
+        //public virtual TrainerModel Trainer { get; set; } = null!;
+        //public virtual ICollection<BirdTrainingReportModel> BirdTrainingReports { get; set; }
     }
 }
