@@ -8,6 +8,7 @@ using Models.ApiParamModels.TrainingCourse;
 using Models.AuthModels;
 using Models.ConfigModels;
 using Models.ServiceModels.TrainingCourseModels;
+using Models.ServiceModels.TrainingCourseModels.Bird;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
 using SP_Middleware;
 
@@ -36,6 +37,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             }
             foreach (var file in bird.Pictures)
             {
+                string fileName = $"{nameof(BirdModel)}-{bird.Name}-{bird.CustomerId}-{DateTime.Now}";
                 var temp = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
                 pictures += $"{temp},";
             }
@@ -56,7 +58,8 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             }
             foreach (var file in bird.Pictures)
             {
-                var temp = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
+                string fileName = $"{nameof(BirdModel)}-{bird.Id}-{DateTime.Now}";
+                var temp = await _firebaseService.UploadFile(file, fileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
                 pictures += $"{temp},";
             }
             pictures = pictures.Substring(0, pictures.Length - 1);
