@@ -12,6 +12,7 @@ namespace Models.ServiceModels.OnlineCourseModels
         public string Title { get; set; } = null!;
         public string Description { get; set; } = null!;
         public string? ResourceFiles { get; set; }
+        public Models.Enum.OnlineCourse.Customer.Section.Status? Status { get; set; }
         public IEnumerable<OnlineCourseLessonViewModel>? Lessons { get; set; } 
     }
 }

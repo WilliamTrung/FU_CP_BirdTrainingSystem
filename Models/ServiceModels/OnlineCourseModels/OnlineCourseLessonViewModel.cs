@@ -13,5 +13,6 @@ namespace Models.ServiceModels.OnlineCourseModels
         public string? Description { get; set; }
         public string? Detail { get; set; }
         public string? Video { get; set; }
+        public Models.Enum.OnlineCourse.Customer.Lesson.Status? Status { get; set; }
     }
 }

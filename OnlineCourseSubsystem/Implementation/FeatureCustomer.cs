@@ -48,13 +48,32 @@ namespace OnlineCourseSubsystem.Implementation
 
         public async Task CheckCompleteLesson(int customerId, int lessionId)
         {
-            var entity = await _unitOfWork.CustomerLessonDetailRepository.GetFirst(c => c.CustomerId== customerId && c.LessionId == lessionId);
+            var entity = await _unitOfWork.CustomerLessonDetailRepository.GetFirst(c => c.CustomerId== customerId 
+                                                                                    && c.LessionId == lessionId
+                                                                                     , nameof(CustomerLessonDetail.Lession));
             if(entity == null)
             {
                 throw new KeyNotFoundException("Customer has not enrolled to course!");
             }
             entity.IsComplete = true;
             await _unitOfWork.CustomerLessonDetailRepository.Update(entity);
+
+            var sectionId = entity.Lession.SectionId;
+            var entities = await _unitOfWork.CustomerLessonDetailRepository.Get(c => c.CustomerId == customerId 
+                                                                                    && c.Lession.SectionId == sectionId);
+            bool isCompleteAll = true;
+            foreach (var item in entities)
+            {
+                if(item.IsComplete == false)
+                {
+                    isCompleteAll = false;
+                    break;
+                }
+            }
+            if(isCompleteAll)
+            {
+                await CheckCompleteSection(customerId, sectionId);
+            }
         }
 
         public async Task CheckCompleteSection(int customerId, int sectionId)
@@ -76,6 +95,23 @@ namespace OnlineCourseSubsystem.Implementation
             }
             entity.IsComplete = true;
             await _unitOfWork.CustomerSectionDetailRepository.Update(entity);
+
+            var courseId = entity.Section.OnlineCourseId;
+            var entities = await _unitOfWork.CustomerSectionDetailRepository.Get(c => c.CustomerId == customerId
+                                                                                    && c.Section.OnlineCourseId == courseId);
+            bool isCompleteAll = true;
+            foreach (var item in entities)
+            {
+                if (item.IsComplete == false)
+                {
+                    isCompleteAll = false;
+                    break;
+                }
+            }
+            if (isCompleteAll)
+            {
+                await CheckCompleteCourse(customerId, courseId);
+            }
         }
 
         public async Task<Models.Enum.OnlineCourse.Customer.OnlineCourse.Status> CheckEnrolledCourse(int customerId, int courseId)
@@ -265,13 +301,55 @@ namespace OnlineCourseSubsystem.Implementation
                                                                                             && c.OnlineCourseId == courseId
                                                                                             , nameof(CustomerOnlineCourseDetail.OnlineCourse)
                                                                                             , $"{nameof(CustomerOnlineCourseDetail.OnlineCourse)}.{nameof(OnlineCourse.Sections)}"
-                                                                                            , $"{nameof(CustomerOnlineCourseDetail.OnlineCourse)}.{nameof(OnlineCourse.Sections)}.{nameof(Section.Lessons)}");
+                                                                                            , $"{nameof(CustomerOnlineCourseDetail.OnlineCourse)}.{nameof(OnlineCourse.Sections)}.{nameof(Section.CustomerSectionDetails)}"
+                                                                                            , $"{nameof(CustomerOnlineCourseDetail.OnlineCourse)}.{nameof(OnlineCourse.Sections)}.{nameof(Section.Lessons)}"
+                                                                                            , $"{nameof(CustomerOnlineCourseDetail.OnlineCourse)}.{nameof(OnlineCourse.Sections)}.{nameof(Section.Lessons)}.{nameof(Lesson.CustomerLessonDetails)}");
             if(courseRegistered == null )
             {
                 throw new InvalidOperationException("Customer has not enrolled to course!");
-            }            
+            }
+            foreach (var section in courseRegistered.OnlineCourse.Sections)
+            {
+                section.CustomerSectionDetails = section.CustomerSectionDetails.Where(c => c.CustomerId == customerId).ToList();
+                foreach (var lesson in section.Lessons)
+                {
+                    lesson.CustomerLessonDetails = lesson.CustomerLessonDetails.Where(c => c.CustomerId == customerId).ToList();
+                }
+            }
             var model = _mapper.Map<OnlineCourseModel>(courseRegistered.OnlineCourse);
             return model;
+        }
+
+        public async Task<Models.Enum.OnlineCourse.Customer.Lesson.Status> CheckStatusLesson(int customerId, int lessonId)
+        {
+            var entity = await _unitOfWork.CustomerLessonDetailRepository.GetFirst(c => c.CustomerId == customerId
+                                                                                    && c.LessionId == lessonId);
+            if(entity == null)
+            {
+                throw new KeyNotFoundException("Customer has not enrolled to course!");
+            }
+            if(entity.IsComplete == null)
+            {
+                throw new Exception("An error has occured!");
+            }
+            int result = entity.IsComplete.Value ? 1 : 0;
+            return (Models.Enum.OnlineCourse.Customer.Lesson.Status)result;
+        }
+
+        public async Task<Models.Enum.OnlineCourse.Customer.Section.Status> CheckStatusSection(int customerId, int sectionId)
+        {
+            var entity = await _unitOfWork.CustomerSectionDetailRepository.GetFirst(c => c.CustomerId == customerId
+                                                                                   && c.SectionId == sectionId);
+            if (entity == null)
+            {
+                throw new KeyNotFoundException("Customer has not enrolled to course!");
+            }
+            if (entity.IsComplete == null)
+            {
+                throw new Exception("An error has occured!");
+            }
+            int result = entity.IsComplete.Value ? 1 : 0;
+            return (Models.Enum.OnlineCourse.Customer.Section.Status)result;
         }
     }
 }
