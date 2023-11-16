@@ -8,10 +8,11 @@ using Models.ConfigModels;
 using Models.ServiceModels.TrainingCourseModels;
 using SP_Middleware;
 using SP_Extension;
-using Models.ServiceModels.TrainingCourseModels.Bird;
 using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
 using Models.ServiceModels.TrainingCourseModels.BirdSkill;
 using Models.ServiceModels.TrainingCourseModels.TrainerSkill;
+using Models.ServiceModels.TrainingCourseModels.Bird;
+using Models.Entities;
 
 namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
 {
@@ -39,7 +40,8 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             }
             foreach (var file in trainingCourse.Pictures)
             {
-                var temp = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
+                string fileName = $"{nameof(TrainingCourseModel)}-{trainingCourse.Title}-{DateTime.Now.ToString("yyyyMMdd-HHmmss")}";
+                var temp = await _firebaseService.UploadFile(file, fileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
                 pictures += $"{temp},";
             }
             pictures = pictures.Substring(0, pictures.Length - 1);
@@ -60,7 +62,8 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             }
             foreach (var file in trainingCourse.Pictures)
             {
-                var temp = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
+                string fileName = $"{nameof(TrainingCourseModel)}-{trainingCourse.Id}-{DateTime.Now.ToString("yyyyMMdd-HHmmss")}";
+                var temp = await _firebaseService.UploadFile(file, fileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
                 pictures += $"{temp},";
             }
             pictures = pictures.Substring(0, pictures.Length - 1);
@@ -219,7 +222,8 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             }
             foreach (var file in birdCertificateAddParam.Pictures)
             {
-                var temp = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
+                string fileName = $"{nameof(BirdCertificate)}-{birdCertificateAddParam.TrainingCourseId}-{DateTime.Now.ToString("yyyyMMdd-HHmmss")}";
+                var temp = await _firebaseService.UploadFile(file, fileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
                 pictures += $"{temp},";
             }
             pictures = pictures.Substring(0, pictures.Length - 1);
