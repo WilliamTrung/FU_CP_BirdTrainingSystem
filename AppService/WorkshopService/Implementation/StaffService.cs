@@ -87,14 +87,14 @@ namespace AppService.WorkshopService.Implementation
         public async Task ModifyWorkshopClassDetailTrainerSlot(WorkshopClassDetailTrainerSlotModifyModel workshopClassDetail)
         {
             
-            if(!await _workshop.Staff.CheckPassEndRegistrationDay(workshopClassDetail.Id, workshopClassDetail.Date))
+            if(!await _workshop.Staff.CheckPassEndRegistrationDay(workshopClassDetail.ClassId, workshopClassDetail.Date))
             {
                 throw new InvalidOperationException("Assigned slot must start after registration end date!");
             }
             //start validating
             var slots = await _timetable.GetSlotData();
             var changedSlot = slots.First(c => c.Id == workshopClassDetail.SlotId);
-            var current_slot = await _workshop.Staff.GetWorkshopClassDetail(workshopClassDetail.Id);
+            var current_slot = await _workshop.Staff.GetWorkshopClassDetail(workshopClassDetail.ClassId);
             //check duplicate trainer to this slot
             if(current_slot.StartTime == slots.First(s => s.Id == workshopClassDetail.SlotId).StartTime
                 && current_slot.Trainer.Id == workshopClassDetail.TrainerId
@@ -113,7 +113,7 @@ namespace AppService.WorkshopService.Implementation
             Task compareExecutionDate = CompareCurrentDate(current_slot);
             validatedTasks.Add(compareExecutionDate);
             //changed date must be before the following slot
-            var following_slot = await _workshop.Staff.GetFollowingWorkshopClassDetail(workshopClassDetail.Id);
+            var following_slot = await _workshop.Staff.GetFollowingWorkshopClassDetail(workshopClassDetail.ClassId);
             //if null --> there is no following slot left for the workshop
             //if null --> current slot is the last slot of the workshop
             if (following_slot != null)
@@ -122,7 +122,7 @@ namespace AppService.WorkshopService.Implementation
                 validatedTasks.Add(compareFollowingSlot);
             }
             //changed date must be before the previous slot
-            var previous_slot = await _workshop.Staff.GetPreviousWorkshopClassDetail(workshopClassDetail.Id);
+            var previous_slot = await _workshop.Staff.GetPreviousWorkshopClassDetail(workshopClassDetail.ClassId);
             //if null --> there is no previous slot for the workshop
             //if null --> current slot is the first slot of the workshop
             if (previous_slot != null)
