@@ -86,7 +86,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
                     return Unauthorized();
                 }
                 var trainerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
-                var result = await _consultingService.Trainer.GetListAssignedConsultingTicket(trainerId);
+                var result = await _consultingService.Trainer.GetListAssignedConsultingTicket(Int32.Parse(trainerId.Value));
 
                 return Ok(result);
             }
