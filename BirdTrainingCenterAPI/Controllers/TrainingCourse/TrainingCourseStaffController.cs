@@ -170,12 +170,12 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             return Ok();
         }
 
-        [HttpPost]
-        [Route("generatedprogresstimetable-confirm")]
-        public async Task<IActionResult> Generatedprogresstimetable(List<int> birdTrainingProgressId)
-        {
-            await _trainingCourseService.Staff.GenerateTrainerTimetable(birdTrainingProgressId);
-            return Ok();
-        }
+        //[HttpPost]
+        //[Route("generatedprogresstimetable-confirm")]
+        //public async Task<IActionResult> Generatedprogresstimetable(List<int> birdTrainingProgressId)
+        //{
+        //    await _trainingCourseService.Staff.GenerateTrainerTimetable(birdTrainingProgressId);
+        //    return Ok();
+        //}
     }
 }
