@@ -90,20 +90,27 @@ namespace TrainingCourseSubsystem.Implementation
                 await _unitOfWork.BirdTrainingReportRepository.Update(entity);
 
 
-                var birdProgress = _unitOfWork.BirdTrainingProgressRepository.GetFirst(e => e.Id == entity.BirdTrainingProgressId).Result;
-                int firstOrEnd = FirstOrEndSlot(entity);
-                if(firstOrEnd == result)
+                var birdProgress = _unitOfWork.BirdTrainingProgressRepository.GetFirst(e => e.Id == entity.BirdTrainingProgressId
+                                                                                        , nameof(BirdTrainingProgress.BirdTrainingCourse)).Result;
+                if(birdProgress != null)
                 {
-                    return result;
-                }
-                else if(firstOrEnd == (int)Models.Enum.BirdTrainingReport.FirstOrEnd.FirstSlot)
-                {
-                    birdProgress.Status = (int)Models.Enum.BirdTrainingProgress.Status.Training;
-                    result = (int)Models.Enum.BirdTrainingReport.FirstOrEnd.FirstSlot;
-                }
-                else
-                {
-                    result = (int)Models.Enum.BirdTrainingReport.FirstOrEnd.EndSlot;
+                    int firstOrEnd = FirstOrEndSlot(entity);
+                    if (firstOrEnd == result)
+                    {
+                        return result;
+                    }
+                    else if (firstOrEnd == (int)Models.Enum.BirdTrainingReport.FirstOrEnd.FirstSlot)
+                    {
+                        birdProgress.Status = (int)Models.Enum.BirdTrainingProgress.Status.Training;
+                        birdProgress.BirdTrainingCourse.Status = (int)Models.Enum.BirdTrainingCourse.Status.Training;
+                        result = (int)Models.Enum.BirdTrainingReport.FirstOrEnd.FirstSlot;
+                    }
+                    else
+                    {
+                        result = (int)Models.Enum.BirdTrainingReport.FirstOrEnd.EndSlot;
+                    }
+
+                    await _unitOfWork.BirdTrainingProgressRepository.Update(birdProgress);
                 }
             }
             return result;

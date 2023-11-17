@@ -90,7 +90,7 @@ namespace SP_AutoMapperConfig
                     {
                         if(skill.BirdSkill != null)
                         {
-                            destination.BirdSkills.Add(_mapper.Map<BirdSkillViewModel>(skill));
+                            destination.BirdSkills.Add(_mapper.Map<BirdSkillViewModel>(skill.BirdSkill));
                         }
                     }
                 }
