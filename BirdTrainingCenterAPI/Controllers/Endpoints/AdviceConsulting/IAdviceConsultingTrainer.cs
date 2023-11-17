@@ -8,7 +8,7 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting
     {
         [HttpGet]
         [Route("getListAssignedConsultingTicket")]
-        Task<IActionResult> GetListAssignedConsultingTicket([FromQuery]int trainerId);
+        Task<IActionResult> GetListAssignedConsultingTicket();
 
         [HttpPut]
         [Route("updateGooglemeetLink")]

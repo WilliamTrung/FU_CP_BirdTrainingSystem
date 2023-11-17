@@ -31,6 +31,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
                     return Unauthorized();
                 }
 
+                
                 var trainerId = await _consultingService.Other.GetTrainerIdByTicketId(ticketId);
 
                 //Validate kiểm tra lịch rảnh của trainer
