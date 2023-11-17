@@ -13,7 +13,7 @@ namespace Models.ServiceModels.WorkshopModels.WorkshopClass
 //+ date : date
     public class WorkshopClassDetailTrainerSlotModifyModel
     {
-        public int Id { get; set; } 
+        public int ClassId { get; set; } 
         public int TrainerId { get; set; }
         public int SlotId { get; set; }
         //[SP_Validator.DateOnlyValidator]

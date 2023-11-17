@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
+using Models.ApiParamModels.OnlineCourse;
 using Models.ServiceModels.OnlineCourseModels.Feedback;
 using Models.ServiceModels.OnlineCourseModels.Transaction;
 
@@ -19,13 +20,13 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.OnlineCourse
         Task<IActionResult> GetEnrolledCourses();
         [HttpPut]
         [Route("/check-lesson")]
-        Task<IActionResult> CheckCompleteLesson([FromBody]int lessonId);
+        Task<IActionResult> CheckCompleteLesson([FromBody]LessonIdModel model);
         [HttpPut]
         [Route("/check-section")]
-        Task<IActionResult> CheckCompleteSection([FromBody]int sectionId);
+        Task<IActionResult> CheckCompleteSection([FromBody]SectionIdModel model);
         [HttpPut]
         [Route("/check-course")]
-        Task<IActionResult> CheckCompleteCourse([FromBody]int courseId);
+        Task<IActionResult> CheckCompleteCourse([FromBody]CourseIdModel model );
         [HttpGet]
         [EnableQuery]
         [Route("/completed-courses")]

@@ -86,11 +86,21 @@ namespace WorkshopSubsystem.Implementation
         public async Task SetWorkshopClassOngoing()
         {
             var entities = await _unitOfWork.WorkshopClassRepository.Get(c => DateTime.Now > c.RegisterEndDate
-                                                                            && c.Status == (int)Models.Enum.Workshop.Class.Status.ClosedRegistration);                                                                           
+                                                                            && (c.Status == (int)Models.Enum.Workshop.Class.Status.ClosedRegistration
+                                                                                || c.Status == (int)Models.Enum.Workshop.Class.Status.OpenRegistration)
+                                                                            , nameof(WorkshopClass.WorkshopClassDetails)
+                                                                            , $"{nameof(WorkshopClass.WorkshopClassDetails)}.{nameof(WorkshopClassDetail.DaySlot)}");                                                                           
              foreach (var entity in entities)
             {
-                entity.Status = (int)Models.Enum.Workshop.Class.Status.OnGoing;
-                await _unitOfWork.WorkshopClassRepository.Update(entity);
+                var firstSlot = entity.WorkshopClassDetails.First().DaySlot;
+                if(firstSlot == null)
+                {
+                    //do nothing
+                } else if(DateTime.Now > firstSlot.Date)
+                {
+                    entity.Status = (int)Models.Enum.Workshop.Class.Status.OnGoing;
+                    await _unitOfWork.WorkshopClassRepository.Update(entity);
+                }
             }            
         }
 

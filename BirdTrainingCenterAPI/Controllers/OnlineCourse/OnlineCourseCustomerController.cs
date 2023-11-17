@@ -5,6 +5,7 @@ using BirdTrainingCenterAPI.Helper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
+using Models.ApiParamModels.OnlineCourse;
 using Models.AuthModels;
 using Models.ServiceModels.OnlineCourseModels.Feedback;
 using Models.ServiceModels.OnlineCourseModels.Transaction;
@@ -62,7 +63,7 @@ namespace BirdTrainingCenterAPI.Controllers.OnlineCourse
         }
         [HttpPut]
         [Route("check-lesson")]
-        public async Task<IActionResult> CheckCompleteLesson([FromBody] int lessonId)
+        public async Task<IActionResult> CheckCompleteLesson([FromBody] LessonIdModel model)
         {
             var accessToken = Request.DeserializeToken(_authService);
             if (accessToken == null)
@@ -70,12 +71,12 @@ namespace BirdTrainingCenterAPI.Controllers.OnlineCourse
                 return Unauthorized();
             }
             var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
-            await _onlineCourseService.Customer.CheckCompleteLesson(Int32.Parse(customerId.Value), lessonId);
+            await _onlineCourseService.Customer.CheckCompleteLesson(Int32.Parse(customerId.Value), model.LessonId);
             return Ok();
         }
         [HttpPut]
         [Route("check-section")]
-        public async Task<IActionResult> CheckCompleteSection([FromBody] int sectionId)
+        public async Task<IActionResult> CheckCompleteSection([FromBody] SectionIdModel model)
         {
             var accessToken = Request.DeserializeToken(_authService);
             if (accessToken == null)
@@ -83,12 +84,12 @@ namespace BirdTrainingCenterAPI.Controllers.OnlineCourse
                 return Unauthorized();
             }
             var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
-            await _onlineCourseService.Customer.CheckCompleteSection(Int32.Parse(customerId.Value), sectionId);
+            await _onlineCourseService.Customer.CheckCompleteSection(Int32.Parse(customerId.Value), model.SectionId);
             return Ok();
         }
         [HttpPut]
         [Route("check-course")]
-        public async Task<IActionResult> CheckCompleteCourse([FromBody] int courseId)
+        public async Task<IActionResult> CheckCompleteCourse([FromBody] CourseIdModel model)
         {
             var accessToken = Request.DeserializeToken(_authService);
             if (accessToken == null)
@@ -96,7 +97,7 @@ namespace BirdTrainingCenterAPI.Controllers.OnlineCourse
                 return Unauthorized();
             }
             var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
-            await _onlineCourseService.Customer.CheckCompleteCourse(Int32.Parse(customerId.Value), courseId);
+            await _onlineCourseService.Customer.CheckCompleteCourse(Int32.Parse(customerId.Value), model.CourseId);
             return Ok();
         }
         [HttpGet]

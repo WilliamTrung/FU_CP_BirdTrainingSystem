@@ -61,6 +61,9 @@ namespace WorkshopSubsystem.Implementation
             if(workshopClass == null)
             {
                 throw new KeyNotFoundException($"{nameof(workshopClass)} at {workshopClassId}");
+            } else if(workshopClass.Status != (int)Models.Enum.Workshop.Class.Status.OpenRegistration)
+            {
+                throw new InvalidOperationException("This class is not opening to registration!");
             }
             var customer = await _unitOfWork.CustomerRepository.GetFirst(c => c.Id == customerId, nameof(Customer.MembershipRank));
             if(customer == null)
