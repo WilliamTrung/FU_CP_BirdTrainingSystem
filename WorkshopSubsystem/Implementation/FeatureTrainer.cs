@@ -81,6 +81,23 @@ namespace WorkshopSubsystem.Implementation
             return models;
         }
 
+        public async Task<WorkshopClassDetailViewModel> GetTrainerSlotByEntityId(int trainerId, int workshopClassDetailId)
+        {
+            var entity = await _unitOfWork.WorkshopClassDetailRepository.GetFirst(c => c.Id == workshopClassDetailId
+                                                                               && c.DaySlot.TrainerId == trainerId
+                                                                               && c.DaySlot.Status == (int)Models.Enum.TrainerSlotStatus.Enabled
+                                                                               && c.WorkshopClass.Status != (int)Models.Enum.Workshop.Class.Status.Cancelled
+                                                                               , nameof(WorkshopClassDetail.DaySlot)
+                                                                               , nameof(WorkshopClassDetail.WorkshopClass)
+                                                                               , nameof(WorkshopClassDetail.WorkshopDetailTemplate));
+            if(entity == null)
+            {
+                throw new KeyNotFoundException("No such trainer slot found!");
+            }
+            var model = _mapper.Map<WorkshopClassDetailViewModel>(entity);
+            return model;
+        }
+
         //public async Task ModifyWorkshopClassSlotDetail(WorkshopClassDetailModifyModel workshopClass)
         //{
         //    var entity = await _unitOfWork.WorkshopClassDetailRepository.GetFirst(c => c.Id == workshopClass.Id

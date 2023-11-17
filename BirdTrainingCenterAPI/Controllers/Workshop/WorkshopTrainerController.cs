@@ -38,6 +38,20 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
         }
         [HttpGet]
         [EnableQuery]
+        [Route("get-by-entity-id")]
+        public async Task<IActionResult> GetTrainerSlotByEntityId([FromQuery]int entityId)
+        {
+            var accessToken = Request.DeserializeToken(_authService);
+            if (accessToken == null)
+            {
+                return Unauthorized();
+            }
+            var trainerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
+            var result = await _workshopService.Trainer.GetTrainerSlotByEntityId(Int32.Parse(trainerId.Value), entityId);
+            return Ok(result);
+        }
+        [HttpGet]
+        [EnableQuery]
         [Route("assigned-slots")]
         public async Task<IActionResult> GetAssignedSlots([FromQuery] int workshopClassId)
         {

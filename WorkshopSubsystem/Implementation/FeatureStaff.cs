@@ -32,7 +32,7 @@ namespace WorkshopSubsystem.Implementation
             {
                 throw new InvalidOperationException($"{typeof(Workshop)} is inactive");
             }
-            var entity = _mapper.Map<WorkshopClass>(workshopClass);
+            var entity = _mapper.Map<WorkshopClass>(workshopClass);            
             var temp = DateTime.Now.ToDateOnly().AddDays(BR_WorkshopConstant.StartDateCreated).ToDateTime(new TimeOnly());
             if (entity.StartTime < temp) {
                 throw new InvalidOperationException("Open registration day must be 5 days after from today!");

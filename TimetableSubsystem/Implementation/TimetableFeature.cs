@@ -51,7 +51,8 @@ namespace TimetableSubsystem.Implementation
             var trainerFreeOnSLotAndDate = new List<TrainerModel>();
             var freeTrainerOnDate = await _unitOfWork.TrainerRepository.Get(x => x.Category == (int)category && !(x.TrainerSlots.Count(slot => slot.Date.Day == date.Day
                                                                                             && slot.Date.Month == date.Month
-                                                                                            && slot.Date.Year == date.Year)
+                                                                                            && slot.Date.Year == date.Year
+                                                                                            && slot.Status == (int)Models.Enum.TrainerSlotStatus.Enabled)
                                                                                             == 8)
                                                                      , nameof(Trainer.TrainerSlots)
                                                                      , nameof(Trainer.TrainerSkills)
@@ -102,7 +103,8 @@ namespace TimetableSubsystem.Implementation
         {
             var trainers = await _unitOfWork.TrainerRepository.Get(c => !(c.TrainerSlots.Count(slot => slot.Date.Day == date.Day
                                                                                             && slot.Date.Month == date.Month
-                                                                                            && slot.Date.Year == date.Year)
+                                                                                            && slot.Date.Year == date.Year
+                                                                                            && slot.Status == (int)Models.Enum.TrainerSlotStatus.Enabled)
                                                                                             == 8)
                                                                      , nameof(Trainer.TrainerSlots)
                                                                      , nameof(Trainer.TrainerSkills)
