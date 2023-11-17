@@ -19,6 +19,7 @@ namespace WorkshopSubsystem
         Task SetWorkshopClassComplete();
         Task SetWorkshopClassExceedRegistration();
         Task SetWorkshopClassOpenRegistration();
+        Task<Models.Enum.Workshop.Class.Status> GetClassStatus(int workshopClassDetailId);
         Task<IEnumerable<WorkshopClassViewModel>> GetClassesByWorkshopId(int workshopId);
         Task<WorkshopClassDetailViewModel> GetWorkshopClassDetail(int workshopClassDetailId);
         Task<IEnumerable<WorkshopClassDetailViewModel>> GetWorkshopClassDetailOnWorkshopClass(int workshopClassId);

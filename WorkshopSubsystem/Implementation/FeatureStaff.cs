@@ -262,7 +262,7 @@ namespace WorkshopSubsystem.Implementation
             }
             customerCredentials.ForEach(e =>
             {
-                if(e.PhoneNumber == null && e.Email == null)
+                if(e.Email == null)
                 {
                     throw new InvalidDataException("Invalid data: phonenumber and email is null");
                 }
@@ -270,8 +270,7 @@ namespace WorkshopSubsystem.Implementation
             foreach (var customerCredential in customerCredentials)
             {                
                 var entity = await _unitOfWork.WorkshopAttendanceRepository.GetFirst(c => c.WorkshopClassDetailId == classSlotId
-                                                                                && (customerCredential.Email == null ? false : c.Customer.User.Email == customerCredential.Email
-                                                                                    || customerCredential.PhoneNumber == null ? false : c.Customer.User.PhoneNumber == Decimal.Parse(customerCredential.PhoneNumber))
+                                                                                && customerCredential.Email == null ? false : c.Customer.User.Email == customerCredential.Email
                                                                                 , nameof(WorkshopAttendance.Customer)
                                                                                 , $"{nameof(WorkshopAttendance.Customer)}.{nameof(Customer.User)}");
                 if (entity == null)
@@ -333,10 +332,16 @@ namespace WorkshopSubsystem.Implementation
             if(DateTime.Now > startTime)
             {
                 DateTime endTime = classSlot.DaySlot.Date.AddTicks(classSlot.DaySlot.Slot.EndTime.Value.Ticks).AddHours(24);
-                if (DateTime.Now > endTime) return false;
+                if (DateTime.Now > endTime)
+                {
+                    return false;
+                } else
+                {
+                    return true;
+                }
             }                        
 #pragma warning restore CS8629 // Nullable value type may be null.            
-            return true;
+            return false;
         }
 
         public async Task<WorkshopClassAdminViewModel> GetClassAdminViewById(int classId)

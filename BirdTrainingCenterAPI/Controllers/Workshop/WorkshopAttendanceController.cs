@@ -41,7 +41,7 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
         }
         [HttpPut]
         [Route("submit")]
-        public async Task<IActionResult> SubmitCheckAttendanceForm([FromForm]List<CheckAttendanceCredentials> attendees, [FromQuery]int classSlotId)
+        public async Task<IActionResult> SubmitCheckAttendanceForm([FromBody]List<CheckAttendanceCredentials> attendees, [FromQuery]int classSlotId)
         {
             var accessToken = Request.DeserializeToken(_authService);
             if (accessToken == null)
