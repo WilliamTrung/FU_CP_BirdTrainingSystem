@@ -63,10 +63,12 @@ namespace SP_AutoMapperConfig
                 destination.TotalTrainingSlot = source.TotalTrainingSlot;
                 destination.Status = (Models.Enum.BirdTrainingProgress.Status)source.Status;
 
-                var skill = _unitOfWork.BirdSkillRepository.GetFirst(e => e.Id == source.TrainingCourseSkillId).Result;
+                var skill = _unitOfWork.TrainingCourseSkillRepository.GetFirst(e => e.Id == source.TrainingCourseSkillId
+                                                                                , nameof(TrainingCourseSkill.BirdSkill)).Result;
                 if (skill != null)
                 {
-                    destination.SkillName = skill.Name;
+                    destination.BirdSkillName = skill.BirdSkill.Name;
+                    destination.BirdSkillPicture = skill.BirdSkill.Picture;
                 }
                 if (source.TrainerId != null)
                 {

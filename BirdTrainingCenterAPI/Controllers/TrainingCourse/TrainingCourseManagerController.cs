@@ -132,17 +132,43 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         #region BirdSkill
         [HttpPost]
         [Route("birdskill-create")]
-        public async Task<IActionResult> CreateBirdSkill([FromBody] BirdSkillAddModel birdSkillAdd)
+        public async Task<IActionResult> CreateBirdSkill([FromForm] BirdSkillAddParamModel birdSkillAdd)
         {
-            await _trainingCourseService.Manager.CreateBirdSkill(birdSkillAdd);
+            var pictures = string.Empty;
+            if (birdSkillAdd.Pictures.Any(e => !e.IsImage()))
+            {
+                return BadRequest("Upload image only!");
+            }
+            foreach (var file in birdSkillAdd.Pictures)
+            {
+                string fileName = $"{nameof(BirdSkill)}-{birdSkillAdd.Name}-{DateTime.Now.ToString("yyyyMMdd-HHmmss")}";
+                var temp = await _firebaseService.UploadFile(file, fileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
+                pictures += $"{temp},";
+            }
+            pictures = pictures.Substring(0, pictures.Length - 1);
+            var birdSkillAddModel = birdSkillAdd.ToBirdSkillAddModel(pictures);
+            await _trainingCourseService.Manager.CreateBirdSkill(birdSkillAddModel);
             return Ok();
         }
 
         [HttpPut]
         [Route("birdskill-update")]
-        public async Task<IActionResult> EditBirdSkill([FromBody] BirdSkillModModel birdSkillMod)
+        public async Task<IActionResult> EditBirdSkill([FromForm] BirdSkillModParamModel birdSkillMod)
         {
-            await _trainingCourseService.Manager.EditBirdSkill(birdSkillMod);
+            var pictures = string.Empty;
+            if (birdSkillMod.Pictures.Any(e => !e.IsImage()))
+            {
+                return BadRequest("Upload image only!");
+            }
+            foreach (var file in birdSkillMod.Pictures)
+            {
+                string fileName = $"{nameof(BirdSkill)}-{birdSkillMod.Id}-{DateTime.Now.ToString("yyyyMMdd-HHmmss")}";
+                var temp = await _firebaseService.UploadFile(file, fileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
+                pictures += $"{temp},";
+            }
+            pictures = pictures.Substring(0, pictures.Length - 1);
+            var birdSkillModModel = birdSkillMod.ToBirdSkillModModel(pictures);
+            await _trainingCourseService.Manager.EditBirdSkill(birdSkillModModel);
             return Ok();
         }
 

@@ -10,5 +10,6 @@ namespace Models.ServiceModels.TrainingCourseModels.BirdSkill
     {
         public string Name { get; set; } = null!;
         public string? Description { get; set; }
+        public string? Picture { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AppRepository.UnitOfWork;
 using AutoMapper;
 using Models.Entities;
+using Models.ServiceModels.TrainingCourseModels.BirdSkill;
 using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
 using System;
 using System.Collections.Generic;
@@ -58,10 +59,12 @@ namespace SP_AutoMapperConfig
 
         public class MapAction_TrainingCourse_TrainingCourseViewModel : IMappingAction<TrainingCourse, TrainingCourseViewModel>
         {
+            private readonly IMapper _mapper;
             private readonly IUnitOfWork _unitOfWork;
-            public MapAction_TrainingCourse_TrainingCourseViewModel(IUnitOfWork unitOfWork)
+            public MapAction_TrainingCourse_TrainingCourseViewModel(IUnitOfWork unitOfWork, IMapper mapper)
             {
                 _unitOfWork = unitOfWork;
+                _mapper = mapper;
             }
 
             public void Process(TrainingCourse source, TrainingCourseViewModel destination, ResolutionContext context)
@@ -87,7 +90,7 @@ namespace SP_AutoMapperConfig
                     {
                         if(skill.BirdSkill != null)
                         {
-                            destination.SkillNames.Add(skill.BirdSkill.Name);
+                            destination.BirdSkills.Add(_mapper.Map<BirdSkillViewModel>(skill));
                         }
                     }
                 }

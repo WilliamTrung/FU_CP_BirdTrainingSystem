@@ -220,6 +220,7 @@ namespace TrainingCourseSubsystem.Implementation
             {
                 entity.Name = birdSkillMod.Name;
                 entity.Description = birdSkillMod.Description;
+                entity.Picture = birdSkillMod.Picture;
                 await _unitOfWork.BirdSkillRepository.Update(entity);
             }
         }
