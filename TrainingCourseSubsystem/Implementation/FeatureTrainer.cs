@@ -65,6 +65,7 @@ namespace TrainingCourseSubsystem.Implementation
                 if (allDone)
                 {
                     var birdTrainingCourse = _unitOfWork.BirdTrainingCourseRepository.GetFirst(e => e.Id == entity.BirdTrainingCourseId).Result;
+                    birdTrainingCourse.TrainingDoneDate = DateTime.Now;
                     birdTrainingCourse.Status = (int)Models.Enum.BirdTrainingCourse.Status.TrainingDone;
 
                     var bird = _unitOfWork.BirdRepository.GetFirst(e => e.Id == birdTrainingCourse.BirdId).Result;

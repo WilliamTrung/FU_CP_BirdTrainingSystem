@@ -117,6 +117,32 @@ namespace TrainingCourseSubsystem.Implementation
                 {
                     entity.Status = (int)Models.Enum.BirdTrainingCourse.Status.Cancel;
                     await _unitOfWork.BirdTrainingCourseRepository.Update(entity);
+
+                    var progresses = await _unitOfWork.BirdTrainingProgressRepository.Get(e => e.BirdTrainingCourseId == entity.Id);
+                    if(progresses != null)
+                    {
+                        if(progresses.Count() > 0)
+                        {
+                            foreach(var progress in progresses)
+                            {
+                                var reports = _unitOfWork.BirdTrainingReportRepository.Get(e => e.BirdTrainingProgressId == progress.Id
+                                                                                            , nameof(BirdTrainingReport.TrainerSlot)).Result.ToList();
+                                if(reports != null)
+                                {
+                                    if(reports.Count() > 0)
+                                    {
+                                        foreach(var report in reports)
+                                        {
+                                            await _unitOfWork.BirdTrainingReportRepository.Delete(report);
+                                            await _unitOfWork.TrainerSlotRepository.Delete(report.TrainerSlot);
+                                        }
+                                    }
+                                }
+                                progress.Status = (int)Models.Enum.BirdTrainingProgress.Status.Cancel;
+                                await _unitOfWork.BirdTrainingProgressRepository.Update(progress);
+                            } 
+                        }
+                    }
                 }
                 else
                 {
@@ -448,13 +474,13 @@ namespace TrainingCourseSubsystem.Implementation
             }
         }
 
-        public async Task GenerateTrainerTimetable(IEnumerable<int> progressId)
+        public async Task GenerateTrainerTimetable(DateTime startTrainingDate, int startTrainingSlot, IEnumerable<int> progressId)
         {
             var progresses = _unitOfWork.BirdTrainingProgressRepository.Get(e => progressId.Any(p => p == e.Id)).Result.OrderBy(e => e.Id).ToList();
 
             var firstClass = progresses.First();
             var birdTrainingCourse = GetBirdTrainingCourse().Result.Where(m => m.Id == firstClass.BirdTrainingCourseId).First();
-            DateTime start = DateTime.Now.AddDays(3);
+            DateTime start = startTrainingDate;
             await ModifyActualStartTime(start, firstClass.BirdTrainingCourseId);
 
             foreach (var progress in progresses)
@@ -462,7 +488,7 @@ namespace TrainingCourseSubsystem.Implementation
                 var reports = _unitOfWork.BirdTrainingReportRepository.Get(e => e.BirdTrainingProgressId == progress.Id).Result.ToList();
                 if (reports.Count() != progress.TotalTrainingSlot)
                 {
-                    var listTrainerSlot = AutoCreateTimetable(ref start, progress).ToList();
+                    var listTrainerSlot = AutoCreateTimetable(ref start, startTrainingSlot, progress).ToList();
                     if (listTrainerSlot.Count > 0)
                     {
                         foreach (var trainerSlot in listTrainerSlot)
@@ -482,15 +508,20 @@ namespace TrainingCourseSubsystem.Implementation
             //await _trainingCourse.Staff.GenerateTrainerTimetable(report);
         }
 
-        private IEnumerable<TrainerSlotModel> AutoCreateTimetable(ref DateTime start, BirdTrainingProgress progress)
+        private IEnumerable<TrainerSlotModel> AutoCreateTimetable(ref DateTime start, int slotStart, BirdTrainingProgress progress)
         {
             List<TrainerSlotModel> trainerSlots = new List<TrainerSlotModel>(); //day1
             var totalSlot = progress.TotalTrainingSlot; //10
             while (totalSlot > 0)
             {
                 DateTime current = start; //day1
-                List<Slot> slotModels = _unitOfWork.SlotRepository.Get().Result.ToList();
-                Slot autoFill = slotModels.First();
+                //List<Slot> slotModels = _unitOfWork.SlotRepository.Get().Result.ToList();
+                //Slot autoFill = slotModels.First();
+                var autoFill = _unitOfWork.SlotRepository.GetFirst(e => e.Id == slotStart).Result;
+                if (autoFill == null)
+                {
+                    throw new Exception("Selected slot is out of the center.");
+                }
 
                 if (autoFill != null)
                 {

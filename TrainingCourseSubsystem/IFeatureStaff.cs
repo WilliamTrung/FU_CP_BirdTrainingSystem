@@ -52,6 +52,6 @@ namespace TrainingCourseSubsystem
         //Task Update(BirdTrainingProgressModel birdTrainingProgress);
 
         Task CreateBirdCertificateDetail(BirdCertificateDetailAddModel birdCertificateDetailAdd);
-        Task GenerateTrainerTimetable(IEnumerable<int> progressId);
+        Task GenerateTrainerTimetable(DateTime startTrainingDate, int startTrainingSlot, IEnumerable<int> progressId);
     }
 }
