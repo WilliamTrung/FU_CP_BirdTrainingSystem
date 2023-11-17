@@ -57,14 +57,14 @@ namespace TrainingCourseSubsystem.Implementation
             return models;
         }
 
-        public async Task<IEnumerable<int>> ConfirmBirdTrainingCourse(int birdTrainingCourseId)
+        public async Task<IEnumerable<int>> ConfirmBirdTrainingCourse(BirdTrainingCourseConfirm confirmModel)
         {
-            var birdTrainingCourse = await _unitOfWork.BirdTrainingCourseRepository.GetFirst(e => e.Id == birdTrainingCourseId);
+            var birdTrainingCourse = await _unitOfWork.BirdTrainingCourseRepository.GetFirst(e => e.Id == confirmModel.BirdTrainingCourseId);
             var trainingSkill = await _unitOfWork.TrainingCourseSkillRepository.Get(e => e.TrainingCourseId == birdTrainingCourse.TrainingCourseId);
 
             List<int> progressIds = new List<int>();
 
-            var birdTrainingProgress = _unitOfWork.BirdTrainingProgressRepository.Get(e => e.BirdTrainingCourseId == birdTrainingCourseId).Result.ToList();
+            var birdTrainingProgress = _unitOfWork.BirdTrainingProgressRepository.Get(e => e.BirdTrainingCourseId == confirmModel.BirdTrainingCourseId).Result.ToList();
             if (birdTrainingProgress != null)
             {
                 if (birdTrainingProgress.Count() == trainingSkill.Count())
@@ -85,7 +85,7 @@ namespace TrainingCourseSubsystem.Implementation
                             {
                                 GenerateCourseProgress newClass = new GenerateCourseProgress
                                 {
-                                    BirdTrainingCourseId = birdTrainingCourseId,
+                                    BirdTrainingCourseId = confirmModel.BirdTrainingCourseId,
                                     TrainingCourseSkillId = skill.Id
                                 };
                                 var entity = _mapper.Map<BirdTrainingProgress>(newClass);
@@ -99,6 +99,8 @@ namespace TrainingCourseSubsystem.Implementation
                         //await _unitOfWork.BirdTrainingCourseRepository.Update(birdTrainingCourse);
                     }
                 }
+                birdTrainingCourse.StaffId = confirmModel.StaffId;
+                await _unitOfWork.BirdTrainingCourseRepository.Update(birdTrainingCourse);
             }
 
             return progressIds;

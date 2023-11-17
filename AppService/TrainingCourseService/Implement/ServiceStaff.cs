@@ -36,9 +36,9 @@ namespace AppService.TrainingCourseService.Implement
         {
             return await _trainingCourse.Staff.GetBirdTrainingCourseByBirdId(birdId);
         }
-        public async Task<IEnumerable<int>> ConfirmBirdTrainingCourse(int birdTrainingCourseId)
+        public async Task<IEnumerable<int>> ConfirmBirdTrainingCourse(BirdTrainingCourseConfirm confirmModel)
         {
-            List<int> progresses = _trainingCourse.Staff.ConfirmBirdTrainingCourse(birdTrainingCourseId).Result.ToList();
+            List<int> progresses = _trainingCourse.Staff.ConfirmBirdTrainingCourse(confirmModel).Result.ToList();
             DateTime startDate = DateTime.Now;
             int slotId = 1;
             await GenerateTrainerTimetable(startDate, slotId, progresses);
