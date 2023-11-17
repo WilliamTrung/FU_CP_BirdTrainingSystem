@@ -26,7 +26,7 @@ namespace AppService.HostedService
                 using (var _tasks = _scopeFactory.CreateScope().ServiceProvider.GetRequiredService<IWorkshopHostedService>())
                 {
                     //await _tasks.CheckOpenClasses();
-                    //await _tasks.CheckCompleteClasses();
+                    await _tasks.CheckCompleteClasses();
                     await _tasks.CheckOpenClassesOnSlotStart();
                     //await _tasks.CheckExceedRegistrationTime();
                     await _tasks.LateCheckAttendance();

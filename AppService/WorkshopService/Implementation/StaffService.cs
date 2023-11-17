@@ -86,7 +86,11 @@ namespace AppService.WorkshopService.Implementation
 
         public async Task ModifyWorkshopClassDetailTrainerSlot(WorkshopClassDetailTrainerSlotModifyModel workshopClassDetail)
         {
-            
+            var classStatus = await _workshop.All.GetClassStatus(workshopClassDetail.ClassId);
+            if(classStatus == Models.Enum.Workshop.Class.Status.Cancelled || classStatus == Models.Enum.Workshop.Class.Status.Completed)
+            {
+                throw new InvalidOperationException("This class is ended!");
+            }
             if(!await _workshop.Staff.CheckPassEndRegistrationDay(workshopClassDetail.ClassId, workshopClassDetail.Date))
             {
                 throw new InvalidOperationException("Assigned slot must start after registration end date!");
@@ -95,6 +99,7 @@ namespace AppService.WorkshopService.Implementation
             var slots = await _timetable.GetSlotData();
             var changedSlot = slots.First(c => c.Id == workshopClassDetail.SlotId);
             var current_slot = await _workshop.Staff.GetWorkshopClassDetail(workshopClassDetail.ClassId);
+            
             //check duplicate trainer to this slot
             if(current_slot.StartTime == slots.First(s => s.Id == workshopClassDetail.SlotId).StartTime
                 && current_slot.Trainer.Id == workshopClassDetail.TrainerId
