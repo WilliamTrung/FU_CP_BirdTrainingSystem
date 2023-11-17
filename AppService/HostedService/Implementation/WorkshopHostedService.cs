@@ -25,7 +25,7 @@ namespace AppService.HostedService.Implementation
             await _workshop.All.SetWorkshopClassExceedRegistration();
         }
 
-        public async Task CheckOpenClasses()
+        public async Task CheckOpenClassesOnSlotStart()
         {
             await _workshop.All.SetWorkshopClassOngoing();
         }

@@ -39,16 +39,18 @@ namespace AppService.TrainingCourseService.Implement
         public async Task<IEnumerable<int>> ConfirmBirdTrainingCourse(int birdTrainingCourseId)
         {
             List<int> progresses = _trainingCourse.Staff.ConfirmBirdTrainingCourse(birdTrainingCourseId).Result.ToList();
-            await GenerateTrainerTimetable(progresses);
+            DateTime startDate = DateTime.Now;
+            int slotId = 1;
+            await GenerateTrainerTimetable(startDate, slotId, progresses);
             return progresses;
         }
         public async Task CancelBirdTrainingCourse(int birdTrainingCourseId)
         {
             await _trainingCourse.Staff.CancelBirdTrainingCourse(birdTrainingCourseId);
         }
-        public async Task GenerateTrainerTimetable(IEnumerable<int> progressId)
+        public async Task GenerateTrainerTimetable(DateTime startTrainingDate, int startTrainingSlot, IEnumerable<int> progressId)
         {
-            await _trainingCourse.Staff.GenerateTrainerTimetable(progressId);
+            await _trainingCourse.Staff.GenerateTrainerTimetable(startTrainingDate, startTrainingSlot, progressId);
         }
         public async Task<IEnumerable<BirdTrainingProgressViewModel>> GetTrainingCourseSkill(int trainingCourseId)
         {

@@ -46,7 +46,7 @@ namespace AppService.WorkshopService.Implementation
             }
         }
 
-        public async Task<WorkshopClassDetailViewModel> GetTrainerSlotByEntityId(int trainerId, int classSlotId)
+        public async Task<WorkshopClassDetailTrainerViewModel> GetTrainerSlotByEntityId(int trainerId, int classSlotId)
         {
             var check = await _workshop.Trainer.CheckHostingClassSlot(trainerId, classSlotId);
             if(!check)
