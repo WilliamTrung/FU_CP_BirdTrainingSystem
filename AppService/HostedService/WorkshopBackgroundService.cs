@@ -27,6 +27,7 @@ namespace AppService.HostedService
                 {
                     //await _tasks.CheckOpenClasses();
                     await _tasks.CheckCompleteClasses();
+                    await _tasks.CheckOpenClassesOnSlotStart();
                     //await _tasks.CheckExceedRegistrationTime();
                     await _tasks.LateCheckAttendance();
                     //await _tasks.CheckFullClass();
