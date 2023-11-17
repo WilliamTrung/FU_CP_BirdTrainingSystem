@@ -360,13 +360,16 @@ namespace WorkshopSubsystem.Implementation
 
         public async Task SetOpenRegistrationForClass(int classSlotId)
         {
-            var entity = await _unitOfWork.WorkshopClassDetailRepository.GetFirst(c => c.Id == classSlotId, nameof(WorkshopClassDetail.WorkshopClass));
-            if (entity.WorkshopClass.Status != (int)Models.Enum.Workshop.Class.Status.Pending)
+            var entity = await _unitOfWork.WorkshopClassDetailRepository.GetFirst(c => c.Id == classSlotId && c.WorkshopClass.Status != (int)Models.Enum.Workshop.Class.Status.OpenRegistration, nameof(WorkshopClassDetail.WorkshopClass));
+            if(entity != null)
             {
-                throw new InvalidOperationException("Workshop class must be at pending state!");
-            }
-            entity.WorkshopClass.Status = (int)Models.Enum.Workshop.Class.Status.OpenRegistration;
-            await _unitOfWork.WorkshopClassRepository.Update(entity.WorkshopClass);
+                if (entity.WorkshopClass.Status != (int)Models.Enum.Workshop.Class.Status.Pending)
+                {
+                    throw new InvalidOperationException("Workshop class must be at pending state!");
+                }
+                entity.WorkshopClass.Status = (int)Models.Enum.Workshop.Class.Status.OpenRegistration;
+                await _unitOfWork.WorkshopClassRepository.Update(entity.WorkshopClass);
+            }            
         }
 
         public async Task SetClosedRegistrationForClass(int classId)
