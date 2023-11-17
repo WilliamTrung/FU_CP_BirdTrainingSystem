@@ -52,7 +52,7 @@ namespace AdviceConsultingSubsystem.Implementation
 
         public async Task<IEnumerable<ConsultingTicketListViewModel>> GetListHandledConsultingTicket()
         {
-            var entities = await _unitOfWork.ConsultingTicketRepository.Get(x => x.Status == (int)Models.Enum.ConsultingTicket.Status.Confirmed || x.Status == (int)Models.Enum.ConsultingTicket.Status.Canceled);
+            var entities = await _unitOfWork.ConsultingTicketRepository.Get(x => x.Status == (int)Models.Enum.ConsultingTicket.Status.Approved || x.Status == (int)Models.Enum.ConsultingTicket.Status.Canceled);
             var models = new List<ConsultingTicketListViewModel>();
             foreach (var entity in entities)
             {
@@ -91,7 +91,7 @@ namespace AdviceConsultingSubsystem.Implementation
                 throw new KeyNotFoundException($"{nameof(entity)} not found for id: {ticketId}");
             }
 
-            entity.Status = (int)Models.Enum.ConsultingTicket.Status.Confirmed;
+            entity.Status = (int)Models.Enum.ConsultingTicket.Status.Approved;
             await _unitOfWork.ConsultingTicketRepository.Update(entity);
         }
 

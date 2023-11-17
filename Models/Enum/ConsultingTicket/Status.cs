@@ -10,7 +10,7 @@ namespace Models.Enum.ConsultingTicket
     {
         Canceled = 0,
         WaitingForApprove = 1,
-        Confirmed = 2,
+        Approved = 2,
         Finished = 3
     }
 }
