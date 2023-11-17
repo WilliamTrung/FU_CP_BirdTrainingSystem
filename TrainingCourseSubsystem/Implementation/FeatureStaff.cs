@@ -306,6 +306,7 @@ namespace TrainingCourseSubsystem.Implementation
                     if (item != null)
                     {
                         item.TrainerSlot.TrainerId = trainerId;
+                        await _unitOfWork.BirdTrainingReportRepository.Update(item);
                     }
                 }
                 birdTrainingClass.TrainerId = trainerId;
