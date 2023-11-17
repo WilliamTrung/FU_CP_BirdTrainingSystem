@@ -106,11 +106,11 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
                 var trainerFreeSLot = await _timetable.All.GetFreeSlotOnSelectedDateOfTrainer(paramTicket.AppointmentDate, paramTicket.TrainerId);
                 if (trainerFreeSLot == null || !trainerFreeSLot.Any())
                 {
-                    return StatusCode(StatusCodes.Status503ServiceUnavailable, "Trainer không có lịch rảnh vào slot này của ngày này");
+                    return StatusCode(StatusCodes.Status503ServiceUnavailable, "Trainer does not have free time at this slot of this date");
                 }
                 if (!trainerFreeSLot.Any(x => x.Id == paramTicket.ActualSlotStart))
                 {
-                    return StatusCode(StatusCodes.Status503ServiceUnavailable, "Trainer không có lịch rảnh vào slot này của ngày này");
+                    return StatusCode(StatusCodes.Status503ServiceUnavailable, "Trainer does not have free time at this slot of this date");
                 }
 
                 //Validate Address
@@ -118,7 +118,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
                 {
                     if (string.IsNullOrWhiteSpace(paramTicket.Address))
                     {
-                        return StatusCode(StatusCodes.Status503ServiceUnavailable, "Address đang bị trống");
+                        return StatusCode(StatusCodes.Status503ServiceUnavailable, "Address must be fill if consulting at home");
                     }
                 }
                 else if (paramTicket.OnlineOrOffline == true && string.IsNullOrWhiteSpace(paramTicket.Address))
@@ -159,7 +159,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
                 var validate = await _consultingService.Customer.ValidateBeforeUsingSendConsultingTicket(customerId);
                 if (validate == false)
                 {
-                    return StatusCode(StatusCodes.Status503ServiceUnavailable, "Người dùng không thể sử dụng chức năng này vì đang bị giới hạn");
+                    return StatusCode(StatusCodes.Status503ServiceUnavailable, "Customer can not using this function because being fined");
                 }
                 return Ok();
             }
