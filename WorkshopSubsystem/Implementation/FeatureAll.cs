@@ -114,7 +114,7 @@ namespace WorkshopSubsystem.Implementation
             foreach (var entity in entities)
             {
                 var lastSlot = entity.WorkshopClassDetails.Last();
-                if(lastSlot.DaySlot.Date.ToDateOnly() == DateTime.Now.ToDateOnly() && lastSlot.DaySlot.Slot.EndTime > DateTime.Now.TimeOfDay)
+                if(lastSlot.DaySlot.Date.ToDateOnly() == DateTime.Now.ToDateOnly() && lastSlot.DaySlot.Slot.EndTime < DateTime.Now.TimeOfDay)
                 {
                     entity.Status = (int)Models.Enum.Workshop.Class.Status.Completed;
                     await _unitOfWork.WorkshopClassRepository.Update(entity);

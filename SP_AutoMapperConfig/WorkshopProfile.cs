@@ -292,6 +292,7 @@ namespace SP_AutoMapperConfig
         {
             destination.Avatar = source.Customer.User.Avatar;
             destination.CustomerId = source.CustomerId;
+            destination.PhoneNumber = source.Customer.User.PhoneNumber.ToString();
             destination.CustomerName = source.Customer.User.Name;
             destination.Email = source.Customer.User.Email;
             destination.Status = (Models.Enum.Workshop.Class.Customer.Status)source.Status;

@@ -9,7 +9,7 @@ namespace Models.ServiceModels.WorkshopModels.WorkshopClass
     public class CheckAttendanceCredentials
     {
         public string? Email { get; set; }
-        [SP_Validator.PhoneValidator]
+        //[SP_Validator.PhoneValidator]
         public string? PhoneNumber { get; set; }
         public bool IsPresent { get; set; }
     }
