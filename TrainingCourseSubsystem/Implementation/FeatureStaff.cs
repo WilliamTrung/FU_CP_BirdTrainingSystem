@@ -306,6 +306,7 @@ namespace TrainingCourseSubsystem.Implementation
                     if (item != null)
                     {
                         item.TrainerSlot.TrainerId = trainerId;
+                        await _unitOfWork.BirdTrainingReportRepository.Update(item);
                     }
                 }
                 birdTrainingClass.TrainerId = trainerId;
@@ -315,6 +316,7 @@ namespace TrainingCourseSubsystem.Implementation
                 if (IsAssignForAllClass(birdTrainingClass.BirdTrainingCourse.Id))
                 {
                     birdTrainingClass.BirdTrainingCourse.Status = (int)Models.Enum.BirdTrainingCourse.Status.Confirmed;
+                    await _unitOfWork.BirdTrainingProgressRepository.Update(birdTrainingClass);
                 }
                 return _mapper.Map<BirdTrainingProgressViewModel>(birdTrainingClass);
             }

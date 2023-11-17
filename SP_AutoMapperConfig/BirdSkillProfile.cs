@@ -73,14 +73,16 @@ namespace SP_AutoMapperConfig
             CreateMap<BirdSkill, BirdSkillViewModel>()
                 .ForMember(m => m.Id, opt => opt.MapFrom(e => e.Id))
                 .ForMember(m => m.Name, opt => opt.MapFrom(e => e.Name))
-                .ForMember(m => m.Description, opt => opt.MapFrom(e => e.Description));
+                .ForMember(m => m.Description, opt => opt.MapFrom(e => e.Description))
+                .ForMember(m => m.Picture, opt => opt.MapFrom(e => e.Picture));
         }
 
         private void Map_BirdSkillAddModel_BirdSkill()
         {
             CreateMap<BirdSkillAddModel, BirdSkill>()
                 .ForMember(m => m.Name, opt => opt.MapFrom(e => e.Name))
-                .ForMember(m => m.Description, opt => opt.MapFrom(e => e.Description));
+                .ForMember(m => m.Description, opt => opt.MapFrom(e => e.Description))
+                .ForMember(m => m.Picture, opt => opt.MapFrom(e => e.Picture));
         }
     }
 }

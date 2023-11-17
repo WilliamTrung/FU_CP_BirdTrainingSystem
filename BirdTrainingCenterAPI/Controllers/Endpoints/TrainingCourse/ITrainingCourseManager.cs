@@ -51,11 +51,11 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
         #region BirdSkill
         [HttpPost]
         [Route("birdskill-create")]
-        Task<IActionResult> CreateBirdSkill(BirdSkillAddModel birdSkillAdd);
+        Task<IActionResult> CreateBirdSkill(BirdSkillAddParamModel birdSkillAdd);
 
         [HttpPut]
         [Route("birdskill-update")]
-        Task<IActionResult> EditBirdSkill(BirdSkillModModel birdSkillMod);
+        Task<IActionResult> EditBirdSkill(BirdSkillModParamModel birdSkillMod);
 
         [HttpPost]
         [Route("acquirablebirdskill-create")]

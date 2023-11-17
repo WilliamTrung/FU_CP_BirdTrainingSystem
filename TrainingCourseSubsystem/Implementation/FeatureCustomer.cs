@@ -67,11 +67,11 @@ namespace TrainingCourseSubsystem.Implementation
             }
             //entity.CustomerId = bird.CustomerId;
             entity.BirdSpeciesId = bird.BirdSpeciesId;
-            entity.Name = bird.Name;
-            entity.Color = bird.Color;
-            entity.Picture = bird.Picture;
-            entity.Description = bird.Description;
-            entity.IsDefault = bird.IsDefault;
+            entity.Name = bird.Name ?? entity.Name;
+            entity.Color = bird.Color ?? entity.Color;
+            entity.Picture = bird.Picture ?? entity.Picture;
+            entity.Description = bird.Description ?? entity.Description;
+            entity.IsDefault = bird.IsDefault ?? entity.IsDefault;
             await _unitOfWork.BirdRepository.Update(entity);
         }
 
