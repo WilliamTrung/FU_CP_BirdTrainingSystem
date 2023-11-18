@@ -29,6 +29,7 @@ namespace SP_AutoMapperConfig
             Map_WorkshopClassDetailTrainerSlotModifyModel_TrainerSlot();
             Map_WorkshopClass_WorkshopClassViewModel();
             Map_WorkshopAttendance_RegisteredCustomerModel();
+            Map_WorkshopClassDetail_WorkshopClassDetailTrainerViewModel();
         }
         private void Map_WorkshopAttendance_RegisteredCustomerModel()
         {
@@ -46,6 +47,16 @@ namespace SP_AutoMapperConfig
                 .ForMember(e => e.EntityId, opt => opt.MapFrom(m => m.ClassId))
                 .ForMember(e => e.EntityTypeId, opt => opt.MapFrom(m => (int)Models.Enum.EntityType.WorkshopClass))
                 .ForMember(e => e.Reason, opt => opt.MapFrom(m => "Host workshop class slot"));
+        }
+        private void Map_WorkshopClassDetail_WorkshopClassDetailTrainerViewModel()
+        {
+            CreateMap<WorkshopClassDetail, WorkshopClassDetailTrainerViewModel>()
+              //.ForMember(m => m, opt =>
+              //{
+              //    opt.PreCondition(e => e.DaySlot != null && e.WorkshopDetailTemplate != null);
+              //    opt.MapFrom<Map_WorkshopClassDetail_WorkshopClassDetailViewModel_Resolver>();
+              //})
+              .AfterMap<MappingAction_WorkshopClassDetail_WorkshopClassDetailTrainerViewModel>();
         }
         private void Map_Workshop_WorkshopAdminModel()
         {
@@ -212,6 +223,44 @@ namespace SP_AutoMapperConfig
 #pragma warning restore CS8629 // Nullable value type may be null.
         }
     }
+    public class MappingAction_WorkshopClassDetail_WorkshopClassDetailTrainerViewModel : IMappingAction<WorkshopClassDetail, WorkshopClassDetailTrainerViewModel>
+    {
+        private readonly IMapper _mapper;
+        private readonly IUnitOfWork _uow;
+        public MappingAction_WorkshopClassDetail_WorkshopClassDetailTrainerViewModel(IMapper mapper, IUnitOfWork uow)
+        {
+            _mapper = mapper;
+            _uow = uow;
+        }
+        public void Process(WorkshopClassDetail source, WorkshopClassDetailTrainerViewModel destination, ResolutionContext context)
+        {
+            destination.Detail = source.WorkshopDetailTemplate.Detail;
+            destination.Id = source.Id;
+#pragma warning disable CS8629 // Nullable value type may be null.
+            destination.Title = source.WorkshopClass.Workshop.Title;
+            if (source.DaySlotId == null)
+            {
+                //not yet assign trainer
+                destination.Trainer = null;
+                destination.Date = null;
+
+            }
+            else
+            {
+#pragma warning disable CS8601 // Possible null reference assignment.
+                source.DaySlot = _uow.TrainerSlotRepository.GetFirst(c => c.Id == source.DaySlotId
+                                                                        , nameof(TrainerSlot.Trainer)
+                                                                        , nameof(TrainerSlot.Slot)
+                                                                        , $"{nameof(TrainerSlot.Trainer)}.{nameof(Trainer.User)}").Result;
+#pragma warning restore CS8601 // Possible null reference assignment.
+                destination.Trainer = _mapper.Map<TrainerWorkshopModel>(source.DaySlot.Trainer);
+                destination.Date = (DateTime)source.DaySlot.Date;
+                destination.StartTime = (TimeSpan)source.DaySlot.Slot.StartTime;
+                destination.EndTime = (TimeSpan)source.DaySlot.Slot.EndTime;
+            }
+#pragma warning restore CS8629 // Nullable value type may be null.
+        }
+    }
     public class MappingAction_WorkshopClass_WorkshopClassViewmModel: IMappingAction<WorkshopClass, WorkshopClassViewModel>
     {
         private readonly IMapper _mapper;
@@ -243,6 +292,7 @@ namespace SP_AutoMapperConfig
         {
             destination.Avatar = source.Customer.User.Avatar;
             destination.CustomerId = source.CustomerId;
+            destination.PhoneNumber = source.Customer.User.PhoneNumber.ToString();
             destination.CustomerName = source.Customer.User.Name;
             destination.Email = source.Customer.User.Email;
             destination.Status = (Models.Enum.Workshop.Class.Customer.Status)source.Status;

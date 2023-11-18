@@ -2,6 +2,7 @@
 using AutoMapper;
 using Models.ConfigModels;
 using Models.Entities;
+using Models.Enum.Workshop.Class;
 using Models.ServiceModels.WorkshopModels;
 using Models.ServiceModels.WorkshopModels.Feedback;
 using Models.ServiceModels.WorkshopModels.WorkshopClass;
@@ -106,11 +107,14 @@ namespace WorkshopSubsystem.Implementation
 
         public async Task SetWorkshopClassComplete()
         {
-            var entities = await _unitOfWork.WorkshopClassRepository.Get(c => c.Status == (int)Models.Enum.Workshop.Class.Status.OnGoing);
+            var entities = await _unitOfWork.WorkshopClassRepository.Get(c => c.Status == (int)Models.Enum.Workshop.Class.Status.OnGoing
+                                                                            ,nameof(WorkshopClass.WorkshopClassDetails)
+                                                                            , $"{nameof(WorkshopClass.WorkshopClassDetails)}.{nameof(WorkshopClassDetail.DaySlot)}"
+                                                                            , $"{nameof(WorkshopClass.WorkshopClassDetails)}.{nameof(WorkshopClassDetail.DaySlot)}.{nameof(TrainerSlot.Slot)}");
             foreach (var entity in entities)
             {
-                var lastSlot = await GetLastSlotOfWorkshopClass(entity.Id);
-                if(lastSlot.Date.ToDateOnly() == DateTime.Now.ToDateOnly() && lastSlot.Slot.EndTime > DateTime.Now.TimeOfDay)
+                var lastSlot = entity.WorkshopClassDetails.Last();
+                if(lastSlot.DaySlot.Date.ToDateOnly() == DateTime.Now.ToDateOnly() && lastSlot.DaySlot.Slot.EndTime < DateTime.Now.TimeOfDay)
                 {
                     entity.Status = (int)Models.Enum.Workshop.Class.Status.Completed;
                     await _unitOfWork.WorkshopClassRepository.Update(entity);
@@ -204,6 +208,16 @@ namespace WorkshopSubsystem.Implementation
             var entities = await _unitOfWork.WorkshopClassRepository.Get(c => c.Id == workshopClassId 
                                                                             && c.Status == (int)Models.Enum.Workshop.Class.Status.OpenRegistration);
 
+        }
+
+        public async Task<Status> GetClassStatus(int workshopClassDetailId)
+        {
+            var classSlot = await _unitOfWork.WorkshopClassDetailRepository.GetFirst(c => c.Id == workshopClassDetailId, nameof(WorkshopClassDetail.WorkshopClass));
+            if(classSlot == null)
+            {
+                throw new KeyNotFoundException();
+            }
+            return (Status)classSlot.WorkshopClass.Status;
         }
     }
 }
