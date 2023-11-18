@@ -25,10 +25,18 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             if (accessToken == null)
             {
                 var result_guest = await _workshopService.All.GetWorkshopClassesByWorkshopId(workshopId);
+                foreach (var res in result_guest)
+                {
+                    res.Registered = await _workshopService.All.GetRegistrationAmount(res.Id);
+                }
                 return Ok(result_guest);
             }
             var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
             var result_customer = await _workshopService.Customer.GetWorkshopClassesByWorkshopId(Int32.Parse(customerId.Value), workshopId);
+            foreach (var res in result_customer)
+            {
+                res.Registered = await _workshopService.All.GetRegistrationAmount(res.Id);
+            }
             return Ok(result_customer);
         }
         [HttpGet]

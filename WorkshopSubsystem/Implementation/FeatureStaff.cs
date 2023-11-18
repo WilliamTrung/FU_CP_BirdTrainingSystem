@@ -264,7 +264,7 @@ namespace WorkshopSubsystem.Implementation
             {
                 if(e.Email == null)
                 {
-                    throw new InvalidDataException("Invalid data: phonenumber and email is null");
+                    throw new InvalidDataException("Invalid data: email is blank");
                 }
             });
             foreach (var customerCredential in customerCredentials)
