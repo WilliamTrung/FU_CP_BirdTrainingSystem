@@ -59,7 +59,7 @@ namespace TrainingCourseSubsystem.Implementation
                 bool allDone = true;
                 foreach (BirdTrainingProgress progress in birdTrainingProgressAll)
                 {
-                    if (progress.Status == (int)Models.Enum.BirdTrainingProgress.Status.Pass || progress.Status == (int)Models.Enum.BirdTrainingProgress.Status.NotPass)
+                    if (progress.Status != (int)Models.Enum.BirdTrainingProgress.Status.Pass && progress.Status != (int)Models.Enum.BirdTrainingProgress.Status.NotPass)
                     {
                         allDone = false;
                     }
@@ -71,20 +71,23 @@ namespace TrainingCourseSubsystem.Implementation
                     birdTrainingCourse.TrainingDoneDate = DateTime.Now;
                     birdTrainingCourse.Status = (int)Models.Enum.BirdTrainingCourse.Status.TrainingDone;
 
-                    var birdCertificate = _unitOfWork.BirdCertificateRepository.GetFirst(e => e.TrainingCourseId == birdTrainingCourse.TrainingCourse.Id).Result;
-                    BirdCertificateDetailAddModel birdCertificateDetailAdd = new BirdCertificateDetailAddModel()
-                    {
-                        BirdId = birdTrainingCourse.BirdId,
-                        BirdTrainingCourseId = birdTrainingCourse.Id,
-                        BirdCertificateId = birdCertificate.Id,
-                    };
-                    await CreateBirdCertificateDetail(birdCertificateDetailAdd);
-
                     var bird = _unitOfWork.BirdRepository.GetFirst(e => e.Id == birdTrainingCourse.BirdId).Result;
                     bird.Status = (int)Models.Enum.Bird.Status.Ready;
 
                     await _unitOfWork.BirdTrainingCourseRepository.Update(birdTrainingCourse);
                     await _unitOfWork.BirdRepository.Update(bird);
+
+                    var birdCertificate = _unitOfWork.BirdCertificateRepository.GetFirst(e => e.TrainingCourseId == birdTrainingCourse.TrainingCourse.Id).Result;
+                    if (birdCertificate != null)
+                    {
+                        BirdCertificateDetailAddModel birdCertificateDetailAdd = new BirdCertificateDetailAddModel()
+                        {
+                            BirdId = birdTrainingCourse.BirdId,
+                            BirdTrainingCourseId = birdTrainingCourse.Id,
+                            BirdCertificateId = birdCertificate.Id,
+                        };
+                        await CreateBirdCertificateDetail(birdCertificateDetailAdd);
+                    }
                 }
             }
         }
@@ -98,7 +101,7 @@ namespace TrainingCourseSubsystem.Implementation
             else
             {
                 var checkCertificate = _unitOfWork.BirdCertificateDetailRepository.Get(e => e.BirdTrainingCourseId == birdCertificateDetailAdd.BirdTrainingCourseId).Result;
-                if (checkCertificate != null)
+                if (checkCertificate != null && checkCertificate.Count() > 0)
                 {
                     throw new Exception($"Bird certificate already given.");
                 }
@@ -110,7 +113,9 @@ namespace TrainingCourseSubsystem.Implementation
                 if (birdTrainingCourse != null)
                 {
                     var passedSkill = _unitOfWork.BirdTrainingProgressRepository.Get(e => e.BirdTrainingCourseId == birdTrainingCourse.Id
-                                                                                      && e.Status == (int)Models.Enum.BirdTrainingProgress.Status.Pass).Result.ToList();
+                                                                                      && e.Status == (int)Models.Enum.BirdTrainingProgress.Status.Pass
+                                                                                      , nameof(BirdTrainingProgress.TrainingCourseSkill)
+                                                                                      ,$"{nameof(BirdTrainingProgress.TrainingCourseSkill)}.{nameof(BirdTrainingProgress.TrainingCourseSkill.BirdSkill)}").Result.ToList();
                     if (passedSkill != null && passedSkill.Count() > 0)
                     {
                         foreach (var skill in passedSkill)
@@ -120,7 +125,7 @@ namespace TrainingCourseSubsystem.Implementation
                                 BirdSkillReceivedAddDeleteModel birdSkillReceivedAddModel = new BirdSkillReceivedAddDeleteModel()
                                 {
                                     BirdId = entity.BirdId,
-                                    BirdSkillId = skill.TrainingCourseSkillId,
+                                    BirdSkillId = skill.TrainingCourseSkill.BirdSkill.Id,
                                 };
                                 var birdSkillReceivedAdd = _mapper.Map<BirdSkillReceived>(birdSkillReceivedAddModel);
                                 await _unitOfWork.BirdSkillReceivedRepository.Add(birdSkillReceivedAdd);
@@ -141,10 +146,6 @@ namespace TrainingCourseSubsystem.Implementation
             }
             else
             {
-                entity.Status = (int)Models.Enum.BirdTrainingReport.Status.Done;
-                await _unitOfWork.BirdTrainingReportRepository.Update(entity);
-
-
                 var birdProgress = _unitOfWork.BirdTrainingProgressRepository.GetFirst(e => e.Id == entity.BirdTrainingProgressId
                                                                                         , nameof(BirdTrainingProgress.BirdTrainingCourse)).Result;
                 if (birdProgress != null)
@@ -152,7 +153,7 @@ namespace TrainingCourseSubsystem.Implementation
                     int firstOrEnd = FirstOrEndSlot(entity);
                     if (firstOrEnd == result)
                     {
-                        return result;
+                        result = (int)Models.Enum.BirdTrainingReport.FirstOrEnd.MidSlot;
                     }
                     else if (firstOrEnd == (int)Models.Enum.BirdTrainingReport.FirstOrEnd.FirstSlot)
                     {
@@ -164,8 +165,10 @@ namespace TrainingCourseSubsystem.Implementation
                     {
                         result = (int)Models.Enum.BirdTrainingReport.FirstOrEnd.EndSlot;
                     }
-
                     await _unitOfWork.BirdTrainingProgressRepository.Update(birdProgress);
+
+                    entity.Status = (int)Models.Enum.BirdTrainingReport.Status.Done;
+                    await _unitOfWork.BirdTrainingReportRepository.Update(entity);
                 }
             }
             return result;
@@ -186,16 +189,11 @@ namespace TrainingCourseSubsystem.Implementation
                 }
                 else
                 {
-                    DateTime finalSlot = new DateTime();
-                    foreach (var report in birdReports)
+                    var endSlot = birdReports.Where(e => e.Status == (int)Models.Enum.BirdTrainingReport.Status.NotYet).ToList();
+                    if(endSlot == null)
                     {
-                        var currentSlot = report.TrainerSlot.Date;
-                        if (finalSlot.CompareTo(currentSlot) < 0)
-                        {
-                            finalSlot = currentSlot;
-                        }
-                    }
-                    if (finalSlot.CompareTo(DateTime.Now) == 0)
+                        return (int)Models.Enum.BirdTrainingReport.FirstOrEnd.EndSlot;
+                    }else if(endSlot.Count() == 1)
                     {
                         return (int)Models.Enum.BirdTrainingReport.FirstOrEnd.EndSlot;
                     }

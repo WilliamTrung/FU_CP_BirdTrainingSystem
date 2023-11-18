@@ -45,11 +45,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         public async Task<IActionResult> MarkTrainingSkillDone([FromForm] TrainerMarkDoneParamModel markDone)
         {
             var pictures = string.Empty;
-            if (markDone.Evidences.Any(e => !e.IsImage()))
-            {
-                return BadRequest("Upload image only!");
-            }
-            else if (markDone.Evidences.Any(e => !e.IsVideo()))
+            if (markDone.Evidences.Any(e => !e.IsVideo()))
             {
                 return BadRequest("Upload video only!");
             }

@@ -87,6 +87,15 @@ namespace TrainingCourseSubsystem.Implementation
             {
                 entity.Status = (int)Models.Enum.TrainingCourse.Status.Active;
                 await _unitOfWork.TrainingCourseRepository.Update(entity);
+
+                BirdCertificateAddModel birdCertificateAdd = new BirdCertificateAddModel()
+                {
+                    TrainingCourseId = trainingCourseId,
+                    BirdCenterName = "Bird Training Center",
+                    ShortDescrption = entity.Description,
+                    Picture = "https://storage.googleapis.com/birdtrainingcentersystem.appspot.com/trainingcourses/BirdCertificate-1-20231118-140936",
+                };
+                await CreateBirdCertitficate(birdCertificateAdd);
             }
         }
 

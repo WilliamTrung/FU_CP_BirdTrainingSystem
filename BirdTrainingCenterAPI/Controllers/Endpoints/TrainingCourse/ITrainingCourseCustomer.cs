@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Models.ApiParamModels.TrainingCourse;
 using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
 using Models.ServiceModels.TrainingCourseModels.BirdCertificate.BirdCertificateDetail;
+using Models.ServiceModels.TrainingCourseModels.BirdCertificate;
 
 namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
 {

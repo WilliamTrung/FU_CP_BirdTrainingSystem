@@ -206,5 +206,12 @@ namespace TrainingCourseSubsystem.Implementation
             var model = _mapper.Map<BirdSkillViewModel>(entity);
             return model;
         }
+
+        public async Task<IEnumerable<BirdSkillReceivedViewModel>> ViewBirdSkillReceived(int birdId)
+        {
+            var birdReceiveds = await _unitOfWork.BirdSkillReceivedRepository.Get(e => e.BirdId == birdId);
+            var models = _mapper.Map<IEnumerable<BirdSkillReceivedViewModel>>(birdReceiveds);
+            return models;
+        }
     }
 }

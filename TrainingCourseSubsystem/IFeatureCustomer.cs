@@ -1,4 +1,5 @@
 ﻿using Models.ServiceModels.TrainingCourseModels.Bird;
+using Models.ServiceModels.TrainingCourseModels.BirdCertificate;
 using Models.ServiceModels.TrainingCourseModels.BirdCertificate.BirdCertificateDetail;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;

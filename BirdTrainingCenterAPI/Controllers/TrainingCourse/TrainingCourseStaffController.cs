@@ -89,72 +89,93 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         [Route("receive-bird")]
         public async Task<IActionResult> ReceiveBird([FromForm] ReceiveBirdParamModel birdTrainingCourse)
         {
-            var pictures = string.Empty;
-            if (birdTrainingCourse.ReceivePictures.Any(e => !e.IsImage()))
+            var accessToken = Request.DeserializeToken(_authService);
+            if (accessToken == null)
             {
-                return BadRequest("Upload image only!");
+                return Unauthorized();
             }
-            foreach (var file in birdTrainingCourse.ReceivePictures)
+            else
             {
-                string fileName = $"{nameof(ReceiveBird)}-{birdTrainingCourse.Id}-{DateTime.Now.ToString("yyyyMMdd-HHmmss")}";
-                var temp = await _firebaseService.UploadFile(file, fileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
-                pictures += $"{temp},";
-            }
-            pictures = pictures.Substring(0, pictures.Length - 1);
-            var birdTrainingCourseModel = birdTrainingCourse.ToBirdTrainingCourseReceiveBird(pictures);
+                var staffId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
 
-            await _trainingCourseService.Staff.ReceiveBird(birdTrainingCourseModel);
-            return Ok();
+                var pictures = string.Empty;
+                if (birdTrainingCourse.ReceivePictures.Any(e => !e.IsImage()))
+                {
+                    return BadRequest("Upload image only!");
+                }
+                foreach (var file in birdTrainingCourse.ReceivePictures)
+                {
+                    string fileName = $"{nameof(ReceiveBird)}-{birdTrainingCourse.Id}-{DateTime.Now.ToString("yyyyMMdd-HHmmss")}";
+                    var temp = await _firebaseService.UploadFile(file, fileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
+                    pictures += $"{temp},";
+                }
+                pictures = pictures.Substring(0, pictures.Length - 1);
+                var birdTrainingCourseModel = birdTrainingCourse.ToBirdTrainingCourseReceiveBird(pictures);
+                birdTrainingCourseModel.ReceiveStaffId = Int32.Parse(staffId.Value);
+
+                await _trainingCourseService.Staff.ReceiveBird(birdTrainingCourseModel);
+                return Ok();
+            }
         }
         [HttpPut]
         [Route("return-bird")]
         public async Task<IActionResult> ReturnBird([FromForm] ReturnBirdParamModel birdTrainingCourse)
         {
-            var pictures = string.Empty;
-            if (birdTrainingCourse.ReturnPictures.Any(e => !e.IsImage()))
+            var accessToken = Request.DeserializeToken(_authService);
+            if (accessToken == null)
             {
-                return BadRequest("Upload image only!");
+                return Unauthorized();
             }
-            foreach (var file in birdTrainingCourse.ReturnPictures)
+            else
             {
-                string fileName = $"{nameof(ReturnBird)}-{birdTrainingCourse.Id}-{DateTime.Now.ToString("yyyyMMdd-HHmmss")}";
-                var temp = await _firebaseService.UploadFile(file, fileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
-                pictures += $"{temp},";
-            }
-            pictures = pictures.Substring(0, pictures.Length - 1);
-            var birdTrainingCourseModel = birdTrainingCourse.ToBirdTrainingCourseReturnBird(pictures);
+                var staffId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
+                var pictures = string.Empty;
+                if (birdTrainingCourse.ReturnPictures.Any(e => !e.IsImage()))
+                {
+                    return BadRequest("Upload image only!");
+                }
+                foreach (var file in birdTrainingCourse.ReturnPictures)
+                {
+                    string fileName = $"{nameof(ReturnBird)}-{birdTrainingCourse.Id}-{DateTime.Now.ToString("yyyyMMdd-HHmmss")}";
+                    var temp = await _firebaseService.UploadFile(file, fileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
+                    pictures += $"{temp},";
+                }
+                pictures = pictures.Substring(0, pictures.Length - 1);
+                var birdTrainingCourseModel = birdTrainingCourse.ToBirdTrainingCourseReturnBird(pictures);
+                birdTrainingCourseModel.ReturnStaffId = Int32.Parse(staffId.Value);
 
-            await _trainingCourseService.Staff.ReturnBird(birdTrainingCourseModel);
-            return Ok();
+                await _trainingCourseService.Staff.ReturnBird(birdTrainingCourseModel);
+                return Ok();
+            }
         }
         [HttpPost]
         [Route("birdtrainingcourse-confirm")]
         public async Task<IActionResult> ConfirmBirdTrainingCourse([FromQuery] int birdTrainingCourseId)
         {
-            //var accessToken = Request.DeserializeToken(_authService);
-            //if (accessToken == null)
-            //{
-            //    return Unauthorized();
-            //}
-            //else
-            //{
-            //    var staffId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
-            //    BirdTrainingCourseConfirm confirmModel = new BirdTrainingCourseConfirm()
-            //    {
-            //        BirdTrainingCourseId = birdTrainingCourseId,
-            //        StaffId = Int32.Parse(staffId.Value)
-            //    };
-            //    var result = await _trainingCourseService.Staff.ConfirmBirdTrainingCourse(confirmModel);
-            //    return Ok(result);
-            //}
-
-            BirdTrainingCourseConfirm confirmModel = new BirdTrainingCourseConfirm()
+            var accessToken = Request.DeserializeToken(_authService);
+            if (accessToken == null)
             {
-                BirdTrainingCourseId = birdTrainingCourseId,
-                StaffId = 8
-            };
-            var result = await _trainingCourseService.Staff.ConfirmBirdTrainingCourse(confirmModel);
-            return Ok();
+                return Unauthorized();
+            }
+            else
+            {
+                var staffId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
+                BirdTrainingCourseConfirm confirmModel = new BirdTrainingCourseConfirm()
+                {
+                    BirdTrainingCourseId = birdTrainingCourseId,
+                    StaffId = Int32.Parse(staffId.Value)
+                };
+                var result = await _trainingCourseService.Staff.ConfirmBirdTrainingCourse(confirmModel);
+                return Ok(result);
+            }
+
+            //BirdTrainingCourseConfirm confirmModel = new BirdTrainingCourseConfirm()
+            //{
+            //    BirdTrainingCourseId = birdTrainingCourseId,
+            //    StaffId = 8
+            //};
+            //var result = await _trainingCourseService.Staff.ConfirmBirdTrainingCourse(confirmModel);
+            //return Ok();
         }
         [HttpPost]
         [Route("birdtrainingcourse-cancel")]
