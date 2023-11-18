@@ -185,13 +185,13 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             var result = await _trainingCourseService.Staff.AssignTrainer(progressId, trainerId);
             return Ok(result);
         }
-        [HttpPost]
-        [Route("birdcertificatedetail")]
-        public async Task<IActionResult> CreateBirdCertificateDetail([FromBody] BirdCertificateDetailAddModel birdCertificateDetailAdd)
-        {
-            await _trainingCourseService.Staff.CreateBirdCertificateDetail(birdCertificateDetailAdd);
-            return Ok();
-        }
+        //[HttpPost]
+        //[Route("birdcertificatedetail")]
+        //public async Task<IActionResult> CreateBirdCertificateDetail([FromBody] BirdCertificateDetailAddModel birdCertificateDetailAdd)
+        //{
+        //    await _trainingCourseService.Staff.CreateBirdCertificateDetail(birdCertificateDetailAdd);
+        //    return Ok();
+        //}
 
         //[HttpPost]
         //[Route("generatedprogresstimetable-confirm")]

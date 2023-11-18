@@ -219,9 +219,9 @@ namespace AppService.TrainingCourseService.Implement
             }
         }
 
-        public async Task CreateBirdCertificateDetail(BirdCertificateDetailAddModel birdCertificateDetailAdd)
-        {
-            await _trainingCourse.Staff.CreateBirdCertificateDetail(birdCertificateDetailAdd);
-        }
+        //public async Task CreateBirdCertificateDetail(BirdCertificateDetailAddModel birdCertificateDetailAdd)
+        //{
+        //    await _trainingCourse.Staff.CreateBirdCertificateDetail(birdCertificateDetailAdd);
+        //}
     }
 }

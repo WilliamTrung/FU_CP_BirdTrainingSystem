@@ -440,41 +440,41 @@ namespace TrainingCourseSubsystem.Implementation
             }
         }
 
-        public async Task CreateBirdCertificateDetail(BirdCertificateDetailAddModel birdCertificateDetailAdd)
-        {
-            if (birdCertificateDetailAdd == null)
-            {
-                throw new Exception("Client send null param.");
-            }
-            else
-            {
-                var entity = _mapper.Map<BirdCertificateDetail>(birdCertificateDetailAdd);
-                await _unitOfWork.BirdCertificateDetailRepository.Add(entity);
+        //public async Task CreateBirdCertificateDetail(BirdCertificateDetailAddModel birdCertificateDetailAdd)
+        //{
+        //    if (birdCertificateDetailAdd == null)
+        //    {
+        //        throw new Exception("Client send null param.");
+        //    }
+        //    else
+        //    {
+        //        var entity = _mapper.Map<BirdCertificateDetail>(birdCertificateDetailAdd);
+        //        await _unitOfWork.BirdCertificateDetailRepository.Add(entity);
 
-                var birdTrainingCourse = _unitOfWork.BirdTrainingCourseRepository.GetFirst(e => e.Id == entity.BirdTrainingCourseId).Result;
-                if (birdTrainingCourse != null)
-                {
-                    var passedSkill = _unitOfWork.BirdTrainingProgressRepository.Get(e => e.BirdTrainingCourseId == birdTrainingCourse.Id
-                                                                                      && e.Status == (int)Models.Enum.BirdTrainingProgress.Status.Pass).Result.ToList();
-                    if (passedSkill != null && passedSkill.Count() > 0)
-                    {
-                        foreach (var skill in passedSkill)
-                        {
-                            if (skill != null)
-                            {
-                                BirdSkillReceivedAddDeleteModel birdSkillReceivedAddModel = new BirdSkillReceivedAddDeleteModel()
-                                {
-                                    BirdId = entity.BirdId,
-                                    BirdSkillId = skill.TrainingCourseSkillId,
-                                };
-                                var birdSkillReceivedAdd = _mapper.Map<BirdSkillReceived>(birdSkillReceivedAddModel);
-                                await _unitOfWork.BirdSkillReceivedRepository.Add(birdSkillReceivedAdd);
-                            }
-                        }
-                    }
-                }
-            }
-        }
+        //        var birdTrainingCourse = _unitOfWork.BirdTrainingCourseRepository.GetFirst(e => e.Id == entity.BirdTrainingCourseId).Result;
+        //        if (birdTrainingCourse != null)
+        //        {
+        //            var passedSkill = _unitOfWork.BirdTrainingProgressRepository.Get(e => e.BirdTrainingCourseId == birdTrainingCourse.Id
+        //                                                                              && e.Status == (int)Models.Enum.BirdTrainingProgress.Status.Pass).Result.ToList();
+        //            if (passedSkill != null && passedSkill.Count() > 0)
+        //            {
+        //                foreach (var skill in passedSkill)
+        //                {
+        //                    if (skill != null)
+        //                    {
+        //                        BirdSkillReceivedAddDeleteModel birdSkillReceivedAddModel = new BirdSkillReceivedAddDeleteModel()
+        //                        {
+        //                            BirdId = entity.BirdId,
+        //                            BirdSkillId = skill.TrainingCourseSkillId,
+        //                        };
+        //                        var birdSkillReceivedAdd = _mapper.Map<BirdSkillReceived>(birdSkillReceivedAddModel);
+        //                        await _unitOfWork.BirdSkillReceivedRepository.Add(birdSkillReceivedAdd);
+        //                    }
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
 
         public async Task GenerateTrainerTimetable(DateTime startTrainingDate, int startTrainingSlot, IEnumerable<int> progressId)
         {

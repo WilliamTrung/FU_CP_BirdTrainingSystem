@@ -1,6 +1,8 @@
 ﻿using AppRepository.UnitOfWork;
 using AutoMapper;
 using Models.Entities;
+using Models.ServiceModels.TrainingCourseModels.BirdCertificate;
+using Models.ServiceModels.TrainingCourseModels.BirdCertificate.BirdCertificateDetail;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
 using System;
@@ -35,7 +37,7 @@ namespace TrainingCourseSubsystem.Implementation
         public async Task MarkTrainingSkillDone(MarkSkillDone markDone)
         {
             var entity = _unitOfWork.BirdTrainingProgressRepository.GetFirst(e => e.Id == markDone.Id).Result;
-            if(entity == null)
+            if (entity == null)
             {
                 throw new Exception("Entity not found");
             }
@@ -55,18 +57,28 @@ namespace TrainingCourseSubsystem.Implementation
 
                 var birdTrainingProgressAll = _unitOfWork.BirdTrainingProgressRepository.Get(e => e.BirdTrainingCourseId == entity.BirdTrainingCourseId).Result.ToList();
                 bool allDone = true;
-                foreach(BirdTrainingProgress progress in birdTrainingProgressAll)
+                foreach (BirdTrainingProgress progress in birdTrainingProgressAll)
                 {
                     if (progress.Status == (int)Models.Enum.BirdTrainingProgress.Status.Pass || progress.Status == (int)Models.Enum.BirdTrainingProgress.Status.NotPass)
                     {
-                        allDone= false;
+                        allDone = false;
                     }
                 }
                 if (allDone)
                 {
-                    var birdTrainingCourse = _unitOfWork.BirdTrainingCourseRepository.GetFirst(e => e.Id == entity.BirdTrainingCourseId).Result;
+                    var birdTrainingCourse = _unitOfWork.BirdTrainingCourseRepository.GetFirst(e => e.Id == entity.BirdTrainingCourseId
+                                                                                               , nameof(BirdTrainingCourse.TrainingCourse)).Result;
                     birdTrainingCourse.TrainingDoneDate = DateTime.Now;
                     birdTrainingCourse.Status = (int)Models.Enum.BirdTrainingCourse.Status.TrainingDone;
+
+                    var birdCertificate = _unitOfWork.BirdCertificateRepository.GetFirst(e => e.TrainingCourseId == birdTrainingCourse.TrainingCourse.Id).Result;
+                    BirdCertificateDetailAddModel birdCertificateDetailAdd = new BirdCertificateDetailAddModel()
+                    {
+                        BirdId = birdTrainingCourse.BirdId,
+                        BirdTrainingCourseId = birdTrainingCourse.Id,
+                        BirdCertificateId = birdCertificate.Id,
+                    };
+                    await CreateBirdCertificateDetail(birdCertificateDetailAdd);
 
                     var bird = _unitOfWork.BirdRepository.GetFirst(e => e.Id == birdTrainingCourse.BirdId).Result;
                     bird.Status = (int)Models.Enum.Bird.Status.Ready;
@@ -77,11 +89,53 @@ namespace TrainingCourseSubsystem.Implementation
             }
         }
 
+        private async Task CreateBirdCertificateDetail(BirdCertificateDetailAddModel birdCertificateDetailAdd)
+        {
+            if (birdCertificateDetailAdd == null)
+            {
+                throw new Exception("Client send null param.");
+            }
+            else
+            {
+                var checkCertificate = _unitOfWork.BirdCertificateDetailRepository.Get(e => e.BirdTrainingCourseId == birdCertificateDetailAdd.BirdTrainingCourseId).Result;
+                if (checkCertificate != null)
+                {
+                    throw new Exception($"Bird certificate already given.");
+                }
+
+                var entity = _mapper.Map<BirdCertificateDetail>(birdCertificateDetailAdd);
+                await _unitOfWork.BirdCertificateDetailRepository.Add(entity);
+
+                var birdTrainingCourse = _unitOfWork.BirdTrainingCourseRepository.GetFirst(e => e.Id == entity.BirdTrainingCourseId).Result;
+                if (birdTrainingCourse != null)
+                {
+                    var passedSkill = _unitOfWork.BirdTrainingProgressRepository.Get(e => e.BirdTrainingCourseId == birdTrainingCourse.Id
+                                                                                      && e.Status == (int)Models.Enum.BirdTrainingProgress.Status.Pass).Result.ToList();
+                    if (passedSkill != null && passedSkill.Count() > 0)
+                    {
+                        foreach (var skill in passedSkill)
+                        {
+                            if (skill != null)
+                            {
+                                BirdSkillReceivedAddDeleteModel birdSkillReceivedAddModel = new BirdSkillReceivedAddDeleteModel()
+                                {
+                                    BirdId = entity.BirdId,
+                                    BirdSkillId = skill.TrainingCourseSkillId,
+                                };
+                                var birdSkillReceivedAdd = _mapper.Map<BirdSkillReceived>(birdSkillReceivedAddModel);
+                                await _unitOfWork.BirdSkillReceivedRepository.Add(birdSkillReceivedAdd);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         public async Task<int> MarkTrainingSlotDone(int birdTrainingReportId)//status 206 de chuyen qua trang khac
         {
             int result = (int)Models.Enum.BirdTrainingReport.FirstOrEnd.MidSlot;
             var entity = await _unitOfWork.BirdTrainingReportRepository.GetFirst(e => e.Id == birdTrainingReportId);
-            if(entity == null)
+            if (entity == null)
             {
                 throw new Exception("Entity not found");
             }
@@ -93,7 +147,7 @@ namespace TrainingCourseSubsystem.Implementation
 
                 var birdProgress = _unitOfWork.BirdTrainingProgressRepository.GetFirst(e => e.Id == entity.BirdTrainingProgressId
                                                                                         , nameof(BirdTrainingProgress.BirdTrainingCourse)).Result;
-                if(birdProgress != null)
+                if (birdProgress != null)
                 {
                     int firstOrEnd = FirstOrEndSlot(entity);
                     if (firstOrEnd == result)
@@ -118,7 +172,7 @@ namespace TrainingCourseSubsystem.Implementation
         }
         private int FirstOrEndSlot(BirdTrainingReport birdTrainingReport)
         {
-            if(birdTrainingReport == null)
+            if (birdTrainingReport == null)
             {
                 return (int)Models.Enum.BirdTrainingReport.FirstOrEnd.MidSlot;
             }
@@ -126,7 +180,7 @@ namespace TrainingCourseSubsystem.Implementation
             {
                 var birdReports = _unitOfWork.BirdTrainingReportRepository.Get(e => e.BirdTrainingProgressId == birdTrainingReport.BirdTrainingProgressId
                                                                                , nameof(BirdTrainingReport.TrainerSlot)).Result.ToList();
-                if(!birdReports.Any(e => e.Status == (int)Models.Enum.BirdTrainingReport.Status.Done))
+                if (!birdReports.Any(e => e.Status == (int)Models.Enum.BirdTrainingReport.Status.Done))
                 {
                     return (int)Models.Enum.BirdTrainingReport.FirstOrEnd.FirstSlot;
                 }
@@ -141,7 +195,7 @@ namespace TrainingCourseSubsystem.Implementation
                             finalSlot = currentSlot;
                         }
                     }
-                    if(finalSlot.CompareTo(DateTime.Now) == 0)
+                    if (finalSlot.CompareTo(DateTime.Now) == 0)
                     {
                         return (int)Models.Enum.BirdTrainingReport.FirstOrEnd.EndSlot;
                     }

@@ -15,5 +15,6 @@ namespace Models.ServiceModels.TrainingCourseModels.BirdCertificate.BirdCertific
         public int BirdCertificateId { get; set; }
         public DateTime ReceiveDate { get; set; }
         public BirdCertificateViewModel BirdCertificateViewModel { get; set; } = null!;
+        //so luong skill pass
     }
 }
