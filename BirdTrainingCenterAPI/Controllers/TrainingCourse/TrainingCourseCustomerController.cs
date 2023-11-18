@@ -52,17 +52,24 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         public async Task<IActionResult> UpdateBirdProfile([FromForm] BirdModifyParamModel bird)
         {
             var pictures = string.Empty;
-            if (bird.Pictures.Any(e => !e.IsImage()))
+            if(bird.Pictures != null)
             {
-                return BadRequest("Upload image only!");
+                if (bird.Pictures.Any(e => !e.IsImage()))
+                {
+                    return BadRequest("Upload image only!");
+                }
+                foreach (var file in bird.Pictures)
+                {
+                    string fileName = $"{nameof(BirdModel)}-{bird.Id}-{DateTime.Now.ToString("yyyyMMdd-HHmmss")}";
+                    var temp = await _firebaseService.UploadFile(file, fileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
+                    pictures += $"{temp},";
+                }
+                pictures = pictures.Substring(0, pictures.Length - 1);
             }
-            foreach (var file in bird.Pictures)
+            else
             {
-                string fileName = $"{nameof(BirdModel)}-{bird.Id}-{DateTime.Now.ToString("yyyyMMdd-HHmmss")}";
-                var temp = await _firebaseService.UploadFile(file, fileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
-                pictures += $"{temp},";
+                pictures = null;
             }
-            pictures = pictures.Substring(0, pictures.Length - 1);
             var birdModel = bird.ToBirdModifyModel(pictures);
 
             await _trainingCourseService.Customer.UpdateBirdProfile(birdModel);
