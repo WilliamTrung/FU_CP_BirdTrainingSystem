@@ -56,17 +56,24 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         public async Task<IActionResult> EditCourse([FromForm] TrainingCourseModParamModel trainingCourse)
         {
             var pictures = string.Empty;
-            if (trainingCourse.Pictures.Any(e => !e.IsImage()))
+            if(trainingCourse.Pictures != null)
             {
-                return BadRequest("Upload image only!");
+                if (trainingCourse.Pictures.Any(e => !e.IsImage()))
+                {
+                    return BadRequest("Upload image only!");
+                }
+                foreach (var file in trainingCourse.Pictures)
+                {
+                    string fileName = $"{nameof(TrainingCourseModel)}-{trainingCourse.Id}-{DateTime.Now.ToString("yyyyMMdd-HHmmss")}";
+                    var temp = await _firebaseService.UploadFile(file, fileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
+                    pictures += $"{temp},";
+                }
+                pictures = pictures.Substring(0, pictures.Length - 1);
             }
-            foreach (var file in trainingCourse.Pictures)
+            else
             {
-                string fileName = $"{nameof(TrainingCourseModel)}-{trainingCourse.Id}-{DateTime.Now.ToString("yyyyMMdd-HHmmss")}";
-                var temp = await _firebaseService.UploadFile(file, fileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
-                pictures += $"{temp},";
+                pictures = null;
             }
-            pictures = pictures.Substring(0, pictures.Length - 1);
             var trainingCourseModel = trainingCourse.ToTrainingCourseModel(pictures);
 
             await _trainingCourseService.Manager.EditCourse(trainingCourseModel);

@@ -138,8 +138,26 @@ namespace SP_AutoMapperConfig
                     destination.BirdName = bird.Name;
                 }
                 var birdCertificate = _unitOfWork.BirdCertificateRepository.GetFirst(e => e.Id == source.BirdCertificateId).Result;
-                var BirdCertificateView = _mapper.Map<BirdCertificateViewModel>(birdCertificate);
-                destination.BirdCertificateViewModel = BirdCertificateView;
+                var birdCertificateView = _mapper.Map<BirdCertificateViewModel>(birdCertificate);
+                destination.BirdCertificateViewModel = birdCertificateView;
+                if(birdCertificateView != null)
+                {
+                    destination.AllSkill = birdCertificateView.BirdCertificateSkillNames.Count();
+                }
+                else
+                {
+                    destination.AllSkill = 0;
+                }
+                var birdTrainingProgressPassed = _unitOfWork.BirdTrainingProgressRepository.Get(e => e.BirdTrainingCourseId == source.BirdTrainingCourseId
+                                                                                                && e.Status == (int)Models.Enum.BirdTrainingProgress.Status.Pass).Result.ToList();
+                if(birdTrainingProgressPassed == null)
+                {
+                    destination.PassedSkill = 0;
+                }
+                else
+                {
+                    destination.PassedSkill = birdTrainingProgressPassed.Count();
+                }
             }
         }
     }
