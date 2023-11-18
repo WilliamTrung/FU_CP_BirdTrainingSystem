@@ -9,6 +9,7 @@ using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
 using Models.ServiceModels.TrainingCourseModels.Bird;
 using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
 using Models.ServiceModels.TrainingCourseModels.BirdCertificate.BirdCertificateDetail;
+using Models.ServiceModels.TrainingCourseModels.BirdCertificate;
 
 namespace AppService.TrainingCourseService
 {

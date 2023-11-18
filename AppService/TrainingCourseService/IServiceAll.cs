@@ -36,5 +36,6 @@ namespace AppService.TrainingCourseService
         Task<BirdSkillViewModel> GetBirdSkillsById(int birdSkillId);
         Task<IEnumerable<SkillViewModModel>> GetSkills();
         Task<SkillViewModModel> GetSkillById(int skillId);
+        Task<IEnumerable<BirdSkillReceivedViewModel>> ViewBirdSkillReceived(int birdId);
     }
 }
