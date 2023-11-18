@@ -154,7 +154,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
                 StaffId = 8
             };
             var result = await _trainingCourseService.Staff.ConfirmBirdTrainingCourse(confirmModel);
-            return Ok(result);
+            return Ok();
         }
         [HttpPost]
         [Route("birdtrainingcourse-cancel")]

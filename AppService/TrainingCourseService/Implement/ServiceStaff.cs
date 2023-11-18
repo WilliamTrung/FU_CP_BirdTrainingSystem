@@ -175,6 +175,7 @@ namespace AppService.TrainingCourseService.Implement
         {
             var reports = GetReportByProgressId(progressId).Result;
             bool IsAssignable = true;
+            List<string> busySlot = new List<string>();
             if(reports != null)
             {
                 foreach(var report in reports)
@@ -182,6 +183,8 @@ namespace AppService.TrainingCourseService.Implement
                     var trainerFree = _timetable.CheckTrainerFree(trainerId, report.Date, report.SlotId).Result;
                     if (!trainerFree)
                     {
+                        string busyString = $"/n slot {report.SlotId}, date {report.Date}";
+                        busySlot.Add(busyString);
                         IsAssignable = false;
                     }
                 }
@@ -192,7 +195,7 @@ namespace AppService.TrainingCourseService.Implement
             }
             else
             {
-                throw new Exception("Trainer is not free to assign.");
+                throw new Exception($"Trainer is not free to assign at {busySlot}");
             }
         }
 
