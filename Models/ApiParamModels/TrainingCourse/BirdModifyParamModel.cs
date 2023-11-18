@@ -12,7 +12,7 @@ namespace Models.ApiParamModels.TrainingCourse
     public class BirdModifyParamModel
     {
         public int Id { get; set; }
-        public int BirdSpeciesId { get; set; }
+        //public int BirdSpeciesId { get; set; }
         public string? Name { get; set; }
         public string? Color { get; set; }
         [FileImageValidator]
@@ -25,7 +25,7 @@ namespace Models.ApiParamModels.TrainingCourse
             return new BirdModifyModel
             {
                 Id= Id,
-                BirdSpeciesId = BirdSpeciesId,
+                //BirdSpeciesId = BirdSpeciesId,
                 Name = Name,
                 Color = Color,
                 Picture = picture,

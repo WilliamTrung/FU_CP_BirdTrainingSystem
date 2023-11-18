@@ -3,6 +3,7 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Models.Entities;
 using Models.ServiceModels.TrainingCourseModels.Bird;
+using Models.ServiceModels.TrainingCourseModels.BirdCertificate.BirdCertificateDetail;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
@@ -66,12 +67,28 @@ namespace TrainingCourseSubsystem.Implementation
                 throw new Exception("Entity is null.");
             }
             //entity.CustomerId = bird.CustomerId;
-            entity.BirdSpeciesId = bird.BirdSpeciesId;
+            //entity.BirdSpeciesId = bird.BirdSpeciesId;
             entity.Name = bird.Name ?? entity.Name;
             entity.Color = bird.Color ?? entity.Color;
             entity.Picture = bird.Picture ?? entity.Picture;
             entity.Description = bird.Description ?? entity.Description;
             entity.IsDefault = bird.IsDefault ?? entity.IsDefault;
+            if(entity.IsDefault == true)
+            {
+                var birds = _unitOfWork.BirdRepository.Get(e => e.CustomerId == entity.CustomerId
+                                                            && e.Id != entity.Id).Result;
+                if(birds != null)
+                {
+                    if(birds.Count() > 0)
+                    {
+                        foreach(var birdEntity in birds)
+                        {
+                            birdEntity.IsDefault = false;
+                            await _unitOfWork.BirdRepository.Update(birdEntity);
+                        }
+                    }
+                }
+            }
             await _unitOfWork.BirdRepository.Update(entity);
         }
 
@@ -192,6 +209,19 @@ namespace TrainingCourseSubsystem.Implementation
 
             var models = _mapper.Map<IEnumerable<TrainingCourseViewModel>>(entities);
             models = models.Where(e => trainingSkill.Any(m => m.TrainingCourseId == e.Id)).ToList();
+            return models;
+        }
+
+        public async Task<BirdCertificateDetailViewModel> ViewCertificateByBirdTrainingCourseId(int birdTrainingCourseId)
+        {
+            var birdCertificate = await _unitOfWork.BirdCertificateDetailRepository.GetFirst(e => e.BirdTrainingCourseId == birdTrainingCourseId);
+            var model = _mapper.Map<BirdCertificateDetailViewModel>(birdCertificate);
+            return model;
+        }
+        public async Task<IEnumerable<BirdCertificateDetailViewModel>> ViewCertificateByBirdId(int birdId)
+        {
+            var birdCertificates = await _unitOfWork.BirdCertificateDetailRepository.Get(e => e.BirdId == birdId);
+            var models = _mapper.Map<IEnumerable<BirdCertificateDetailViewModel>>(birdCertificates);
             return models;
         }
     }

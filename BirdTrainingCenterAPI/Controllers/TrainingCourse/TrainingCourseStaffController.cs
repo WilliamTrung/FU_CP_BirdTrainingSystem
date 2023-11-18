@@ -9,10 +9,11 @@ using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
 using SP_Middleware;
-using SP_Extension;
 using Models.ServiceModels.TrainingCourseModels.TrainerSlot;
 using System;
 using Models.ServiceModels.TrainingCourseModels.BirdCertificate.BirdCertificateDetail;
+using BirdTrainingCenterAPI.Helper;
+using Models.AuthModels;
 
 namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
 {
@@ -130,8 +131,30 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         [Route("birdtrainingcourse-confirm")]
         public async Task<IActionResult> ConfirmBirdTrainingCourse([FromQuery] int birdTrainingCourseId)
         {
-            var result = await _trainingCourseService.Staff.ConfirmBirdTrainingCourse(birdTrainingCourseId);
-            return Ok(result);
+            //var accessToken = Request.DeserializeToken(_authService);
+            //if (accessToken == null)
+            //{
+            //    return Unauthorized();
+            //}
+            //else
+            //{
+            //    var staffId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
+            //    BirdTrainingCourseConfirm confirmModel = new BirdTrainingCourseConfirm()
+            //    {
+            //        BirdTrainingCourseId = birdTrainingCourseId,
+            //        StaffId = Int32.Parse(staffId.Value)
+            //    };
+            //    var result = await _trainingCourseService.Staff.ConfirmBirdTrainingCourse(confirmModel);
+            //    return Ok(result);
+            //}
+
+            BirdTrainingCourseConfirm confirmModel = new BirdTrainingCourseConfirm()
+            {
+                BirdTrainingCourseId = birdTrainingCourseId,
+                StaffId = 8
+            };
+            var result = await _trainingCourseService.Staff.ConfirmBirdTrainingCourse(confirmModel);
+            return Ok();
         }
         [HttpPost]
         [Route("birdtrainingcourse-cancel")]
@@ -162,13 +185,13 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             var result = await _trainingCourseService.Staff.AssignTrainer(progressId, trainerId);
             return Ok(result);
         }
-        [HttpPost]
-        [Route("birdcertificatedetail")]
-        public async Task<IActionResult> CreateBirdCertificateDetail([FromBody] BirdCertificateDetailAddModel birdCertificateDetailAdd)
-        {
-            await _trainingCourseService.Staff.CreateBirdCertificateDetail(birdCertificateDetailAdd);
-            return Ok();
-        }
+        //[HttpPost]
+        //[Route("birdcertificatedetail")]
+        //public async Task<IActionResult> CreateBirdCertificateDetail([FromBody] BirdCertificateDetailAddModel birdCertificateDetailAdd)
+        //{
+        //    await _trainingCourseService.Staff.CreateBirdCertificateDetail(birdCertificateDetailAdd);
+        //    return Ok();
+        //}
 
         //[HttpPost]
         //[Route("generatedprogresstimetable-confirm")]

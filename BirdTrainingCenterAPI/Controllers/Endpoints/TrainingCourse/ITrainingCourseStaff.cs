@@ -82,8 +82,8 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
         [Route("trainerslot-modify")]
         Task<IActionResult> ModifyTrainingSlot(ReportModifyModel reportModModel);
 
-        [HttpPost]
-        [Route("birdcertificatedetail")]
-        Task<IActionResult> CreateBirdCertificateDetail(BirdCertificateDetailAddModel birdCertificateDetailAdd);
+        //[HttpPost]
+        //[Route("birdcertificatedetail")]
+        //Task<IActionResult> CreateBirdCertificateDetail(BirdCertificateDetailAddModel birdCertificateDetailAdd);
     }
 }

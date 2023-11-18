@@ -36,13 +36,27 @@ namespace AppService.TrainingCourseService.Implement
         {
             return await _trainingCourse.Staff.GetBirdTrainingCourseByBirdId(birdId);
         }
-        public async Task<IEnumerable<int>> ConfirmBirdTrainingCourse(int birdTrainingCourseId)
+        public async Task<IEnumerable<BirdTrainingProgressViewModel>> ConfirmBirdTrainingCourse(BirdTrainingCourseConfirm confirmModel)
         {
-            List<int> progresses = _trainingCourse.Staff.ConfirmBirdTrainingCourse(birdTrainingCourseId).Result.ToList();
+            List<int> progresses = _trainingCourse.Staff.ConfirmBirdTrainingCourse(confirmModel).Result.ToList();
             DateTime startDate = DateTime.Now;
             int slotId = 1;
             await GenerateTrainerTimetable(startDate, slotId, progresses);
-            return progresses;
+
+            List<BirdTrainingProgressViewModel> progressModels = new List<BirdTrainingProgressViewModel>();
+            if(progresses != null)
+            {
+                if(progresses.Count > 0)
+                {
+                    List<BirdTrainingProgressViewModel> query = _trainingCourse.Staff.GetBirdTrainingProgress().Result
+                                                                 .Where(e => progresses.Any(c => c == e.Id)).ToList();
+                    if(query != null)
+                    {
+                        progressModels = query;
+                    }
+                }
+            }
+            return progressModels;
         }
         public async Task CancelBirdTrainingCourse(int birdTrainingCourseId)
         {
@@ -161,6 +175,7 @@ namespace AppService.TrainingCourseService.Implement
         {
             var reports = GetReportByProgressId(progressId).Result;
             bool IsAssignable = true;
+            List<string> busySlot = new List<string>();
             if(reports != null)
             {
                 foreach(var report in reports)
@@ -168,6 +183,8 @@ namespace AppService.TrainingCourseService.Implement
                     var trainerFree = _timetable.CheckTrainerFree(trainerId, report.Date, report.SlotId).Result;
                     if (!trainerFree)
                     {
+                        string busyString = $"/n slot {report.SlotId}, date {report.Date}";
+                        busySlot.Add(busyString);
                         IsAssignable = false;
                     }
                 }
@@ -178,7 +195,7 @@ namespace AppService.TrainingCourseService.Implement
             }
             else
             {
-                throw new Exception("Trainer is not free to assign.");
+                throw new Exception($"Trainer is not free to assign at {busySlot}");
             }
         }
 
@@ -202,9 +219,9 @@ namespace AppService.TrainingCourseService.Implement
             }
         }
 
-        public async Task CreateBirdCertificateDetail(BirdCertificateDetailAddModel birdCertificateDetailAdd)
-        {
-            await _trainingCourse.Staff.CreateBirdCertificateDetail(birdCertificateDetailAdd);
-        }
+        //public async Task CreateBirdCertificateDetail(BirdCertificateDetailAddModel birdCertificateDetailAdd)
+        //{
+        //    await _trainingCourse.Staff.CreateBirdCertificateDetail(birdCertificateDetailAdd);
+        //}
     }
 }
