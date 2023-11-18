@@ -1,5 +1,4 @@
-﻿using AppCore.Models;
-using AppRepository.UnitOfWork;
+﻿using AppRepository.UnitOfWork;
 using AutoMapper;
 using Models.Enum.Trainer;
 using Models.ServiceModels;
@@ -10,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Models.Entities;
 
 namespace AdviceConsultingSubsystem.Implementation
 {
@@ -100,6 +100,12 @@ namespace AdviceConsultingSubsystem.Implementation
             var entity = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id == ticketId);
             var trainerId = (int)entity.TrainerId;
             return trainerId;
+        }
+
+        public async Task<ConsultingTicket> GetConsultingTicketByIDForDoingFunction(int id)
+        {
+            var entity = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id == id);
+            return entity;
         }
     }
 }

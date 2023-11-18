@@ -1,4 +1,5 @@
-﻿using Models.ServiceModels;
+﻿using Models.Entities;
+using Models.ServiceModels;
 using Models.ServiceModels.AdviceConsultantModels;
 using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
 using System;
@@ -18,5 +19,6 @@ namespace AdviceConsultingSubsystem
         Task<IEnumerable<ConsultingTypeServiceModel>> GetConsutlingType();
         Task CheckOutDateTicket();
         Task<int> GetTrainerIdByTicketId (int ticketId);
+        Task<ConsultingTicket> GetConsultingTicketByIDForDoingFunction(int id);
     }
 }
