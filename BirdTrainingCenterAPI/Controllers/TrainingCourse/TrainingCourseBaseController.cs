@@ -30,13 +30,13 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             string accessToken = authHeader[0].Split(' ')[1];
             return _authService.DeserializedToken(accessToken);
         }
-        [HttpGet]
-        [Route("test-auth")]
-        public IActionResult TestAuth()
-        {
-            var role = DeserializeToken();
-            return Ok(role);
-        }
+        //[HttpGet]
+        //[Route("test-auth")]
+        //public IActionResult TestAuth()
+        //{
+        //    var role = DeserializeToken();
+        //    return Ok(role);
+        //}
         [HttpGet]
         [Route("birdspecies")]
         public async Task<IActionResult> GetBirdSpecies()
