@@ -79,7 +79,7 @@ namespace AdviceConsultingSubsystem.Implementation
             }
 
             entity.TrainerId = trainerId;
-
+            entity.Status = (int)Models.Enum.ConsultingTicket.Status.Approved;
             await _unitOfWork.ConsultingTicketRepository.Update(entity);
         }
 
