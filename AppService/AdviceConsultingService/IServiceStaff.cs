@@ -1,4 +1,5 @@
-﻿using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
+﻿using Models.Entities;
+using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,7 @@ namespace AppService.AdviceConsultingService
         Task<IEnumerable<ConsultingTicketListViewModel>> GetListConsultingTicketsByCustomerID(int customerID);
         Task<IEnumerable<ConsultingTicketListViewModel>> GetListHandledConsultingTicket();
         Task<ConsultingTicketDetailViewModel> GetConsultingTicketByID(int id);
+        Task<ConsultingTicket> GetConsultingTicketByIDForDoingFunction(int id);
         Task AssignTrainer(int trainerId, int ticketId);
         Task ApproveConsultingTicket(int ticketId);
         Task CancelConsultingTicket(int ticketId);

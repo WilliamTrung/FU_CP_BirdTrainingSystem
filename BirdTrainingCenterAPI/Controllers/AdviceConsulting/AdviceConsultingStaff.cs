@@ -21,7 +21,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         }
         [HttpPut]
         [Route("approveConsultingTicket")]
-        public async Task<IActionResult> ApproveConsultingTicket(int ticketId, DateTime date, int slotId)
+        public async Task<IActionResult> ApproveConsultingTicket(int ticketId)
         {
             try
             {
@@ -31,8 +31,10 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
                     return Unauthorized();
                 }
 
-                
                 var trainerId = await _consultingService.Other.GetTrainerIdByTicketId(ticketId);
+                var ticket = await _consultingService.Other.GetConsultingTicketByIDForDoingFunction(ticketId);
+                var date = (DateTime)ticket.AppointmentDate;
+                var slotId = ticket.ActualSlotStart;
 
                 //Validate kiểm tra lịch rảnh của trainer
                 var trainerFreeSLot = await _timetable.All.GetFreeSlotOnSelectedDateOfTrainer(date, trainerId);

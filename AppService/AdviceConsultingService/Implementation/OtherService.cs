@@ -1,4 +1,5 @@
 ﻿using AdviceConsultingSubsystem;
+using Models.Entities;
 using Models.ServiceModels.AdviceConsultantModels;
 using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
 using System;
@@ -30,6 +31,11 @@ namespace AppService.AdviceConsultingService.Implementation
         public async Task<ConsultingTicketDetailViewModel> GetConsultingTicketById(int id)
         {
             return await _consulting.Other.GetConsultingTicketById(id);
+        }
+
+        public async Task<ConsultingTicket> GetConsultingTicketByIDForDoingFunction(int id)
+        {
+            return await _consulting.Other.GetConsultingTicketByIDForDoingFunction(id);
         }
 
         public async Task<IEnumerable<ConsultingTicketListViewModel>> GetConsultingTicketList()
