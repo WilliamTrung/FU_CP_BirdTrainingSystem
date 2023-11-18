@@ -8,7 +8,7 @@ namespace Models.Enum.ConsultingTicket
 {
     public enum Status
     {
-        Canceled = 0,
+        Cancelled = 0,
         WaitingForApprove = 1,
         Approved = 2,
         Finished = 3

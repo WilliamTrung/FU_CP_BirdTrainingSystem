@@ -90,7 +90,7 @@ namespace AdviceConsultingSubsystem.Implementation
                 var date = DateTime.Now;
                 if (entity.AppointmentDate < date && entity.Status == (int)Models.Enum.ConsultingTicket.Status.WaitingForApprove)
                 {
-                    entity.Status = (int)Models.Enum.ConsultingTicket.Status.Canceled;
+                    entity.Status = (int)Models.Enum.ConsultingTicket.Status.Cancelled;
                 }
             }
         }
