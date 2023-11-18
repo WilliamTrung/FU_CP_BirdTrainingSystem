@@ -28,5 +28,5 @@ public interface IFeatureCustomer : IFeatureAll
     Task<IEnumerable<BirdTrainingProgressViewModel>> ViewBirdTrainingCourseProgress(int birdTrainingCourseId);
     Task<IEnumerable<BirdTrainingReportViewModel>> ViewBirdTrainingCourseReport(int birdTrainingProgressId);
     Task<BirdCertificateDetailViewModel> ViewCertificateByBirdTrainingCourseId(int birdTrainingCourseId);
-    Task<IEnumerable<BirdCertificateDetailViewModel>> ViewCertificateByBirdCertificateId(int birdId);
+    Task<IEnumerable<BirdCertificateDetailViewModel>> ViewCertificateByBirdId(int birdId);
 }

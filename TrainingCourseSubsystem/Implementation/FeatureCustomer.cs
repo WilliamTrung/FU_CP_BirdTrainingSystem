@@ -218,7 +218,7 @@ namespace TrainingCourseSubsystem.Implementation
             var model = _mapper.Map<BirdCertificateDetailViewModel>(birdCertificate);
             return model;
         }
-        public async Task<IEnumerable<BirdCertificateDetailViewModel>> ViewCertificateByBirdCertificateId(int birdId)
+        public async Task<IEnumerable<BirdCertificateDetailViewModel>> ViewCertificateByBirdId(int birdId)
         {
             var birdCertificates = await _unitOfWork.BirdCertificateDetailRepository.Get(e => e.BirdId == birdId);
             var models = _mapper.Map<IEnumerable<BirdCertificateDetailViewModel>>(birdCertificates);

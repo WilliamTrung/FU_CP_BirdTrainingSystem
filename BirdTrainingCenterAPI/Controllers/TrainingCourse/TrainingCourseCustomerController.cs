@@ -9,6 +9,7 @@ using Models.AuthModels;
 using Models.ConfigModels;
 using Models.ServiceModels.TrainingCourseModels;
 using Models.ServiceModels.TrainingCourseModels.Bird;
+using Models.ServiceModels.TrainingCourseModels.BirdCertificate.BirdCertificateDetail;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
 
 namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
@@ -159,6 +160,22 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             //    return Ok(result);
             //}
             var result = await _trainingCourseService.Customer.ViewRegisteredTrainingCourse(birdId: birdId, customerId: customerId);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("birdcertificate-requestedId")]
+        public async Task<IActionResult> ViewCertificateByBirdTrainingCourseId(int birdTrainingCourseId)
+        {
+            var result = await _trainingCourseService.Customer.ViewCertificateByBirdTrainingCourseId(birdTrainingCourseId);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("birdcertificate-birdId")]
+        public async Task<IActionResult> ViewCertificateByBirdCertificateId(int birdId)
+        {
+            var result = await _trainingCourseService.Customer.ViewCertificateByBirdId(birdId);
             return Ok(result);
         }
     }

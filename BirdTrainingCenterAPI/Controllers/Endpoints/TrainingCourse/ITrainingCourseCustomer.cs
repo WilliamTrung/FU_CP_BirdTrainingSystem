@@ -5,6 +5,7 @@ using Models.ServiceModels.TrainingCourseModels;
 using Microsoft.AspNetCore.Mvc;
 using Models.ApiParamModels.TrainingCourse;
 using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
+using Models.ServiceModels.TrainingCourseModels.BirdCertificate.BirdCertificateDetail;
 
 namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
 {
@@ -57,5 +58,13 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
         [HttpGet]
         [Route("registered-birdtrainingcoursereport")]
         Task<IActionResult> GetRegisteredBirdTrainingCourseReport([FromQuery] int birdTrainingProgressId);
+
+        [HttpGet]
+        [Route("birdcertificate-requestedId")]
+        Task<IActionResult> ViewCertificateByBirdTrainingCourseId(int birdTrainingCourseId);
+
+        [HttpGet]
+        [Route("birdcertificate-birdId")]
+        Task<IActionResult> ViewCertificateByBirdCertificateId(int birdId);
     }
 }
