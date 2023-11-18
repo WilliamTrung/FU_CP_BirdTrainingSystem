@@ -11,8 +11,8 @@ namespace Models.ServiceModels.AdviceConsultantModels.ConsultingTicket
         public int Id { get; set; }
         public bool OnlineOrOffline { get; set; }
         public DateTime? AppointmentDate { get; set; }
-        public int ActualSlotStart { get; set; }
-        public int? ActualEndSlot { get; set; }
-        public int Status { get; set; }
+        public string ActualSlotStart { get; set; }
+        public string? ActualEndSlot { get; set; }
+        public Models.Enum.ConsultingTicket.Status Status { get; set; }
     }
 }
