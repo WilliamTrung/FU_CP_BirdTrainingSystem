@@ -36,13 +36,27 @@ namespace AppService.TrainingCourseService.Implement
         {
             return await _trainingCourse.Staff.GetBirdTrainingCourseByBirdId(birdId);
         }
-        public async Task<IEnumerable<int>> ConfirmBirdTrainingCourse(BirdTrainingCourseConfirm confirmModel)
+        public async Task<IEnumerable<BirdTrainingProgressViewModel>> ConfirmBirdTrainingCourse(BirdTrainingCourseConfirm confirmModel)
         {
             List<int> progresses = _trainingCourse.Staff.ConfirmBirdTrainingCourse(confirmModel).Result.ToList();
             DateTime startDate = DateTime.Now;
             int slotId = 1;
             await GenerateTrainerTimetable(startDate, slotId, progresses);
-            return progresses;
+
+            List<BirdTrainingProgressViewModel> progressModels = new List<BirdTrainingProgressViewModel>();
+            if(progresses != null)
+            {
+                if(progresses.Count > 0)
+                {
+                    List<BirdTrainingProgressViewModel> query = _trainingCourse.Staff.GetBirdTrainingProgress().Result
+                                                                 .Where(e => progresses.Any(c => c == e.Id)).ToList();
+                    if(query != null)
+                    {
+                        progressModels = query;
+                    }
+                }
+            }
+            return progressModels;
         }
         public async Task CancelBirdTrainingCourse(int birdTrainingCourseId)
         {
