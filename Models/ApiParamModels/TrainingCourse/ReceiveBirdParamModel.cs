@@ -13,7 +13,7 @@ namespace Models.ApiParamModels.TrainingCourse
     public class ReceiveBirdParamModel
     {
         public int Id { get; set; }
-        public int ReceiveStaffId { get; set; }
+        //public int ReceiveStaffId { get; set; }
         //public DateTime? ActualStartDate { get; set; }
         //public DateTime? ExpectedTrainingDoneDate { get; set; } //BE gen
         //public DateTime? DateReceivedBird { get; set; } //BE gen
@@ -28,7 +28,7 @@ namespace Models.ApiParamModels.TrainingCourse
             return new BirdTrainingCourseReceiveBird
             {
                 Id = Id,
-                ReceiveStaffId= ReceiveStaffId,
+                //ReceiveStaffId= ReceiveStaffId,
                 ReceiveNote = ReceiveNote,
                 ReceivePicture = receivePicture
             };

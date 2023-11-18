@@ -14,7 +14,7 @@ namespace Models.ApiParamModels.TrainingCourse
     public class ReturnBirdParamModel
     {
         public int Id { get; set; }
-        public int ReturnStaffId { get; set; }
+        //public int ReturnStaffId { get; set; }
         //public DateTime? ActualDateReturn { get; set; } //BE gen
         public string? ReturnNote { get; set; }
         [FileImageValidator]
@@ -29,7 +29,7 @@ namespace Models.ApiParamModels.TrainingCourse
             return new BirdTrainingCourseReturnBird
             {
                 Id = Id,
-                ReturnStaffId = ReturnStaffId,
+                //ReturnStaffId = ReturnStaffId,
                 ReturnNote = ReturnNote,
                 ReturnPicture = returnPicture
             };
