@@ -60,7 +60,7 @@ namespace SP_AutoMapperConfig
         private void Map_ConsultingTicket_ConsultingTicketListViewModel()
         {
             CreateMap<ConsultingTicket, ConsultingTicketListViewModel>()
-                .AfterMap<MappingAction_ConsultingTicket_ConsultingTicketListView>();
+                .AfterMap<  MappingAction_ConsultingTicket_ConsultingTicketListView>();
         }
         private void Map_AdviceConsultingTrainerSlotServiceModel_TrainerSlot()
         {
@@ -97,14 +97,21 @@ namespace SP_AutoMapperConfig
 
             public void Process(ConsultingTicket source, ConsultingTicketListViewModel destination, ResolutionContext context)
             {
-                var slotStart = _uow.SlotRepository.GetFirst(x => x.Id == source.Id).Result;
-                var endSlot = _uow.SlotRepository.GetFirst(x => x.Id == source.Id).Result;
+                var slotStart = _uow.SlotRepository.GetFirst(x => x.Id == source.ActualSlotStart).Result;
+                var endSlot = _uow.SlotRepository.GetFirst(x => x.Id == source.ActualEndSlot).Result;
 
                 destination.Id = source.Id;
                 destination.OnlineOrOffline = source.OnlineOrOffline;
                 destination.AppointmentDate = source.AppointmentDate;
                 destination.ActualSlotStart = slotStart.StartTime + " - " + slotStart.EndTime;
-                destination.ActualEndSlot = endSlot.StartTime + " - " + endSlot.EndTime;
+                if (endSlot != null)
+                {
+                    destination.ActualEndSlot = endSlot.StartTime + " - " + endSlot.EndTime;
+                }
+                else
+                {
+                    destination.ActualEndSlot = null;
+                }
             }
         }
 
@@ -182,7 +189,14 @@ namespace SP_AutoMapperConfig
                 destination.GgMeetLink = source.GgMeetLink;
                 destination.AppointmentDate = (DateTime)source.AppointmentDate;
                 destination.ActualSlotStart =   slotstart.StartTime + " - " + slotstart.EndTime;
-                destination.ActualEndSlot = endSLot.StartTime + " - " + endSLot.EndTime;
+                if (endSLot != null)
+                {
+                    destination.ActualEndSlot = endSLot.StartTime + " - " + endSLot.EndTime;
+                }
+                else
+                {
+                    destination.ActualEndSlot = null; 
+                }
                 destination.Price = source.Price;
                 destination.Status = (Models.Enum.ConsultingTicket.Status)source.Status;
             }
