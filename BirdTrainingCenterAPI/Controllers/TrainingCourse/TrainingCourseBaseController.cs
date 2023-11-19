@@ -2,6 +2,7 @@
 using AppService.TrainingCourseService;
 using BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Query;
 using Models.ServiceModels.TrainingCourseModels.BirdCertificate;
 using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
 using System.Security.Claims;
@@ -38,6 +39,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         //    return Ok(role);
         //}
         [HttpGet]
+        [EnableQuery]
         [Route("birdspecies")]
         public async Task<IActionResult> GetBirdSpecies()
         {
