@@ -52,11 +52,14 @@ namespace TrainingCourseSubsystem.Implementation
             }
             else
             {
-                entity.BirdSpeciesId = trainingCourse.BirdSpeciesId;
-                entity.Title = trainingCourse.Title;
+                entity.BirdSpeciesId = trainingCourse.BirdSpeciesId ?? entity.BirdSpeciesId;
+                entity.Title = trainingCourse.Title ?? entity.Title;
                 entity.Description = trainingCourse.Description ?? entity.Description;
-                entity.Picture = trainingCourse.Picture ?? entity.Picture;
-                entity.TotalPrice = trainingCourse.TotalPrice == 0 ? trainingCourse.TotalPrice : entity.TotalPrice;
+                if (trainingCourse.Picture != null && trainingCourse.Picture != string.Empty)
+                {
+                    entity.Picture = trainingCourse.Picture;
+                }
+                entity.TotalPrice = trainingCourse.TotalPrice ?? entity.TotalPrice;
                 entity.Status = (int)Models.Enum.TrainingCourse.Status.Modifying;
                 await _unitOfWork.TrainingCourseRepository.Update(entity);
             }
@@ -227,12 +230,12 @@ namespace TrainingCourseSubsystem.Implementation
             }
             else
             {
-                entity.Name = birdSkillMod.Name;
+                entity.Name = birdSkillMod.Name ?? entity.Name;
                 if(birdSkillMod.Description != null)
                 {
                     entity.Description = birdSkillMod.Description;
                 }
-                if (birdSkillMod.Picture != null)
+                if (birdSkillMod.Picture != null && birdSkillMod.Picture != string.Empty)
                 {
                     entity.Picture = birdSkillMod.Picture;
                 }

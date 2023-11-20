@@ -31,17 +31,22 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         public async Task<IActionResult> RegisterBird([FromForm] BirdAddParamModel bird)
         {
             var pictures = string.Empty;
-            if (bird.Pictures.Any(e => !e.IsImage()))
+            if(bird.Picture != null)
             {
-                return BadRequest("Upload image only!");
-            }
-            foreach (var file in bird.Pictures)
-            {
+                if (!bird.Picture.IsImage())
+                {
+                    return BadRequest("Upload image only!");
+                }
                 string fileName = $"{nameof(BirdModel)}-{bird.Name}-{bird.CustomerId}-{DateTime.Now.ToString("yyyyMMdd-HHmmss")}";
-                var temp = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
+                var temp = await _firebaseService.UploadFile(bird.Picture, fileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
                 pictures += $"{temp},";
+
+                pictures = pictures.Substring(0, pictures.Length - 1);
             }
-            pictures = pictures.Substring(0, pictures.Length - 1);
+            else
+            {
+                pictures = null;
+            }
             var birdModel = bird.ToBirdAddModel(pictures);
 
             await _trainingCourseService.Customer.RegisterBird(birdModel);
@@ -52,18 +57,16 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         public async Task<IActionResult> UpdateBirdProfile([FromForm] BirdModifyParamModel bird)
         {
             var pictures = string.Empty;
-            if(bird.Pictures != null)
+            if (bird.Picture != null)
             {
-                if (bird.Pictures.Any(e => !e.IsImage()))
+                if (!bird.Picture.IsImage())
                 {
                     return BadRequest("Upload image only!");
                 }
-                foreach (var file in bird.Pictures)
-                {
-                    string fileName = $"{nameof(BirdModel)}-{bird.Id}-{DateTime.Now.ToString("yyyyMMdd-HHmmss")}";
-                    var temp = await _firebaseService.UploadFile(file, fileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
-                    pictures += $"{temp},";
-                }
+                string fileName = $"{nameof(BirdModel)}-{bird.Name}-{bird.Id}-{DateTime.Now.ToString("yyyyMMdd-HHmmss")}";
+                var temp = await _firebaseService.UploadFile(bird.Picture, fileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
+                pictures += $"{temp},";
+
                 pictures = pictures.Substring(0, pictures.Length - 1);
             }
             else

@@ -80,7 +80,10 @@ namespace TrainingCourseSubsystem.Implementation
             //entity.BirdSpeciesId = bird.BirdSpeciesId;
             entity.Name = bird.Name ?? entity.Name;
             entity.Color = bird.Color ?? entity.Color;
-            entity.Picture = bird.Picture ?? entity.Picture;
+            if(bird.Picture != null && bird.Picture != string.Empty)
+            {
+                entity.Picture = bird.Picture;
+            }
             entity.Description = bird.Description ?? entity.Description;
             entity.IsDefault = bird.IsDefault ?? entity.IsDefault;
             if(entity.IsDefault == true)

@@ -12,7 +12,6 @@ namespace Models.ApiParamModels.TrainingCourse
     public class TrainerMarkDoneParamModel
     {
         public int Id { get; set; }
-        //[FileImageValidator]
         public List<IFormFile>? Evidences { get; set; }
         public string Status { get; set; } = null!;
 

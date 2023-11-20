@@ -59,7 +59,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             var pictures = string.Empty;
             if(trainingCourse.Pictures != null)
             {
-                if (trainingCourse.Pictures.Any(e => !e.IsImage()))
+                if (!trainingCourse.Pictures.Any(e => !e.IsImage()))
                 {
                     return BadRequest("Upload image only!");
                 }
@@ -166,7 +166,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             var pictures = string.Empty;
             if(birdSkillMod.Picture != null)
             {
-                if (birdSkillMod.Picture.IsImage())
+                if (!birdSkillMod.Picture.IsImage())
                 {
                     return BadRequest("Upload image only!");
                 }
@@ -174,6 +174,10 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
                 var temp = await _firebaseService.UploadFile(birdSkillMod.Picture, fileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
                 pictures += $"{temp},";
                 pictures = pictures.Substring(0, pictures.Length - 1);
+            }
+            else
+            {
+                pictures = null;
             }
             var birdSkillModModel = birdSkillMod.ToBirdSkillModModel(pictures);
             await _trainingCourseService.Manager.EditBirdSkill(birdSkillModModel);

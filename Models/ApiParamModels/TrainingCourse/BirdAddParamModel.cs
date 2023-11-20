@@ -17,7 +17,7 @@ namespace Models.ApiParamModels.TrainingCourse
         public string? Name { get; set; }
         public string? Color { get; set; }
         [FileImageValidator]
-        public List<IFormFile>? Pictures { get; set; }
+        public IFormFile? Picture { get; set; }
         public string? Description { get; set; }
         public bool? IsDefault { get; set; }
 
