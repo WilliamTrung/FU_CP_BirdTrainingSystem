@@ -18,6 +18,14 @@ namespace BirdTrainingCenterAPI.Controllers.OnlineCourse
         }
         [HttpGet]
         [EnableQuery]
+        [Route("courses")]
+        public async Task<IActionResult> GetCourses()
+        {
+            var result = await _onlineCourseService.Staff.GetCoursesAdmin();
+            return Ok(result);
+        }
+        [HttpGet]
+        [EnableQuery]
         [Route("lessons-by-section")]
         public async Task<IActionResult> GetLessonsBySection([FromQuery] int sectionId)
         {

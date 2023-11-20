@@ -1,4 +1,5 @@
 ﻿using Models.ServiceModels.OnlineCourseModels;
+using Models.ServiceModels.OnlineCourseModels.Operation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,6 @@ namespace OnlineCourseSubsystem
         Task<IEnumerable<OnlineCourseSectionViewModel>> GetSectionsByCourseId(int courseId);
         Task<OnlineCourseLessonViewModel> GetLessonByLessonId(int lessonId);
         Task<OnlineCourseSectionViewModel> GetSectionById(int sectionId);
+        Task<IEnumerable<OnlineCourseAdminViewModel>> GetCoursesAdmin();
     }
 }

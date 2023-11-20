@@ -120,6 +120,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         }
 
         [HttpGet]
+        [EnableQuery]
         [Route("birdskill")]
         public async Task<IActionResult> GetBirdSkills()
         {
@@ -136,6 +137,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         }
 
         [HttpGet]
+        [EnableQuery]
         [Route("skill")]
         public async Task<IActionResult> GetSkills()
         {
