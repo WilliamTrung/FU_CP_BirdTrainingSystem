@@ -56,6 +56,7 @@ builder.Services.AddControllers().AddOData(options => options
                        x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.Workshop.Class.Customer.Status>());
                        x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.OnlineCourse.Customer.Section.Status>());
                        x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.OnlineCourse.Customer.Lesson.Status>());
+                       x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.OnlineCourse.Status>());
                        x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.Workshop.Transaction.Status>());
                        
                    }
@@ -79,6 +80,7 @@ builder.AddAdministrativeFeature();
 builder.AddTrainingCourseFeature();
 builder.AddAdviceConsultinFeature();
 builder.AddOnlineCourseFeature();
+builder.AddTrainingSkillFeature();
 builder.AddWorkshopHostedService();
 var app = builder.Build();
 

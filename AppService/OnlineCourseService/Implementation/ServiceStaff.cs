@@ -1,4 +1,5 @@
 ﻿using Models.ServiceModels.OnlineCourseModels;
+using Models.ServiceModels.OnlineCourseModels.Operation;
 using OnlineCourseSubsystem;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,12 @@ namespace AppService.OnlineCourseService.Implementation
     {
         public ServiceStaff(IOnlineCourseFeature onlineCourse) : base(onlineCourse)
         {
+        }
+
+        public async Task<IEnumerable<OnlineCourseAdminViewModel>> GetCoursesAdmin()
+        {
+            var result = await _onlineCourse.Staff.GetCoursesAdmin();
+            return result;
         }
 
         public async Task<OnlineCourseLessonViewModel> GetLessonById(int id)

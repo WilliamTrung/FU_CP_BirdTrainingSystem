@@ -1,4 +1,5 @@
 ﻿using AdviceConsultingSubsystem;
+using Models.Entities;
 using Models.ServiceModels.AdviceConsultantModels;
 using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
 using System;

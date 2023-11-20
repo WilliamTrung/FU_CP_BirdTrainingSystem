@@ -52,7 +52,7 @@ namespace AdviceConsultingSubsystem.Implementation
 
         public async Task<IEnumerable<ConsultingTicketListViewModel>> GetListHandledConsultingTicket()
         {
-            var entities = await _unitOfWork.ConsultingTicketRepository.Get(x => x.Status == (int)Models.Enum.ConsultingTicket.Status.Approved || x.Status == (int)Models.Enum.ConsultingTicket.Status.Canceled);
+            var entities = await _unitOfWork.ConsultingTicketRepository.Get(x => x.Status == (int)Models.Enum.ConsultingTicket.Status.Approved || x.Status == (int)Models.Enum.ConsultingTicket.Status.Cancelled);
             var models = new List<ConsultingTicketListViewModel>();
             foreach (var entity in entities)
             {
@@ -79,7 +79,7 @@ namespace AdviceConsultingSubsystem.Implementation
             }
 
             entity.TrainerId = trainerId;
-
+            entity.Status = (int)Models.Enum.ConsultingTicket.Status.Approved;
             await _unitOfWork.ConsultingTicketRepository.Update(entity);
         }
 
@@ -112,7 +112,7 @@ namespace AdviceConsultingSubsystem.Implementation
                 await _unitOfWork.TrainerSlotRepository.Delete(trainerSlot);
             }
 
-            entity.Status = (int)Models.Enum.ConsultingTicket.Status.Canceled;
+            entity.Status = (int)Models.Enum.ConsultingTicket.Status.Cancelled;
             await _unitOfWork.ConsultingTicketRepository.Update(entity);
         }
 

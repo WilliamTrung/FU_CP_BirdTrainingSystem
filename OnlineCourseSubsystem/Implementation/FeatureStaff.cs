@@ -2,6 +2,7 @@
 using AutoMapper;
 using Models.Entities;
 using Models.ServiceModels.OnlineCourseModels;
+using Models.ServiceModels.OnlineCourseModels.Operation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,15 @@ namespace OnlineCourseSubsystem.Implementation
         {
             var entities = await _unitOfWork.OnlineCourseRepository.Get();
             var models = _mapper.Map<List<OnlineCourseModel>>(entities);
+            return models;
+        }
+
+        public async Task<IEnumerable<OnlineCourseAdminViewModel>> GetCoursesAdmin()
+        {
+            var entities = await _unitOfWork.OnlineCourseRepository.Get(expression: null
+                                                                        , $"{nameof(OnlineCourse.Sections)}"
+                                                                        , $"{nameof(OnlineCourse.Sections)}.{nameof(Section.Lessons)}");
+            var models = _mapper.Map<List<OnlineCourseAdminViewModel>>(entities);
             return models;
         }
 
