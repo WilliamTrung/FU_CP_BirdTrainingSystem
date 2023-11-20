@@ -161,6 +161,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         }
 
         [HttpGet]
+        [EnableQuery]
         [Route("trainableskill")]
         public async Task<IActionResult> GetTrainableSkills()
         {
