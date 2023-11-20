@@ -14,7 +14,7 @@ namespace Models.ApiParamModels.TrainingCourse
         public int Id { get; set; }
         public string Name { get; set; } = null!;
         public string? Description { get; set; }
-        public IFormFile? Pictures { get; set; }
+        public IFormFile? Picture { get; set; }
 
         public BirdSkillModModel ToBirdSkillModModel(string picture)
         {

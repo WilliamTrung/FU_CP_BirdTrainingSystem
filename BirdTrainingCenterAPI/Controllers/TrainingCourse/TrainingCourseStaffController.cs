@@ -77,7 +77,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
                 }
                 foreach (var file in birdTrainingCourse.ReceivePictures)
                 {
-                    string fileName = $"{nameof(ReceiveBird)}-{birdTrainingCourse.Id}-{DateTime.Now.ToString("yyyyMMdd-HHmmss")}";
+                    string fileName = $"{nameof(ReceiveBird)}-{birdTrainingCourse.BirdTrainingCourseId}-{DateTime.Now.ToString("yyyyMMdd-HHmmss")}";
                     var temp = await _firebaseService.UploadFile(file, fileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
                     pictures += $"{temp},";
                 }
@@ -108,7 +108,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
                 }
                 foreach (var file in birdTrainingCourse.ReturnPictures)
                 {
-                    string fileName = $"{nameof(ReturnBird)}-{birdTrainingCourse.Id}-{DateTime.Now.ToString("yyyyMMdd-HHmmss")}";
+                    string fileName = $"{nameof(ReturnBird)}-{birdTrainingCourse.BirdTrainingCourseId}-{DateTime.Now.ToString("yyyyMMdd-HHmmss")}";
                     var temp = await _firebaseService.UploadFile(file, fileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
                     pictures += $"{temp},";
                 }
