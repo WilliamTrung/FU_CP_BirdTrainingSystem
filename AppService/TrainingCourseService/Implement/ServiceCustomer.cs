@@ -1,4 +1,6 @@
 ﻿using Models.ServiceModels.TrainingCourseModels.Bird;
+using Models.ServiceModels.TrainingCourseModels.BirdCertificate;
+using Models.ServiceModels.TrainingCourseModels.BirdCertificate.BirdCertificateDetail;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
@@ -77,6 +79,16 @@ namespace AppService.TrainingCourseService.Implement
         public async Task<IEnumerable<BirdTrainingCourseViewModel>> ViewRegisteredTrainingCourse(int birdId, int customerId)
         {
             return await _trainingCourse.Customer.ViewRegisteredTrainingCourse(birdId: birdId, customerId: customerId);
+        }
+
+        public async Task<BirdCertificateDetailViewModel> ViewCertificateByBirdTrainingCourseId(int birdTrainingCourseId)
+        {
+            return await _trainingCourse.Customer.ViewCertificateByBirdTrainingCourseId(birdTrainingCourseId);
+        }
+
+        public async Task<IEnumerable<BirdCertificateDetailViewModel>> ViewCertificateByBirdId(int birdId)
+        {
+            return await _trainingCourse.Customer.ViewCertificateByBirdId(birdId);
         }
     }
 }

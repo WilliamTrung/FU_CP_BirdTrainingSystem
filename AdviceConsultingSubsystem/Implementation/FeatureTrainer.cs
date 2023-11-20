@@ -24,7 +24,7 @@ namespace AdviceConsultingSubsystem.Implementation
         public async Task<IEnumerable<ConsultingTicketListViewModel>> GetListAssignedConsultingTicket(int trainerId)
         {
             var entities = await _unitOfWork.ConsultingTicketRepository.Get(x => x.Trainer.Id == trainerId
-                                                                                && x.Status == (int)Models.Enum.ConsultingTicket.Status.Confirmed);
+                                                                                && x.Status == (int)Models.Enum.ConsultingTicket.Status.Approved);
             var models = new List<ConsultingTicketListViewModel>();
             foreach (var entity in entities)
             {

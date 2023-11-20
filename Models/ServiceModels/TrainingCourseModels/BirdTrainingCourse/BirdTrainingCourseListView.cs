@@ -10,6 +10,7 @@ namespace Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse
     {
         public int Id { get; set; }
         public int TrainingCourseId { get; set; }
+        public int BirdId { get; set; }
         public string BirdName { get; set; } = null!;
         public int CustomerId { get; set; }
         public string CustomerName { get; set; } = null!;

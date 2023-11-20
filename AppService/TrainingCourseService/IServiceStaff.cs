@@ -39,19 +39,14 @@ namespace AppService.TrainingCourseService
         Task<IEnumerable<BirdTrainingCourseListView>> GetBirdTrainingCourseByCustomerId(int customerId);
         Task<IEnumerable<BirdTrainingCourseListView>> GetBirdTrainingCourseByBirdId(int birdId);
 
-        Task<IEnumerable<int>> ConfirmBirdTrainingCourse(int birdTrainingCourseId);//return list of progress
+        Task<IEnumerable<BirdTrainingProgressViewModel>> ConfirmBirdTrainingCourse(BirdTrainingCourseConfirm confirmModel);//return list of progress
         //Task<TrainerSlotModel> CreateTrainerSlot(TrainerSlotAddModel trainerSlotModel);//non api
         //Task CreateTrainingReport(InitReportTrainerSlot report);//non api
         Task CancelBirdTrainingCourse(int birdTrainingCourseId);
         Task<IEnumerable<BirdTrainingProgressViewModel>> GetTrainingCourseSkill(int birdTrainingCourseId);
         Task<IEnumerable<ReportModifyViewModel>> GetReportByProgressId(int progressId);
+        Task<BirdTrainingProgressViewModel> AssignTrainer(int progressId, int trainerId);
         Task ModifyTrainingSlot(ReportModifyModel reportModModel);
-
-
-        Task<IEnumerable<TrainerModel>> GetTrainer();
-        Task<IEnumerable<TrainerModel>> GetTrainerByBirdSkillId(int birdSkillId);
-        Task<IEnumerable<TrainerModel>> GetTrainerByTrainerSkillId(int trainerSkillId);
-        Task<TrainerModel> GetTrainerById(int trainerId);
 
 
         //Task<IEnumerable<BirdTrainingProgressModel>> GetBirdTrainingProgress();//non api
@@ -59,8 +54,8 @@ namespace AppService.TrainingCourseService
 
         Task ReceiveBird(BirdTrainingCourseReceiveBird birdTrainingCourse);
         Task ReturnBird(BirdTrainingCourseReturnBird birdTrainingCourse);
-        Task CreateBirdCertificateDetail(BirdCertificateDetailAddModel birdCertificateDetailAdd);
+        //Task CreateBirdCertificateDetail(BirdCertificateDetailAddModel birdCertificateDetailAdd);
 
-        Task GenerateTrainerTimetable(IEnumerable<int> progressId);
+        Task GenerateTrainerTimetable(DateTime startTrainingDate, int startTrainingSlot, IEnumerable<int> progressId);
     }
 }

@@ -8,7 +8,7 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting
     {
         [HttpGet]
         [Route("getListAssignedConsultingTicket")]
-        Task<IActionResult> GetListAssignedConsultingTicket([FromQuery]int trainerId);
+        Task<IActionResult> GetListAssignedConsultingTicket();
 
         [HttpPut]
         [Route("updateGooglemeetLink")]
@@ -16,7 +16,7 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting
 
         [HttpPut]
         [Route("finishAppointment")]
-        Task<IActionResult> FinishAppointment([FromForm] ConsultingTicketTrainerUpdateParamModel consultingTicket);
+        Task<IActionResult> FinishAppointment([FromForm] ConsultingTicketTrainerUpdateParamModel consultingTicket); 
 
     }
 }

@@ -8,8 +8,9 @@ using Models.ApiParamModels.TrainingCourse;
 using Models.AuthModels;
 using Models.ConfigModels;
 using Models.ServiceModels.TrainingCourseModels;
+using Models.ServiceModels.TrainingCourseModels.Bird;
+using Models.ServiceModels.TrainingCourseModels.BirdCertificate.BirdCertificateDetail;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
-using SP_Middleware;
 
 namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
 {
@@ -36,6 +37,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             }
             foreach (var file in bird.Pictures)
             {
+                string fileName = $"{nameof(BirdModel)}-{bird.Name}-{bird.CustomerId}-{DateTime.Now.ToString("yyyyMMdd-HHmmss")}";
                 var temp = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
                 pictures += $"{temp},";
             }
@@ -50,16 +52,24 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         public async Task<IActionResult> UpdateBirdProfile([FromForm] BirdModifyParamModel bird)
         {
             var pictures = string.Empty;
-            if (bird.Pictures.Any(e => !e.IsImage()))
+            if(bird.Pictures != null)
             {
-                return BadRequest("Upload image only!");
+                if (bird.Pictures.Any(e => !e.IsImage()))
+                {
+                    return BadRequest("Upload image only!");
+                }
+                foreach (var file in bird.Pictures)
+                {
+                    string fileName = $"{nameof(BirdModel)}-{bird.Id}-{DateTime.Now.ToString("yyyyMMdd-HHmmss")}";
+                    var temp = await _firebaseService.UploadFile(file, fileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
+                    pictures += $"{temp},";
+                }
+                pictures = pictures.Substring(0, pictures.Length - 1);
             }
-            foreach (var file in bird.Pictures)
+            else
             {
-                var temp = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
-                pictures += $"{temp},";
+                pictures = null;
             }
-            pictures = pictures.Substring(0, pictures.Length - 1);
             var birdModel = bird.ToBirdModifyModel(pictures);
 
             await _trainingCourseService.Customer.UpdateBirdProfile(birdModel);
@@ -127,20 +137,6 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             return Ok();
         }
         [HttpGet]
-        [Route("registered-birdtrainingcourseprogress")]
-        public async Task<IActionResult> GetRegisteredBirdTrainingCourseProgress([FromQuery] int birdTrainingCourseId)
-        {
-            var result = await _trainingCourseService.Customer.ViewBirdTrainingCourseProgress(birdTrainingCourseId);
-            return Ok(result);
-        }
-        [HttpGet]
-        [Route("registered-birdtrainingcoursereport")]
-        public async Task<IActionResult> GetRegisteredBirdTrainingCourseReport([FromQuery] int birdTrainingProgressId)
-        {
-            var result = await _trainingCourseService.Customer.ViewBirdTrainingCourseReport(birdTrainingProgressId);
-            return Ok(result);
-        }
-        [HttpGet]
         [Route("registered-birdtrainingcourse")]
         public async Task<IActionResult> GetRegisteredTrainingCourse([FromQuery] int birdId, [FromQuery] int customerId)
         {
@@ -157,6 +153,36 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             //    return Ok(result);
             //}
             var result = await _trainingCourseService.Customer.ViewRegisteredTrainingCourse(birdId: birdId, customerId: customerId);
+            return Ok(result);
+        }
+        [HttpGet]
+        [Route("registered-birdtrainingcourseprogress")]
+        public async Task<IActionResult> GetRegisteredBirdTrainingCourseProgress([FromQuery] int birdTrainingCourseId)
+        {
+            var result = await _trainingCourseService.Customer.ViewBirdTrainingCourseProgress(birdTrainingCourseId);
+            return Ok(result);
+        }
+        [HttpGet]
+        [Route("registered-birdtrainingcoursereport")]
+        public async Task<IActionResult> GetRegisteredBirdTrainingCourseReport([FromQuery] int birdTrainingProgressId)
+        {
+            var result = await _trainingCourseService.Customer.ViewBirdTrainingCourseReport(birdTrainingProgressId);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("birdcertificate-requestedId")]
+        public async Task<IActionResult> ViewCertificateByBirdTrainingCourseId(int birdTrainingCourseId)
+        {
+            var result = await _trainingCourseService.Customer.ViewCertificateByBirdTrainingCourseId(birdTrainingCourseId);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("birdcertificate-birdId")]
+        public async Task<IActionResult> ViewCertificateByBirdCertificateId(int birdId)
+        {
+            var result = await _trainingCourseService.Customer.ViewCertificateByBirdId(birdId);
             return Ok(result);
         }
     }

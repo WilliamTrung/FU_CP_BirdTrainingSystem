@@ -30,22 +30,6 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
         [Route("birdtrainingprogress-requestedId")]
         Task<IActionResult> GetBirdTrainingCourseProgressByBirdTrainingCourseId([FromQuery] int birdTrainingCourseId);
 
-        [HttpGet]
-        [Route("trainer")]
-        Task<IActionResult> GetTrainer();
-
-        [HttpGet]
-        [Route("trainer-birdskill")]
-        Task<IActionResult> GetTrainerByBirdSkillId([FromQuery] int birdSkillId);
-
-        [HttpPost]
-        [Route("trainer-id")]
-        Task<IActionResult> GetTrainerById([FromQuery] int trainerId);
-
-        [HttpPost]
-        [Route("trainer-skill")]
-        Task<IActionResult> GetTrainerByTrainerSkillId([FromQuery] int trainerSkillId);
-
         //[HttpPost]
         //[Route("generate-trainerslot")]
         //Task<IActionResult> GenerateTrainerTimetable([FromBody] IEnumerable<int> progressId);
@@ -62,9 +46,9 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
         [Route("birdtrainingcourse-confirm")]
         Task<IActionResult> ConfirmBirdTrainingCourse(int birdTrainingCourseId);
 
-        [HttpPost]
-        [Route("generatedprogresstimetable-confirm")]
-        Task<IActionResult> Generatedprogresstimetable(List<int> birdTrainingProgressId);
+        //[HttpPost]
+        //[Route("generatedprogresstimetable-confirm")]
+        //Task<IActionResult> Generatedprogresstimetable(List<int> birdTrainingProgressId);
 
         [HttpPost]
         [Route("birdtrainingcourse-cancel")]
@@ -75,11 +59,15 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
         Task<IActionResult> GetReportByProgressId(int progressId);
 
         [HttpPut]
+        [Route("assigntrainertoprogress")]
+        Task<IActionResult> AssignTrainer(int progressId, int trainerId);
+
+        [HttpPut]
         [Route("trainerslot-modify")]
         Task<IActionResult> ModifyTrainingSlot(ReportModifyModel reportModModel);
 
-        [HttpPost]
-        [Route("birdcertificatedetail")]
-        Task<IActionResult> CreateBirdCertificateDetail(BirdCertificateDetailAddModel birdCertificateDetailAdd);
+        //[HttpPost]
+        //[Route("birdcertificatedetail")]
+        //Task<IActionResult> CreateBirdCertificateDetail(BirdCertificateDetailAddModel birdCertificateDetailAdd);
     }
 }

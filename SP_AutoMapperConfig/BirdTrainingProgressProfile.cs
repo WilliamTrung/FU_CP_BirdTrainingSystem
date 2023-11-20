@@ -63,16 +63,18 @@ namespace SP_AutoMapperConfig
                 destination.TotalTrainingSlot = source.TotalTrainingSlot;
                 destination.Status = (Models.Enum.BirdTrainingProgress.Status)source.Status;
 
-                var skill = _unitOfWork.BirdSkillRepository.GetFirst(e => e.Id == source.TrainingCourseSkillId).Result;
-                if(skill != null)
+                var skill = _unitOfWork.TrainingCourseSkillRepository.GetFirst(e => e.Id == source.TrainingCourseSkillId
+                                                                                , nameof(TrainingCourseSkill.BirdSkill)).Result;
+                if (skill != null)
                 {
-                    destination.SkillName = skill.Name;
+                    destination.BirdSkillName = skill.BirdSkill.Name;
+                    destination.BirdSkillPicture = skill.BirdSkill.Picture;
                 }
-                if(source.TrainerId != null)
+                if (source.TrainerId != null)
                 {
                     var trainer = _unitOfWork.TrainerRepository.GetFirst(e => e.Id == source.TrainerId
                                                                             , nameof(Trainer.User)).Result;
-                    if(trainer != null)
+                    if (trainer != null)
                     {
                         destination.TrainerId = source.TrainerId;
                         destination.TrainerName = trainer.User.Name;
@@ -82,6 +84,27 @@ namespace SP_AutoMapperConfig
                 {
                     destination.TrainerId = null;
                     destination.TrainerName = null;
+                }
+
+                var reports = _unitOfWork.BirdTrainingReportRepository.Get(e => e.BirdTrainingProgressId == source.Id
+                                                                            && e.Status == (int)Models.Enum.BirdTrainingReport.Status.Done).Result.ToList();
+                if (reports == null)
+                {
+                    destination.TrainingProgression = 0;
+                }
+                else
+                {
+                    if (reports.Count == 0)
+                    {
+                        destination.TrainingProgression = 0;
+                    }
+                    else
+                    {
+                        double doneReport = (double)reports.Count;
+                        double progression = doneReport / source.TotalTrainingSlot;
+                        double progressionRounded = Math.Round(progression, 4);
+                        destination.TrainingProgression = progressionRounded;
+                    }
                 }
             }
         }

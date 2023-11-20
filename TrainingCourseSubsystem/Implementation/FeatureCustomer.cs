@@ -3,6 +3,8 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Models.Entities;
 using Models.ServiceModels.TrainingCourseModels.Bird;
+using Models.ServiceModels.TrainingCourseModels.BirdCertificate;
+using Models.ServiceModels.TrainingCourseModels.BirdCertificate.BirdCertificateDetail;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
@@ -50,6 +52,15 @@ namespace TrainingCourseSubsystem.Implementation
             {
                 throw new Exception("Entity is null.");
             }
+            else
+            {
+                var birds = GetBirdByCustomerId(entity.CustomerId).Result;
+                if(birds == null)
+                {
+                    entity.IsDefault = true;
+                }
+            }
+            entity.IsDefault = false;
             entity.Status = (int)Models.Enum.Bird.Status.Ready;
             await _unitOfWork.BirdRepository.Add(entity);
         }
@@ -66,12 +77,28 @@ namespace TrainingCourseSubsystem.Implementation
                 throw new Exception("Entity is null.");
             }
             //entity.CustomerId = bird.CustomerId;
-            entity.BirdSpeciesId = bird.BirdSpeciesId;
-            entity.Name = bird.Name;
-            entity.Color = bird.Color;
-            entity.Picture = bird.Picture;
-            entity.Description = bird.Description;
-            entity.IsDefault = bird.IsDefault;
+            //entity.BirdSpeciesId = bird.BirdSpeciesId;
+            entity.Name = bird.Name ?? entity.Name;
+            entity.Color = bird.Color ?? entity.Color;
+            entity.Picture = bird.Picture ?? entity.Picture;
+            entity.Description = bird.Description ?? entity.Description;
+            entity.IsDefault = bird.IsDefault ?? entity.IsDefault;
+            if(entity.IsDefault == true)
+            {
+                var birds = _unitOfWork.BirdRepository.Get(e => e.CustomerId == entity.CustomerId
+                                                            && e.Id != entity.Id).Result;
+                if(birds != null)
+                {
+                    if(birds.Count() > 0)
+                    {
+                        foreach(var birdEntity in birds)
+                        {
+                            birdEntity.IsDefault = false;
+                            await _unitOfWork.BirdRepository.Update(birdEntity);
+                        }
+                    }
+                }
+            }
             await _unitOfWork.BirdRepository.Update(entity);
         }
 
@@ -79,6 +106,15 @@ namespace TrainingCourseSubsystem.Implementation
         {
             if (birdTrainingCourseRegister == null)
                 throw new Exception("Client send null model.");
+            var bird = _unitOfWork.BirdRepository.GetFirst(e => e.Id == birdTrainingCourseRegister.BirdId).Result;
+            var trainingCourse = _unitOfWork.TrainingCourseRepository.GetFirst(e => e.Id == birdTrainingCourseRegister.TrainingCourseId).Result;
+            if (trainingCourse != null && bird != null)
+            {
+                if(bird.BirdSpeciesId != trainingCourse.BirdSpeciesId)
+                {
+                    throw new Exception("Bird can not learn this course because of species difference.");
+                }
+            }
             var entity = _mapper.Map<BirdTrainingCourse>(birdTrainingCourseRegister);
             if (entity == null)
             {
@@ -125,7 +161,6 @@ namespace TrainingCourseSubsystem.Implementation
         public async Task<IEnumerable<BirdTrainingCourseViewModel>> ViewRegisteredTrainingCourse(int birdId, int customerId)
         {
             var entities = await _unitOfWork.BirdTrainingCourseRepository.Get(expression:e => e.CustomerId == customerId && e.BirdId == birdId
-                                                                                 && e.Status == (int)Models.Enum.TrainingCourse.Status.Active
                                                                                  , nameof(TrainingCourse));
             List<BirdTrainingCourseViewModel> models = new List<BirdTrainingCourseViewModel>();
             foreach(var entity in entities)
@@ -184,6 +219,19 @@ namespace TrainingCourseSubsystem.Implementation
 
             var models = _mapper.Map<IEnumerable<TrainingCourseViewModel>>(entities);
             models = models.Where(e => trainingSkill.Any(m => m.TrainingCourseId == e.Id)).ToList();
+            return models;
+        }
+
+        public async Task<BirdCertificateDetailViewModel> ViewCertificateByBirdTrainingCourseId(int birdTrainingCourseId)
+        {
+            var birdCertificate = await _unitOfWork.BirdCertificateDetailRepository.GetFirst(e => e.BirdTrainingCourseId == birdTrainingCourseId);
+            var model = _mapper.Map<BirdCertificateDetailViewModel>(birdCertificate);
+            return model;
+        }
+        public async Task<IEnumerable<BirdCertificateDetailViewModel>> ViewCertificateByBirdId(int birdId)
+        {
+            var birdCertificates = await _unitOfWork.BirdCertificateDetailRepository.Get(e => e.BirdId == birdId);
+            var models = _mapper.Map<IEnumerable<BirdCertificateDetailViewModel>>(birdCertificates);
             return models;
         }
     }

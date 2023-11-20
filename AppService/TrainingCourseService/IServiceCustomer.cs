@@ -8,6 +8,8 @@ using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
 using Models.ServiceModels.TrainingCourseModels.Bird;
 using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
+using Models.ServiceModels.TrainingCourseModels.BirdCertificate.BirdCertificateDetail;
+using Models.ServiceModels.TrainingCourseModels.BirdCertificate;
 
 namespace AppService.TrainingCourseService
 {
@@ -25,5 +27,7 @@ namespace AppService.TrainingCourseService
         Task<IEnumerable<BirdTrainingCourseViewModel>> ViewRegisteredTrainingCourse(int birdId, int customerId);
         Task<IEnumerable<BirdTrainingProgressViewModel>> ViewBirdTrainingCourseProgress(int birdTrainingCourseId);
         Task<IEnumerable<BirdTrainingReportViewModel>> ViewBirdTrainingCourseReport(int birdTrainingProgressId);
+        Task<BirdCertificateDetailViewModel> ViewCertificateByBirdTrainingCourseId(int birdTrainingCourseId);
+        Task<IEnumerable<BirdCertificateDetailViewModel>> ViewCertificateByBirdId(int birdId);
     }
 }

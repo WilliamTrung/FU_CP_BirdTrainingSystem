@@ -76,11 +76,17 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
 
         [HttpGet]
         [Route("getListAssignedConsultingTicket")]
-        public async Task<IActionResult> GetListAssignedConsultingTicket(int trainerId)
+        public async Task<IActionResult> GetListAssignedConsultingTicket()
         {
             try
             {
-                var result = await _consultingService.Trainer.GetListAssignedConsultingTicket(trainerId);
+                var accessToken = Request.DeserializeToken(_authService);
+                if (accessToken == null)
+                {
+                    return Unauthorized();
+                }
+                var trainerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
+                var result = await _consultingService.Trainer.GetListAssignedConsultingTicket(Int32.Parse(trainerId.Value));
 
                 return Ok(result);
             }

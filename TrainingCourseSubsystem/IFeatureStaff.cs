@@ -27,21 +27,15 @@ namespace TrainingCourseSubsystem
         Task<IEnumerable<BirdTrainingCourseListView>> GetBirdTrainingCourseByCustomerId(int customerId);
         Task<IEnumerable<BirdTrainingCourseListView>> GetBirdTrainingCourseByBirdId(int birdId);
 
-        Task<IEnumerable<int>> ConfirmBirdTrainingCourse(int birdTrainingCourseId);//return list of progress
+        Task<IEnumerable<int>> ConfirmBirdTrainingCourse(BirdTrainingCourseConfirm confirmModel);//return list of progress
         Task CancelBirdTrainingCourse(int birdTrainingCourseId);
         Task<TrainerSlotModel> CreateTrainerSlot(TrainerSlotAddModel trainerSlotModel);//non api
         Task CreateTrainingReport(InitReportTrainerSlot report);//non api
 
         Task<IEnumerable<BirdTrainingProgressViewModel>> GetTrainingCourseSkill(int birdTrainingCourseId);
         Task<IEnumerable<ReportModifyViewModel>> GetReportByProgressId(int progressId);
+        Task<BirdTrainingProgressViewModel> AssignTrainer(int progressId, int trainerId);
         Task ModifyTrainingSlot(ReportModifyModel reportModModel);
-
-
-        Task<IEnumerable<TrainerModel>> GetTrainer();
-        Task<IEnumerable<TrainerModel>> GetTrainerByBirdSkillId(int birdSkillId);
-        Task<IEnumerable<TrainerModel>> GetTrainerByTrainerSkillId(int trainerSkillId);
-        Task<TrainerModel> GetTrainerById(int trainerId);
-
 
         Task<IEnumerable<BirdTrainingProgressViewModel>> GetBirdTrainingProgress();//non api
         Task ModifyActualStartTime(DateTime startDate, int birdTrainingCourseId);// non api
@@ -50,6 +44,7 @@ namespace TrainingCourseSubsystem
         Task ReturnBird(BirdTrainingCourseReturnBird birdTrainingCourse);
         //Task Update(BirdTrainingProgressModel birdTrainingProgress);
 
-        Task CreateBirdCertificateDetail(BirdCertificateDetailAddModel birdCertificateDetailAdd);
+        //Task CreateBirdCertificateDetail(BirdCertificateDetailAddModel birdCertificateDetailAdd);
+        Task GenerateTrainerTimetable(DateTime startTrainingDate, int startTrainingSlot, IEnumerable<int> progressId);
     }
 }

@@ -59,7 +59,8 @@ namespace SP_AutoMapperConfig
 
         private void Map_ConsultingTicket_ConsultingTicketListViewModel()
         {
-            CreateMap<ConsultingTicket, ConsultingTicketListViewModel>();
+            CreateMap<ConsultingTicket, ConsultingTicketListViewModel>()
+                .AfterMap<  MappingAction_ConsultingTicket_ConsultingTicketListView>();
         }
         private void Map_AdviceConsultingTrainerSlotServiceModel_TrainerSlot()
         {
@@ -67,7 +68,7 @@ namespace SP_AutoMapperConfig
                 .ForMember(e => e.SlotId, opt => opt.MapFrom(m => m.SlotId))
                 .ForMember(e => e.Date, opt => opt.MapFrom(m => m.Date.ToDateTime(new TimeOnly())))
                 .ForMember(e => e.TrainerId, opt => opt.MapFrom(m => m.TrainerId))
-                .ForMember(e => e.Status, opt => opt.MapFrom(m => (int)Models.Enum.ConsultingTicket.Status.Confirmed))
+                .ForMember(e => e.Status, opt => opt.MapFrom(m => (int)Models.Enum.ConsultingTicket.Status.Approved))
                 .ForMember(e => e.EntityId, opt => opt.MapFrom(m => m.EntityId))
                 .ForMember(e => e.EntityTypeId, opt => opt.MapFrom(m => m.EntityTypeId))
                 .ForMember(e => e.Reason, opt => opt.MapFrom(m => "Consulting Customer"));
@@ -81,6 +82,37 @@ namespace SP_AutoMapperConfig
         private void Map_Address_AddressServiceModel()
         {
             CreateMap<Address, CreateNewAddressServiceModel>();
+        }
+
+        public class MappingAction_ConsultingTicket_ConsultingTicketListView : IMappingAction<ConsultingTicket, ConsultingTicketListViewModel>
+        {
+            private readonly IUnitOfWork _uow;
+            private readonly IMapper _mapper;
+
+            public MappingAction_ConsultingTicket_ConsultingTicketListView(IUnitOfWork uow, IMapper mapper)
+            {
+                _uow = uow;
+                _mapper = mapper;
+            }
+
+            public void Process(ConsultingTicket source, ConsultingTicketListViewModel destination, ResolutionContext context)
+            {
+                var slotStart = _uow.SlotRepository.GetFirst(x => x.Id == source.ActualSlotStart).Result;
+                var endSlot = _uow.SlotRepository.GetFirst(x => x.Id == source.ActualEndSlot).Result;
+
+                destination.Id = source.Id;
+                destination.OnlineOrOffline = source.OnlineOrOffline;
+                destination.AppointmentDate = source.AppointmentDate;
+                destination.ActualSlotStart = slotStart.StartTime + " - " + slotStart.EndTime;
+                if (endSlot != null)
+                {
+                    destination.ActualEndSlot = endSlot.StartTime + " - " + endSlot.EndTime;
+                }
+                else
+                {
+                    destination.ActualEndSlot = null;
+                }
+            }
         }
 
         public class MappingAction_ConsultingTicketCreateNewModel_ConsultingTicket : IMappingAction<ConsultingTicketCreateNewModel, ConsultingTicket>
@@ -143,6 +175,8 @@ namespace SP_AutoMapperConfig
                 var address = _uow.AddressRepository.GetFirst(x => x.Id == source.AddressId).Result;
                 var consultingType = _uow.ConsultingTypeRepository.GetFirst(x => x.Id == source.ConsultingTypeId).Result;
                 var trainer = _uow.TrainerRepository.GetFirst(x => x.Id == source.TrainerId, nameof(User)).Result;
+                var slotstart = _uow.SlotRepository.GetFirst(x => x.Id == source.ActualSlotStart).Result;
+                var endSLot = _uow.SlotRepository.GetFirst(x => x.Id == source.ActualEndSlot).Result;
 
                 destination.Id = source.Id;
                 destination.CustomerName = customer.User.Name;
@@ -154,10 +188,17 @@ namespace SP_AutoMapperConfig
                 destination.OnlineOrOffline = source.OnlineOrOffline;
                 destination.GgMeetLink = source.GgMeetLink;
                 destination.AppointmentDate = (DateTime)source.AppointmentDate;
-                destination.ActualSlotStart = source.ActualSlotStart;
-                destination.ActualEndSlot = source.ActualEndSlot;
+                destination.ActualSlotStart =   slotstart.StartTime + " - " + slotstart.EndTime;
+                if (endSLot != null)
+                {
+                    destination.ActualEndSlot = endSLot.StartTime + " - " + endSLot.EndTime;
+                }
+                else
+                {
+                    destination.ActualEndSlot = null; 
+                }
                 destination.Price = source.Price;
-                destination.Status = source.Status;
+                destination.Status = (Models.Enum.ConsultingTicket.Status)source.Status;
             }
         }
     }

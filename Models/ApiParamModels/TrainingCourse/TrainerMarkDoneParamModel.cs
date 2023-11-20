@@ -12,15 +12,17 @@ namespace Models.ApiParamModels.TrainingCourse
     public class TrainerMarkDoneParamModel
     {
         public int Id { get; set; }
-        [FileImageValidator]
+        //[FileImageValidator]
         public List<IFormFile>? Evidences { get; set; }
+        public string Status { get; set; } = null!;
 
         public MarkSkillDone ToMarkSkill(string evidence)
         {
             return new MarkSkillDone
             {
                 Id= Id,
-                Evidence = evidence
+                Evidence = evidence,
+                Status = Status,
             };
         }
     }

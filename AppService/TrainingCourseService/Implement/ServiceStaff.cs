@@ -22,13 +22,6 @@ namespace AppService.TrainingCourseService.Implement
         public ServiceStaff(ITrainingCourseFeature trainingCourse, ITimetableFeature timetable) : base(trainingCourse, timetable)
         {
         }
-        private bool IsTrainerFree(int trainerSlotId, int trainerId)
-        {
-            var trainerSlot = _timetable.GetTrainerSlotDetail(trainerSlotId).Result;
-            var freeSlot = _timetable.GetTrainerFreeSlotOnDate(DateOnly.FromDateTime((DateTime)trainerSlot.Date), trainerId).Result;
-            bool result = freeSlot.Any(e => e.StartTime == trainerSlot.StartTime);
-            return result;
-        }
         public async Task<IEnumerable<BirdTrainingCourseListView>> GetBirdTrainingCourse()
         {
             return await _trainingCourse.Staff.GetBirdTrainingCourse();
@@ -43,70 +36,35 @@ namespace AppService.TrainingCourseService.Implement
         {
             return await _trainingCourse.Staff.GetBirdTrainingCourseByBirdId(birdId);
         }
-        public async Task<IEnumerable<int>> ConfirmBirdTrainingCourse(int birdTrainingCourseId)
+        public async Task<IEnumerable<BirdTrainingProgressViewModel>> ConfirmBirdTrainingCourse(BirdTrainingCourseConfirm confirmModel)
         {
-            List<int> progresses = _trainingCourse.Staff.ConfirmBirdTrainingCourse(birdTrainingCourseId).Result.ToList();
-            await GenerateTrainerTimetable(progresses);
-            return progresses;
+            List<int> progresses = _trainingCourse.Staff.ConfirmBirdTrainingCourse(confirmModel).Result.ToList();
+            DateTime startDate = DateTime.Now;
+            int slotId = 1;
+            await GenerateTrainerTimetable(startDate, slotId, progresses);
+
+            List<BirdTrainingProgressViewModel> progressModels = new List<BirdTrainingProgressViewModel>();
+            if(progresses != null)
+            {
+                if(progresses.Count > 0)
+                {
+                    List<BirdTrainingProgressViewModel> query = _trainingCourse.Staff.GetBirdTrainingProgress().Result
+                                                                 .Where(e => progresses.Any(c => c == e.Id)).ToList();
+                    if(query != null)
+                    {
+                        progressModels = query;
+                    }
+                }
+            }
+            return progressModels;
         }
         public async Task CancelBirdTrainingCourse(int birdTrainingCourseId)
         {
             await _trainingCourse.Staff.CancelBirdTrainingCourse(birdTrainingCourseId);
         }
-        public async Task GenerateTrainerTimetable(IEnumerable<int> progressId)
+        public async Task GenerateTrainerTimetable(DateTime startTrainingDate, int startTrainingSlot, IEnumerable<int> progressId)
         {
-            var progresses = await GetBirdTrainingProgress();
-            progresses = progresses.Where(e => progressId.Any(d => d == e.Id)).OrderBy(e => e.Id).ToList();
-
-            var firstClass = progresses.First();
-            var birdTrainingCourse = GetBirdTrainingCourse().Result.Where(m => m.Id == firstClass.BirdTrainingCourseId).First();
-            DateTime start = DateTime.Now.AddDays(3);
-            await _trainingCourse.Staff.ModifyActualStartTime(start, firstClass.BirdTrainingCourseId);
-
-            foreach (var progress in progresses)
-            {
-                //progress.StartTrainingDate = start;
-                var listTrainerSlot = AutoCreateTimetable(ref start, progress).ToList();
-                if (listTrainerSlot.Count > 0)
-                {
-                    foreach (var trainerSlot in listTrainerSlot)
-                    {
-                        InitReportTrainerSlot report = new InitReportTrainerSlot
-                        {
-                            BirdTrainingProgressId = progress.Id,
-                            TrainerSlotId = trainerSlot.Id
-                        };
-                        await _trainingCourse.Staff.CreateTrainingReport(report);
-                    }
-                }
-            }
-            //await _trainingCourse.Staff.GenerateTrainerTimetable(report);
-        }
-
-        private IEnumerable<TrainerSlotModel> AutoCreateTimetable(ref DateTime start, BirdTrainingProgressViewModel progress)
-        {
-            List<TrainerSlotModel> trainerSlots = new List<TrainerSlotModel>(); //day1
-            var totalSlot = progress.TotalTrainingSlot; //10
-            while (totalSlot > 0)
-            {
-                DateTime current = start; //day1
-                List<SlotModel> slotModels = _timetable.GetSlotData().Result.ToList();
-                SlotModel autoFill = slotModels.First();
-
-                if (autoFill != null)
-                {
-                    TrainerSlotAddModel model = new TrainerSlotAddModel();
-                    model.SlotId = autoFill.Id;
-                    model.Date = current;
-                    model.EntityTypeId = (int)Models.Enum.EntityType.TrainingCourse;
-                    model.EntityId = progress.Id;
-                    var entityModel = _trainingCourse.Staff.CreateTrainerSlot(model).Result;
-                    trainerSlots.Add(entityModel);
-                    totalSlot--;
-                }
-                start = start.AddDays(1);
-            }
-            return trainerSlots;
+            await _trainingCourse.Staff.GenerateTrainerTimetable(startTrainingDate, startTrainingSlot, progressId);
         }
         public async Task<IEnumerable<BirdTrainingProgressViewModel>> GetTrainingCourseSkill(int trainingCourseId)
         {
@@ -143,26 +101,6 @@ namespace AppService.TrainingCourseService.Implement
         //        }
         //    }
         //}
-
-        public async Task<IEnumerable<TrainerModel>> GetTrainerByBirdSkillId(int birdSkillId)
-        {
-            return await _trainingCourse.Staff.GetTrainerByBirdSkillId(birdSkillId);
-        }
-
-        public async Task<IEnumerable<TrainerModel>> GetTrainer()
-        {
-            return await _trainingCourse.Staff.GetTrainer();
-        }
-
-        public async Task<TrainerModel> GetTrainerById(int trainerId)
-        {
-            return await _trainingCourse.Staff.GetTrainerById(trainerId);
-        }
-
-        public async Task<IEnumerable<TrainerModel>> GetTrainerByTrainerSkillId(int trainerSkillId)
-        {
-            return await _trainingCourse.Staff.GetTrainerByTrainerSkillId(trainerSkillId);
-        }
 
         //public async Task AssignTrainer(AssignTrainerToCourse assignTrainer)
         //{
@@ -213,6 +151,34 @@ namespace AppService.TrainingCourseService.Implement
             return await _trainingCourse.Staff.GetReportByProgressId(progressId);
         }
 
+        public async Task<BirdTrainingProgressViewModel> AssignTrainer(int progressId, int trainerId)
+        {
+            var reports = GetReportByProgressId(progressId).Result;
+            bool IsAssignable = true;
+            List<string> busySlot = new List<string>();
+            if(reports != null)
+            {
+                foreach(var report in reports)
+                {
+                    var trainerFree = _timetable.CheckTrainerFree(trainerId, report.Date, report.SlotId).Result;
+                    if (!trainerFree)
+                    {
+                        string busyString = $"/n slot {report.SlotId}, date {report.Date}";
+                        busySlot.Add(busyString);
+                        IsAssignable = false;
+                    }
+                }
+            }
+            if(IsAssignable)
+            {
+                return await _trainingCourse.Staff.AssignTrainer(progressId, trainerId);
+            }
+            else
+            {
+                throw new Exception($"Trainer is not free to assign at {busySlot}");
+            }
+        }
+
         public async Task ModifyTrainingSlot(ReportModifyModel reportModModel)
         {
             if(reportModModel != null)
@@ -233,9 +199,9 @@ namespace AppService.TrainingCourseService.Implement
             }
         }
 
-        public async Task CreateBirdCertificateDetail(BirdCertificateDetailAddModel birdCertificateDetailAdd)
-        {
-            await _trainingCourse.Staff.CreateBirdCertificateDetail(birdCertificateDetailAdd);
-        }
+        //public async Task CreateBirdCertificateDetail(BirdCertificateDetailAddModel birdCertificateDetailAdd)
+        //{
+        //    await _trainingCourse.Staff.CreateBirdCertificateDetail(birdCertificateDetailAdd);
+        //}
     }
 }

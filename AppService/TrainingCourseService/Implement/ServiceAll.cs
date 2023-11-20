@@ -1,4 +1,5 @@
 ﻿using Models.Enum.BirdTrainingProgress;
+using Models.ServiceModels.TrainingCourseModels;
 using Models.ServiceModels.TrainingCourseModels.Bird;
 using Models.ServiceModels.TrainingCourseModels.BirdCertificate;
 using Models.ServiceModels.TrainingCourseModels.BirdCertificate.BirdCertificateDetail;
@@ -123,6 +124,31 @@ namespace AppService.TrainingCourseService.Implement
         public Task<TrainingCourseViewModel> GetTrainingCoursesById(int courseId)
         {
             return _trainingCourse.All.GetTrainingCoursesById(courseId);
+        }
+
+        public async Task<IEnumerable<BirdSkillReceivedViewModel>> ViewBirdSkillReceived(int birdId)
+        {
+            return await _trainingCourse.All.ViewBirdSkillReceived(birdId);
+        }
+
+        public async Task<IEnumerable<TrainerModel>> GetTrainerByBirdSkillId(int birdSkillId)
+        {
+            return await _trainingCourse.All.GetTrainerByBirdSkillId(birdSkillId);
+        }
+
+        public async Task<IEnumerable<TrainerModel>> GetTrainer()
+        {
+            return await _trainingCourse.All.GetTrainer();
+        }
+
+        public async Task<TrainerModel> GetTrainerById(int trainerId)
+        {
+            return await _trainingCourse.All.GetTrainerById(trainerId);
+        }
+
+        public async Task<IEnumerable<TrainerModel>> GetTrainerByTrainerSkillId(int trainerSkillId)
+        {
+            return await _trainingCourse.All.GetTrainerByTrainerSkillId(trainerSkillId);
         }
     }
 }

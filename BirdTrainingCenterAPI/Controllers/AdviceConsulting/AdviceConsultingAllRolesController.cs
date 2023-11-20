@@ -103,7 +103,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
                 var result = await _timetableService.All.GetListFreeTrainerOnSlotAndDate(date.ToDateOnly(), slotId, Models.Enum.Trainer.Category.Consulting);
                 if (result == null)
                 {
-                    return StatusCode(StatusCodes.Status503ServiceUnavailable, "Khong co trainer ranh");
+                    return StatusCode(StatusCodes.Status503ServiceUnavailable, "There is no free trainer");
                 }
                 return Ok(result);
             }
@@ -122,7 +122,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
                 var result = await _consultingService.Other.GetConsultingTicketById(ticketId);
                 if (result == null)
                 {
-                    return StatusCode(StatusCodes.Status503ServiceUnavailable, "Khong co thong tin ve ticketId nay");
+                    return StatusCode(StatusCodes.Status503ServiceUnavailable, "No information about this id");
                 }
                 return Ok(result);
             }

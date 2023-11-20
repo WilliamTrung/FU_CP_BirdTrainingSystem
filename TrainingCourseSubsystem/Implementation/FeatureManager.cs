@@ -54,9 +54,9 @@ namespace TrainingCourseSubsystem.Implementation
             {
                 entity.BirdSpeciesId = trainingCourse.BirdSpeciesId;
                 entity.Title = trainingCourse.Title;
-                entity.Description = trainingCourse.Description;
-                entity.Picture = trainingCourse.Picture;
-                entity.TotalPrice = trainingCourse.TotalPrice;
+                entity.Description = trainingCourse.Description ?? entity.Description;
+                entity.Picture = trainingCourse.Picture ?? entity.Picture;
+                entity.TotalPrice = trainingCourse.TotalPrice == 0 ? trainingCourse.TotalPrice : entity.TotalPrice;
                 entity.Status = (int)Models.Enum.TrainingCourse.Status.Modifying;
                 await _unitOfWork.TrainingCourseRepository.Update(entity);
             }
@@ -87,6 +87,15 @@ namespace TrainingCourseSubsystem.Implementation
             {
                 entity.Status = (int)Models.Enum.TrainingCourse.Status.Active;
                 await _unitOfWork.TrainingCourseRepository.Update(entity);
+
+                BirdCertificateAddModel birdCertificateAdd = new BirdCertificateAddModel()
+                {
+                    TrainingCourseId = trainingCourseId,
+                    BirdCenterName = "Bird Training Center",
+                    ShortDescrption = entity.Description,
+                    Picture = "https://storage.googleapis.com/birdtrainingcentersystem.appspot.com/trainingcourses/BirdCertificate-1-20231118-140936",
+                };
+                await CreateBirdCertitficate(birdCertificateAdd);
             }
         }
 
@@ -185,8 +194,8 @@ namespace TrainingCourseSubsystem.Implementation
             {
                 throw new Exception("Entity is null.");
             }
-            entity.Name = birdSpecies.Name;
-            entity.ShortDetail = birdSpecies.ShortDetail;
+            entity.Name = birdSpecies.Name ?? entity.Name;
+            entity.ShortDetail = birdSpecies.ShortDetail ?? entity.ShortDetail;
             await _unitOfWork.BirdSpeciesRepository.Update(entity);
         }
         #endregion
@@ -219,7 +228,14 @@ namespace TrainingCourseSubsystem.Implementation
             else
             {
                 entity.Name = birdSkillMod.Name;
-                entity.Description = birdSkillMod.Description;
+                if(birdSkillMod.Description != null)
+                {
+                    entity.Description = birdSkillMod.Description;
+                }
+                if (birdSkillMod.Picture != null)
+                {
+                    entity.Picture = birdSkillMod.Picture;
+                }
                 await _unitOfWork.BirdSkillRepository.Update(entity);
             }
         }
@@ -252,7 +268,7 @@ namespace TrainingCourseSubsystem.Implementation
             }
             else
             {
-                entity.Condition = accquirableMod.Condition;
+                entity.Condition = accquirableMod.Condition ?? entity.Condition;
                 await _unitOfWork.AcquirableSkillRepository.Update(entity);
             }
         }
@@ -284,8 +300,8 @@ namespace TrainingCourseSubsystem.Implementation
             }
             else
             {
-                entity.Name = skillModModel.Name;
-                entity.Description = skillModModel.Description;
+                entity.Name = skillModModel.Name ?? entity.Name;
+                entity.Description = skillModModel.Description ?? entity.Description;
                 await _unitOfWork.SkillRepository.Update(entity);
             }
         }
@@ -318,7 +334,7 @@ namespace TrainingCourseSubsystem.Implementation
             }
             else
             {
-                entity.Description = trainerSkillMod.Description;
+                entity.Description = trainerSkillMod.Description ?? entity.Description;
                 await _unitOfWork.TrainerSkillRepository.Update(entity);
             }
         }
@@ -351,7 +367,7 @@ namespace TrainingCourseSubsystem.Implementation
             }
             else
             {
-                entity.ShortDescription = trainableSkillMod.ShortDescription;
+                entity.ShortDescription = trainableSkillMod.ShortDescription ?? entity.ShortDescription;
                 await _unitOfWork.TrainableSkillRepository.Update(entity);
             }
         }

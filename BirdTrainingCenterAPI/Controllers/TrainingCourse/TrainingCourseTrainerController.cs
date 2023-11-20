@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Models.ApiParamModels.TrainingCourse;
 using Models.ConfigModels;
-using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
 using SP_Extension;
 using SP_Middleware;
 
@@ -46,17 +45,14 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         public async Task<IActionResult> MarkTrainingSkillDone([FromForm] TrainerMarkDoneParamModel markDone)
         {
             var pictures = string.Empty;
-            if (markDone.Evidences.Any(e => !e.IsImage()))
-            {
-                return BadRequest("Upload image only!");
-            }
-            else if (markDone.Evidences.Any(e => !e.IsVideo()))
+            if (markDone.Evidences.Any(e => !e.IsVideo()))
             {
                 return BadRequest("Upload video only!");
             }
             foreach (var file in markDone.Evidences)
             {
-                var temp = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
+                string fileName = $"{nameof(MarkTrainingSkillDone)}-{markDone.Id}-{DateTime.Now.ToString("yyyyMMdd-HHmmss")}";
+                var temp = await _firebaseService.UploadFile(file, fileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
                 pictures += $"{temp},";
             }
             pictures = pictures.Substring(0, pictures.Length - 1);
@@ -67,9 +63,9 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         }
         [HttpPut]
         [Route("mark-trainingslotdone")]
-        public async Task<IActionResult> MarkTrainingSlotDone([FromQuery] int birdTrainingProgressId)
+        public async Task<IActionResult> MarkTrainingSlotDone([FromQuery] int birdTrainingReportId)
         {
-            var result = await _trainingCourseService.Trainer.MarkTrainingSlotDone(birdTrainingProgressId);
+            var result = await _trainingCourseService.Trainer.MarkTrainingSlotDone(birdTrainingReportId);
             if (result == (int)Models.Enum.BirdTrainingReport.FirstOrEnd.EndSlot)
             {
                 return StatusCode(206);

@@ -1,4 +1,5 @@
-﻿using Models.ServiceModels.AdviceConsultantModels;
+﻿using Models.Entities;
+using Models.ServiceModels.AdviceConsultantModels;
 using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
 using System;
 using System.Collections.Generic;
@@ -16,5 +17,6 @@ namespace AppService.AdviceConsultingService
         Task<IEnumerable<DistancePriceServiceModel>> GetDistancePrice();
         Task<IEnumerable<ConsultingTypeServiceModel>> GetConsultingType();
         Task<int> GetTrainerIdByTicketId(int ticketId);
+        Task<ConsultingTicket> GetConsultingTicketByIDForDoingFunction(int id);
     }
 }

@@ -21,7 +21,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         }
         [HttpPut]
         [Route("approveConsultingTicket")]
-        public async Task<IActionResult> ApproveConsultingTicket(int ticketId, DateTime date, int slotId)
+        public async Task<IActionResult> ApproveConsultingTicket(int ticketId)
         {
             try
             {
@@ -32,16 +32,19 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
                 }
 
                 var trainerId = await _consultingService.Other.GetTrainerIdByTicketId(ticketId);
+                var ticket = await _consultingService.Other.GetConsultingTicketByIDForDoingFunction(ticketId);
+                var date = (DateTime)ticket.AppointmentDate;
+                var slotId = ticket.ActualSlotStart;
 
                 //Validate kiểm tra lịch rảnh của trainer
                 var trainerFreeSLot = await _timetable.All.GetFreeSlotOnSelectedDateOfTrainer(date, trainerId);
                 if (trainerFreeSLot == null || !trainerFreeSLot.Any())
                 {
-                    return StatusCode(StatusCodes.Status503ServiceUnavailable, "Trainer không có lịch rảnh vào slot này của ngày này");
+                    return StatusCode(StatusCodes.Status503ServiceUnavailable, "Trainer does not have free time at this slot of this date");
                 }
                 if (!trainerFreeSLot.Any(x => x.Id == slotId))
                 {
-                    return StatusCode(StatusCodes.Status503ServiceUnavailable, "Trainer không có lịch rảnh vào slot này của ngày này");
+                    return StatusCode(StatusCodes.Status503ServiceUnavailable, "Trainer does not have free time at this slot of this date");
                 }
                 
                 await _consultingService.Staff.ApproveConsultingTicket(ticketId);

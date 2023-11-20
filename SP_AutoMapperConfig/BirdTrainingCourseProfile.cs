@@ -39,8 +39,11 @@ namespace SP_AutoMapperConfig
         private void Map_BirdTrainingCourse_BirdTrainingCourseViewModel()
         {
             CreateMap<BirdTrainingCourse, BirdTrainingCourseViewModel>()
-                .ForMember(m => m.Id, opt => opt.MapFrom(e => e.BirdId))
-                .ForMember(m => m.TotalSlot, opt => opt.MapFrom(e => e.TrainingCourseId))
+                .ForMember(m => m.Id, opt => opt.MapFrom(e => e.Id))
+                .ForMember(m => m.TotalSlot, opt => {
+                    opt.PreCondition(e => e.TrainingCourse != null);
+                    opt.MapFrom(e => e.TrainingCourse.TotalSlot);
+                })
                 .ForMember(m => m.Status, opt => opt.MapFrom(e => e.Status))
                 .ForMember(m => m.TrainingCourseTitle, opt => {
                     opt.PreCondition(e => e.TrainingCourse != null);
@@ -56,6 +59,7 @@ namespace SP_AutoMapperConfig
             CreateMap<BirdTrainingCourse, BirdTrainingCourseListView>()
                 .ForMember(m => m.Id, opt => opt.MapFrom(e => e.Id))
                 .ForMember(m => m.TrainingCourseId, opt => opt.MapFrom(e => e.TrainingCourseId))
+                .ForMember(m => m.BirdId, opt => opt.MapFrom(e => e.BirdId))
                 .ForMember(m => m.BirdName, opt => {
                     opt.PreCondition(e => e.Bird != null);
                     opt.MapFrom(e => e.Bird.Name);
