@@ -13,22 +13,15 @@ namespace Models.ApiParamModels.TrainingCourse
 {
     public class ReturnBirdParamModel
     {
-        public int Id { get; set; }
-        //public int ReturnStaffId { get; set; }
-        //public DateTime? ActualDateReturn { get; set; } //BE gen
+        public int BirdTrainingCourseId { get; set; }
         public string? ReturnNote { get; set; }
         [FileImageValidator]
         public List<IFormFile>? ReturnPictures { get; set; }
-        //public DateTime? LastestUpdate { get; set; } //BE gen
-        //public int Status { get; set; } //BE gen
-
-        public virtual BirdModel Bird { get; set; } = null!;
-        public virtual UserModel Staff { get; set; } = null!;
         public BirdTrainingCourseReturnBird ToBirdTrainingCourseReturnBird(string returnPicture)
         {
             return new BirdTrainingCourseReturnBird
             {
-                Id = Id,
+                Id = BirdTrainingCourseId,
                 //ReturnStaffId = ReturnStaffId,
                 ReturnNote = ReturnNote,
                 ReturnPicture = returnPicture
