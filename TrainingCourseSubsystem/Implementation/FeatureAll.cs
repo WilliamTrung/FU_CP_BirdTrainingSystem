@@ -229,21 +229,22 @@ namespace TrainingCourseSubsystem.Implementation
 
         public async Task<IEnumerable<TrainerModel>> GetTrainer()
         {
-            var entities = await _unitOfWork.TrainerRepository.Get(expression: null, nameof(User), nameof(TrainerSkill));
-            List<TrainerModel> models = new List<TrainerModel>();
-            foreach (Models.Entities.Trainer entity in entities)
-            {
-                var skills = _mapper.Map<List<TrainerSkillViewModel>>(entity.TrainerSkills);
-                TrainerModel model = new TrainerModel()
-                {
-                    Id = entity.Id,
-                    Name = entity.User.Name,
-                    Email = entity.User.Email,
-                    Avatar = entity.User.Avatar,
-                    TrainerSkillModels = skills
-                };
-                models.Add(model);
-            }
+            var entities = await _unitOfWork.TrainerRepository.Get(expression: null, nameof(Trainer.User));
+            //List<TrainerModel> models = new List<TrainerModel>();
+            //foreach (Models.Entities.Trainer entity in entities)
+            //{
+            //    var skills = _mapper.Map<List<TrainerSkillViewModel>>(entity.TrainerSkills);
+            //    TrainerModel model = new TrainerModel()
+            //    {
+            //        Id = entity.Id,
+            //        Name = entity.User.Name,
+            //        Email = entity.User.Email,
+            //        Avatar = entity.User.Avatar,
+            //        TrainerSkillModels = skills
+            //    };
+            //    models.Add(model);
+            //}
+            var models = _mapper.Map<IEnumerable<TrainerModel>>(entities);
             return models;
         }
 
@@ -276,17 +277,8 @@ namespace TrainingCourseSubsystem.Implementation
         public async Task<TrainerModel> GetTrainerById(int trainerId)
         {
             var entity = await _unitOfWork.TrainerRepository.GetFirst(e => e.Id == trainerId
-                                                                        , nameof(Trainer.User)
-                                                                        , nameof(Trainer.TrainerSkills));
-            var skills = _mapper.Map<List<TrainerSkillViewModel>>(entity.TrainerSkills);
-            TrainerModel model = new TrainerModel()
-            {
-                Id = entity.Id,
-                Name = entity.User.Name,
-                Email = entity.User.Email,
-                Avatar = entity.User.Avatar,
-                TrainerSkillModels = skills
-            };
+                                                                        , nameof(Trainer.User));
+            var model = _mapper.Map<TrainerModel>(entity);
             return model;
         }
 
