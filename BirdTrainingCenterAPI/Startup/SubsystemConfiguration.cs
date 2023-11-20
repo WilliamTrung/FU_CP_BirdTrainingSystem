@@ -14,6 +14,8 @@ using AdministrativeSubsystem;
 using AppService.AdministrativeService;
 using AppService.AdministrativeService.Implementation;
 using AppService.AdviceConsultingService;
+using AppService.TrainingSkillService;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BirdTrainingCenterAPI.Startup
 {
@@ -109,6 +111,16 @@ namespace BirdTrainingCenterAPI.Startup
             builder.Services.AddTransient<AppService.OnlineCourseService.IServiceManager, AppService.OnlineCourseService.Implementation.ServiceManager>();
             
             builder.Services.AddTransient<AppService.OnlineCourseService.IOnlineCourseService, AppService.OnlineCourseService.OnlineCourseService>();
+        }
+
+        public static void AddTrainingSkillFeature(this WebApplicationBuilder builder)
+        {
+            builder.Services.AddTransient<TrainingSkillSubsystem.IFeatureExtra, TrainingSkillSubsystem.Implementation.FeatureExtra>();
+            builder.Services.AddTransient<TrainingSkillSubsystem.ITrainingSkillFeature, TrainingSkillSubsystem.TrainingSkillFeature>();
+
+            builder.Services.AddTransient<AppService.TrainingSkillService.IServiceExtra, AppService.TrainingSkillService.ServiceExtra>();
+
+            builder.Services.AddTransient<AppService.TrainingSkillService.ITrainingSkillService, AppService.TrainingSkillService.TrainingSkillService> ();
         }
     }
 }
