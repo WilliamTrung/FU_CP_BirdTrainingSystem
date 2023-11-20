@@ -12,22 +12,16 @@ namespace Models.ApiParamModels.TrainingCourse
 {
     public class ReceiveBirdParamModel
     {
-        public int Id { get; set; }
-        //public int ReceiveStaffId { get; set; }
-        //public DateTime? ActualStartDate { get; set; }
-        //public DateTime? ExpectedTrainingDoneDate { get; set; } //BE gen
-        //public DateTime? DateReceivedBird { get; set; } //BE gen
+        public int BirdTrainingCourseId { get; set; }
         public string? ReceiveNote { get; set; }
         [FileImageValidator]
         public List<IFormFile>? ReceivePictures { get; set; }
-        //public DateTime? LastestUpdate { get; set; } //BE gen
-        //public int Status { get; set; } //BE gen
 
         public BirdTrainingCourseReceiveBird ToBirdTrainingCourseReceiveBird(string receivePicture)
         {
             return new BirdTrainingCourseReceiveBird
             {
-                Id = Id,
+                Id = BirdTrainingCourseId,
                 //ReceiveStaffId= ReceiveStaffId,
                 ReceiveNote = ReceiveNote,
                 ReceivePicture = receivePicture

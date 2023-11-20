@@ -20,7 +20,7 @@ namespace Models.ApiParamModels.TrainingCourse
         //public string Title { get; set; } = null!; auto get from query
         public string? ShortDescrption { get; set; }
         [FileImageValidator]
-        public List<IFormFile>? Pictures { get; set; }
+        public IFormFile? Picture { get; set; }
         public BirdCertificateAddModel ToBirdCertificateAddModel(string? picture)
         {
             return new BirdCertificateAddModel

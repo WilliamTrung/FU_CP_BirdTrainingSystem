@@ -13,6 +13,7 @@ using Models.ServiceModels.TrainingCourseModels.BirdSkill;
 using Models.ServiceModels.TrainingCourseModels.TrainerSkill;
 using Models.ServiceModels.TrainingCourseModels.Bird;
 using Models.Entities;
+using Models.Skills;
 
 namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
 {
@@ -142,17 +143,17 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         public async Task<IActionResult> CreateBirdSkill([FromForm] BirdSkillAddParamModel birdSkillAdd)
         {
             var pictures = string.Empty;
-            if (birdSkillAdd.Pictures.Any(e => !e.IsImage()))
+            if (birdSkillAdd.Picture != null)
             {
-                return BadRequest("Upload image only!");
-            }
-            foreach (var file in birdSkillAdd.Pictures)
-            {
-                string fileName = $"{nameof(BirdSkill)}-{birdSkillAdd.Name}-{DateTime.Now.ToString("yyyyMMdd-HHmmss")}";
-                var temp = await _firebaseService.UploadFile(file, fileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
+                if (birdSkillAdd.Picture.IsImage())
+                {
+                    return BadRequest("Upload image only!");
+                }
+                string fileName = $"{nameof(BirdCertificate)}-{birdSkillAdd.Name}-{DateTime.Now.ToString("yyyyMMdd-HHmmss")}";
+                var temp = await _firebaseService.UploadFile(birdSkillAdd.Picture, fileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
                 pictures += $"{temp},";
+                pictures = pictures.Substring(0, pictures.Length - 1);
             }
-            pictures = pictures.Substring(0, pictures.Length - 1);
             var birdSkillAddModel = birdSkillAdd.ToBirdSkillAddModel(pictures);
             await _trainingCourseService.Manager.CreateBirdSkill(birdSkillAddModel);
             return Ok();
@@ -163,17 +164,17 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         public async Task<IActionResult> EditBirdSkill([FromForm] BirdSkillModParamModel birdSkillMod)
         {
             var pictures = string.Empty;
-            if (birdSkillMod.Pictures.Any(e => !e.IsImage()))
+            if(birdSkillMod.Picture != null)
             {
-                return BadRequest("Upload image only!");
-            }
-            foreach (var file in birdSkillMod.Pictures)
-            {
-                string fileName = $"{nameof(BirdSkill)}-{birdSkillMod.Id}-{DateTime.Now.ToString("yyyyMMdd-HHmmss")}";
-                var temp = await _firebaseService.UploadFile(file, fileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
+                if (birdSkillMod.Picture.IsImage())
+                {
+                    return BadRequest("Upload image only!");
+                }
+                string fileName = $"{nameof(BirdCertificate)}-{birdSkillMod.Id}-{DateTime.Now.ToString("yyyyMMdd-HHmmss")}";
+                var temp = await _firebaseService.UploadFile(birdSkillMod.Picture, fileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
                 pictures += $"{temp},";
+                pictures = pictures.Substring(0, pictures.Length - 1);
             }
-            pictures = pictures.Substring(0, pictures.Length - 1);
             var birdSkillModModel = birdSkillMod.ToBirdSkillModModel(pictures);
             await _trainingCourseService.Manager.EditBirdSkill(birdSkillModModel);
             return Ok();
@@ -249,17 +250,17 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         public async Task<IActionResult> CreateBirdCertitficate([FromForm] BirdCertificateAddParamModel birdCertificateAddParam)
         {
             var pictures = string.Empty;
-            if (birdCertificateAddParam.Pictures.Any(e => !e.IsImage()))
+            if(birdCertificateAddParam.Picture != null)
             {
-                return BadRequest("Upload image only!");
-            }
-            foreach (var file in birdCertificateAddParam.Pictures)
-            {
+                if (birdCertificateAddParam.Picture.IsImage())
+                {
+                    return BadRequest("Upload image only!");
+                }
                 string fileName = $"{nameof(BirdCertificate)}-{birdCertificateAddParam.TrainingCourseId}-{DateTime.Now.ToString("yyyyMMdd-HHmmss")}";
-                var temp = await _firebaseService.UploadFile(file, fileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
+                var temp = await _firebaseService.UploadFile(birdCertificateAddParam.Picture, fileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
                 pictures += $"{temp},";
+                pictures = pictures.Substring(0, pictures.Length - 1);
             }
-            pictures = pictures.Substring(0, pictures.Length - 1);
             var birdCertificateAdd = birdCertificateAddParam.ToBirdCertificateAddModel(pictures);
 
             await _trainingCourseService.Manager.CreateBirdCertitficate(birdCertificateAdd);

@@ -95,22 +95,6 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         }
 
         [HttpGet]
-        [Route("birdcertificatedetail")]
-        public async Task<IActionResult> GetBirdCertificatesDetail()
-        {
-            var result = await _trainingCourseService.All.GetBirdCertificatesDetail();
-            return Ok(result);
-        }
-
-        [HttpGet]
-        [Route("birdcertificatedetail-bird")]
-        public async Task<IActionResult> GetBirdCertificatesDetailByBirdId([FromQuery] int birdId)
-        {
-            var result = await _trainingCourseService.All.GetBirdCertificatesDetailByBirdId(birdId);
-            return Ok(result);
-        }
-
-        [HttpGet]
         [Route("birdskillreceived")]
         public async Task<IActionResult> GetBirdSkillReceiveds()
         {
@@ -123,6 +107,22 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         public async Task<IActionResult> GetBirdSkillReceivedsByBirdId([FromQuery] int birdId)
         {
             var result = await _trainingCourseService.All.GetBirdSkillReceivedsByBirdId(birdId);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("birdcertificatedetail")]
+        public async Task<IActionResult> GetBirdCertificatesDetail()
+        {
+            var result = await _trainingCourseService.All.GetBirdCertificatesDetail();
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("birdcertificatedetail-bird")]
+        public async Task<IActionResult> GetBirdCertificatesDetailByBirdId([FromQuery] int birdId)
+        {
+            var result = await _trainingCourseService.All.GetBirdCertificatesDetailByBirdId(birdId);
             return Ok(result);
         }
 

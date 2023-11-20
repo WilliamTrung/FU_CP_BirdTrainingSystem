@@ -13,9 +13,7 @@ namespace Models.ApiParamModels.TrainingCourse
     {
         public string Name { get; set; } = null!;
         public string? Description { get; set; }
-
-        [FileImageValidator]
-        public List<IFormFile>? Pictures { get; set; }
+        public IFormFile? Picture { get; set; }
 
         public BirdSkillAddModel ToBirdSkillAddModel(string picture)
         {
