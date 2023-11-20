@@ -208,5 +208,33 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             var result = await _trainingCourseService.All.ViewBirdSkillReceived(birdId);
             return Ok(result);
         }
+        [HttpGet]
+        [Route("trainer")]
+        public async Task<IActionResult> GetTrainer()
+        {
+            var result = await _trainingCourseService.All.GetTrainer();
+            return Ok(result);
+        }
+        [HttpGet]
+        [Route("trainer-birdskill")]
+        public async Task<IActionResult> GetTrainerByBirdSkillId([FromQuery] int birdSkillId)
+        {
+            var result = await _trainingCourseService.All.GetTrainerByBirdSkillId(birdSkillId);
+            return Ok(result);
+        }
+        [HttpGet]
+        [Route("trainer-id")]
+        public async Task<IActionResult> GetTrainerById([FromQuery] int trainerId)
+        {
+            var result = await _trainingCourseService.All.GetTrainerById(trainerId);
+            return Ok(result);
+        }
+        [HttpGet]
+        [Route("trainer-skill")]
+        public async Task<IActionResult> GetTrainerByTrainerSkillId([FromQuery] int trainerSkillId)
+        {
+            var result = await _trainingCourseService.All.GetTrainerByTrainerSkillId(trainerSkillId);
+            return Ok(result);
+        }
     }
 }

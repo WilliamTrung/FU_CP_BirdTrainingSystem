@@ -139,10 +139,14 @@ namespace TrainingCourseSubsystem.Implementation
         public async Task<int> MarkTrainingSlotDone(int birdTrainingReportId)//status 206 de chuyen qua trang khac
         {
             int result = (int)Models.Enum.BirdTrainingReport.FirstOrEnd.MidSlot;
-            var entity = await _unitOfWork.BirdTrainingReportRepository.GetFirst(e => e.Id == birdTrainingReportId);
+            var entity = await _unitOfWork.BirdTrainingReportRepository.GetFirst(e => e.Id == birdTrainingReportId, nameof(BirdTrainingReport.TrainerSlot));
             if (entity == null)
             {
                 throw new Exception("Entity not found");
+            }
+            if(entity.TrainerSlot.Date.CompareTo(DateTime.Now) >= 0)
+            {
+                throw new Exception($"Can not mark this training slot as done please wait until Slot 1 {entity.TrainerSlot.Date:dd/MM/yyyy-t}");
             }
             else
             {

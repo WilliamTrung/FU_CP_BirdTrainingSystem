@@ -1,4 +1,5 @@
-﻿using Models.ServiceModels.TrainingCourseModels.Bird;
+﻿using Models.ServiceModels.TrainingCourseModels;
+using Models.ServiceModels.TrainingCourseModels.Bird;
 using Models.ServiceModels.TrainingCourseModels.BirdCertificate;
 using Models.ServiceModels.TrainingCourseModels.BirdCertificate.BirdCertificateDetail;
 using Models.ServiceModels.TrainingCourseModels.BirdSkill;
@@ -37,5 +38,10 @@ namespace TrainingCourseSubsystem
         Task<IEnumerable<SkillViewModModel>> GetSkills();
         Task<SkillViewModModel> GetSkillById(int skillId);
         Task<IEnumerable<BirdSkillReceivedViewModel>> ViewBirdSkillReceived(int birdId);
+
+        Task<IEnumerable<TrainerModel>> GetTrainer();
+        Task<IEnumerable<TrainerModel>> GetTrainerByBirdSkillId(int birdSkillId);
+        Task<IEnumerable<TrainerModel>> GetTrainerByTrainerSkillId(int trainerSkillId);
+        Task<TrainerModel> GetTrainerById(int trainerId);
     }
 }

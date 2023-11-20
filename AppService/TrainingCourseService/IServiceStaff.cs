@@ -49,12 +49,6 @@ namespace AppService.TrainingCourseService
         Task ModifyTrainingSlot(ReportModifyModel reportModModel);
 
 
-        Task<IEnumerable<TrainerModel>> GetTrainer();
-        Task<IEnumerable<TrainerModel>> GetTrainerByBirdSkillId(int birdSkillId);
-        Task<IEnumerable<TrainerModel>> GetTrainerByTrainerSkillId(int trainerSkillId);
-        Task<TrainerModel> GetTrainerById(int trainerId);
-
-
         //Task<IEnumerable<BirdTrainingProgressModel>> GetBirdTrainingProgress();//non api
         //Task ModifyActualStartTime(DateTime startDate, int birdTrainingCourseId);// non api
 

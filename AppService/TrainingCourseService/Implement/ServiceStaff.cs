@@ -102,26 +102,6 @@ namespace AppService.TrainingCourseService.Implement
         //    }
         //}
 
-        public async Task<IEnumerable<TrainerModel>> GetTrainerByBirdSkillId(int birdSkillId)
-        {
-            return await _trainingCourse.Staff.GetTrainerByBirdSkillId(birdSkillId);
-        }
-
-        public async Task<IEnumerable<TrainerModel>> GetTrainer()
-        {
-            return await _trainingCourse.Staff.GetTrainer();
-        }
-
-        public async Task<TrainerModel> GetTrainerById(int trainerId)
-        {
-            return await _trainingCourse.Staff.GetTrainerById(trainerId);
-        }
-
-        public async Task<IEnumerable<TrainerModel>> GetTrainerByTrainerSkillId(int trainerSkillId)
-        {
-            return await _trainingCourse.Staff.GetTrainerByTrainerSkillId(trainerSkillId);
-        }
-
         //public async Task AssignTrainer(AssignTrainerToCourse assignTrainer)
         //{
         //    var progress = await _trainingCourse.Staff.AssignTrainer(assignTrainer);

@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Models.ServiceModels.TrainingCourseModels.BirdSkill;
 using Models.ServiceModels.TrainingCourseModels.TrainerSkill;
+using Models.ServiceModels.TrainingCourseModels;
 
 namespace AppService.TrainingCourseService
 {
@@ -37,5 +38,11 @@ namespace AppService.TrainingCourseService
         Task<IEnumerable<SkillViewModModel>> GetSkills();
         Task<SkillViewModModel> GetSkillById(int skillId);
         Task<IEnumerable<BirdSkillReceivedViewModel>> ViewBirdSkillReceived(int birdId);
+
+
+        Task<IEnumerable<TrainerModel>> GetTrainer();
+        Task<IEnumerable<TrainerModel>> GetTrainerByBirdSkillId(int birdSkillId);
+        Task<IEnumerable<TrainerModel>> GetTrainerByTrainerSkillId(int trainerSkillId);
+        Task<TrainerModel> GetTrainerById(int trainerId);
     }
 }
