@@ -14,7 +14,7 @@ namespace Models.ApiParamModels.TrainingCourse
     {
         public int BirdTrainingCourseId { get; set; }
         public string? ReceiveNote { get; set; }
-        [FileImageValidator]
+        //[FileImageValidator]
         public List<IFormFile>? ReceivePictures { get; set; }
 
         public BirdTrainingCourseReceiveBird ToBirdTrainingCourseReceiveBird(string receivePicture)

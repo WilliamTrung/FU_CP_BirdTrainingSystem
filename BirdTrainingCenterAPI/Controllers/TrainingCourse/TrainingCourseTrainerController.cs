@@ -45,17 +45,24 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         public async Task<IActionResult> MarkTrainingSkillDone([FromForm] TrainerMarkDoneParamModel markDone)
         {
             var pictures = string.Empty;
-            if (markDone.Evidences.Any(e => !e.IsVideo()))
+            if(markDone.Evidences == null)
             {
-                return BadRequest("Upload video only!");
+                return BadRequest("Please upload evidences video");
             }
-            foreach (var file in markDone.Evidences)
+            else
             {
-                string fileName = $"{nameof(MarkTrainingSkillDone)}-{markDone.Id}-{DateTime.Now.ToString("yyyyMMdd-HHmmss")}";
-                var temp = await _firebaseService.UploadFile(file, fileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
-                pictures += $"{temp},";
+                if (markDone.Evidences.Any(e => !e.IsVideo()))
+                {
+                    return BadRequest("Upload video only!");
+                }
+                foreach (var file in markDone.Evidences)
+                {
+                    string fileName = $"{nameof(MarkTrainingSkillDone)}-{markDone.Id}-{DateTime.Now.ToString("yyyyMMdd-HHmmss")}";
+                    var temp = await _firebaseService.UploadFile(file, fileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
+                    pictures += $"{temp},";
+                }
+                pictures = pictures.Substring(0, pictures.Length - 1);
             }
-            pictures = pictures.Substring(0, pictures.Length - 1);
             var markSkillDone = markDone.ToMarkSkill(pictures);
 
             await _trainingCourseService.Trainer.MarkTrainingSkillDone(markSkillDone);

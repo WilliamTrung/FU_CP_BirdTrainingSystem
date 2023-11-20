@@ -9,10 +9,10 @@ namespace Models.ServiceModels.TrainingCourseModels.TrainingCourse
     public class TrainingCourseModifyModel
     {
         public int Id { get; set; }
-        public int BirdSpeciesId { get; set; }
-        public string Title { get; set; } = null!;
+        public int? BirdSpeciesId { get; set; }
+        public string? Title { get; set; }
         public string? Description { get; set; }
         public string? Picture { get; set; }
-        public decimal TotalPrice { get; set; }
+        public decimal? TotalPrice { get; set; }
     }
 }
