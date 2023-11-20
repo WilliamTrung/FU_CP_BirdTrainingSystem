@@ -30,22 +30,6 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
         [Route("birdtrainingprogress-requestedId")]
         Task<IActionResult> GetBirdTrainingCourseProgressByBirdTrainingCourseId([FromQuery] int birdTrainingCourseId);
 
-        [HttpGet]
-        [Route("trainer")]
-        Task<IActionResult> GetTrainer();
-
-        [HttpGet]
-        [Route("trainer-birdskill")]
-        Task<IActionResult> GetTrainerByBirdSkillId([FromQuery] int birdSkillId);
-
-        [HttpPost]
-        [Route("trainer-id")]
-        Task<IActionResult> GetTrainerById([FromQuery] int trainerId);
-
-        [HttpPost]
-        [Route("trainer-skill")]
-        Task<IActionResult> GetTrainerByTrainerSkillId([FromQuery] int trainerSkillId);
-
         //[HttpPost]
         //[Route("generate-trainerslot")]
         //Task<IActionResult> GenerateTrainerTimetable([FromBody] IEnumerable<int> progressId);

@@ -37,13 +37,6 @@ namespace TrainingCourseSubsystem
         Task<BirdTrainingProgressViewModel> AssignTrainer(int progressId, int trainerId);
         Task ModifyTrainingSlot(ReportModifyModel reportModModel);
 
-
-        Task<IEnumerable<TrainerModel>> GetTrainer();
-        Task<IEnumerable<TrainerModel>> GetTrainerByBirdSkillId(int birdSkillId);
-        Task<IEnumerable<TrainerModel>> GetTrainerByTrainerSkillId(int trainerSkillId);
-        Task<TrainerModel> GetTrainerById(int trainerId);
-
-
         Task<IEnumerable<BirdTrainingProgressViewModel>> GetBirdTrainingProgress();//non api
         Task ModifyActualStartTime(DateTime startDate, int birdTrainingCourseId);// non api
 

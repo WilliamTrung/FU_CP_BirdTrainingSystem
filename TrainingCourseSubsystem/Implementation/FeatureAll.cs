@@ -2,6 +2,7 @@
 using AutoMapper;
 using Models.Entities;
 using Models.Enum.BirdTrainingProgress;
+using Models.ServiceModels.TrainingCourseModels;
 using Models.ServiceModels.TrainingCourseModels.Bird;
 using Models.ServiceModels.TrainingCourseModels.BirdCertificate;
 using Models.ServiceModels.TrainingCourseModels.BirdCertificate.BirdCertificateDetail;
@@ -197,6 +198,18 @@ namespace TrainingCourseSubsystem.Implementation
         {
             var entities = await _unitOfWork.BirdSkillRepository.Get();
             var models = _mapper.Map<IEnumerable<BirdSkillViewModel>>(entities);
+            bool nameAll = true;
+            foreach(var model in models)
+            {
+                if(model.Id == 0 && model.Name == "All")
+                {
+                    nameAll = false;
+                }
+            }
+            if(nameAll)
+            {
+                models.ToList().Add(new BirdSkillViewModel() { Id = 0, Name = "All"});
+            }
             return models;
         }
 
@@ -211,6 +224,86 @@ namespace TrainingCourseSubsystem.Implementation
         {
             var birdReceiveds = await _unitOfWork.BirdSkillReceivedRepository.Get(e => e.BirdId == birdId);
             var models = _mapper.Map<IEnumerable<BirdSkillReceivedViewModel>>(birdReceiveds);
+            return models;
+        }
+
+        public async Task<IEnumerable<TrainerModel>> GetTrainer()
+        {
+            var entities = await _unitOfWork.TrainerRepository.Get(expression: null, nameof(User), nameof(TrainerSkill));
+            List<TrainerModel> models = new List<TrainerModel>();
+            foreach (Models.Entities.Trainer entity in entities)
+            {
+                var skills = _mapper.Map<List<TrainerSkillViewModel>>(entity.TrainerSkills);
+                TrainerModel model = new TrainerModel()
+                {
+                    Id = entity.Id,
+                    Name = entity.User.Name,
+                    Email = entity.User.Email,
+                    Avatar = entity.User.Avatar,
+                    TrainerSkillModels = skills
+                };
+                models.Add(model);
+            }
+            return models;
+        }
+
+        public async Task<IEnumerable<TrainerModel>> GetTrainerByBirdSkillId(int birdSkillId)
+        {
+            var trainableSkills = await _unitOfWork.TrainableSkillRepository.Get(e => e.BirdSkillId == birdSkillId);
+            //var trainerSkills = await _unitOfWork.TrainerSkillRepository.Get();
+
+            //trainerSkills = trainerSkills.Where(e => trainableSkills.Any(s => s.SkillId == e.SkillId)).ToList();
+
+            //var trainers = _unitOfWork.TrainerRepository.Get(e => trainerSkills.Any(c => c.TrainerId == e.Id)).Result.ToList();
+            //var models = _mapper.Map<IEnumerable<TrainerModel>>(trainers);
+            List<TrainerModel> models = new List<TrainerModel>();
+            foreach (var trainableSkill in trainableSkills)
+            {
+                var trainerSkillId = trainableSkill.SkillId;
+                List<TrainerModel> trainers = GetTrainerByTrainerSkillId(trainerSkillId).Result.ToList();
+                foreach (var trainer in trainers)
+                {
+                    if (trainer != null)
+                    {
+                        models.Add(trainer);
+                    }
+                }
+            }
+            models.DistinctBy(m => m.Id).ToList();
+            return models;
+        }
+
+        public async Task<TrainerModel> GetTrainerById(int trainerId)
+        {
+            var entity = await _unitOfWork.TrainerRepository.GetFirst(e => e.Id == trainerId
+                                                                        , nameof(Trainer.User)
+                                                                        , nameof(Trainer.TrainerSkills));
+            var skills = _mapper.Map<List<TrainerSkillViewModel>>(entity.TrainerSkills);
+            TrainerModel model = new TrainerModel()
+            {
+                Id = entity.Id,
+                Name = entity.User.Name,
+                Email = entity.User.Email,
+                Avatar = entity.User.Avatar,
+                TrainerSkillModels = skills
+            };
+            return model;
+        }
+
+        public async Task<IEnumerable<TrainerModel>> GetTrainerByTrainerSkillId(int trainerSkillId)
+        {
+            var trainerSkills = await _unitOfWork.TrainerSkillRepository.Get(e => e.SkillId == trainerSkillId
+                                                                                , nameof(TrainerSkill.Trainer)
+                                                                                , $"{nameof(TrainerSkill.Trainer)}.{nameof(TrainerSkill.Trainer.User)}");
+            List<Trainer> trainerEntities = new List<Trainer>();
+            foreach (var trainerSkill in trainerSkills)
+            {
+                if (trainerSkill.Trainer != null)
+                {
+                    trainerEntities.Add(trainerSkill.Trainer);
+                }
+            }
+            var models = _mapper.Map<IEnumerable<TrainerModel>>(trainerEntities);
             return models;
         }
     }

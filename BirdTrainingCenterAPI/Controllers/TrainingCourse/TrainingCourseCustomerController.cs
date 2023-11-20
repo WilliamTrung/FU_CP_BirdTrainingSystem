@@ -137,20 +137,6 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             return Ok();
         }
         [HttpGet]
-        [Route("registered-birdtrainingcourseprogress")]
-        public async Task<IActionResult> GetRegisteredBirdTrainingCourseProgress([FromQuery] int birdTrainingCourseId)
-        {
-            var result = await _trainingCourseService.Customer.ViewBirdTrainingCourseProgress(birdTrainingCourseId);
-            return Ok(result);
-        }
-        [HttpGet]
-        [Route("registered-birdtrainingcoursereport")]
-        public async Task<IActionResult> GetRegisteredBirdTrainingCourseReport([FromQuery] int birdTrainingProgressId)
-        {
-            var result = await _trainingCourseService.Customer.ViewBirdTrainingCourseReport(birdTrainingProgressId);
-            return Ok(result);
-        }
-        [HttpGet]
         [Route("registered-birdtrainingcourse")]
         public async Task<IActionResult> GetRegisteredTrainingCourse([FromQuery] int birdId, [FromQuery] int customerId)
         {
@@ -167,6 +153,20 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             //    return Ok(result);
             //}
             var result = await _trainingCourseService.Customer.ViewRegisteredTrainingCourse(birdId: birdId, customerId: customerId);
+            return Ok(result);
+        }
+        [HttpGet]
+        [Route("registered-birdtrainingcourseprogress")]
+        public async Task<IActionResult> GetRegisteredBirdTrainingCourseProgress([FromQuery] int birdTrainingCourseId)
+        {
+            var result = await _trainingCourseService.Customer.ViewBirdTrainingCourseProgress(birdTrainingCourseId);
+            return Ok(result);
+        }
+        [HttpGet]
+        [Route("registered-birdtrainingcoursereport")]
+        public async Task<IActionResult> GetRegisteredBirdTrainingCourseReport([FromQuery] int birdTrainingProgressId)
+        {
+            var result = await _trainingCourseService.Customer.ViewBirdTrainingCourseReport(birdTrainingProgressId);
             return Ok(result);
         }
 
