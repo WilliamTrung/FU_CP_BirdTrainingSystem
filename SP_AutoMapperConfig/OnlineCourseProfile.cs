@@ -23,6 +23,11 @@ namespace SP_AutoMapperConfig
             Map_Section_OnlineCourseSectionViewModel();
             Map_OnlineCourseSectionAddModel_Section();
             Map_OnlineCourseLessonAddModel_Lesson();
+            Map_OnlineCourse_OnlineCourseAdminViewModel();
+        }
+        private void Map_OnlineCourse_OnlineCourseAdminViewModel()
+        {
+            CreateMap<OnlineCourse, OnlineCourseAdminViewModel>();                
         }
         private void Map_Lesson_OnlineCourseLessonViewModel()
         {
