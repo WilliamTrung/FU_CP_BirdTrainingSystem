@@ -193,6 +193,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         }
 
         [HttpGet]
+        [EnableQuery]
         [Route("accquirablebirdskill-birdspecies")]
         public async Task<IActionResult> GetAccquirableBirdSkillByBirdSpeciesId(int birdSpeciesId)
         {
