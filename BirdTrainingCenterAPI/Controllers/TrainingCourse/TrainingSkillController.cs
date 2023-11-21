@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Models.ApiParamModels.TrainingCourse;
 using Models.ConfigModels;
 using Models.ServiceModels.TrainingCourseModels.BirdSkill;
+using Models.ServiceModels.TrainingCourseModels.TrainerSkill;
 using SP_Middleware;
 
 namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
@@ -24,6 +25,13 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         public async Task<IActionResult> DeleteAcquirableSkill([FromBody] AcquirableAddModBirdSkill model)
         {            
             await _trainingSkill.Extra.DeleteAcquirableSkill(model);
+            return Ok();
+        }
+        [HttpDelete]
+        [Route("trainable-skill")]
+        public async Task<IActionResult> DeleteTrainableSkill([FromBody] TrainableAddModSkillModel model)
+        {
+            await _trainingSkill.Extra.DeleteTrainableSkill(model);
             return Ok();
         }
     }
