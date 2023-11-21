@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using AppRepository.UnitOfWork;
+using AutoMapper;
 using Models.Entities;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
 using System;
@@ -39,20 +40,23 @@ namespace SP_AutoMapperConfig
         private void Map_BirdTrainingCourse_BirdTrainingCourseViewModel()
         {
             CreateMap<BirdTrainingCourse, BirdTrainingCourseViewModel>()
-                .ForMember(m => m.Id, opt => opt.MapFrom(e => e.Id))
-                .ForMember(m => m.TotalSlot, opt => {
-                    opt.PreCondition(e => e.TrainingCourse != null);
-                    opt.MapFrom(e => e.TrainingCourse.TotalSlot);
-                })
-                .ForMember(m => m.Status, opt => opt.MapFrom(e => e.Status))
-                .ForMember(m => m.TrainingCourseTitle, opt => {
-                    opt.PreCondition(e => e.TrainingCourse != null);
-                    opt.MapFrom(e => e.TrainingCourse.Title);
-                })
-                .ForMember(m => m.TrainingCoursePicture, opt => {
-                    opt.PreCondition(e => e.TrainingCourse != null);
-                    opt.MapFrom(e => e.TrainingCourse.Picture);
-                });
+                .AfterMap<MapAction_BirdTrainingCourse_BirdTrainingCourseViewModel>();
+                //.ForMember(m => m.Id, opt => opt.MapFrom(e => e.Id))
+                //.ForMember(m => m.RegisteredDate, opt => opt.MapFrom(e => e.RegisteredDate))
+                //.ForMember(m => m.StartTrainingDate, opt => opt.MapFrom(e => e.StartTrainingDate))
+                //.ForMember(m => m.TotalSlot, opt => {
+                //    opt.PreCondition(e => e.TrainingCourse != null);
+                //    opt.MapFrom(e => e.TrainingCourse.TotalSlot);
+                //})
+                //.ForMember(m => m.Status, opt => opt.MapFrom(e => e.Status))
+                //.ForMember(m => m.TrainingCourseTitle, opt => {
+                //    opt.PreCondition(e => e.TrainingCourse != null);
+                //    opt.MapFrom(e => e.TrainingCourse.Title);
+                //})
+                //.ForMember(m => m.TrainingCoursePicture, opt => {
+                //    opt.PreCondition(e => e.TrainingCourse != null);
+                //    opt.MapFrom(e => e.TrainingCourse.Picture);
+                //});
         }
         private void Map_BirdTrainingCourse_BirdTrainingCourseListView()
         {
@@ -75,6 +79,37 @@ namespace SP_AutoMapperConfig
                 })
                 .ForMember(m => m.RegisteredDate, opt => opt.MapFrom(e => e.RegisteredDate))
                 .ForMember(m => m.Status, opt => opt.MapFrom(e => e.Status));
+        }
+
+        public class MapAction_BirdTrainingCourse_BirdTrainingCourseViewModel : IMappingAction<BirdTrainingCourse, BirdTrainingCourseViewModel>
+        {
+            private readonly IUnitOfWork _unitOfWork;
+            private readonly IMapper _mapper;
+            public MapAction_BirdTrainingCourse_BirdTrainingCourseViewModel(IUnitOfWork unitOfWork, IMapper mapper)
+            {
+                _unitOfWork = unitOfWork;
+                _mapper = mapper;
+            }
+
+            public void Process(BirdTrainingCourse source, BirdTrainingCourseViewModel destination, ResolutionContext context)
+            {
+                destination.Id = source.Id;
+                var trainingCourse = _unitOfWork.TrainingCourseRepository.GetFirst(e => e.Id == source.TrainingCourseId).Result;
+                if(trainingCourse != null )
+                {
+                    destination.TrainingCourseTitle = trainingCourse.Title;
+                    destination.TrainingCoursePicture = trainingCourse.Picture;
+                    destination.TotalSlot = trainingCourse.TotalSlot;
+                }
+                if(source.RegisteredDate != null)
+                {
+                    destination.RegisteredDate = source.RegisteredDate.Value.ToShortDateString();
+                }
+                if (source.StartTrainingDate != null)
+                {
+                    destination.StartTrainingDate = source.StartTrainingDate.Value.ToShortDateString();
+                }
+            }
         }
     }
 }
