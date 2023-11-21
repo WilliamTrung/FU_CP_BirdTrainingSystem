@@ -60,8 +60,6 @@ namespace AdviceConsultingSubsystem.Implementation
 
             entity.ActualEndSlot = ticket.ActualEndSlot;
             entity.Evidence = ticket.Evidence;
-            entity.Price = ticket.Price;
-            entity.DiscountedPrice = ticket.DiscountedPrice;
             entity.Status = ticket.Status;
 
             await _unitOfWork.ConsultingTicketRepository.Update(entity);
