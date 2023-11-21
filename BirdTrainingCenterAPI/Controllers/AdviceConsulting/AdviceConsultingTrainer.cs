@@ -37,9 +37,14 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
                     return Unauthorized();
                 }
                 var evidence = string.Empty;
+                if (consultingTicket.Evidence  == null)
+                {
+                    return BadRequest("Please update evidince");
+                }
                 foreach (var file in consultingTicket.Evidence)
                 {
-                    var temp = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.CONSULTINGTICKET, _bucket.General);
+                    string fileName = $"{nameof(FinishAppointment)}-{consultingTicket.Id}-{DateTime.Now.ToString("yyyyMMdd-HHmmss")}";
+                    var temp = await _firebaseService.UploadFile(file, fileName, FirebaseFolder.CONSULTINGTICKET, _bucket.General);
                     evidence += $"{temp},";
                 }
                 evidence = evidence.Substring(0, evidence.Length - 1);
