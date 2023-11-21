@@ -71,17 +71,24 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
                 var staffId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
 
                 var pictures = string.Empty;
-                if (birdTrainingCourse.ReceivePictures.Any(e => !e.IsImage()))
+                if(birdTrainingCourse.ReceivePictures != null)
                 {
-                    return BadRequest("Upload image only!");
+                    if (birdTrainingCourse.ReceivePictures.Any(e => !e.IsImage()))
+                    {
+                        return BadRequest("Upload image only!");
+                    }
+                    foreach (var file in birdTrainingCourse.ReceivePictures)
+                    {
+                        string fileName = $"{nameof(ReceiveBird)}-{birdTrainingCourse.BirdTrainingCourseId}-{DateTime.Now.ToString("yyyyMMdd-HHmmss")}";
+                        var temp = await _firebaseService.UploadFile(file, fileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
+                        pictures += $"{temp},";
+                    }
+                    pictures = pictures.Substring(0, pictures.Length - 1);
                 }
-                foreach (var file in birdTrainingCourse.ReceivePictures)
+                else
                 {
-                    string fileName = $"{nameof(ReceiveBird)}-{birdTrainingCourse.BirdTrainingCourseId}-{DateTime.Now.ToString("yyyyMMdd-HHmmss")}";
-                    var temp = await _firebaseService.UploadFile(file, fileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
-                    pictures += $"{temp},";
+                    return BadRequest("Please upload receive bird pictures.");
                 }
-                pictures = pictures.Substring(0, pictures.Length - 1);
                 var birdTrainingCourseModel = birdTrainingCourse.ToBirdTrainingCourseReceiveBird(pictures);
                 birdTrainingCourseModel.ReceiveStaffId = Int32.Parse(staffId.Value);
 
@@ -102,17 +109,24 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             {
                 var staffId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
                 var pictures = string.Empty;
-                if (birdTrainingCourse.ReturnPictures.Any(e => !e.IsImage()))
+                if(birdTrainingCourse.ReturnPictures != null)
                 {
-                    return BadRequest("Upload image only!");
+                    if (birdTrainingCourse.ReturnPictures.Any(e => !e.IsImage()))
+                    {
+                        return BadRequest("Upload image only!");
+                    }
+                    foreach (var file in birdTrainingCourse.ReturnPictures)
+                    {
+                        string fileName = $"{nameof(ReturnBird)}-{birdTrainingCourse.BirdTrainingCourseId}-{DateTime.Now.ToString("yyyyMMdd-HHmmss")}";
+                        var temp = await _firebaseService.UploadFile(file, fileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
+                        pictures += $"{temp},";
+                    }
+                    pictures = pictures.Substring(0, pictures.Length - 1);
                 }
-                foreach (var file in birdTrainingCourse.ReturnPictures)
+                else
                 {
-                    string fileName = $"{nameof(ReturnBird)}-{birdTrainingCourse.BirdTrainingCourseId}-{DateTime.Now.ToString("yyyyMMdd-HHmmss")}";
-                    var temp = await _firebaseService.UploadFile(file, fileName, FirebaseFolder.TRAININGCOURSE, _bucket.General);
-                    pictures += $"{temp},";
+                    return BadRequest("Please upload return bird pictures.");
                 }
-                pictures = pictures.Substring(0, pictures.Length - 1);
                 var birdTrainingCourseModel = birdTrainingCourse.ToBirdTrainingCourseReturnBird(pictures);
                 birdTrainingCourseModel.ReturnStaffId = Int32.Parse(staffId.Value);
 

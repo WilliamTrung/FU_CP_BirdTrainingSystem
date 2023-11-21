@@ -145,7 +145,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             var pictures = string.Empty;
             if (birdSkillAdd.Picture != null)
             {
-                if (birdSkillAdd.Picture.IsImage())
+                if (!birdSkillAdd.Picture.IsImage())
                 {
                     return BadRequest("Upload image only!");
                 }
@@ -256,7 +256,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             var pictures = string.Empty;
             if(birdCertificateAddParam.Picture != null)
             {
-                if (birdCertificateAddParam.Picture.IsImage())
+                if (!birdCertificateAddParam.Picture.IsImage())
                 {
                     return BadRequest("Upload image only!");
                 }
