@@ -96,7 +96,7 @@ namespace TrainingCourseSubsystem.Implementation
                     TrainingCourseId = trainingCourseId,
                     BirdCenterName = "Bird Training Center",
                     ShortDescrption = entity.Description,
-                    Picture = "https://storage.googleapis.com/birdtrainingcentersystem.appspot.com/trainingcourses/BirdCertificate-1-20231118-140936",
+                    Picture = "https://storage.googleapis.com/birdtrainingcentersystem.appspot.com/trainingcourses/BirdCertificate-8-20231121-171022",
                 };
                 await CreateBirdCertitficate(birdCertificateAdd);
             }
