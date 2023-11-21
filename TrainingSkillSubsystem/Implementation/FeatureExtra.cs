@@ -1,6 +1,7 @@
 ﻿using AppRepository.UnitOfWork;
 using AutoMapper;
 using Models.ServiceModels.TrainingCourseModels.BirdSkill;
+using Models.ServiceModels.TrainingCourseModels.TrainerSkill;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,17 @@ namespace TrainingSkillSubsystem.Implementation
                 throw new KeyNotFoundException("This species does not have the skill");
             }
             await _uow.AcquirableSkillRepository.Delete(entity);
+        }
+
+        public async Task DeleteTrainableSkill(TrainableAddModSkillModel model)
+        {
+            var entity = await _uow.TrainableSkillRepository.GetFirst(c => c.BirdSkillId == model.BirdSkillId
+                                                                            && c.SkillId == model.SkillId);
+            if (entity == null)
+            {
+                throw new KeyNotFoundException("This bird skill does not have that trainer skill");
+            }
+            await _uow.TrainableSkillRepository.Delete(entity);
         }
     }
 }
