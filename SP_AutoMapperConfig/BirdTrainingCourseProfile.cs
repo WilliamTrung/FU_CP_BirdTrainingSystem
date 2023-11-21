@@ -109,6 +109,14 @@ namespace SP_AutoMapperConfig
                 {
                     destination.StartTrainingDate = source.StartTrainingDate.Value.ToShortDateString();
                 }
+                if (source.TotalPrice != null)
+                {
+                    destination.Price = source.TotalPrice;
+                }
+                if (source.DiscountedPrice != null)
+                {
+                    destination.DiscountedPrice = source.DiscountedPrice;
+                }
             }
         }
     }
