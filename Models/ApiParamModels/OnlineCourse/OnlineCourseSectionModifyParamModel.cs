@@ -11,8 +11,8 @@ namespace Models.ApiParamModels.OnlineCourse
     public class OnlineCourseSectionModifyParamModel
     {
         public int Id { get; set; }
-        public string Title { get; set; } = null!;
-        public string Description { get; set; } = null!;
+        public string? Title { get; set; }
+        public string? Description { get; set; }
         public List<IFormFile>? ResourceFiles { get; set; }
 
         public OnlineCourseSectionModifyModel ToOnlineCourseLessonModifyModel(string? files = null)

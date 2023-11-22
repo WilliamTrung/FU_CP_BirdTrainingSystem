@@ -9,8 +9,8 @@ namespace Models.ServiceModels.OnlineCourseModels.Operation
     public class OnlineCourseSectionModifyModel
     {
         public int Id { get; set; }
-        public string Title { get; set; } = null!;
-        public string Description { get; set; } = null!;
+        public string? Title { get; set; } 
+        public string? Description { get; set; } 
         public string? ResourceFiles { get; set; }
     }
 }
