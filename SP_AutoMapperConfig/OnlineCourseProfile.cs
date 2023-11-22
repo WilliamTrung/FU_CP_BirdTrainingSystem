@@ -3,6 +3,7 @@ using AutoMapper;
 using Models.Entities;
 using Models.Enum.OnlineCourse.Customer.Lesson;
 using Models.ServiceModels.OnlineCourseModels;
+using Models.ServiceModels.OnlineCourseModels.Certificate;
 using Models.ServiceModels.OnlineCourseModels.Operation;
 using Models.ServiceModels.WorkshopModels.WorkshopClass;
 using System;
@@ -24,6 +25,11 @@ namespace SP_AutoMapperConfig
             Map_OnlineCourseSectionAddModel_Section();
             Map_OnlineCourseLessonAddModel_Lesson();
             Map_OnlineCourse_OnlineCourseAdminViewModel();
+            Map_OnlineCourseCertificateAddModel_Certificate();
+        }
+        private void Map_OnlineCourseCertificateAddModel_Certificate()
+        {
+            CreateMap<CertificateAddModel, Certificate>();
         }
         private void Map_OnlineCourse_OnlineCourseAdminViewModel()
         {

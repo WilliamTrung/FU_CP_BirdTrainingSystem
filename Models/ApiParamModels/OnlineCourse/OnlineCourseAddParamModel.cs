@@ -11,8 +11,7 @@ namespace Models.ApiParamModels.OnlineCourse
     public class OnlineCourseAddParamModel
     {
         public string Title { get; set; } = null!;
-        public string ShortDescription { get; set; } = null!;
-        [SP_Validator.FileImageValidator]
+        public string ShortDescription { get; set; } = null!;        
         public IFormFile Picture { get; set; } = null!;
         public decimal Price { get; set; }
 

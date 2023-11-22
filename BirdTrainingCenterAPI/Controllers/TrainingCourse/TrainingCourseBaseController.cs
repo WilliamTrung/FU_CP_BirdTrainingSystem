@@ -170,6 +170,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         }
 
         [HttpGet]
+        [EnableQuery]
         [Route("trainerskill")]
         public async Task<IActionResult> GetTrainerSkills()
         {
@@ -178,6 +179,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         }
 
         [HttpGet]
+        [EnableQuery]
         [Route("trainerskill-trainerid")]
         public async Task<IActionResult> GetTrainerSkillsByTrainerId([FromQuery] int trainerId)
         {
