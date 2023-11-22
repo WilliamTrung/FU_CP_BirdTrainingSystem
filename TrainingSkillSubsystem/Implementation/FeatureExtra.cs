@@ -41,9 +41,15 @@ namespace TrainingSkillSubsystem.Implementation
             await _uow.TrainableSkillRepository.Delete(entity);
         }
 
-        public Task DeleteTrainerSkill(TrainerSkillAddModModel model)
+        public async Task DeleteTrainerSkill(TrainerSkillAddModModel model)
         {
-            throw new NotImplementedException();
+            var entity = await _uow.TrainerSkillRepository.GetFirst(c => c.TrainerId == model.TrainerId
+                                                                          && c.SkillId == model.SkillId);
+            if (entity == null)
+            {
+                throw new KeyNotFoundException("This trainer does not have the skill!");
+            }
+            await _uow.TrainerSkillRepository.Delete(entity);
         }
     }
 }
