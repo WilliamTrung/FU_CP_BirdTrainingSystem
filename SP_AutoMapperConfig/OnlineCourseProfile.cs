@@ -58,11 +58,13 @@ namespace SP_AutoMapperConfig
         }
         private void Map_OnlineCourseSectionAddModel_Section()
         {
-            CreateMap<OnlineCourseSectionAddModel, Section>();
+            CreateMap<OnlineCourseSectionAddModel, Section>()
+                .ForMember(c => c.OnlineCourseId, opt => opt.MapFrom(m => m.CourseId));
         }
         private void Map_OnlineCourseLessonAddModel_Lesson()
         {
-            CreateMap<OnlineCourseLessonAddModel, Lesson>();
+            CreateMap<OnlineCourseLessonAddModel, Lesson>()
+                .ForMember(c => c.SectionId, opt => opt.MapFrom(m=>m.SectionId));
         }
 
         public class Map_Lesson_LessonViewModel_Resolver : IValueResolver<Lesson, OnlineCourseLessonViewModel, Models.Enum.OnlineCourse.Customer.Lesson.Status?>
