@@ -40,5 +40,10 @@ namespace TrainingSkillSubsystem.Implementation
             }
             await _uow.TrainableSkillRepository.Delete(entity);
         }
+
+        public Task DeleteTrainerSkill(TrainerSkillAddModModel model)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
