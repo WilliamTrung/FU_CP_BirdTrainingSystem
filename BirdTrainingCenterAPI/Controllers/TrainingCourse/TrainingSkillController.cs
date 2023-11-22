@@ -34,5 +34,12 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             await _trainingSkill.Extra.DeleteTrainableSkill(model);
             return Ok();
         }
+        [HttpDelete]
+        [Route("trainer-skill")]
+        public async Task<IActionResult> DeleteTrainerSkill([FromBody] TrainerSkillAddModModel model)
+        {
+            await _trainingSkill.Extra.DeleteTrainerSkill(model);
+            return Ok();
+        }
     }
 }

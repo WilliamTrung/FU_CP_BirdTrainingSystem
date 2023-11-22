@@ -13,6 +13,7 @@ namespace AppService.TrainingSkillService
     {
         Task DeleteAcquirableSkill(AcquirableAddModBirdSkill model);
         Task DeleteTrainableSkill(TrainableAddModSkillModel model);
+        Task DeleteTrainerSkill(TrainerSkillAddModModel model);
     }
     public class ServiceExtra : IServiceExtra
     {
@@ -30,6 +31,11 @@ namespace AppService.TrainingSkillService
         public async Task DeleteTrainableSkill(TrainableAddModSkillModel model)
         {
             await _trainingSkillFeature.Extra.DeleteTrainableSkill(model);
+        }
+
+        public async Task DeleteTrainerSkill(TrainerSkillAddModModel model)
+        {
+            await _trainingSkillFeature.Extra.DeleteTrainerSkill(model);
         }
     }
 }
