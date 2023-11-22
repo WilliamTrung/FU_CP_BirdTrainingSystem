@@ -60,6 +60,23 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         }
 
         [HttpPut]
+        [Route("finishOnlineAppointment")]
+        public async Task<IActionResult> FinishOnlineAppointment(ConsultingTicketTrainerFinishModel consultingTicket)
+        {
+            var accessToken = Request.DeserializeToken(_authService);
+            if (accessToken == null)
+            {
+                return Unauthorized();
+            }
+            if (consultingTicket.Evidence == null)
+            {
+                return BadRequest("Please update evidence");
+            }
+            await _consultingService.Trainer.FinishAppointment(consultingTicket);
+            return Ok();
+        }
+
+        [HttpPut]
         [Route("updateGooglemeetLink")]
         public async Task<IActionResult> UpdateGooglemeetLink(int ticketId, string ggmeetLink)
         {
