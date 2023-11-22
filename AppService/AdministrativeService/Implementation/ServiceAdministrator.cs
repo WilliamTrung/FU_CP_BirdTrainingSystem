@@ -1,5 +1,6 @@
 ﻿using AdministrativeSubsystem;
 using Models.Enum;
+using Models.ServiceModels;
 using Models.ServiceModels.UserModels;
 using System;
 using System.Collections.Generic;
@@ -33,6 +34,11 @@ namespace AppService.AdministrativeService.Implementation
         {
             var result = _admin.User.GetRoles();
             return result;
+        }
+
+        public async Task<IEnumerable<TrainerModel>> GetTrainersInformation()
+        {
+            return await _admin.User.GetTrainersInformation();
         }
 
         public IEnumerable<Models.Enum.Trainer.Status> GetTrainerStatuses()

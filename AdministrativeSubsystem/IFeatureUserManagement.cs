@@ -1,4 +1,5 @@
-﻿using Models.ServiceModels.UserModels;
+﻿using Models.ServiceModels;
+using Models.ServiceModels.UserModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace AdministrativeSubsystem
     public interface IFeatureUserManagement
     {
         Task<IEnumerable<UserAdminViewModel>> GetUsersInformation();
+        Task<IEnumerable<TrainerModel>> GetTrainersInformation();
         Task UpdateRecord(UserAdminUpdateModel user);
         Task UpdateRole(UserRoleUpdateModel model);
         IEnumerable<Models.Enum.Role> GetRoles();

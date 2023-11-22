@@ -12,5 +12,6 @@ namespace TrainingSkillSubsystem
     {
         Task DeleteAcquirableSkill(AcquirableAddModBirdSkill model);
         Task DeleteTrainableSkill(TrainableAddModSkillModel model);
+        Task DeleteTrainerSkill(TrainerSkillAddModModel model);        
     }
 }

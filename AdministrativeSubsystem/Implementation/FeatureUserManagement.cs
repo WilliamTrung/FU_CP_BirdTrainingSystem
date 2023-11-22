@@ -3,10 +3,12 @@ using AutoMapper;
 using Models.AuthModels;
 using Models.Entities;
 using Models.Enum;
+using Models.ServiceModels;
 using Models.ServiceModels.UserModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -24,7 +26,10 @@ namespace AdministrativeSubsystem.Implementation
 
         public async Task<IEnumerable<UserAdminViewModel>> GetUsersInformation()
         {
-            var entities = await _uow.UserRepository.Get(null, nameof(User.Customers), nameof(User.Trainers), $"{nameof(User.Customers)}.{nameof(Customer.MembershipRank)}");
+            var entities = await _uow.UserRepository.Get(null
+                                                        , nameof(User.Customers)
+                                                        , nameof(User.Trainers)
+                                                        , $"{nameof(User.Customers)}.{nameof(Customer.MembershipRank)}");
             var models = _mapper.Map<List<UserAdminViewModel>>(entities);
             return models;
         }
@@ -161,6 +166,15 @@ namespace AdministrativeSubsystem.Implementation
             if(user.Customers.First() != null)
                 await _uow.CustomerRepository.Delete(user.Customers.First());
             await _uow.UserRepository.Delete(user);
+        }
+
+        public async Task<IEnumerable<TrainerModel>> GetTrainersInformation()
+        {
+            var trainers = await _uow.TrainerRepository.Get(expression: null
+                                                                   , nameof(Trainer.TrainerSkills)
+                                                                   , nameof(Trainer.User));
+            var trainerModels = _mapper.Map<List<TrainerModel>>(trainers);
+            return trainerModels;
         }
     }
 }
