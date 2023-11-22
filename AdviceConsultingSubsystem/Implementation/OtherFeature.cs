@@ -107,5 +107,18 @@ namespace AdviceConsultingSubsystem.Implementation
             var entity = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id == id);
             return entity;
         }
+
+        public async Task<IEnumerable<ConsultingTicketListViewModel>> GetFinishedConsultingTicket()
+        {
+            var entities = await _unitOfWork.ConsultingTicketRepository.Get(x => x.Status == (int)Models.Enum.ConsultingTicket.Status.Finished);
+            var models = new List<ConsultingTicketListViewModel>();
+            foreach (var entity in entities)
+            {
+                var model = _mapper.Map<ConsultingTicketListViewModel>(entity);
+                models.Add(model);
+            }
+
+            return models;
+        }
     }
 }

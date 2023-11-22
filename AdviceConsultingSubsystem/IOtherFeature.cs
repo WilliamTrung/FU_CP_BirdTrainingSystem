@@ -20,5 +20,6 @@ namespace AdviceConsultingSubsystem
         Task CheckOutDateTicket();
         Task<int> GetTrainerIdByTicketId (int ticketId);
         Task<ConsultingTicket> GetConsultingTicketByIDForDoingFunction(int id);
+        Task<IEnumerable<ConsultingTicketListViewModel>> GetFinishedConsultingTicket();
     }
 }

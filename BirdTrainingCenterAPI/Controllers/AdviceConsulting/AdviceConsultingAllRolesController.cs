@@ -131,5 +131,13 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
+
+        [HttpGet]
+        [Route("getFinishedConsultingTicket")]
+        public async Task<IActionResult> GetFinishedConsultingTicket()
+        {
+            var result = await _consultingService.Other.GetFinishedConsultingTicket();
+            return Ok(result);
+        }
     }
 }
