@@ -83,6 +83,14 @@ namespace BirdTrainingCenterAPI.Controllers.OnlineCourse
                 files = files.Substring(0, files.Length - 1);
             }
             await _onlineCourseService.Manager.ModifySection(model.ToOnlineCourseLessonModifyModel(files));
+            var section = await _onlineCourseService.Manager.GetSectionById(model.Id);
+            if (section.ResourceFiles != null)
+            {
+                foreach (var link in section.ResourceFiles.Split(","))
+                {
+                    await _firebaseService.DeleteFile(link, _bucket.General);
+                }
+            }
             return Ok();
         }
         [HttpDelete]
