@@ -11,7 +11,6 @@ namespace BirdTrainingCenterAPI.Controllers.Administrative
 {
     [Route("api/user-management")]
     [ApiController]
-    [CustomAuthorize(roles: "Administrator")]
     public class UserManagementController : ODataController, IUserManagement
     {
         private readonly IAdministrativeService _admin;
@@ -22,6 +21,7 @@ namespace BirdTrainingCenterAPI.Controllers.Administrative
         [HttpGet]
         [EnableQuery]
         [Route("users")]
+        [CustomAuthorize(roles: "Administrator,Manager")]
         public async Task<IActionResult> GetUsers()
         {            
             try
@@ -35,6 +35,7 @@ namespace BirdTrainingCenterAPI.Controllers.Administrative
         }
         [HttpGet]
         [Route("roles")]
+        [CustomAuthorize(roles: "Administrator")]
         public IActionResult GetRoles()
         {
             var result = _admin.Administrator.GetRoles();
@@ -42,6 +43,7 @@ namespace BirdTrainingCenterAPI.Controllers.Administrative
         }
         [HttpPut]
         [Route("update-role")]
+        [CustomAuthorize(roles: "Administrator")]
         public async Task<IActionResult> UpdateRole(UserRoleUpdateModel model)
         {
             try
@@ -55,6 +57,7 @@ namespace BirdTrainingCenterAPI.Controllers.Administrative
         }
         [HttpPut]
         [Route("update")]
+        [CustomAuthorize(roles: "Administrator")]
         public async Task<IActionResult> UpdateRecord(UserAdminUpdateModel model)
         {
             try
@@ -68,6 +71,7 @@ namespace BirdTrainingCenterAPI.Controllers.Administrative
         }
         [HttpGet]
         [Route("customer-statuses")]
+        [CustomAuthorize(roles: "Administrator")]
         public IActionResult GetUserStatuses()
         {
             var result = _admin.Administrator.GetCustomerStatuses();
@@ -75,6 +79,7 @@ namespace BirdTrainingCenterAPI.Controllers.Administrative
         }
         [HttpGet]
         [Route("trainer-statuses")]
+        [CustomAuthorize(roles: "Administrator")]
         public IActionResult GetTrainerStatuses()
         {
             var result = _admin.Administrator.GetTrainerStatuses();
@@ -82,6 +87,7 @@ namespace BirdTrainingCenterAPI.Controllers.Administrative
         }
         [HttpPut]
         [Route("update-status")]
+        [CustomAuthorize(roles: "Administrator")]
         public async Task<IActionResult> UpdateStatus(UserStatusUpdateModel model)
         {
             try
