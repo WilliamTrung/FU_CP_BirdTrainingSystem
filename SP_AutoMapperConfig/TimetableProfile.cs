@@ -125,6 +125,7 @@ namespace SP_AutoMapperConfig
             destination.Name = source.User.Name;
             destination.Email = source.User.Email;
             destination.Avatar = source.User.Avatar;
+            destination.PhoneNumber = source.User.PhoneNumber.ToString();
             List<TrainerSkillModel> trainerSkillModels = new List<TrainerSkillModel>();
             foreach (TrainerSkill skill in source.TrainerSkills)
             {
@@ -132,6 +133,7 @@ namespace SP_AutoMapperConfig
                 trainerSkillModels.Add(trainerSkillModel);
             }
             destination.Category = (Models.Enum.Trainer.Category)source.Category;
+            destination.Status = (Models.Enum.Trainer.Status)source.Status;
             destination.Skills = trainerSkillModels;
         }
     }
