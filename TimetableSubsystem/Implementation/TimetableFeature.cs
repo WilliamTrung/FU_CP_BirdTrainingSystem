@@ -53,7 +53,7 @@ namespace TimetableSubsystem.Implementation
                                                                                             && slot.Date.Month == date.Month
                                                                                             && slot.Date.Year == date.Year
                                                                                             && slot.Status == (int)Models.Enum.TrainerSlotStatus.Enabled)
-                                                                                            == 8)
+                                                                                            == 8) && x.Id != 0
                                                                      , nameof(Trainer.TrainerSlots)
                                                                      , nameof(Trainer.TrainerSkills)
                                                                      , nameof(Trainer.User));
