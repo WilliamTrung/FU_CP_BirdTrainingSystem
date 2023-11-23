@@ -30,7 +30,7 @@ namespace BirdTrainingCenterAPI.Controllers.Administrative
         [HttpGet]
         [EnableQuery]
         [Route("trainers")]
-        [CustomAuthorize(roles: "Manager")]
+        [CustomAuthorize(roles: "Manager,Staff")]
         public async Task<IActionResult> GetTrainers()
         {
             var result = await _admin.Administrator.GetTrainersInformation();
