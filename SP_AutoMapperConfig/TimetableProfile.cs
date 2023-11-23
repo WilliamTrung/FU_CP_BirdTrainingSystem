@@ -157,7 +157,7 @@ namespace SP_AutoMapperConfig
             destination.Date = source.Date;
             destination.Id = source.Id;
             destination.SlotId = source.SlotId;
-            destination.Reason = source.Reason;
+            destination.Title = source.Reason;
             destination.TypeId = source.EntityTypeId;
             destination.TypeName = (Models.Enum.EntityType)source.EntityTypeId;
         }
