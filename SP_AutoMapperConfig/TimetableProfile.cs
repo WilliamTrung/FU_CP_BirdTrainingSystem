@@ -153,7 +153,7 @@ namespace SP_AutoMapperConfig
         public void Process(TrainerSlot source, TimetableModel destination, ResolutionContext context)
         {
             destination.Start = source.Date + source.Slot.StartTime.Value;
-            destination.End = destination.Start.AddHours(1);
+            destination.End = source.Date + source.Slot.EndTime.Value;
             destination.Date = source.Date;
             destination.Id = source.Id;
             destination.SlotId = source.SlotId;
