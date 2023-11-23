@@ -45,5 +45,6 @@ namespace TrainingCourseSubsystem
         Task<TrainerModel> GetTrainerById(int trainerId);
 
         Task<IEnumerable<BirdSkillReceivedViewModel>> GetBirdSkillReceivedByBirdId(int birdId);
+        Task<IEnumerable<CustomerModel>> GetCustomerModels();
     }
 }

@@ -307,5 +307,16 @@ namespace TrainingCourseSubsystem.Implementation
             var models = _mapper.Map<IEnumerable<BirdSkillReceivedViewModel>>(entities);
             return models;
         }
+
+        public async Task<IEnumerable<CustomerModel>> GetCustomerModels()
+        {
+            var request = _unitOfWork.BirdTrainingCourseRepository.Get().Result.ToList();
+            var entities = await _unitOfWork.CustomerRepository.Get(expression: null, nameof(Customer.User));
+
+            entities = entities.Where(e => request.Any(r => r.CustomerId == e.Id)).ToList();
+
+            var models = _mapper.Map<IEnumerable<CustomerModel>>(entities);
+            return models;
+        }
     }
 }

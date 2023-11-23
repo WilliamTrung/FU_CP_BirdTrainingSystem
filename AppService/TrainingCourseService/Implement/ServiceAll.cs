@@ -155,5 +155,9 @@ namespace AppService.TrainingCourseService.Implement
         {
             return await _trainingCourse.All.GetBirdSkillReceivedByBirdId(birdId);
         }
+        public async Task<IEnumerable<CustomerModel>> GetCustomerModels()
+        {
+            return await _trainingCourse.All.GetCustomerModels();
+        }
     }
 }
