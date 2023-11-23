@@ -60,7 +60,7 @@ namespace AdviceConsultingSubsystem.Implementation
 
             entity.ActualEndSlot = ticket.ActualEndSlot;
             entity.Evidence = ticket.Evidence;
-            entity.Status = ticket.Status;
+            entity.Status = (int)Models.Enum.ConsultingTicket.Status.Finished;
 
             await _unitOfWork.ConsultingTicketRepository.Update(entity);
         }

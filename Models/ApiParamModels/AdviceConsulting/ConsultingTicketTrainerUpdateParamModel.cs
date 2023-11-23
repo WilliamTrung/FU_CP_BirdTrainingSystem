@@ -15,15 +15,13 @@ namespace Models.ApiParamModels.AdviceConsulting
         public int? ActualEndSlot { get; set; }
         [FileImageValidator]
         public List<IFormFile> Evidence { get; set; }
-        public int Status { get; set; }
         
         public ConsultingTicketTrainerFinishModel ToConsultingTicketUpdateModel(string evidence)
         {
             return new ConsultingTicketTrainerFinishModel
             {
                 Id = this.Id,
-                ActualEndSlot = (int)this.ActualEndSlot,
-                Status = this.Status
+                ActualEndSlot = (int)this.ActualEndSlot
             };
         }
     }
