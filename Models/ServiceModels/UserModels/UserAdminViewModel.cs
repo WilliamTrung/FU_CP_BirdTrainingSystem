@@ -13,6 +13,7 @@ namespace Models.ServiceModels.UserModels
         public string Email { get; set; } = null!;
         public string PhoneNumber { get; set; } = null!; 
         public string Avatar { get; set; } = string.Empty;
+        public string Password { get; set; } = null!;
         public Models.Enum.Role Role { get; set; }
         public DateTime? BirthDay { get; set; }
         public bool? Gender { get; set; }

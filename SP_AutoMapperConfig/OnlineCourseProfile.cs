@@ -3,6 +3,7 @@ using AutoMapper;
 using Models.Entities;
 using Models.Enum.OnlineCourse.Customer.Lesson;
 using Models.ServiceModels.OnlineCourseModels;
+using Models.ServiceModels.OnlineCourseModels.Certificate;
 using Models.ServiceModels.OnlineCourseModels.Operation;
 using Models.ServiceModels.WorkshopModels.WorkshopClass;
 using System;
@@ -24,6 +25,11 @@ namespace SP_AutoMapperConfig
             Map_OnlineCourseSectionAddModel_Section();
             Map_OnlineCourseLessonAddModel_Lesson();
             Map_OnlineCourse_OnlineCourseAdminViewModel();
+            Map_OnlineCourseCertificateAddModel_Certificate();
+        }
+        private void Map_OnlineCourseCertificateAddModel_Certificate()
+        {
+            CreateMap<CertificateAddModel, Certificate>();
         }
         private void Map_OnlineCourse_OnlineCourseAdminViewModel()
         {
@@ -52,11 +58,13 @@ namespace SP_AutoMapperConfig
         }
         private void Map_OnlineCourseSectionAddModel_Section()
         {
-            CreateMap<OnlineCourseSectionAddModel, Section>();
+            CreateMap<OnlineCourseSectionAddModel, Section>()
+                .ForMember(c => c.OnlineCourseId, opt => opt.MapFrom(m => m.CourseId));
         }
         private void Map_OnlineCourseLessonAddModel_Lesson()
         {
-            CreateMap<OnlineCourseLessonAddModel, Lesson>();
+            CreateMap<OnlineCourseLessonAddModel, Lesson>()
+                .ForMember(c => c.SectionId, opt => opt.MapFrom(m=>m.SectionId));
         }
 
         public class Map_Lesson_LessonViewModel_Resolver : IValueResolver<Lesson, OnlineCourseLessonViewModel, Models.Enum.OnlineCourse.Customer.Lesson.Status?>

@@ -15,9 +15,6 @@ namespace Models.ApiParamModels.AdviceConsulting
         public int? ActualEndSlot { get; set; }
         [FileImageValidator]
         public List<IFormFile> Evidence { get; set; }
-        public decimal Price { get; set; }
-        public decimal? DiscountedPrice { get; set; }
-        public int Status { get; set; }
         
         public ConsultingTicketTrainerFinishModel ToConsultingTicketUpdateModel(string evidence)
         {
@@ -25,9 +22,7 @@ namespace Models.ApiParamModels.AdviceConsulting
             {
                 Id = this.Id,
                 ActualEndSlot = (int)this.ActualEndSlot,
-                Price = this.Price,
-                DiscountedPrice = this.DiscountedPrice,
-                Status = this.Status
+                Evidence = evidence
             };
         }
     }

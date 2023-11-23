@@ -27,7 +27,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
 
         [HttpPut]
         [Route("finishAppointment")]
-        public async Task<IActionResult> FinishAppointment(ConsultingTicketTrainerUpdateParamModel consultingTicket)
+        public async Task<IActionResult> FinishAppointment([FromForm]ConsultingTicketTrainerUpdateParamModel consultingTicket)
         {
             try
             {
@@ -37,9 +37,14 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
                     return Unauthorized();
                 }
                 var evidence = string.Empty;
+                if (consultingTicket.Evidence  == null)
+                {
+                    return BadRequest("Please update evidince");
+                }
                 foreach (var file in consultingTicket.Evidence)
                 {
-                    var temp = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.CONSULTINGTICKET, _bucket.General);
+                    string fileName = $"{nameof(FinishAppointment)}-{consultingTicket.Id}-{DateTime.Now.ToString("yyyyMMdd-HHmmss")}";
+                    var temp = await _firebaseService.UploadFile(file, fileName, FirebaseFolder.CONSULTINGTICKET, _bucket.General);
                     evidence += $"{temp},";
                 }
                 evidence = evidence.Substring(0, evidence.Length - 1);
@@ -52,6 +57,23 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
+        }
+
+        [HttpPut]
+        [Route("finishOnlineAppointment")]
+        public async Task<IActionResult> FinishOnlineAppointment(ConsultingTicketTrainerFinishModel consultingTicket)
+        {
+            var accessToken = Request.DeserializeToken(_authService);
+            if (accessToken == null)
+            {
+                return Unauthorized();
+            }
+            if (consultingTicket.Evidence == null)
+            {
+                return BadRequest("Please update evidence");
+            }
+            await _consultingService.Trainer.FinishAppointment(consultingTicket);
+            return Ok();
         }
 
         [HttpPut]

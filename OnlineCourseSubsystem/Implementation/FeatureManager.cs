@@ -128,8 +128,18 @@ namespace OnlineCourseSubsystem.Implementation
             {
                 throw new KeyNotFoundException("Section not found!");
             }
-            section.Title = model.Title;
-            section.Description = model.Description;
+            if(model.Title != null)
+            {
+                section.Title = model.Title;
+            }
+            if(model.Description != null)
+            {
+                section.Description = model.Description;
+            }
+            if(model.ResourceFiles != null)
+            {
+                section.ResourceFiles = model.ResourceFiles;
+            }
             await _unitOfWork.SectionRepository.Update(section);
         }
         private async Task GenerateCertificateOnCreateCourse(OnlineCourse course)

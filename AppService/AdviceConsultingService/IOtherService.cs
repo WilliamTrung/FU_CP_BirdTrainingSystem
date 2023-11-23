@@ -18,5 +18,6 @@ namespace AppService.AdviceConsultingService
         Task<IEnumerable<ConsultingTypeServiceModel>> GetConsultingType();
         Task<int> GetTrainerIdByTicketId(int ticketId);
         Task<ConsultingTicket> GetConsultingTicketByIDForDoingFunction(int id);
+        Task<IEnumerable<ConsultingTicketListViewModel>> GetFinishedConsultingTicket();
     }
 }

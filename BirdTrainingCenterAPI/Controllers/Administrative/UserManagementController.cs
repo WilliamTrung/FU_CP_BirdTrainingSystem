@@ -11,7 +11,6 @@ namespace BirdTrainingCenterAPI.Controllers.Administrative
 {
     [Route("api/user-management")]
     [ApiController]
-    [CustomAuthorize(roles: "Administrator")]
     public class UserManagementController : ODataController, IUserManagement
     {
         private readonly IAdministrativeService _admin;
@@ -22,19 +21,24 @@ namespace BirdTrainingCenterAPI.Controllers.Administrative
         [HttpGet]
         [EnableQuery]
         [Route("users")]
+        [CustomAuthorize(roles: "Administrator")]
         public async Task<IActionResult> GetUsers()
-        {            
-            try
-            {
-                var result = await _admin.Administrator.GetUsersInformation();
-                return Ok(result);
-            } catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
+        {
+            var result = await _admin.Administrator.GetUsersInformation();
+            return Ok(result);
+        }
+        [HttpGet]
+        [EnableQuery]
+        [Route("trainers")]
+        [CustomAuthorize(roles: "Manager,Staff")]
+        public async Task<IActionResult> GetTrainers()
+        {
+            var result = await _admin.Administrator.GetTrainersInformation();
+            return Ok(result);
         }
         [HttpGet]
         [Route("roles")]
+        [CustomAuthorize(roles: "Administrator")]
         public IActionResult GetRoles()
         {
             var result = _admin.Administrator.GetRoles();
@@ -42,32 +46,23 @@ namespace BirdTrainingCenterAPI.Controllers.Administrative
         }
         [HttpPut]
         [Route("update-role")]
+        [CustomAuthorize(roles: "Administrator")]
         public async Task<IActionResult> UpdateRole(UserRoleUpdateModel model)
         {
-            try
-            {
-                await _admin.Administrator.UpdateRole(model);
-                return Ok();
-            } catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
+            await _admin.Administrator.UpdateRole(model);
+            return Ok();
         }
         [HttpPut]
         [Route("update")]
+        [CustomAuthorize(roles: "Administrator")]
         public async Task<IActionResult> UpdateRecord(UserAdminUpdateModel model)
         {
-            try
-            {
-                await _admin.Administrator.UpdateRecord(model);
-                return Ok();
-            } catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
+            await _admin.Administrator.UpdateRecord(model);
+            return Ok();
         }
         [HttpGet]
         [Route("customer-statuses")]
+        [CustomAuthorize(roles: "Administrator")]
         public IActionResult GetUserStatuses()
         {
             var result = _admin.Administrator.GetCustomerStatuses();
@@ -75,6 +70,7 @@ namespace BirdTrainingCenterAPI.Controllers.Administrative
         }
         [HttpGet]
         [Route("trainer-statuses")]
+        [CustomAuthorize(roles: "Administrator")]
         public IActionResult GetTrainerStatuses()
         {
             var result = _admin.Administrator.GetTrainerStatuses();
@@ -82,17 +78,11 @@ namespace BirdTrainingCenterAPI.Controllers.Administrative
         }
         [HttpPut]
         [Route("update-status")]
+        [CustomAuthorize(roles: "Administrator")]
         public async Task<IActionResult> UpdateStatus(UserStatusUpdateModel model)
         {
-            try
-            {
-                await _admin.Administrator.UpdateStatus(model);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
-            }
+            await _admin.Administrator.UpdateStatus(model);
+            return Ok();
         }
     }
 }
