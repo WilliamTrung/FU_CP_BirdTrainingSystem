@@ -168,7 +168,16 @@ namespace SP_AutoMapperConfig
                 _uow = uow;
                 _mapper = mapper;
             }
+            
+            private string FormatTimeSpan(TimeSpan timeSpan)
+            {
+                return timeSpan.ToString(@"hh\:mm");
+            } 
 
+            private string FormatSlotTime(TimeSpan startTime, TimeSpan endTime)
+            {
+                return $"{FormatTimeSpan(startTime)} - {FormatTimeSpan(endTime)}";
+            }
             public void Process (ConsultingTicket source, ConsultingTicketDetailViewModel destination, ResolutionContext context)
             {
                 var customer = _uow.CustomerRepository.GetFirst(x => x.Id == source.CustomerId, nameof(User)).Result;
@@ -188,10 +197,10 @@ namespace SP_AutoMapperConfig
                 destination.OnlineOrOffline = source.OnlineOrOffline;
                 destination.GgMeetLink = source.GgMeetLink;
                 destination.AppointmentDate = (DateTime)source.AppointmentDate;
-                destination.ActualSlotStart =   slotstart.StartTime + " - " + slotstart.EndTime;
+                destination.ActualSlotStart = FormatSlotTime((TimeSpan)slotstart.StartTime, (TimeSpan)slotstart.EndTime);
                 if (endSLot != null)
                 {
-                    destination.ActualEndSlot = endSLot.StartTime + " - " + endSLot.EndTime;
+                    destination.ActualEndSlot = FormatSlotTime((TimeSpan)endSLot.StartTime, (TimeSpan)endSLot.EndTime);
                 }
                 else
                 {
