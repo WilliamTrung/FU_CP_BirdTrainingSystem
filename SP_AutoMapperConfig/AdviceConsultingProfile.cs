@@ -197,6 +197,7 @@ namespace SP_AutoMapperConfig
                 destination.OnlineOrOffline = source.OnlineOrOffline;
                 destination.GgMeetLink = source.GgMeetLink;
                 destination.AppointmentDate = (DateTime)source.AppointmentDate;
+                destination.SlotStartId = source.ActualSlotStart;
                 destination.ActualSlotStart = FormatSlotTime((TimeSpan)slotstart.StartTime, (TimeSpan)slotstart.EndTime);
                 if (endSLot != null)
                 {
