@@ -46,30 +46,41 @@ namespace SP_AutoMapperConfig
         private void Map_TrainerSlot_TimetableModel()
         {
             CreateMap<TrainerSlot, TimetableModel>()
-                .ForMember(m => m.Id, opt =>
-                {
-                    opt.MapFrom(e => e.Id);
-                })
-                .ForMember(m => m.SlotId, opt =>
-                {
-                    opt.MapFrom(e => e.SlotId);
-                })
-                .ForMember(m => m.Date, opt =>
-                {
-                    opt.MapFrom(e => e.Date.ToDateOnly());
-                })
-                .ForMember(m => m.Reason, opt =>
-                {
-                    opt.MapFrom(e => e.Reason);
-                })
-                .ForMember(m => m.TypeId, opt =>
-                {
-                    opt.MapFrom(e => e.EntityTypeId);
-                })
-                .ForMember(m => m.TypeName, opt =>
-                {
-                    opt.MapFrom(e => e.EntityTypeId);
-                });
+                .AfterMap<MappingAction_TrainerSlot_TimetableModel>();
+                //.ForMember(m => m.Id, opt =>
+                //{
+                //    opt.MapFrom(e => e.Id);
+                //})
+                //.ForMember(m => m.SlotId, opt =>
+                //{
+                //    opt.MapFrom(e => e.SlotId);
+                //})
+                //.ForMember(m => m.Date, opt =>
+                //{
+                //    opt.MapFrom(e => e.Date.ToDateOnly());
+                //})
+                //.ForMember(m => m.Reason, opt =>
+                //{
+                //    opt.MapFrom(e => e.Reason);
+                //})
+                //.ForMember(m => m.TypeId, opt =>
+                //{
+                //    opt.MapFrom(e => e.EntityTypeId);
+                //})
+                //.ForMember(m => m.TypeName, opt =>
+                //{
+                //    opt.MapFrom(e => e.EntityTypeId);
+                //})
+                //.ForMember(m => m.StartTime, opt =>
+                //{
+                //    opt.PreCondition(e => e.Slot != null);
+                //    opt.MapFrom(e => e.Date + e.Slot.StartTime);
+                //})
+                //.ForMember(m => m.EndTime, opt =>
+                //{
+                //    opt.PreCondition(e => e.Slot != null);
+                //    opt.MapFrom(e => e.Date + e.Slot.EndTime);
+                //});
         }
         private void Map_Slot_SlotModel()
         {
@@ -135,6 +146,20 @@ namespace SP_AutoMapperConfig
             destination.Category = (Models.Enum.Trainer.Category)source.Category;
             destination.Status = (Models.Enum.Trainer.Status)source.Status;
             destination.Skills = trainerSkillModels;
+        }
+    }
+    public class MappingAction_TrainerSlot_TimetableModel : IMappingAction<TrainerSlot, TimetableModel>
+    {
+        public void Process(TrainerSlot source, TimetableModel destination, ResolutionContext context)
+        {
+            destination.StartTime = source.Date + source.Slot.StartTime.Value;
+            destination.EndTime = source.Date + source.Slot.EndTime.Value;
+            destination.Date = source.Date;
+            destination.Id = source.Id;
+            destination.SlotId = source.SlotId;
+            destination.Reason = source.Reason;
+            destination.TypeId = source.EntityTypeId;
+            destination.TypeName = (Models.Enum.EntityType)source.EntityTypeId;
         }
     }
 }

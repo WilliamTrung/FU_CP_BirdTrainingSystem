@@ -161,7 +161,9 @@ namespace TimetableSubsystem.Implementation
                                                                              && c.Date.Year >= from.Year
                                                                              && c.Date.Day <= to.Day
                                                                              && c.Date.Month <= to.Month
-                                                                             && c.Date.Year <= to.Year);
+                                                                             && c.Date.Year <= to.Year
+                                                                            , nameof(TrainerSlot.Slot));
+            //var tesst = _mapper.Map<TimetableModel>(trainerSlots.First());
             var slots = _mapper.Map<List<TimetableModel>>(trainerSlots);
             return slots;
         }
