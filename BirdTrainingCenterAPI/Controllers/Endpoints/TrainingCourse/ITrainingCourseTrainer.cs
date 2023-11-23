@@ -17,7 +17,7 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
 
         [HttpGet]
         [Route("timetable-slot-itemdetail")]
-        Task<IActionResult> GetTimetableReportView([FromQuery]int birdTrainingReportId);
+        Task<IActionResult> GetTimetableReportView([FromQuery]int trainerSlotId);
 
         [HttpPut]
         [Route("mark-trainingslotdone")]

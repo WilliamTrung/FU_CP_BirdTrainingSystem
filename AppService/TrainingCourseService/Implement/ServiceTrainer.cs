@@ -21,9 +21,9 @@ namespace AppService.TrainingCourseService.Implement
             return await _trainingCourse.Trainer.GetBirdTrainingProgressByTrainerId(trainerId);
         }
 
-        public async Task<TimetableReportView> GetTimetableReportView(int birdTrainingReportId)
+        public async Task<TimetableReportView> GetTimetableReportView(int trainerSlotId)
         {
-            return await _trainingCourse.Trainer.GetTimetableReportView(birdTrainingReportId);
+            return await _trainingCourse.Trainer.GetTimetableReportView(trainerSlotId);
         }
 
         public async Task MarkTrainingSkillDone(MarkSkillDone markDone)

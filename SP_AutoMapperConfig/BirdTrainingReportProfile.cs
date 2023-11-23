@@ -78,6 +78,8 @@ namespace SP_AutoMapperConfig
                 destination.BirdSpeciesName = bird.BirdSpecies.Name;
                 destination.BirdColor = bird.Color;
                 destination.BirdPicture = bird.Picture;
+                destination.SlotId = source.TrainerSlot.SlotId;
+                destination.TrainingDate = source.TrainerSlot.Date;
             }
         }
 

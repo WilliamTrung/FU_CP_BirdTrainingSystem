@@ -9,6 +9,8 @@ namespace Models.ServiceModels.TrainingCourseModels.BirdTrainingReport
     public class TimetableReportView
     {
         public int Id { get; set; }
+        public int SlotId { get; set; }
+        public DateTime TrainingDate { get; set; }
         public string BirdSkillName { get; set; } = null!;
         public string? BirdSkillDescription { get; set; }
         public string BirdName { get; set; } = null!;

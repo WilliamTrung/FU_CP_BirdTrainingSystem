@@ -27,11 +27,27 @@ namespace TrainingCourseSubsystem.Implementation
             return models;
         }
 
-        public async Task<TimetableReportView> GetTimetableReportView(int birdTrainingReportId)
+        public async Task<TimetableReportView> GetTimetableReportView(int trainerSlotId)
         {
-            var entity = await _unitOfWork.BirdTrainingReportRepository.GetFirst(e => e.Id == birdTrainingReportId);
-            var model = _mapper.Map<TimetableReportView>(entity);
-            return model;
+            var entity = await _unitOfWork.TrainerSlotRepository.GetFirst(e => e.Id == trainerSlotId);
+            if(entity == null)
+            {
+                throw new Exception($"{nameof(TrainerSlot)} is not found");
+            }else
+            {
+                if(entity.EntityTypeId == (int)Models.Enum.EntityType.TrainingCourse)
+                {
+                    var report = _unitOfWork.BirdTrainingReportRepository.GetFirst(e => e.TrainerSlotId == entity.Id
+                                                                                    , nameof(BirdTrainingReport.TrainerSlot)).Result;
+                    var model = _mapper.Map<TimetableReportView>(report);
+                    return model;
+                }
+                else
+                {
+                    Models.Enum.EntityType enumValue = (Models.Enum.EntityType)Enum.Parse(typeof(Models.Enum.EntityType), entity.EntityTypeId.ToString());
+                    throw new Exception($"{enumValue} is not suitable for query");
+                }
+            }
         }
 
         public async Task MarkTrainingSkillDone(MarkSkillDone markDone)
