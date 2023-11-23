@@ -27,7 +27,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
 
         [HttpPut]
         [Route("finishAppointment")]
-        public async Task<IActionResult> FinishAppointment(ConsultingTicketTrainerUpdateParamModel consultingTicket)
+        public async Task<IActionResult> FinishAppointment([FromForm]ConsultingTicketTrainerUpdateParamModel consultingTicket)
         {
             try
             {
