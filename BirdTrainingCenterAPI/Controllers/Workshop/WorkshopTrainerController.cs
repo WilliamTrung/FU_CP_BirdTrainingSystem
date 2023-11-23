@@ -50,7 +50,7 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             }
             var role = accessToken.First(c => c.Type == CustomClaimTypes.Role);
             int? trainerId = null;
-            if(role.Value == Models.Enum.Role.Trainer.ToString())
+            if(role.Value == Enum.GetName(typeof(Models.Enum.Role), Models.Enum.Role.Trainer))
             {
                 var token = accessToken.First(c => c.Type == CustomClaimTypes.Id).Value;
                 trainerId = Int32.Parse(token);
