@@ -1,6 +1,7 @@
 ﻿using AppRepository.UnitOfWork;
 using AutoMapper;
 using Models.Entities;
+using Models.ServiceModels.TrainingCourseModels;
 using Models.ServiceModels.TrainingCourseModels.BirdSkill;
 using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
 using System;
@@ -18,6 +19,29 @@ namespace SP_AutoMapperConfig
             Map_TrainingCourseAddModel_TrainingCourse();
             Map_TrainingCourse_TrainingCourseViewModel();
             Map_AddTrainingSkillModel_TrainingSkillModel();
+            Map_Customer_CustomerModel();//training course
+        }
+
+        private void Map_Customer_CustomerModel()
+        {
+            CreateMap<Customer, CustomerModel>()
+                .ForMember(m => m.Id, opt => opt.MapFrom(e => e.Id))
+                .ForMember(m => m.Name, opt => {
+                    opt.PreCondition(m => m.User != null);
+                    opt.MapFrom(e => e.User.Name);
+                })
+                .ForMember(m => m.Email, opt => {
+                    opt.PreCondition(m => m.User != null);
+                    opt.MapFrom(e => e.User.Email);
+                })
+                .ForMember(m => m.PhoneNumber, opt => {
+                    opt.PreCondition(m => m.User != null);
+                    opt.MapFrom(e => e.User.PhoneNumber);
+                })
+                .ForMember(m => m.Avatar, opt => {
+                    opt.PreCondition(m => m.User != null);
+                    opt.MapFrom(e => e.User.Avatar);
+                });
         }
 
         private void Map_AddTrainingSkillModel_TrainingSkillModel()
