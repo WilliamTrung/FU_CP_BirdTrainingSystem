@@ -33,6 +33,14 @@ namespace SP_AutoMapperConfig
                     opt.PreCondition(e => e.BirdSkill != null);
                     opt.MapFrom(e => e.BirdSkill.Name);
                 })
+                .ForMember(m => m.BirdSkillDescription, opt => {
+                    opt.PreCondition(e => e.BirdSkill != null);
+                    opt.MapFrom(e => e.BirdSkill.Description);
+                })
+                .ForMember(m => m.BirdSkillPicture, opt => {
+                    opt.PreCondition(e => e.BirdSkill != null);
+                    opt.MapFrom(e => e.BirdSkill.Picture);
+                })
                 .ForMember(m => m.ReceivedDate, opt => opt.MapFrom(e => e.ReceivedDate));
         }
 

@@ -298,5 +298,14 @@ namespace TrainingCourseSubsystem.Implementation
             var models = _mapper.Map<IEnumerable<TrainerModel>>(trainerEntities);
             return models;
         }
+
+        public async Task<IEnumerable<BirdSkillReceivedViewModel>> GetBirdSkillReceivedByBirdId(int birdId)
+        {
+            var entities = await _unitOfWork.BirdSkillReceivedRepository.Get(e => e.BirdId == birdId
+                                                                             , nameof(BirdSkillReceived.Bird)
+                                                                             , nameof(BirdSkillReceived.BirdSkill));
+            var models = _mapper.Map<IEnumerable<BirdSkillReceivedViewModel>>(entities);
+            return models;
+        }
     }
 }
