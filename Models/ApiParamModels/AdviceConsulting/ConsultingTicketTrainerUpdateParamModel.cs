@@ -21,7 +21,8 @@ namespace Models.ApiParamModels.AdviceConsulting
             return new ConsultingTicketTrainerFinishModel
             {
                 Id = this.Id,
-                ActualEndSlot = (int)this.ActualEndSlot
+                ActualEndSlot = (int)this.ActualEndSlot,
+                Evidence = evidence
             };
         }
     }
