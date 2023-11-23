@@ -52,15 +52,15 @@ namespace TrainingCourseSubsystem.Implementation
             {
                 throw new Exception("Entity is null.");
             }
-            else
-            {
-                var birds = GetBirdByCustomerId(entity.CustomerId).Result;
-                if(birds == null)
-                {
-                    entity.IsDefault = true;
-                }
-            }
-            entity.IsDefault = false;
+            //else
+            //{
+            //    var birds = GetBirdByCustomerId(entity.CustomerId).Result;
+            //    if(birds == null || birds.Count() > 0)
+            //    {
+            //        entity.IsDefault = true;
+            //    }
+            //}
+            //entity.IsDefault = false;
             entity.Status = (int)Models.Enum.Bird.Status.Ready;
             await _unitOfWork.BirdRepository.Add(entity);
         }
