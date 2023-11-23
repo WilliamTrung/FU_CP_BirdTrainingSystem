@@ -34,9 +34,9 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
 
         [HttpGet]
         [Route("timetable-slot-itemdetail")]
-        public async Task<IActionResult> GetTimetableReportView([FromQuery] int birdTrainingReportId)
+        public async Task<IActionResult> GetTimetableReportView([FromQuery] int trainerSlotId)
         {
-            var result = await _trainingCourseService.Trainer.GetTimetableReportView(birdTrainingReportId);
+            var result = await _trainingCourseService.Trainer.GetTimetableReportView(trainerSlotId);
             return Ok(result);
         }
 

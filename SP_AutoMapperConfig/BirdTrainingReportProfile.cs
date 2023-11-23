@@ -68,15 +68,18 @@ namespace SP_AutoMapperConfig
                 destination.Id = source.Id;
                 var birdTrainingProgress = _unitOfWork.BirdTrainingProgressRepository.GetFirst(e => e.Id == source.BirdTrainingProgressId
                                                                                                 ,nameof(BirdTrainingProgress.BirdTrainingCourse)).Result;
-                var skill = _unitOfWork.SkillRepository.GetFirst(e => e.Id == birdTrainingProgress.TrainingCourseSkillId).Result;
+                var skill = _unitOfWork.TrainingCourseSkillRepository.GetFirst(e => e.Id == birdTrainingProgress.TrainingCourseSkillId
+                                                                                , nameof(TrainingCourseSkill.BirdSkill)).Result;
                 var bird = _unitOfWork.BirdRepository.GetFirst(e => e.Id == birdTrainingProgress.BirdTrainingCourse.BirdId
                                                                 ,nameof(Bird.BirdSpecies)).Result;
-                destination.SkillName = skill.Name;
-                destination.SkillDescription = skill.Description;
-                destination.BirdName = bird.Name;
+                destination.BirdSkillName = skill.BirdSkill.Name;
+                destination.BirdSkillDescription = skill.BirdSkill.Description;
+                destination.BirdName = bird.Name ?? "";
                 destination.BirdSpeciesName = bird.BirdSpecies.Name;
                 destination.BirdColor = bird.Color;
                 destination.BirdPicture = bird.Picture;
+                destination.SlotId = source.TrainerSlot.SlotId;
+                destination.TrainingDate = source.TrainerSlot.Date;
             }
         }
 
