@@ -19,7 +19,7 @@ namespace WorkshopSubsystem.Implementation
 
         public async Task<bool> CheckHostingClassSlot(int trainerId, int classSlotId)
         {
-            var classSlot = await _unitOfWork.WorkshopClassDetailRepository.GetFirst(c => c.Id == classSlotId, nameof(WorkshopClassDetail.DaySlot));
+            var classSlot = await _unitOfWork.WorkshopClassDetailRepository.GetFirst(c => c.DaySlotId == classSlotId, nameof(WorkshopClassDetail.DaySlot));
             if(classSlot == null)
             {
                 return false;
