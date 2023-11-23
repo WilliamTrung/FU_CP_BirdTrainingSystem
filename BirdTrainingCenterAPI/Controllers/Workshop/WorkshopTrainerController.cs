@@ -48,8 +48,15 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             {
                 return Unauthorized();
             }
-            var trainerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
-            var result = await _workshopService.Trainer.GetTrainerSlotByEntityId(Int32.Parse(trainerId.Value), entityId);
+            var role = accessToken.First(c => c.Type == CustomClaimTypes.Role);
+            int? trainerId = null;
+            if(role.Value == Models.Enum.Role.Trainer.ToString())
+            {
+                var token = accessToken.First(c => c.Type == CustomClaimTypes.Id).Value;
+                trainerId = Int32.Parse(token);
+            }
+            
+            var result = await _workshopService.Trainer.GetTrainerSlotByEntityId(trainerId, entityId);
 
             return Ok(result);
         }
