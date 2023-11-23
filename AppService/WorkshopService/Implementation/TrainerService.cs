@@ -56,7 +56,7 @@ namespace AppService.WorkshopService.Implementation
                     throw new InvalidOperationException("This trainer is unauthorized for this slot!");
                 }
             }            
-            return await _workshop.Trainer.GetTrainerSlotByEntityId(trainerId, classSlotId);
+            return await _workshop.Trainer.GetTrainerSlotByEntityId(classSlotId);
         }
 
         public async Task SubmitAttendance(int trainerId, int classSlotId, List<CheckAttendanceCredentials> customerCredentials)
