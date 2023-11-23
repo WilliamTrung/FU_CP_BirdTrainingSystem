@@ -50,6 +50,7 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             }
             var trainerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
             var result = await _workshopService.Trainer.GetTrainerSlotByEntityId(Int32.Parse(trainerId.Value), entityId);
+
             return Ok(result);
         }
         [HttpGet]
