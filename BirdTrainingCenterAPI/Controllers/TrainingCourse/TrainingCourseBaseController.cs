@@ -239,5 +239,12 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             var result = await _trainingCourseService.All.GetTrainerByTrainerSkillId(trainerSkillId);
             return Ok(result);
         }
+        [HttpGet]
+        [Route("birdskillreceived-birdid")]
+        public async Task<IActionResult> GetBirdSkillReceivedByBirdId(int birdId)
+        {
+            var result = await _trainingCourseService.All.GetBirdSkillReceivedByBirdId(birdId);
+            return Ok(result);
+        }
     }
 }

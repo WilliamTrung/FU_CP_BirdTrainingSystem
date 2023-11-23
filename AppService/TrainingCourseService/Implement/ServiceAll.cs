@@ -150,5 +150,10 @@ namespace AppService.TrainingCourseService.Implement
         {
             return await _trainingCourse.All.GetTrainerByTrainerSkillId(trainerSkillId);
         }
+
+        public async Task<IEnumerable<BirdSkillReceivedViewModel>> GetBirdSkillReceivedByBirdId(int birdId)
+        {
+            return await _trainingCourse.All.GetBirdSkillReceivedByBirdId(birdId);
+        }
     }
 }
