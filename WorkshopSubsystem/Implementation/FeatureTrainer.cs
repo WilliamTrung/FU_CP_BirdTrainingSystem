@@ -81,10 +81,10 @@ namespace WorkshopSubsystem.Implementation
             return models;
         }
 
-        public async Task<WorkshopClassDetailTrainerViewModel> GetTrainerSlotByEntityId(int trainerId, int workshopClassDetailId)
+        public async Task<WorkshopClassDetailTrainerViewModel> GetTrainerSlotByEntityId(int? trainerId, int workshopClassDetailId)
         {
             var entity = await _unitOfWork.WorkshopClassDetailRepository.GetFirst(c => c.Id == workshopClassDetailId
-                                                                               && c.DaySlot.TrainerId == trainerId
+                                                                               && trainerId == null ? true : c.DaySlot.TrainerId == trainerId
                                                                                && c.DaySlot.Status == (int)Models.Enum.TrainerSlotStatus.Enabled
                                                                                && c.WorkshopClass.Status != (int)Models.Enum.Workshop.Class.Status.Cancelled
                                                                                , nameof(WorkshopClassDetail.DaySlot)
