@@ -183,14 +183,21 @@ namespace AppService.TrainingCourseService.Implement
         {
             if(reportModModel != null)
             {
-                bool IsBusy = await _timetable.CheckTrainerFree(reportModModel.TrainerId, reportModModel.Date, reportModModel.SlotId);
-                if (IsBusy)
+                if(reportModModel.TrainerId != null)
                 {
-                    await _trainingCourse.Staff.ModifyTrainingSlot(reportModModel);
+                    bool IsBusy = await _timetable.CheckTrainerFree((int)reportModModel.TrainerId, reportModModel.Date, reportModModel.SlotId);
+                    if (IsBusy)
+                    {
+                        await _trainingCourse.Staff.ModifyTrainingSlot(reportModModel);
+                    }
+                    else
+                    {
+                        throw new Exception("Trainer is busy at this time.");
+                    }
                 }
                 else
                 {
-                    throw new Exception("Trainer is busy at this time.");
+                    await _trainingCourse.Staff.ModifyTrainingSlot(reportModModel);
                 }
             }
             else

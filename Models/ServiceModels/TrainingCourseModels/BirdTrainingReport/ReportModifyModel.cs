@@ -10,7 +10,7 @@ namespace Models.ServiceModels.TrainingCourseModels.BirdTrainingReport
     {
         public int ReportId { get; set; }
         public int SlotId { get; set; }
-        public int TrainerId { get; set; }
+        public int? TrainerId { get; set; }
         [SP_Validator.DateOnlyValidator]
         public DateTime Date { get; set; }
 
