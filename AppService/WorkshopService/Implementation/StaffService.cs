@@ -155,7 +155,7 @@ namespace AppService.WorkshopService.Implementation
             }
             if (slotDetail.Date < DateTime.Now.AddDays(Models.ConfigModels.BR_WorkshopConstant.DeadlineDateModifySlotDetail).Date)
             {
-                throw new InvalidOperationException("This slot will be hosted within 3 days from today!");
+                throw new InvalidOperationException($"This slot will be hosted within {Models.ConfigModels.BR_WorkshopConstant.DeadlineDateModifySlotDetail} days from today!");
             }
             return Task.CompletedTask;
         }
