@@ -250,9 +250,12 @@ namespace TrainingCourseSubsystem.Implementation
             }
             else
             {
-                if (entity.TrainerSlot.TrainerId == null || entity.TrainerSlot.TrainerId != reportModModel.TrainerId)
+                if(reportModModel.TrainerId != null)
                 {
-                    entity.TrainerSlot.TrainerId = reportModModel.TrainerId;
+                    if (entity.TrainerSlot.TrainerId == null || entity.TrainerSlot.TrainerId != reportModModel.TrainerId)
+                    {
+                        entity.TrainerSlot.TrainerId = reportModModel.TrainerId;
+                    }
                 }
 
                 entity.TrainerSlot.SlotId = reportModModel.SlotId;

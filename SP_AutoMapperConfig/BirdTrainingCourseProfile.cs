@@ -61,24 +61,25 @@ namespace SP_AutoMapperConfig
         private void Map_BirdTrainingCourse_BirdTrainingCourseListView()
         {
             CreateMap<BirdTrainingCourse, BirdTrainingCourseListView>()
-                .ForMember(m => m.Id, opt => opt.MapFrom(e => e.Id))
-                .ForMember(m => m.TrainingCourseId, opt => opt.MapFrom(e => e.TrainingCourseId))
-                .ForMember(m => m.BirdId, opt => opt.MapFrom(e => e.BirdId))
-                .ForMember(m => m.BirdName, opt => {
-                    opt.PreCondition(e => e.Bird != null);
-                    opt.MapFrom(e => e.Bird.Name);
-                })
-                .ForMember(m => m.CustomerId, opt => opt.MapFrom(e => e.CustomerId))
-                .ForMember(m => m.CustomerName, opt => {
-                    opt.PreCondition(e => e.Customer != null);
-                    opt.PreCondition(e => e.Customer.User != null);
-                    opt.MapFrom(e => e.Customer.User.Name);
-                }).ForMember(m => m.TrainingCourseTitle, opt => {
-                    opt.PreCondition(e => e.TrainingCourse != null);
-                    opt.MapFrom(e => e.TrainingCourse.Title);
-                })
-                .ForMember(m => m.RegisteredDate, opt => opt.MapFrom(e => e.RegisteredDate))
-                .ForMember(m => m.Status, opt => opt.MapFrom(e => e.Status));
+                .AfterMap<MapAction_BirdTrainingCourse_BirdTrainingCourseListView>();
+                //.ForMember(m => m.Id, opt => opt.MapFrom(e => e.Id))
+                //.ForMember(m => m.TrainingCourseId, opt => opt.MapFrom(e => e.TrainingCourseId))
+                //.ForMember(m => m.BirdId, opt => opt.MapFrom(e => e.BirdId))
+                //.ForMember(m => m.BirdName, opt => {
+                //    opt.PreCondition(e => e.Bird != null);
+                //    opt.MapFrom(e => e.Bird.Name);
+                //})
+                //.ForMember(m => m.CustomerId, opt => opt.MapFrom(e => e.CustomerId))
+                //.ForMember(m => m.CustomerName, opt => {
+                //    opt.PreCondition(e => e.Customer != null);
+                //    opt.PreCondition(e => e.Customer.User != null);
+                //    opt.MapFrom(e => e.Customer.User.Name);
+                //}).ForMember(m => m.TrainingCourseTitle, opt => {
+                //    opt.PreCondition(e => e.TrainingCourse != null);
+                //    opt.MapFrom(e => e.TrainingCourse.Title);
+                //})
+                //.ForMember(m => m.RegisteredDate, opt => opt.MapFrom(e => e.RegisteredDate))
+                //.ForMember(m => m.Status, opt => opt.MapFrom(e => e.Status));
         }
 
         public class MapAction_BirdTrainingCourse_BirdTrainingCourseViewModel : IMappingAction<BirdTrainingCourse, BirdTrainingCourseViewModel>
@@ -103,11 +104,15 @@ namespace SP_AutoMapperConfig
                 }
                 if(source.RegisteredDate != null)
                 {
-                    destination.RegisteredDate = source.RegisteredDate.Value.ToShortDateString();
+                    destination.RegisteredDate = source.RegisteredDate.Value.ToString("dd-MM-yyyy hh:mm:ss");
                 }
                 if (source.StartTrainingDate != null)
                 {
-                    destination.StartTrainingDate = source.StartTrainingDate.Value.ToShortDateString();
+                    destination.StartTrainingDate = source.StartTrainingDate.Value.ToString("dd-MM-yyyy hh:mm:ss");
+                }
+                if (source.TrainingDoneDate != null)
+                {
+                    destination.TrainingDoneDate = source.TrainingDoneDate.Value.ToString("dd-MM-yyyy hh:mm:ss");
                 }
                 if (source.TotalPrice != null)
                 {
@@ -116,6 +121,53 @@ namespace SP_AutoMapperConfig
                 if (source.DiscountedPrice != null)
                 {
                     destination.DiscountedPrice = source.DiscountedPrice;
+                }
+            }
+        }
+
+        public class MapAction_BirdTrainingCourse_BirdTrainingCourseListView : IMappingAction<BirdTrainingCourse, BirdTrainingCourseListView>
+        {
+            private readonly IUnitOfWork _unitOfWork;
+            private readonly IMapper _mapper;
+            public MapAction_BirdTrainingCourse_BirdTrainingCourseListView(IUnitOfWork unitOfWork, IMapper mapper)
+            {
+                _unitOfWork = unitOfWork;
+                _mapper = mapper;
+            }
+
+            public void Process(BirdTrainingCourse source, BirdTrainingCourseListView destination, ResolutionContext context)
+            {
+                destination.Id = source.Id;
+                var bird = _unitOfWork.BirdRepository.GetFirst(e => e.Id == source.BirdId).Result;
+                if (bird != null)
+                {
+                    destination.BirdId = bird.Id;
+                    destination.BirdName = bird.Name ?? "";
+                }
+                var customer = _unitOfWork.CustomerRepository.GetFirst(e => e.Id == source.CustomerId
+                                                                        , nameof(Customer.User)).Result;
+                if (customer != null)
+                {
+                    destination.CustomerId = customer.Id;
+                    destination.CustomerName = customer.User.Name ?? "";
+                }
+                var trainingCourse = _unitOfWork.TrainingCourseRepository.GetFirst(e => e.Id == source.TrainingCourseId).Result;
+                if (trainingCourse != null)
+                {
+                    destination.TrainingCourseTitle = trainingCourse.Title;
+                    destination.TrainingCourseId = trainingCourse.Id;
+                }
+                if (source.RegisteredDate != null)
+                {
+                    destination.RegisteredDate = source.RegisteredDate.Value.ToString("dd-MM-yyyy");
+                }
+                if (source.StartTrainingDate != null)
+                {
+                    destination.StartTrainingDate = source.StartTrainingDate.Value.ToString("dd-MM-yyyy");
+                }
+                if (source.TrainingDoneDate != null)
+                {
+                    destination.TrainingDoneDate = source.TrainingDoneDate.Value.ToString("dd-MM-yyyy");
                 }
             }
         }
