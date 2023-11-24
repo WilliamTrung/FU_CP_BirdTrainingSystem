@@ -60,6 +60,9 @@ namespace AdviceConsultingSubsystem.Implementation
             entity.ConsultingPricePolicyId = pricePolicy.Id;
             entity.DistancePriceId = distancePricePolicy.Id;
 
+            await _unitOfWork.ConsultingTicketRepository.Add(entity);
+            //Add new Consulting Ticket
+
             //Cập nhật trainerSlot
             if (consultingTicket.TrainerId != 0)
             {
@@ -68,9 +71,6 @@ namespace AdviceConsultingSubsystem.Implementation
                 var slotEntity = _mapper.Map<TrainerSlot>(trainerSlot);
                 await _unitOfWork.TrainerSlotRepository.Add(slotEntity);
             }
-
-            await _unitOfWork.ConsultingTicketRepository.Add(entity);
-            //Add new Consulting Ticket
         }
 
         public async Task<IEnumerable<ConsultingTicketListViewModel>> GetListConsultingTicketByCustomerID(int customerId)
