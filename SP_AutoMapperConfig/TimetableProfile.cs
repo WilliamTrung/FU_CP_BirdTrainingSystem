@@ -156,6 +156,7 @@ namespace SP_AutoMapperConfig
             destination.End = source.Date + source.Slot.EndTime.Value;
             destination.Date = source.Date;
             destination.Id = source.Id;
+            destination.EntityId = (int)source.EntityId;
             destination.SlotId = source.SlotId;
             destination.Title = source.Reason;
             destination.TypeId = source.EntityTypeId;

@@ -14,7 +14,7 @@ namespace WorkshopSubsystem
         Task<IEnumerable<WorkshopModel>> GetAssignedWorkshops(int trainerId);
         Task<IEnumerable<WorkshopClassAdminViewModel>> GetAssignedWorkshopClasses(int trainerId, int workshopId);
         Task<IEnumerable<WorkshopClassDetailViewModel>> GetAssignedWorkshopClassDetails(int trainerId, int workshopClassId);
-        Task<WorkshopClassDetailTrainerViewModel> GetTrainerSlotByEntityId(int trainerId, int workshopClassDetailId);
+        Task<WorkshopClassDetailTrainerViewModel> GetTrainerSlotByEntityId(int workshopClassDetailId);
         Task<bool> CheckHostingClassSlot(int trainerId, int classSlotId);
     }
 }

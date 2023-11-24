@@ -19,7 +19,7 @@ namespace WorkshopSubsystem.Implementation
 
         public async Task<bool> CheckHostingClassSlot(int trainerId, int classSlotId)
         {
-            var classSlot = await _unitOfWork.WorkshopClassDetailRepository.GetFirst(c => c.Id == classSlotId, nameof(WorkshopClassDetail.DaySlot));
+            var classSlot = await _unitOfWork.WorkshopClassDetailRepository.GetFirst(c => c.DaySlotId == classSlotId, nameof(WorkshopClassDetail.DaySlot));
             if(classSlot == null)
             {
                 return false;
@@ -81,10 +81,9 @@ namespace WorkshopSubsystem.Implementation
             return models;
         }
 
-        public async Task<WorkshopClassDetailTrainerViewModel> GetTrainerSlotByEntityId(int trainerId, int workshopClassDetailId)
+        public async Task<WorkshopClassDetailTrainerViewModel> GetTrainerSlotByEntityId(int workshopClassDetailId)
         {
-            var entity = await _unitOfWork.WorkshopClassDetailRepository.GetFirst(c => c.Id == workshopClassDetailId
-                                                                               && c.DaySlot.TrainerId == trainerId
+            var entity = await _unitOfWork.WorkshopClassDetailRepository.GetFirst(c => c.DaySlotId == workshopClassDetailId
                                                                                && c.DaySlot.Status == (int)Models.Enum.TrainerSlotStatus.Enabled
                                                                                && c.WorkshopClass.Status != (int)Models.Enum.Workshop.Class.Status.Cancelled
                                                                                , nameof(WorkshopClassDetail.DaySlot)

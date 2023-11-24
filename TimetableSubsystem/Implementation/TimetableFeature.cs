@@ -53,7 +53,7 @@ namespace TimetableSubsystem.Implementation
                                                                                             && slot.Date.Month == date.Month
                                                                                             && slot.Date.Year == date.Year
                                                                                             && slot.Status == (int)Models.Enum.TrainerSlotStatus.Enabled)
-                                                                                            == 8)
+                                                                                            == 8) && x.Id != 0
                                                                      , nameof(Trainer.TrainerSlots)
                                                                      , nameof(Trainer.TrainerSkills)
                                                                      , nameof(Trainer.User));
@@ -156,12 +156,12 @@ namespace TimetableSubsystem.Implementation
         {
             var trainerSlots = await _unitOfWork.TrainerSlotRepository.Get(c => c.TrainerId == trainerId
                                                                              && c.Status != (int)Models.Enum.TrainerSlotStatus.Disabled
-                                                                             && c.Date.Day >= from.Day
-                                                                             && c.Date.Month >= from.Month
-                                                                             && c.Date.Year >= from.Year
-                                                                             && c.Date.Day <= to.Day
-                                                                             && c.Date.Month <= to.Month
-                                                                             && c.Date.Year <= to.Year
+                                                                             //&& c.Date.Day >= from.Day
+                                                                             //&& c.Date.Month >= from.Month
+                                                                             //&& c.Date.Year >= from.Year
+                                                                             //&& c.Date.Day <= to.Day
+                                                                             //&& c.Date.Month <= to.Month
+                                                                             //&& c.Date.Year <= to.Year
                                                                             , nameof(TrainerSlot.Slot));
             //var tesst = _mapper.Map<TimetableModel>(trainerSlots.First());
             var slots = _mapper.Map<List<TimetableModel>>(trainerSlots);
