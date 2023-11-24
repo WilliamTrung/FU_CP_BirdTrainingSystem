@@ -306,7 +306,8 @@ namespace OnlineCourseSubsystem.Implementation
                                                                                             , $"{nameof(CustomerOnlineCourseDetail.OnlineCourse)}.{nameof(OnlineCourse.Sections)}.{nameof(Section.Lessons)}.{nameof(Lesson.CustomerLessonDetails)}");
             if(courseRegistered == null )
             {
-                throw new InvalidOperationException("Customer has not enrolled to course!");
+                //throw new InvalidOperationException("Customer has not enrolled to course!");
+                return await GetCourseById(courseId);
             }
             foreach (var section in courseRegistered.OnlineCourse.Sections)
             {
