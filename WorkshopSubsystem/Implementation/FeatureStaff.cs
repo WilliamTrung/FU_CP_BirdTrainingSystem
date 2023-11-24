@@ -323,15 +323,10 @@ namespace WorkshopSubsystem.Implementation
         private async Task<bool> IsAbleToCheckAttendance(int classSlotId)
         {
             var classSlot = await _unitOfWork.WorkshopClassDetailRepository.GetFirst(c => c.DaySlotId == classSlotId 
-                                                                                        && c.WorkshopClass.Status == (int)Models.Enum.Workshop.Class.Status.OnGoing
+                                                                                        && (c.WorkshopClass.Status == (int)Models.Enum.Workshop.Class.Status.OnGoing || c.WorkshopClass.Status == (int)Models.Enum.Workshop.Class.Status.Completed)
                                                                                         , nameof(WorkshopClassDetail.DaySlot)
                                                                                         , nameof(WorkshopClassDetail.WorkshopClass)
                                                                                         , $"{nameof(WorkshopClassDetail.DaySlot)}.{nameof(TrainerSlot.Slot)}");
-
-            var entities = await _unitOfWork.WorkshopClassRepository.Get(c => c.Status == (int)Models.Enum.Workshop.Class.Status.OnGoing
-                                                                           , nameof(WorkshopClass.WorkshopClassDetails)
-                                                                           , $"{nameof(WorkshopClass.WorkshopClassDetails)}.{nameof(WorkshopClassDetail.DaySlot)}"
-                                                                           , $"{nameof(WorkshopClass.WorkshopClassDetails)}.{nameof(WorkshopClassDetail.DaySlot)}.{nameof(TrainerSlot.Slot)}");              
             if (classSlot == null)
                 return false;
             //throw new Exception("classSlot is not found!");
@@ -344,7 +339,6 @@ namespace WorkshopSubsystem.Implementation
                 if (DateTime.UtcNow.AddHours(7) > endTime)
                 {
                     throw new InvalidOperationException($"The slot has exceeded 24 hours after ended!");
-                    return false;
                 } else
                 {
                     return true;
@@ -352,7 +346,6 @@ namespace WorkshopSubsystem.Implementation
             }
 #pragma warning restore CS8629 // Nullable value type may be null.     
             throw new InvalidOperationException($"The slot has not started yet!");
-            return false;
         }
 
         public async Task<WorkshopClassAdminViewModel> GetClassAdminViewById(int classId)
