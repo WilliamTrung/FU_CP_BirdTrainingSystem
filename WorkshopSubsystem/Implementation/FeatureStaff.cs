@@ -247,8 +247,9 @@ namespace WorkshopSubsystem.Implementation
 
         public async Task<IEnumerable<RegisteredCustomerModel>> GetListRegistered(int classSlotId)
         {
-            var entities = await _unitOfWork.WorkshopAttendanceRepository.Get(c => c.WorkshopClassDetailId == classSlotId
+            var entities = await _unitOfWork.WorkshopAttendanceRepository.Get(c => c.WorkshopClassDetail.DaySlotId == classSlotId
                                                                                 , nameof(WorkshopAttendance.Customer)
+                                                                                , nameof(WorkshopAttendance.WorkshopClassDetail)
                                                                                 , $"{nameof(WorkshopAttendance.Customer)}.{nameof(Customer.User)}");
             var models = _mapper.Map<List<RegisteredCustomerModel>>(entities);
             return models;
