@@ -275,6 +275,7 @@ namespace SP_AutoMapperConfig
             destination.StartTime = source.StartTime.Value;
             destination.RegisterEndDate = source.RegisterEndDate.Value;
             destination.WorkshopId = source.WorkshopId;
+            destination.Status = null;
             destination.Id = source.Id;
             foreach (var detail in source.WorkshopClassDetails)
             {
