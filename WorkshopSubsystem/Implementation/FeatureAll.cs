@@ -29,6 +29,7 @@ namespace WorkshopSubsystem.Implementation
         {
             var entities = await _unitOfWork.WorkshopClassRepository.Get(c => c.WorkshopId == workshopId
                                                                            && c.Workshop.Status != (int)Models.Enum.Workshop.Status.Inactive
+                                                                           && c.Status == (int)Models.Enum.Workshop.Class.Status.OpenRegistration
                                                                            , nameof(WorkshopClass.WorkshopClassDetails)
                                                                            , nameof(WorkshopClass.Workshop)
                                                                            , $"{nameof(WorkshopClass.WorkshopClassDetails)}.{nameof(WorkshopClassDetail.DaySlot)}"
