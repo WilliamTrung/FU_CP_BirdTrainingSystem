@@ -270,10 +270,11 @@ namespace WorkshopSubsystem.Implementation
             });
             foreach (var customerCredential in customerCredentials)
             {                
-                var entity = await _unitOfWork.WorkshopAttendanceRepository.GetFirst(c => c.WorkshopClassDetailId == classSlotId
-                                                                                && customerCredential.Email == null ? false : c.Customer.User.Email == customerCredential.Email
+                var entity = await _unitOfWork.WorkshopAttendanceRepository.GetFirst(c => c.WorkshopClassDetail.DaySlotId == classSlotId
+                                                                                &&  c.Customer.User.Email == customerCredential.Email
                                                                                 , nameof(WorkshopAttendance.Customer)
-                                                                                , $"{nameof(WorkshopAttendance.Customer)}.{nameof(Customer.User)}");
+                                                                                , $"{nameof(WorkshopAttendance.Customer)}.{nameof(Customer.User)}"
+                                                                                , $"{nameof(WorkshopAttendance.WorkshopClassDetail)}.{nameof(WorkshopClassDetail.DaySlot)}");
                 if (entity == null)
                 {
                     throw new KeyNotFoundException("This account does not exist in list attendees!");
