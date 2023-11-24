@@ -380,10 +380,10 @@ namespace TrainingCourseSubsystem.Implementation
                 {
                     throw new Exception("Entity not found");
                 }
-                else if (entity.Status != (int)Models.Enum.BirdTrainingCourse.Status.TrainingDone)
-                {
-                    throw new Exception("Bird is training. Not ready to return");
-                }
+                //else if (entity.Status != (int)Models.Enum.BirdTrainingCourse.Status.TrainingDone)
+                //{
+                //    throw new Exception("Bird is training. Not ready to return");
+                //}
                 else
                 {
                     entity.ReturnStaffId = birdTrainingCourse.ReturnStaffId;
