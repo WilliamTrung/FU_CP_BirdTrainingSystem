@@ -19,6 +19,7 @@ namespace Models.ServiceModels.TimetableModels
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
         public DateTime Date { get; set; }
+        public int? EntityId { get; set; }
         public string Title { get; set; } = null!;
         public int TypeId { get; set; } 
         public Models.Enum.EntityType TypeName { get; set; }
