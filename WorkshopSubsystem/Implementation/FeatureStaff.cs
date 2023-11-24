@@ -33,7 +33,7 @@ namespace WorkshopSubsystem.Implementation
                 throw new InvalidOperationException($"{typeof(Workshop)} is inactive");
             }
             var entity = _mapper.Map<WorkshopClass>(workshopClass);            
-            var temp = DateTime.Now.ToDateOnly().AddDays(BR_WorkshopConstant.StartDateCreated).ToDateTime(new TimeOnly());
+            var temp = DateTime.UtcNow.AddHours(7).ToDateOnly().AddDays(BR_WorkshopConstant.StartDateCreated).ToDateTime(new TimeOnly());
             if (entity.StartTime < temp) {
                 throw new InvalidOperationException("Open registration day must be 5 days after from today!");
             }
@@ -313,7 +313,7 @@ namespace WorkshopSubsystem.Implementation
                                                                                 , $"{nameof(WorkshopAttendance.WorkshopClassDetail)}.{nameof(WorkshopClassDetail.DaySlot)}"
                                                                                 , $"{nameof(WorkshopAttendance.WorkshopClassDetail)}.{nameof(WorkshopClassDetail.DaySlot)}.{nameof(TrainerSlot.Slot)}");
             entities = entities.Where(c => c.WorkshopClassDetail.DaySlot.Date <= DateTime.Today
-                                        && c.WorkshopClassDetail.DaySlot.Slot.EndTime < DateTime.Now.TimeOfDay);
+                                        && c.WorkshopClassDetail.DaySlot.Slot.EndTime < DateTime.UtcNow.AddHours(7).TimeOfDay);
             foreach (var entity  in entities)
             {
                 entity.Status = (int)Models.Enum.Workshop.Class.Customer.Status.Attended;
@@ -331,33 +331,17 @@ namespace WorkshopSubsystem.Implementation
             var entities = await _unitOfWork.WorkshopClassRepository.Get(c => c.Status == (int)Models.Enum.Workshop.Class.Status.OnGoing
                                                                            , nameof(WorkshopClass.WorkshopClassDetails)
                                                                            , $"{nameof(WorkshopClass.WorkshopClassDetails)}.{nameof(WorkshopClassDetail.DaySlot)}"
-                                                                           , $"{nameof(WorkshopClass.WorkshopClassDetails)}.{nameof(WorkshopClassDetail.DaySlot)}.{nameof(TrainerSlot.Slot)}");
-          
-            foreach (var entity in entities)
-            {
-                var lastSlot = entity.WorkshopClassDetails.Last();
-                var endHour = lastSlot.DaySlot.Slot.EndTime;
-                var endTime = lastSlot.DaySlot.Date.Add((TimeSpan)endHour).AddHours(24);
-                if(entity.Id == 18)
-                {
-                    if (DateTime.UtcNow.AddHours(7).CompareTo(endTime) > 0)
-                    {
-                        throw new Exception($"{DateTime.UtcNow.AddHours(7)} >> {endTime}");
-                    }
-                    throw new Exception($"{DateTime.UtcNow.AddHours(7)} -- {endTime}");
-                }
-            }
-            throw new Exception("Check able to check attendance: " + DateTime.Now.AddHours(7));
+                                                                           , $"{nameof(WorkshopClass.WorkshopClassDetails)}.{nameof(WorkshopClassDetail.DaySlot)}.{nameof(TrainerSlot.Slot)}");              
             if (classSlot == null)
                 return false;
             //throw new Exception("classSlot is not found!");
             //check start time and end time to current time
 #pragma warning disable CS8629 // Nullable value type may be null.
             DateTime startTime = classSlot.DaySlot.Date.AddTicks(classSlot.DaySlot.Slot.StartTime.Value.Ticks);
-            if(DateTime.Now > startTime)
+            if(DateTime.UtcNow.AddHours(7) > startTime)
             {
                 DateTime endTime = classSlot.DaySlot.Date.AddTicks(classSlot.DaySlot.Slot.EndTime.Value.Ticks).AddHours(24);
-                if (DateTime.Now > endTime)
+                if (DateTime.UtcNow.AddHours(7) > endTime)
                 {
                     throw new InvalidOperationException($"The slot has exceeded 24 hours after ended!");
                     return false;
