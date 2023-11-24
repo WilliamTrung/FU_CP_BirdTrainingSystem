@@ -15,7 +15,7 @@ namespace AppService.TrainingCourseService
 {
     public interface IServiceCustomer : IServiceAll
     {
-        Task RegisterBird(BirdAddModel bird);
+        Task<BirdViewModel> RegisterBird(BirdAddModel bird);
         Task UpdateBirdProfile(BirdModifyModel bird);
         Task<IEnumerable<BirdViewModel>> GetBirdByCustomerId(int customerId);
         Task<IEnumerable<TrainingCourseViewModel>> GetTrainingCourse();

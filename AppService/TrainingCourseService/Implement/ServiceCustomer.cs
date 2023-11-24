@@ -51,9 +51,9 @@ namespace AppService.TrainingCourseService.Implement
             return await _trainingCourse.Customer.GetTrainingCourseBySpeciesIdBirdSkillId(birdSpeciesId: birdSpeciesId, birdSkillId: birdSkillId);
         }
 
-        public async Task RegisterBird(BirdAddModel bird)
+        public async Task<BirdViewModel> RegisterBird(BirdAddModel bird)
         {
-            await _trainingCourse.Customer.RegisterBird(bird);
+            return await _trainingCourse.Customer.RegisterBird(bird);
         }
 
         public async Task RegisterTrainingCourse(BirdTrainingCourseRegister birdTrainingCourseRegister)
