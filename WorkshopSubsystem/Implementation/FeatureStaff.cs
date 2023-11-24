@@ -327,7 +327,9 @@ namespace WorkshopSubsystem.Implementation
                                                                                         , nameof(WorkshopClassDetail.DaySlot)
                                                                                         , nameof(WorkshopClassDetail.WorkshopClass)
                                                                                         , $"{nameof(WorkshopClassDetail.DaySlot)}.{nameof(TrainerSlot.Slot)}");
-            if(classSlot == null) return false;
+            if (classSlot == null)
+                //return false;
+                throw new Exception("classSlot is not found!");
             //check start time and end time to current time
 #pragma warning disable CS8629 // Nullable value type may be null.
             DateTime startTime = classSlot.DaySlot.Date.AddTicks(classSlot.DaySlot.Slot.StartTime.Value.Ticks);
@@ -336,13 +338,15 @@ namespace WorkshopSubsystem.Implementation
                 DateTime endTime = classSlot.DaySlot.Date.AddTicks(classSlot.DaySlot.Slot.EndTime.Value.Ticks).AddHours(24);
                 if (DateTime.Now > endTime)
                 {
+                    throw new Exception($"{DateTime.Now} > {endTime}");
                     return false;
                 } else
                 {
                     return true;
                 }
-            }                        
-#pragma warning restore CS8629 // Nullable value type may be null.            
+            }
+#pragma warning restore CS8629 // Nullable value type may be null.     
+            throw new Exception($"{DateTime.Now} > {startTime}");
             return false;
         }
 
