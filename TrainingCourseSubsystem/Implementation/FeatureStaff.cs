@@ -1,6 +1,7 @@
 ﻿using AppRepository.UnitOfWork;
 using AutoMapper;
 using Models.Entities;
+using Models.ServiceModels;
 using Models.ServiceModels.SlotModels;
 using Models.ServiceModels.TrainingCourseModels;
 using Models.ServiceModels.TrainingCourseModels.BirdCertificate;
@@ -35,7 +36,7 @@ namespace TrainingCourseSubsystem.Implementation
                     {
                         var reports = _unitOfWork.BirdTrainingReportRepository.Get(e => e.BirdTrainingProgressId == progress.Id
                                                                                     , nameof(BirdTrainingReport.TrainerSlot)).Result.ToList();
-                        if(reportStatus == (int)Models.Enum.BirdTrainingReport.Status.NotYet)
+                        if (reportStatus == (int)Models.Enum.BirdTrainingReport.Status.NotYet)
                         {
                             reports = reports.Where(e => e.Status == reportStatus).ToList();
                         }
@@ -250,7 +251,7 @@ namespace TrainingCourseSubsystem.Implementation
             }
             else
             {
-                if(reportModModel.TrainerId != null)
+                if (reportModModel.TrainerId != null)
                 {
                     if (entity.TrainerSlot.TrainerId == null || entity.TrainerSlot.TrainerId != reportModModel.TrainerId)
                     {
@@ -366,7 +367,36 @@ namespace TrainingCourseSubsystem.Implementation
                 }
             }
         }
-
+        private async Task CreateTransaction(TransactionAddModel transactionAddModel)
+        {
+            if (transactionAddModel == null)
+            {
+                throw new Exception("Client send null param");
+            }
+            else
+            {
+                var entity = _mapper.Map<Transaction>(transactionAddModel);
+                if(entity != null)
+                {
+                    await _unitOfWork.TransactionRepository.Add(entity);
+                }
+            }
+        }
+        private TransactionAddModel OfflineGenerateBill(BirdTrainingCourse entity)
+        {
+            TransactionAddModel transactionAddModel = new TransactionAddModel()
+            {
+                CustomerId = entity.CustomerId,
+                Title = $"Offline payment at center requestedId = {entity.Id}",
+                Detail = $"Offline payment at center requestedId = {entity.Id}",
+                EntityTypeId = (int)Models.Enum.EntityType.TrainingCourse,
+                EntityId = entity.Id,
+                TotalPayment = entity.DiscountedPrice,
+                PaymentCode = "Pay offline at center",
+                Status = (int)Models.Enum.Transaction.Status.Paid,
+            };
+            return transactionAddModel;
+        }
         public async Task ReturnBird(BirdTrainingCourseReturnBird birdTrainingCourse)
         {
             if (birdTrainingCourse == null)
@@ -394,6 +424,9 @@ namespace TrainingCourseSubsystem.Implementation
                     await _unitOfWork.BirdTrainingCourseRepository.Update(entity);
 
                     await DeleteReportTrainerSlot(entity, (int)Models.Enum.BirdTrainingReport.Status.NotYet);
+
+                    //var transactionAddModel = OfflineGenerateBill(entity);
+                    //await CreateTransaction(transactionAddModel);
                 }
             }
         }
