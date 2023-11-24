@@ -340,6 +340,10 @@ namespace WorkshopSubsystem.Implementation
                 var endTime = lastSlot.DaySlot.Date.Add((TimeSpan)endHour).AddHours(24);
                 if(entity.Id == 18)
                 {
+                    if (DateTime.Now > endTime)
+                    {
+                        throw new Exception($"{DateTime.Now} >> {endTime}");
+                    }
                     throw new Exception($"{DateTime.Now} -- {endTime}");
                 }
             }
