@@ -25,19 +25,20 @@ namespace SP_AutoMapperConfig
         private void Map_BirdTrainingReport_ReportModifyViewModel()
         {
             CreateMap<BirdTrainingReport, ReportModifyViewModel>()
-                .ForMember(m => m.ReportId, opt => opt.MapFrom(e => e.Id))
-                .ForMember(m => m.SlotId, opt => {
-                    opt.PreCondition(e => e.TrainerSlot != null);
-                    opt.MapFrom(e => e.TrainerSlot.SlotId);
-                })
-                .ForMember(m => m.Date, opt => {
-                    opt.PreCondition(e => e.TrainerSlot != null);
-                    opt.MapFrom(e => e.TrainerSlot.Date);
-                })
-                .ForMember(m => m.TrainerId, opt => {
-                    opt.PreCondition(e => e.TrainerSlot != null);
-                    opt.MapFrom(e => e.TrainerSlot.TrainerId);
-                });
+                ;
+                //.ForMember(m => m.ReportId, opt => opt.MapFrom(e => e.Id))
+                //.ForMember(m => m.SlotId, opt => {
+                //    opt.PreCondition(e => e.TrainerSlot != null);
+                //    opt.MapFrom(e => e.TrainerSlot.SlotId);
+                //})
+                //.ForMember(m => m.Date, opt => {
+                //    opt.PreCondition(e => e.TrainerSlot != null);
+                //    opt.MapFrom(e => e.TrainerSlot.Date);
+                //})
+                //.ForMember(m => m.TrainerId, opt => {
+                //    opt.PreCondition(e => e.TrainerSlot != null);
+                //    opt.MapFrom(e => e.TrainerSlot.TrainerId);
+                //});
         }
 
         private void Map_BirdTrainingReport_BirdTrainingReportViewModel()
@@ -56,6 +57,46 @@ namespace SP_AutoMapperConfig
                 .ForMember(m => m.TrainerSlotId, opt => opt.MapFrom(e => e.TrainerSlotId));
         }
 
+        private void Map_BirdTrainingReport_TimetableReportView()
+        {
+            CreateMap<BirdTrainingReport, TimetableReportView>()
+                .AfterMap<MapAction_BirdTrainingReport_TimetableReportView>();
+        }
+
+        public class MapAction_BirdTrainingReport_ReportModifyViewModel : IMappingAction<BirdTrainingReport, ReportModifyViewModel>
+        {
+            private readonly IUnitOfWork _unitOfWork;
+            public MapAction_BirdTrainingReport_ReportModifyViewModel(IUnitOfWork unitOfWork)
+            {
+                _unitOfWork = unitOfWork;
+            }
+            public void Process(BirdTrainingReport source, ReportModifyViewModel destination, ResolutionContext context)
+            {
+                destination.ReportId = source.Id;
+                var trainerSlot = _unitOfWork.TrainerSlotRepository.GetFirst(e => e.Id == source.TrainerSlotId).Result;
+                if(trainerSlot != null)
+                {
+                    destination.SlotId = trainerSlot.Id;
+                    destination.Date = trainerSlot.Date;
+                    if(trainerSlot.TrainerId != null)
+                    {
+                        var trainer = _unitOfWork.TrainerRepository.GetFirst(e => e.Id == trainerSlot.TrainerId
+                                                                                , nameof(Trainer.User)).Result;
+                        destination.TrainerId = trainer.Id;
+                        destination.TrainerName = trainer.User.Name;
+                    }
+                }
+                if (source.Status != null)
+                {
+                    destination.Status = (Models.Enum.BirdTrainingReport.Status)source.Status;
+                }
+                else
+                {
+                    destination.Status = Models.Enum.BirdTrainingReport.Status.NotYet;
+                }
+            }
+        }
+
         public class MapAction_BirdTrainingReport_TimetableReportView : IMappingAction<BirdTrainingReport, TimetableReportView>
         {
             private readonly IUnitOfWork _unitOfWork;
@@ -67,11 +108,11 @@ namespace SP_AutoMapperConfig
             {
                 destination.Id = source.Id;
                 var birdTrainingProgress = _unitOfWork.BirdTrainingProgressRepository.GetFirst(e => e.Id == source.BirdTrainingProgressId
-                                                                                                ,nameof(BirdTrainingProgress.BirdTrainingCourse)).Result;
+                                                                                                , nameof(BirdTrainingProgress.BirdTrainingCourse)).Result;
                 var skill = _unitOfWork.TrainingCourseSkillRepository.GetFirst(e => e.Id == birdTrainingProgress.TrainingCourseSkillId
                                                                                 , nameof(TrainingCourseSkill.BirdSkill)).Result;
                 var bird = _unitOfWork.BirdRepository.GetFirst(e => e.Id == birdTrainingProgress.BirdTrainingCourse.BirdId
-                                                                ,nameof(Bird.BirdSpecies)).Result;
+                                                                , nameof(Bird.BirdSpecies)).Result;
                 destination.BirdSkillName = skill.BirdSkill.Name;
                 destination.BirdSkillDescription = skill.BirdSkill.Description;
                 destination.BirdName = bird.Name ?? "";
@@ -80,7 +121,7 @@ namespace SP_AutoMapperConfig
                 destination.BirdPicture = bird.Picture;
                 destination.SlotId = source.TrainerSlot.SlotId;
                 destination.TrainingDate = source.TrainerSlot.Date;
-                if(source.Status != null)
+                if (source.Status != null)
                 {
                     destination.Status = (Models.Enum.BirdTrainingReport.Status)source.Status;
                 }
@@ -89,12 +130,6 @@ namespace SP_AutoMapperConfig
                     destination.Status = Models.Enum.BirdTrainingReport.Status.NotYet;
                 }
             }
-        }
-
-        private void Map_BirdTrainingReport_TimetableReportView()
-        {
-            CreateMap<BirdTrainingReport, TimetableReportView>()
-                .AfterMap<MapAction_BirdTrainingReport_TimetableReportView>();
         }
     }
 }
