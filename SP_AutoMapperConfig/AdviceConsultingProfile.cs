@@ -207,6 +207,7 @@ namespace SP_AutoMapperConfig
                 {
                     destination.ActualEndSlot = null; 
                 }
+                destination.Evidence = source.Evidence;
                 destination.Price = source.Price;
                 destination.Status = (Models.Enum.ConsultingTicket.Status)source.Status;
             }
