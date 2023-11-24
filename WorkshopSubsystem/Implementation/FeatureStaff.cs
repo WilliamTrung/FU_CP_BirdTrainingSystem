@@ -340,14 +340,14 @@ namespace WorkshopSubsystem.Implementation
                 var endTime = lastSlot.DaySlot.Date.Add((TimeSpan)endHour).AddHours(24);
                 if(entity.Id == 18)
                 {
-                    if (DateTime.UtcNow.CompareTo(endTime) > 0)
+                    if (DateTime.UtcNow.AddHours(7).CompareTo(endTime) > 0)
                     {
-                        throw new Exception($"{DateTime.UtcNow} >> {endTime}");
+                        throw new Exception($"{DateTime.UtcNow.AddHours(7)} >> {endTime}");
                     }
-                    throw new Exception($"{DateTime.UtcNow} -- {endTime}");
+                    throw new Exception($"{DateTime.UtcNow.AddHours(7)} -- {endTime}");
                 }
             }
-            throw new Exception("Check able to check attendance: " + DateTime.Now);
+            throw new Exception("Check able to check attendance: " + DateTime.Now.AddHours(7));
             if (classSlot == null)
                 return false;
             //throw new Exception("classSlot is not found!");
