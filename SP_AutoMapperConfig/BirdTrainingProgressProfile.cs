@@ -67,6 +67,7 @@ namespace SP_AutoMapperConfig
                                                                                 , nameof(TrainingCourseSkill.BirdSkill)).Result;
                 if (skill != null)
                 {
+                    destination.BirdSkillId = skill.BirdSkill.Id;
                     destination.BirdSkillName = skill.BirdSkill.Name;
                     destination.BirdSkillPicture = skill.BirdSkill.Picture;
                 }
