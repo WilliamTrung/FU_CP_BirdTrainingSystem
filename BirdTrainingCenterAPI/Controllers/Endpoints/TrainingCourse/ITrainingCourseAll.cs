@@ -120,5 +120,9 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
         [HttpGet]
         [Route("all-requested-users")]
         Task<IActionResult> GetCustomerModels();
+
+        [HttpGet]
+        [Route("timetable-slot-itemdetail")]
+        Task<IActionResult> GetTimetableReportView([FromQuery] int trainerSlotId);
     }
 }

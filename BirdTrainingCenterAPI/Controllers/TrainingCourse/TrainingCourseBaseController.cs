@@ -253,5 +253,13 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             var result = await _trainingCourseService.All.GetCustomerModels();
             return Ok(result);
         }
+
+        [HttpGet]
+        [Route("timetable-slot-itemdetail")]
+        public async Task<IActionResult> GetTimetableReportView([FromQuery] int trainerSlotId)
+        {
+            var result = await _trainingCourseService.Trainer.GetTimetableReportView(trainerSlotId);
+            return Ok(result);
+        }
     }
 }
