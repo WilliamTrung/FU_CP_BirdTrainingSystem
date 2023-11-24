@@ -321,7 +321,7 @@ namespace WorkshopSubsystem.Implementation
         }
         private async Task<bool> IsAbleToCheckAttendance(int classSlotId)
         {
-            var classSlot = await _unitOfWork.WorkshopClassDetailRepository.GetFirst(c => c.Id == classSlotId 
+            var classSlot = await _unitOfWork.WorkshopClassDetailRepository.GetFirst(c => c.DaySlotId == classSlotId 
                                                                                         && c.WorkshopClass.Status == (int)Models.Enum.Workshop.Class.Status.OnGoing
                                                                                         , nameof(WorkshopClassDetail.DaySlot)
                                                                                         , nameof(WorkshopClassDetail.WorkshopClass)
