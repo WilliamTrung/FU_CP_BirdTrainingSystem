@@ -18,6 +18,7 @@ namespace Models.ServiceModels.AdviceConsultantModels.ConsultingTicket
         public bool OnlineOrOffline { get; set; }
         public string? GgMeetLink { get; set; }
         public DateTime AppointmentDate { get; set; }
+        public int SlotStartId { get; set; }
         public string ActualSlotStart { get; set; }
         public string? ActualEndSlot { get; set; }
         public decimal? Price { get; set; }

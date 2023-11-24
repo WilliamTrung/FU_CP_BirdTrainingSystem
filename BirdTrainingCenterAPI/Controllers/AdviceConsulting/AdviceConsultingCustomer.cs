@@ -135,7 +135,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
                 //{
                 //    distance = (int)await _googleMapService.CalculateDistance(ticket.AddressDetail);
                 //}
-                //await _consultingService.Customer.SendConsultingTicket(ticket, distance);
+                await _consultingService.Customer.SendConsultingTicket(ticket, distance);
                 return Ok();
 
             }

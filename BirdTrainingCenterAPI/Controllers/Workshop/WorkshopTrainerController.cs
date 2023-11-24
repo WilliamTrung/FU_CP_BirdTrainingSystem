@@ -11,12 +11,13 @@ using System.Security.Claims;
 
 namespace BirdTrainingCenterAPI.Controllers.Workshop
 {
-    [CustomAuthorize(roles: "Trainer")]
+    
     public class WorkshopTrainerController : WorkshopBaseController, IWorkshopTrainer
     {
         public WorkshopTrainerController(IWorkshopService workshopService, IAuthService authService) : base(workshopService, authService)
         {
         }
+        [CustomAuthorize(roles: "Trainer")]
         [HttpGet]
         [EnableQuery]
         [Route("assigned-classes")]
@@ -37,6 +38,7 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             return Ok(result);
         }
         [HttpGet]
+        [CustomAuthorize(roles: "Trainer,Manager,Staff")]
         [EnableQuery]
         [Route("get-by-entity-id")]
         public async Task<IActionResult> GetTrainerSlotByEntityId([FromQuery]int entityId)
@@ -46,12 +48,21 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             {
                 return Unauthorized();
             }
-            var trainerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
-            var result = await _workshopService.Trainer.GetTrainerSlotByEntityId(Int32.Parse(trainerId.Value), entityId);
+            var role = accessToken.First(c => c.Type == CustomClaimTypes.Role);
+            int? trainerId = null;
+            if(role.Value == Enum.GetName(typeof(Models.Enum.Role), Models.Enum.Role.Trainer))
+            {
+                var token = accessToken.First(c => c.Type == CustomClaimTypes.Id).Value;
+                trainerId = Int32.Parse(token);
+            }
+            
+            var result = await _workshopService.Trainer.GetTrainerSlotByEntityId(trainerId, entityId);
+
             return Ok(result);
         }
         [HttpGet]
         [EnableQuery]
+        [CustomAuthorize(roles: "Trainer")]
         [Route("assigned-slots")]
         public async Task<IActionResult> GetAssignedSlots([FromQuery] int workshopClassId)
         {
@@ -71,6 +82,7 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
         }
         [HttpGet]
         [EnableQuery]
+        [CustomAuthorize(roles: "Trainer")]
         [Route("assigned-workshops")]
         public async Task<IActionResult> GetAssignedWorkshops()
         {

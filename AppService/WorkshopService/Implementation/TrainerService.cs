@@ -46,14 +46,17 @@ namespace AppService.WorkshopService.Implementation
             }
         }
 
-        public async Task<WorkshopClassDetailTrainerViewModel> GetTrainerSlotByEntityId(int trainerId, int classSlotId)
+        public async Task<WorkshopClassDetailTrainerViewModel> GetTrainerSlotByEntityId(int? trainerId, int classSlotId)
         {
-            var check = await _workshop.Trainer.CheckHostingClassSlot(trainerId, classSlotId);
-            if(!check)
+            if(trainerId != null)
             {
-                throw new InvalidOperationException("This trainer is unauthorized for this slot!");
-            }
-            return await _workshop.Trainer.GetTrainerSlotByEntityId(trainerId, classSlotId);
+                var check = await _workshop.Trainer.CheckHostingClassSlot((int)trainerId, classSlotId);
+                if (!check)
+                {
+                    throw new InvalidOperationException("This trainer is unauthorized for this slot!");
+                }
+            }            
+            return await _workshop.Trainer.GetTrainerSlotByEntityId(classSlotId);
         }
 
         public async Task SubmitAttendance(int trainerId, int classSlotId, List<CheckAttendanceCredentials> customerCredentials)

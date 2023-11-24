@@ -247,8 +247,9 @@ namespace WorkshopSubsystem.Implementation
 
         public async Task<IEnumerable<RegisteredCustomerModel>> GetListRegistered(int classSlotId)
         {
-            var entities = await _unitOfWork.WorkshopAttendanceRepository.Get(c => c.WorkshopClassDetailId == classSlotId
+            var entities = await _unitOfWork.WorkshopAttendanceRepository.Get(c => c.WorkshopClassDetail.DaySlotId == classSlotId
                                                                                 , nameof(WorkshopAttendance.Customer)
+                                                                                , nameof(WorkshopAttendance.WorkshopClassDetail)
                                                                                 , $"{nameof(WorkshopAttendance.Customer)}.{nameof(Customer.User)}");
             var models = _mapper.Map<List<RegisteredCustomerModel>>(entities);
             return models;
@@ -320,7 +321,7 @@ namespace WorkshopSubsystem.Implementation
         }
         private async Task<bool> IsAbleToCheckAttendance(int classSlotId)
         {
-            var classSlot = await _unitOfWork.WorkshopClassDetailRepository.GetFirst(c => c.Id == classSlotId 
+            var classSlot = await _unitOfWork.WorkshopClassDetailRepository.GetFirst(c => c.DaySlotId == classSlotId 
                                                                                         && c.WorkshopClass.Status == (int)Models.Enum.Workshop.Class.Status.OnGoing
                                                                                         , nameof(WorkshopClassDetail.DaySlot)
                                                                                         , nameof(WorkshopClassDetail.WorkshopClass)

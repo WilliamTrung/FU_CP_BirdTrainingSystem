@@ -1,4 +1,5 @@
 ﻿using AdministrativeSubsystem;
+using AppRepository.UnitOfWork;
 using AutoMapper;
 using Models.AuthModels;
 using Models.Entities;
@@ -33,6 +34,13 @@ namespace SP_AutoMapperConfig
     }
     public class MappingAction_User_UserAdminViewModel : IMappingAction<User, UserAdminViewModel>
     {
+        private readonly IAdminFeature _adminFeature;
+        private readonly IUnitOfWork _uow;
+        public MappingAction_User_UserAdminViewModel(IAdminFeature adminFeature, IUnitOfWork uow)
+        {
+                _adminFeature = adminFeature;
+            _uow = uow;
+        }
         public void Process(User source, UserAdminViewModel destination, ResolutionContext context)
         {
             destination.Id = source.Id;
@@ -42,7 +50,9 @@ namespace SP_AutoMapperConfig
             destination.Avatar = source.Avatar == null ? "" : source.Avatar;                        
             if (destination.Role == Role.Customer)
             {
-                var customer = source.Customers.First();
+                _adminFeature.User.GenerateRoleModel(destination.Id).Wait();
+                
+                Customer customer = _uow.CustomerRepository.GetFirst(c => c.UserId == destination.Id).Result;
                 destination.BirthDay = customer.BirthDay;
                 destination.Membership = customer.MembershipRank.Name;
                 destination.Gender = customer.Gender;
@@ -50,6 +60,8 @@ namespace SP_AutoMapperConfig
                 destination.Status = ((Models.Enum.Customer.Status)Enum.ToObject(typeof(Models.Enum.Customer.Status), customer.Status)).ToString();
             } else if(destination.Role == Role.Trainer)
             {
+                _adminFeature.User.GenerateRoleModel(destination.Id).Wait();
+                Trainer customer = _uow.TrainerRepository.GetFirst(c => c.UserId == destination.Id).Result;
                 var trainer = source.Trainers.First();  
                 destination.BirthDay = trainer.BirthDay;
                 destination.Gender = trainer.Gender;
