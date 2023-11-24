@@ -49,8 +49,8 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             }
             var birdModel = bird.ToBirdAddModel(pictures);
 
-            await _trainingCourseService.Customer.RegisterBird(birdModel);
-            return Ok();
+            var result = await _trainingCourseService.Customer.RegisterBird(birdModel);
+            return Ok(result);
         }
         [HttpPost]
         [Route("update-bird")]

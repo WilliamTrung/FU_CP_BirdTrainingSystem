@@ -41,7 +41,7 @@ namespace TrainingCourseSubsystem.Implementation
             return models;
         }
 
-        public async Task RegisterBird(BirdAddModel bird)
+        public async Task<BirdViewModel> RegisterBird(BirdAddModel bird)
         {
             if (bird == null)
             {
@@ -63,6 +63,7 @@ namespace TrainingCourseSubsystem.Implementation
             //entity.IsDefault = false;
             entity.Status = (int)Models.Enum.Bird.Status.Ready;
             await _unitOfWork.BirdRepository.Add(entity);
+            return _mapper.Map<BirdViewModel>(entity);
         }
 
         public async Task UpdateBirdProfile(BirdModifyModel bird)
