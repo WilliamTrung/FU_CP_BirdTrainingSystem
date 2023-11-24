@@ -16,7 +16,7 @@ namespace TrainingCourseSubsystem;
 //FE28[Customer] view[Training Course Detail] - of the in-training[Bird] - to check progression
 public interface IFeatureCustomer : IFeatureAll
 {
-    Task RegisterBird(BirdAddModel bird);
+    Task<BirdViewModel> RegisterBird(BirdAddModel bird);
     Task UpdateBirdProfile(BirdModifyModel bird);
     Task<IEnumerable<BirdViewModel>> GetBirdByCustomerId(int customerId);
     Task<IEnumerable<TrainingCourseViewModel>> GetTrainingCourse();
