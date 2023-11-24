@@ -327,9 +327,26 @@ namespace WorkshopSubsystem.Implementation
                                                                                         , nameof(WorkshopClassDetail.DaySlot)
                                                                                         , nameof(WorkshopClassDetail.WorkshopClass)
                                                                                         , $"{nameof(WorkshopClassDetail.DaySlot)}.{nameof(TrainerSlot.Slot)}");
+
+            var entities = await _unitOfWork.WorkshopClassRepository.Get(c => c.Status == (int)Models.Enum.Workshop.Class.Status.OnGoing
+                                                                           , nameof(WorkshopClass.WorkshopClassDetails)
+                                                                           , $"{nameof(WorkshopClass.WorkshopClassDetails)}.{nameof(WorkshopClassDetail.DaySlot)}"
+                                                                           , $"{nameof(WorkshopClass.WorkshopClassDetails)}.{nameof(WorkshopClassDetail.DaySlot)}.{nameof(TrainerSlot.Slot)}");
+          
+            foreach (var entity in entities)
+            {
+                var lastSlot = entity.WorkshopClassDetails.Last();
+                var endHour = lastSlot.DaySlot.Slot.EndTime;
+                var endTime = lastSlot.DaySlot.Date.Add((TimeSpan)endHour).AddHours(24);
+                if(entity.Id == 18)
+                {
+                    throw new Exception($"{DateTime.Now} -- {endTime}");
+                }
+            }
+            //throw new Exception("Check able to check attendance: " + DateTime.Now);
             if (classSlot == null)
-                //return false;
-                throw new Exception("classSlot is not found!");
+                return false;
+            //throw new Exception("classSlot is not found!");
             //check start time and end time to current time
 #pragma warning disable CS8629 // Nullable value type may be null.
             DateTime startTime = classSlot.DaySlot.Date.AddTicks(classSlot.DaySlot.Slot.StartTime.Value.Ticks);
@@ -338,7 +355,7 @@ namespace WorkshopSubsystem.Implementation
                 DateTime endTime = classSlot.DaySlot.Date.AddTicks(classSlot.DaySlot.Slot.EndTime.Value.Ticks).AddHours(24);
                 if (DateTime.Now > endTime)
                 {
-                    throw new Exception($"{DateTime.Now} > {endTime}");
+                    throw new InvalidOperationException($"The slot has exceeded 24 hours after ended!");
                     return false;
                 } else
                 {
@@ -346,7 +363,7 @@ namespace WorkshopSubsystem.Implementation
                 }
             }
 #pragma warning restore CS8629 // Nullable value type may be null.     
-            throw new Exception($"{DateTime.Now} > {startTime}");
+            throw new InvalidOperationException($"The slot has not started yet!");
             return false;
         }
 
