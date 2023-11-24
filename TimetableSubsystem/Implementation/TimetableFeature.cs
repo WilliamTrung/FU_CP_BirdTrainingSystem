@@ -92,6 +92,13 @@ namespace TimetableSubsystem.Implementation
             return models;
         }
 
+        public async Task<SlotModel> GetSlotBySlotId(int slotId)
+        {
+            var entity = await _unitOfWork.SlotRepository.GetFirst(x => x.Id == slotId);
+            var model = _mapper.Map<SlotModel>(entity);
+            return model;
+        }
+
         public async Task<IEnumerable<SlotModel>> GetSlotData()
         {
             var entities = await _unitOfWork.SlotRepository.Get();
