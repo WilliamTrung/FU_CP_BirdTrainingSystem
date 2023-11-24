@@ -156,12 +156,12 @@ namespace TimetableSubsystem.Implementation
         {
             var trainerSlots = await _unitOfWork.TrainerSlotRepository.Get(c => c.TrainerId == trainerId
                                                                              && c.Status != (int)Models.Enum.TrainerSlotStatus.Disabled
-                                                                             && c.Date.Day >= from.Day
-                                                                             && c.Date.Month >= from.Month
-                                                                             && c.Date.Year >= from.Year
-                                                                             && c.Date.Day <= to.Day
-                                                                             && c.Date.Month <= to.Month
-                                                                             && c.Date.Year <= to.Year
+                                                                             //&& c.Date.Day >= from.Day
+                                                                             //&& c.Date.Month >= from.Month
+                                                                             //&& c.Date.Year >= from.Year
+                                                                             //&& c.Date.Day <= to.Day
+                                                                             //&& c.Date.Month <= to.Month
+                                                                             //&& c.Date.Year <= to.Year
                                                                             , nameof(TrainerSlot.Slot));
             //var tesst = _mapper.Map<TimetableModel>(trainerSlots.First());
             var slots = _mapper.Map<List<TimetableModel>>(trainerSlots);
