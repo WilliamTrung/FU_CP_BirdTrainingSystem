@@ -80,6 +80,14 @@ namespace SP_AutoMapperConfig
                 destination.BirdPicture = bird.Picture;
                 destination.SlotId = source.TrainerSlot.SlotId;
                 destination.TrainingDate = source.TrainerSlot.Date;
+                if(source.Status != null)
+                {
+                    destination.Status = (Models.Enum.BirdTrainingReport.Status)source.Status;
+                }
+                else
+                {
+                    destination.Status = Models.Enum.BirdTrainingReport.Status.NotYet;
+                }
             }
         }
 
