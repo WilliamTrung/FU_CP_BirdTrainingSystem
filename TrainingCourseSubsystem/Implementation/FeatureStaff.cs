@@ -312,14 +312,14 @@ namespace TrainingCourseSubsystem.Implementation
             return !progresses.Any(e => e.Status == (int)Models.Enum.BirdTrainingProgress.Status.WaitingForAssign);
         }
 
-        public async Task<TrainerSlotModel> CreateTrainerSlot(TrainerSlotAddModel trainerSlotModel)
+        public async Task<TrainingCourseTrainerSlotModel> CreateTrainerSlot(TrainerSlotAddModel trainerSlotModel)
         {
             var entity = _mapper.Map<TrainerSlot>(trainerSlotModel);
             entity.Status = (int)Models.Enum.TrainerSlotStatus.Enabled;
             entity.Reason = "Training bird at the center.";
             await _unitOfWork.TrainerSlotRepository.Add(entity);
 
-            var model = _mapper.Map<TrainerSlotModel>(entity);
+            var model = _mapper.Map<TrainingCourseTrainerSlotModel>(entity);
 
             return model;
         }
@@ -501,9 +501,9 @@ namespace TrainingCourseSubsystem.Implementation
             //await _trainingCourse.Staff.GenerateTrainerTimetable(report);
         }
 
-        private IEnumerable<TrainerSlotModel> AutoCreateTimetable(ref DateTime start, int slotStart, BirdTrainingProgress progress)
+        private IEnumerable<TrainingCourseTrainerSlotModel> AutoCreateTimetable(ref DateTime start, int slotStart, BirdTrainingProgress progress)
         {
-            List<TrainerSlotModel> trainerSlots = new List<TrainerSlotModel>(); //day1
+            List<TrainingCourseTrainerSlotModel> trainerSlots = new List<TrainingCourseTrainerSlotModel>(); //day1
             var totalSlot = progress.TotalTrainingSlot; //10
             while (totalSlot > 0)
             {

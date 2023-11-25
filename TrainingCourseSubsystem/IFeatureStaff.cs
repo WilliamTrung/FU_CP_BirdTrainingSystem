@@ -29,7 +29,7 @@ namespace TrainingCourseSubsystem
 
         Task<IEnumerable<int>> ConfirmBirdTrainingCourse(BirdTrainingCourseConfirm confirmModel);//return list of progress
         Task CancelBirdTrainingCourse(int birdTrainingCourseId);
-        Task<TrainerSlotModel> CreateTrainerSlot(TrainerSlotAddModel trainerSlotModel);//non api
+        Task<TrainingCourseTrainerSlotModel> CreateTrainerSlot(TrainerSlotAddModel trainerSlotModel);//non api
         Task CreateTrainingReport(InitReportTrainerSlot report);//non api
 
         Task<IEnumerable<BirdTrainingProgressViewModel>> GetTrainingCourseSkill(int birdTrainingCourseId);

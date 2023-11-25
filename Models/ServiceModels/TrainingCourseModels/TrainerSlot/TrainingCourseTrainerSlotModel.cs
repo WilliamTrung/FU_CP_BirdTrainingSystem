@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Models.ServiceModels.TrainingCourseModels.TrainerSlot
 {
-    public class TrainerSlotModel
+    public class TrainingCourseTrainerSlotModel
     {
         public int Id { get; set; }
         public int? TrainerId { get; set; }

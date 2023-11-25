@@ -14,12 +14,12 @@ namespace SP_AutoMapperConfig
         public TrainerSlotProfile()
         {
             Map_TrainerSlotAddModel_TrainerSlot();
-            Map_TrainerSlot_TrainerSlotModel();
+            Map_TrainerSlot_TrainingCourseTrainerSlotModel();
         }
 
-        private void Map_TrainerSlot_TrainerSlotModel()
+        private void Map_TrainerSlot_TrainingCourseTrainerSlotModel()
         {
-            CreateMap<TrainerSlot, TrainerSlotModel>()
+            CreateMap<TrainerSlot, TrainingCourseTrainerSlotModel>()
                 .ForMember(e => e.Id, opt => opt.MapFrom(m => m.Id))
                 .ForMember(e => e.TrainerId, opt => opt.MapFrom(m => m.TrainerId))
                 .ForMember(e => e.SlotId, opt => opt.MapFrom(m => m.SlotId))
