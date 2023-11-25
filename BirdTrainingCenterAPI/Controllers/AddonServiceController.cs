@@ -43,17 +43,17 @@ namespace BirdTrainingCenterAPI.Controllers
                         return BadRequest("Image too large!");
                     }
                     url = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.IMAGE, _bucket.General);
-                    mainUrl.Concat($"{url}\n");
+                    mainUrl = mainUrl + $"{url}\n";
                 }
                 else if (file.IsVideo())
                 {
                     url = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.VIDEO, _bucket.General);
-                    mainUrl.Concat($"{url}\n");
+                    mainUrl = mainUrl + $"{url}\n";
                 }
                 else
                 {
                     url = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.TEST, _bucket.General);
-                    mainUrl.Concat($"{url}\n");
+                    mainUrl = mainUrl + $"{url}\n";
                 }
             }
           
