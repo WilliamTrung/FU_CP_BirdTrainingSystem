@@ -25,7 +25,7 @@ namespace SP_AutoMapperConfig
         private void Map_BirdTrainingReport_ReportModifyViewModel()
         {
             CreateMap<BirdTrainingReport, ReportModifyViewModel>()
-                ;
+                .AfterMap<MapAction_BirdTrainingReport_ReportModifyViewModel>();
                 //.ForMember(m => m.ReportId, opt => opt.MapFrom(e => e.Id))
                 //.ForMember(m => m.SlotId, opt => {
                 //    opt.PreCondition(e => e.TrainerSlot != null);

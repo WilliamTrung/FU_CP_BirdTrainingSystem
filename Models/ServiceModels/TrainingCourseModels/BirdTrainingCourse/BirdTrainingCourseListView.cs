@@ -18,6 +18,11 @@ namespace Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse
         public string? RegisteredDate { get; set; }
         public string? StartTrainingDate { get; set; }
         public string? TrainingDoneDate { get; set; }
+        public decimal? TotalPrice { get; set; }
+        public decimal? DiscountedPrice { get; set; }
+        public decimal? ActualPrice { get; set; }
+        public int? MembershipRankId { get; set; }
+        public string? MembershipRank { get; set; }
         public Models.Enum.BirdTrainingCourse.Status Status { get; set; }
 
     }
