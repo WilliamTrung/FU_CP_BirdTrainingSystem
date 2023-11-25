@@ -13,5 +13,7 @@ namespace Models.ServiceModels.TrainingCourseModels.BirdTrainingReport
         [SP_Validator.DateOnlyValidator]
         public DateTime Date { get; set; }
         public int? TrainerId { get; set; }
+        public string? TrainerName { get; set; }
+        public Models.Enum.BirdTrainingReport.Status Status { get; set; }
     }
 }

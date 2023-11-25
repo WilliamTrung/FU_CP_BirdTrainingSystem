@@ -1,6 +1,7 @@
 ﻿using AppRepository.UnitOfWork;
 using AutoMapper;
 using Models.Entities;
+using Models.ServiceModels;
 using Models.ServiceModels.SlotModels;
 using Models.ServiceModels.TrainingCourseModels;
 using Models.ServiceModels.TrainingCourseModels.BirdCertificate;
@@ -35,7 +36,7 @@ namespace TrainingCourseSubsystem.Implementation
                     {
                         var reports = _unitOfWork.BirdTrainingReportRepository.Get(e => e.BirdTrainingProgressId == progress.Id
                                                                                     , nameof(BirdTrainingReport.TrainerSlot)).Result.ToList();
-                        if(reportStatus == (int)Models.Enum.BirdTrainingReport.Status.NotYet)
+                        if (reportStatus == (int)Models.Enum.BirdTrainingReport.Status.NotYet)
                         {
                             reports = reports.Where(e => e.Status == reportStatus).ToList();
                         }
@@ -250,7 +251,7 @@ namespace TrainingCourseSubsystem.Implementation
             }
             else
             {
-                if(reportModModel.TrainerId != null)
+                if (reportModModel.TrainerId != null)
                 {
                     if (entity.TrainerSlot.TrainerId == null || entity.TrainerSlot.TrainerId != reportModModel.TrainerId)
                     {
@@ -311,14 +312,14 @@ namespace TrainingCourseSubsystem.Implementation
             return !progresses.Any(e => e.Status == (int)Models.Enum.BirdTrainingProgress.Status.WaitingForAssign);
         }
 
-        public async Task<TrainerSlotModel> CreateTrainerSlot(TrainerSlotAddModel trainerSlotModel)
+        public async Task<TrainingCourseTrainerSlotModel> CreateTrainerSlot(TrainerSlotAddModel trainerSlotModel)
         {
             var entity = _mapper.Map<TrainerSlot>(trainerSlotModel);
             entity.Status = (int)Models.Enum.TrainerSlotStatus.Enabled;
             entity.Reason = "Training bird at the center.";
             await _unitOfWork.TrainerSlotRepository.Add(entity);
 
-            var model = _mapper.Map<TrainerSlotModel>(entity);
+            var model = _mapper.Map<TrainingCourseTrainerSlotModel>(entity);
 
             return model;
         }
@@ -366,7 +367,36 @@ namespace TrainingCourseSubsystem.Implementation
                 }
             }
         }
-
+        private async Task CreateTransaction(TransactionAddModel transactionAddModel)
+        {
+            if (transactionAddModel == null)
+            {
+                throw new Exception("Client send null param");
+            }
+            else
+            {
+                var entity = _mapper.Map<Transaction>(transactionAddModel);
+                if(entity != null)
+                {
+                    await _unitOfWork.TransactionRepository.Add(entity);
+                }
+            }
+        }
+        private TransactionAddModel OfflineGenerateBill(BirdTrainingCourse entity)
+        {
+            TransactionAddModel transactionAddModel = new TransactionAddModel()
+            {
+                CustomerId = entity.CustomerId,
+                Title = $"Offline payment at center requestedId = {entity.Id}",
+                Detail = $"Offline payment at center requestedId = {entity.Id}",
+                EntityTypeId = (int)Models.Enum.EntityType.TrainingCourse,
+                EntityId = entity.Id,
+                TotalPayment = entity.DiscountedPrice,
+                PaymentCode = "Pay offline at center",
+                Status = (int)Models.Enum.Transaction.Status.Paid,
+            };
+            return transactionAddModel;
+        }
         public async Task ReturnBird(BirdTrainingCourseReturnBird birdTrainingCourse)
         {
             if (birdTrainingCourse == null)
@@ -380,10 +410,10 @@ namespace TrainingCourseSubsystem.Implementation
                 {
                     throw new Exception("Entity not found");
                 }
-                else if (entity.Status != (int)Models.Enum.BirdTrainingCourse.Status.TrainingDone)
-                {
-                    throw new Exception("Bird is training. Not ready to return");
-                }
+                //else if (entity.Status != (int)Models.Enum.BirdTrainingCourse.Status.TrainingDone)
+                //{
+                //    throw new Exception("Bird is training. Not ready to return");
+                //}
                 else
                 {
                     entity.ReturnStaffId = birdTrainingCourse.ReturnStaffId;
@@ -394,6 +424,9 @@ namespace TrainingCourseSubsystem.Implementation
                     await _unitOfWork.BirdTrainingCourseRepository.Update(entity);
 
                     await DeleteReportTrainerSlot(entity, (int)Models.Enum.BirdTrainingReport.Status.NotYet);
+
+                    //var transactionAddModel = OfflineGenerateBill(entity);
+                    //await CreateTransaction(transactionAddModel);
                 }
             }
         }
@@ -468,9 +501,9 @@ namespace TrainingCourseSubsystem.Implementation
             //await _trainingCourse.Staff.GenerateTrainerTimetable(report);
         }
 
-        private IEnumerable<TrainerSlotModel> AutoCreateTimetable(ref DateTime start, int slotStart, BirdTrainingProgress progress)
+        private IEnumerable<TrainingCourseTrainerSlotModel> AutoCreateTimetable(ref DateTime start, int slotStart, BirdTrainingProgress progress)
         {
-            List<TrainerSlotModel> trainerSlots = new List<TrainerSlotModel>(); //day1
+            List<TrainingCourseTrainerSlotModel> trainerSlots = new List<TrainingCourseTrainerSlotModel>(); //day1
             var totalSlot = progress.TotalTrainingSlot; //10
             while (totalSlot > 0)
             {

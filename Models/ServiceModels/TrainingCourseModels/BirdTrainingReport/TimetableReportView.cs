@@ -17,5 +17,6 @@ namespace Models.ServiceModels.TrainingCourseModels.BirdTrainingReport
         public string BirdSpeciesName { get; set; } = null!;
         public string? BirdColor { get; set; }
         public string? BirdPicture { get; set; }
+        public Models.Enum.BirdTrainingReport.Status Status { get; set; }
     }
 }
