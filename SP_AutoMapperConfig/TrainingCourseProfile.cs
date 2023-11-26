@@ -125,8 +125,8 @@ namespace SP_AutoMapperConfig
                 {
                     if (registeredCourse != null)
                     {
-                        destination.RegisteredCustomer.Add(registeredCourse.CustomerId);
-                        destination.RegisteredCustomer = destination.RegisteredCustomer.Distinct().ToList();
+                        destination.RegisteredBird.Add(registeredCourse.BirdId);
+                        destination.RegisteredBird = destination.RegisteredBird.Distinct().ToList();
                     }
                 }
             }
