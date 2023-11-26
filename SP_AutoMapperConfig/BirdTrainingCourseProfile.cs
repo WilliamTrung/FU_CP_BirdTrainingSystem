@@ -145,11 +145,17 @@ namespace SP_AutoMapperConfig
                     destination.BirdName = bird.Name ?? "";
                 }
                 var customer = _unitOfWork.CustomerRepository.GetFirst(e => e.Id == source.CustomerId
-                                                                        , nameof(Customer.User)).Result;
+                                                                        , nameof(Customer.User)
+                                                                        , nameof(Customer.MembershipRank)).Result;
                 if (customer != null)
                 {
                     destination.CustomerId = customer.Id;
                     destination.CustomerName = customer.User.Name ?? "";
+                    if(customer.MembershipRank != null)
+                    {
+                        destination.MembershipRankId = customer.MembershipRank.Id;
+                        destination.MembershipRank = customer.MembershipRank.Name;
+                    }
                 }
                 var trainingCourse = _unitOfWork.TrainingCourseRepository.GetFirst(e => e.Id == source.TrainingCourseId).Result;
                 if (trainingCourse != null)
@@ -168,6 +174,44 @@ namespace SP_AutoMapperConfig
                 if (source.TrainingDoneDate != null)
                 {
                     destination.TrainingDoneDate = source.TrainingDoneDate.Value.ToString("dd-MM-yyyy");
+                }
+                if (source.TotalPrice != null)
+                {
+                    destination.TotalPrice = source.TotalPrice;
+                }
+                if (source.DiscountedPrice != null)
+                {
+                    destination.DiscountedPrice = source.DiscountedPrice;
+                    var progresses = _unitOfWork.BirdTrainingProgressRepository.Get(e => e.BirdTrainingCourseId == source.Id).Result.ToList();
+                    if (progresses != null)
+                    {
+                        if (progresses.Count > 0)
+                        {
+                            var reports = _unitOfWork.BirdTrainingReportRepository.Get(e => e.Status == (int)Models.Enum.BirdTrainingReport.Status.Done).Result.ToList();
+                            reports = reports.Where(r => progresses.Any(p => p.Id == r.BirdTrainingProgressId)).ToList();
+                            if (reports.Count > 0)
+                            {
+                                double tmp = (double)reports.Count / trainingCourse.TotalSlot;
+                                var actualPrice = source.DiscountedPrice * (decimal)tmp;
+                                if(actualPrice == source.DiscountedPrice)
+                                {
+                                    destination.ActualPrice = actualPrice;
+                                }
+                                else
+                                {
+                                    destination.ActualPrice = actualPrice + (source.DiscountedPrice * (decimal)(0.2));
+                                }
+                            }
+                        }
+                        else
+                        {
+                            destination.ActualPrice = (source.DiscountedPrice * (decimal)(0.2));
+                        }
+                    }
+                    if(source.Status == (int)Models.Enum.BirdTrainingCourse.Status.Confirmed)
+                    {
+                        destination.ActualPrice = (source.DiscountedPrice * (decimal)(0.2));
+                    }
                 }
             }
         }

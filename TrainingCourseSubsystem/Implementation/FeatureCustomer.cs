@@ -77,7 +77,13 @@ namespace TrainingCourseSubsystem.Implementation
             }
             entity.Status = (int)Models.Enum.Bird.Status.Ready;
             await _unitOfWork.BirdRepository.Add(entity);
-            return _mapper.Map<BirdViewModel>(entity);
+
+            var birdAdded = _unitOfWork.BirdRepository.GetFirst(e => e.Id == entity.Id
+                                                                     , nameof(Bird.BirdSpecies)
+                                                                     , nameof(Bird.Customer)
+                                                                     , $"{nameof(Bird.Customer)}.{nameof(Bird.Customer.User)}").Result;
+
+            return _mapper.Map<BirdViewModel>(birdAdded);
         }
 
         public async Task UpdateBirdProfile(BirdModifyModel bird)
