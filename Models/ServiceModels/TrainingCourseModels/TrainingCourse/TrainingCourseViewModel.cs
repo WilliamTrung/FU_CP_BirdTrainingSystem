@@ -12,7 +12,7 @@ namespace Models.ServiceModels.TrainingCourseModels.TrainingCourse
         public TrainingCourseViewModel()
         {
             BirdSkills = new List<BirdSkillViewModel>();
-            RegisteredCustomer = new List<int>();
+            RegisteredBird = new List<int>();
         }
         public int Id { get; set; }
         public int BirdSpeciesId { get; set; }
@@ -23,6 +23,6 @@ namespace Models.ServiceModels.TrainingCourseModels.TrainingCourse
         public int TotalSlot { get; set; }
         public decimal TotalPrice { get; set; }
         public List<BirdSkillViewModel> BirdSkills { get; set; }
-        public List<int> RegisteredCustomer { get; set; }
+        public List<int> RegisteredBird { get; set; }
     }
 }
