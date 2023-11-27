@@ -76,7 +76,7 @@ namespace SP_AutoMapperConfig
                 var trainerSlot = _unitOfWork.TrainerSlotRepository.GetFirst(e => e.Id == source.TrainerSlotId).Result;
                 if(trainerSlot != null)
                 {
-                    destination.SlotId = trainerSlot.Id;
+                    destination.SlotId = trainerSlot.SlotId;
                     destination.Date = trainerSlot.Date;
                     if(trainerSlot.TrainerId != null)
                     {
