@@ -93,7 +93,7 @@ namespace AdministrativeSubsystem.Implementation
 
         public async Task UpdateTrainerAdditionalInformation(int trainerId, AdditionalUpdateModel model)
         {
-            var trainer= await _uow.TrainerRepository.GetFirst(c => c.Id == trainerId);
+            var trainer= await _uow.TrainerRepository.GetFirst(c => c.Id == trainerId, nameof(Trainer.ConsultingTickets));
             if (trainer == null)
             {
                 throw new KeyNotFoundException("Customer not found!");
@@ -109,6 +109,14 @@ namespace AdministrativeSubsystem.Implementation
             if (model.GgMeetLink != null)
             {
                 trainer.GgMeetLink = model.GgMeetLink;
+
+                //var listTickets = await _uow.ConsultingTicketRepository.Get(x => x.TrainerId == trainerId && x.Status != (int)Models.Enum.ConsultingTicket.Status.);
+                var listTickets = trainer.ConsultingTickets.Where(x => x.TrainerId == trainerId && 
+                (x.Status == (int)Models.Enum.ConsultingTicket.Status.Approved || x.Status == (int)Models.Enum.ConsultingTicket.Status.WaitingForApprove));
+                foreach (var ticket in listTickets)
+                {
+                    ticket.GgMeetLink = model.GgMeetLink;
+                }
             }
             await _uow.TrainerRepository.Update(trainer);
             await UpdateUserInformation(trainer.UserId, model);
