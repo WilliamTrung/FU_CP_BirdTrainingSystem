@@ -106,6 +106,10 @@ namespace AdministrativeSubsystem.Implementation
             {
                 trainer.Gender = model.Gender;
             }
+            if (model.GgMeetLink != null)
+            {
+                trainer.GgMeetLink = model.GgMeetLink;
+            }
             await _uow.TrainerRepository.Update(trainer);
             await UpdateUserInformation(trainer.UserId, model);
         }

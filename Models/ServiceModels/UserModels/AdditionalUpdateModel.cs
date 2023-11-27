@@ -9,6 +9,7 @@ namespace Models.ServiceModels.UserModels
     public class AdditionalUpdateModel : UserUpdateModel
     {
         public bool? Gender { get; set; }
-        public DateTime? BirthDay { get; set; }         
+        public DateTime? BirthDay { get; set; }
+        public string? GgMeetLink { get; set; }
     }
 }
