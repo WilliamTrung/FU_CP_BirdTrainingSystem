@@ -22,6 +22,7 @@ namespace Models.ServiceModels.TrainingCourseModels.TrainingCourse
         public string? Picture { get; set; }
         public int TotalSlot { get; set; }
         public decimal TotalPrice { get; set; }
+        public Models.Enum.TrainingCourse.Status Status { get; set; }
         public List<BirdSkillViewModel> BirdSkills { get; set; }
         public List<int> RegisteredBird { get; set; }
     }
