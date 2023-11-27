@@ -32,6 +32,7 @@ namespace AdviceConsultingSubsystem.Implementation
             var slotId = consultingTicket.ActualSlotStart;
             var slotDetail = await _timetable.GetSlotBySlotId(slotId);
             date = date + (TimeSpan)slotDetail.StartTime;
+            var trainer = await _unitOfWork.TrainerRepository.GetFirst(x => x.Id == consultingTicket.TrainerId);
 
             if (date <= DateTime.Now.AddHours(7))
             {
@@ -72,6 +73,7 @@ namespace AdviceConsultingSubsystem.Implementation
             entity.Status = (int)Models.Enum.ConsultingTicket.Status.WaitingForApprove;
             entity.ConsultingPricePolicyId = pricePolicy.Id;
             entity.DistancePriceId = distancePricePolicy.Id;
+            entity.GgMeetLink = trainer.GgMeetLink;
 
             await _unitOfWork.ConsultingTicketRepository.Add(entity);
             //Add new Consulting Ticket
