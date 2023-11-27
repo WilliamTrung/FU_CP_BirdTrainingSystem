@@ -100,6 +100,7 @@ namespace SP_AutoMapperConfig
                 destination.Picture = source.Picture;
                 destination.TotalSlot = source.TotalSlot;
                 destination.TotalPrice = source.TotalPrice;
+                destination.Status = (Models.Enum.TrainingCourse.Status)source.Status;
 
                 var birdSpecies = _unitOfWork.BirdSpeciesRepository.GetFirst(e => e.Id == source.BirdSpeciesId).Result;
                 if(birdSpecies != null )
