@@ -58,7 +58,7 @@ namespace AdviceConsultingSubsystem.Implementation
 
         public async Task<IEnumerable<DistancePriceServiceModel>> GetDistancePricePolicy()
         {
-            var entities = await _unitOfWork.DistancePriceRepository.Get();
+            var entities = await _unitOfWork.DistancePriceRepository.Get(x => x.Id != 0);
             var models = new List<DistancePriceServiceModel>();
             foreach (var entity in entities)
             {
