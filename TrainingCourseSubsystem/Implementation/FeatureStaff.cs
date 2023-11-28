@@ -265,8 +265,13 @@ namespace TrainingCourseSubsystem.Implementation
                 await _unitOfWork.BirdTrainingReportRepository.Update(entity);
             }
 
-            var trainingSkillSlot = await _unitOfWork.TrainerSlotRepository.Get(e => e.EntityTypeId == (int)Models.Enum.EntityType.TrainingCourse
-                                                                                  && e.EntityId == entity.BirdTrainingProgressId);
+            var progress = _unitOfWork.BirdTrainingProgressRepository.GetFirst(e => e.Id == entity.BirdTrainingProgressId).Result;
+            var progresses = _unitOfWork.BirdTrainingProgressRepository.Get(e => e.BirdTrainingCourseId == progress.BirdTrainingCourseId).Result.ToList();
+
+            var trainingSkillSlot = await _unitOfWork.TrainerSlotRepository.Get(e => e.EntityTypeId == (int)Models.Enum.EntityType.TrainingCourse);
+            trainingSkillSlot = trainingSkillSlot.Where(e => progresses.Any(p => p.Id == e.EntityId));
+
+
             trainingSkillSlot = trainingSkillSlot.OrderBy(e => e.Date);
             DateTime startTraining = trainingSkillSlot.First().Date;
 

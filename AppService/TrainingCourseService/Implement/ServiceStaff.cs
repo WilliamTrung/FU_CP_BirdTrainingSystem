@@ -39,7 +39,7 @@ namespace AppService.TrainingCourseService.Implement
         public async Task<IEnumerable<BirdTrainingProgressViewModel>> ConfirmBirdTrainingCourse(BirdTrainingCourseConfirm confirmModel)
         {
             List<int> progresses = _trainingCourse.Staff.ConfirmBirdTrainingCourse(confirmModel).Result.ToList();
-            DateTime startDate = DateTime.Now;
+            DateTime startDate = DateTime.Now.AddDays(4);
             int slotId = 1;
             await GenerateTrainerTimetable(startDate, slotId, progresses);
 

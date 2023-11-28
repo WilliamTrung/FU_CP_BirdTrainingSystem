@@ -184,11 +184,23 @@ namespace TrainingCourseSubsystem.Implementation
                     else
                     {
                         result = (int)Models.Enum.BirdTrainingReport.FirstOrEnd.EndSlot;
+                        birdProgress.Status = (int)Models.Enum.BirdTrainingProgress.Status.Pass;
                     }
                     await _unitOfWork.BirdTrainingProgressRepository.Update(birdProgress);
 
                     entity.Status = (int)Models.Enum.BirdTrainingReport.Status.Done;
                     await _unitOfWork.BirdTrainingReportRepository.Update(entity);
+
+                    if (result == (int)Models.Enum.BirdTrainingReport.FirstOrEnd.EndSlot)
+                    {
+                        MarkSkillDone allSlotDone = new MarkSkillDone()
+                        {
+                            Id = birdProgress.Id,
+                            Evidence = "",
+                            Status = "Pass",
+                        };
+                        await MarkTrainingSkillDone(allSlotDone);
+                    }
                 }
             }
             return result;
@@ -210,10 +222,7 @@ namespace TrainingCourseSubsystem.Implementation
                 else
                 {
                     var endSlot = birdReports.Where(e => e.Status == (int)Models.Enum.BirdTrainingReport.Status.NotYet).ToList();
-                    if(endSlot == null)
-                    {
-                        return (int)Models.Enum.BirdTrainingReport.FirstOrEnd.EndSlot;
-                    }else if(endSlot.Count() == 1)
+                    if (endSlot == null || endSlot.Count() == 0 || endSlot.Count() == 1)
                     {
                         return (int)Models.Enum.BirdTrainingReport.FirstOrEnd.EndSlot;
                     }
