@@ -14,12 +14,13 @@ using System;
 using Models.ServiceModels.TrainingCourseModels.BirdCertificate.BirdCertificateDetail;
 using BirdTrainingCenterAPI.Helper;
 using Models.AuthModels;
+using Microsoft.AspNetCore.OData.Query;
 
 namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
 {
     [Route("api/trainingcourse-staff")]
     [ApiController]
-    //[CustomAuthorize(roles: "Staff")]
+    [CustomAuthorize(roles: "Staff")]
     public class TrainingCourseStaffController : TrainingCourseBaseController, ITrainingCourseStaff
     {
         private readonly IFirebaseService _firebaseService;
@@ -29,7 +30,9 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             _firebaseService = firebaseService;
             _bucket = bucket.Value;
         }
+        
         [HttpGet]
+        [EnableQuery]
         [Route("birdtrainingcourse")]
         public async Task<IActionResult> GetBirdTrainingCourse()
         {
@@ -37,6 +40,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             return Ok(result);
         }
         [HttpGet]
+        [EnableQuery]
         [Route("birdtrainingcourse-bird")]
         public async Task<IActionResult> GetBirdTrainingCourseByBirdId([FromQuery] int birdId)
         {
@@ -44,6 +48,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             return Ok(result);
         }
         [HttpGet]
+        [EnableQuery]
         [Route("birdtrainingcourse-customer")]
         public async Task<IActionResult> GetBirdTrainingCourseByCustomerId([FromQuery] int customerId)
         {

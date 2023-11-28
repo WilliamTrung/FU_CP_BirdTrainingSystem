@@ -11,6 +11,7 @@ using Models.ServiceModels.TrainingCourseModels;
 using Models.ServiceModels.TrainingCourseModels.Bird;
 using Models.ServiceModels.TrainingCourseModels.BirdCertificate.BirdCertificateDetail;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
+using TEST_CERTSAMPLE;
 
 namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
 {
@@ -21,10 +22,12 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
     {
         private readonly IFirebaseService _firebaseService;
         private readonly FirebaseBucket _bucket;
-        public TrainingCourseCustomerController(ITrainingCourseService trainingCourseService, IAuthService authService, IFirebaseService firebaseService, IOptions<FirebaseBucket> bucket) : base(trainingCourseService, authService)
+        private readonly IPdfGenerator _pdf;
+        public TrainingCourseCustomerController(ITrainingCourseService trainingCourseService, IAuthService authService, IFirebaseService firebaseService, IPdfGenerator pdf, IOptions<FirebaseBucket> bucket) : base(trainingCourseService, authService)
         {
             _firebaseService = firebaseService;
             _bucket = bucket.Value;
+            _pdf = pdf;
         }
         [HttpPost]
         [Route("register-bird")]
@@ -187,6 +190,21 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         {
             var result = await _trainingCourseService.Customer.ViewCertificateByBirdId(birdId);
             return Ok(result);
+        }
+        [HttpGet]
+        [Route("birdcertificatepicture-requestedId")]
+        public async Task<IActionResult> ViewCertificatePictureByBirdTrainingCourseId(int birdTrainingCourseId)
+        {
+            var birdCerti = await _trainingCourseService.Customer.ViewCertificateByBirdTrainingCourseId(birdTrainingCourseId);
+            if(birdCerti == null)
+            {
+                return BadRequest("Not found certificate");
+            }
+            else
+            {
+                var certiPdf = _pdf.GenerateCertificate(birdCerti.BirdName, birdCerti.BirdCertificateViewModel.Title, birdCerti.ReceiveDate);
+                return File(certiPdf, "application/pdf");
+            }
         }
     }
 }

@@ -3,15 +3,17 @@ using AppService.TrainingCourseService;
 using BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
+using Microsoft.AspNetCore.OData.Routing.Controllers;
 using Models.ServiceModels.TrainingCourseModels.BirdCertificate;
 using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
+using SP_Middleware;
 using System.Security.Claims;
 
 namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
 {
     [Route("api/trainingcourse")]
     [ApiController]
-    public class TrainingCourseBaseController : ControllerBase, ITrainingCourseAll
+    public class TrainingCourseBaseController : ODataController, ITrainingCourseAll
     {
         internal readonly ITrainingCourseService _trainingCourseService;
 
@@ -63,6 +65,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         }
 
         [HttpGet]
+        [EnableQuery]
         [Route("basetrainingcourse")]
         public async Task<IActionResult> GetTrainingCourses()
         {
@@ -78,6 +81,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             return Ok(result);
         }
 
+        [CustomAuthorize(roles: "Manager,Staff")]
         [HttpPost]
         [Route("birdskillreceived")]
         public async Task<IActionResult> CreateBirdSkillReceived([FromBody] BirdSkillReceivedAddDeleteModel addDeleteModel)
@@ -86,6 +90,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             return Ok();
         }
 
+        [CustomAuthorize(roles: "Manager,Staff")]
         [HttpDelete]
         [Route("birdskillreceived")]
         public async Task<IActionResult> DeleteBirdSkillReceived([FromBody] BirdSkillReceivedAddDeleteModel addDeleteModel)
@@ -95,6 +100,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         }
 
         [HttpGet]
+        [EnableQuery]
         [Route("birdskillreceived")]
         public async Task<IActionResult> GetBirdSkillReceiveds()
         {
@@ -111,6 +117,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         }
 
         [HttpGet]
+        [EnableQuery]
         [Route("birdcertificatedetail")]
         public async Task<IActionResult> GetBirdCertificatesDetail()
         {
@@ -212,6 +219,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             return Ok(result);
         }
         [HttpGet]
+        [EnableQuery]
         [Route("trainer")]
         public async Task<IActionResult> GetTrainer()
         {
@@ -219,6 +227,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             return Ok(result);
         }
         [HttpGet]
+        [EnableQuery]
         [Route("trainer-birdskill")]
         public async Task<IActionResult> GetTrainerByBirdSkillId([FromQuery] int birdSkillId)
         {
@@ -233,6 +242,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             return Ok(result);
         }
         [HttpGet]
+        [EnableQuery]
         [Route("trainer-skill")]
         public async Task<IActionResult> GetTrainerByTrainerSkillId([FromQuery] int trainerSkillId)
         {
