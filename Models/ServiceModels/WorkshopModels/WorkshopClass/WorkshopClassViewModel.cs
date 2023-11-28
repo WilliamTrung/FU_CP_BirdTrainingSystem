@@ -21,6 +21,7 @@ namespace Models.ServiceModels.WorkshopModels.WorkshopClass
         public DateTime RegisterEndDate { get; set; }
         public Models.Enum.Workshop.Transaction.Status? Status { get; set; }
         public List<WorkshopClassDetailViewModel> ClassSlots { get; set; } = null!;
+        public Models.Enum.Workshop.Class.Status? ClassStatus { get; set; }
         public RegistrationAmountModel? Registered { get; set; }
         public WorkshopClassViewModel AddPaidStatus()
         {
