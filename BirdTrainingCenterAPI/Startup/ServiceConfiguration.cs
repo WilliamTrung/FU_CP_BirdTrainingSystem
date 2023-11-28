@@ -8,6 +8,7 @@ using Google.Cloud.Storage.V1;
 using Models.ConfigModels;
 using ApplicationService.MailSettings;
 using AppCore.Context;
+using TEST_CERTSAMPLE;
 
 namespace BirdTrainingCenterAPI.Startup
 {
@@ -59,6 +60,7 @@ namespace BirdTrainingCenterAPI.Startup
             builder.Services.AddTransient<IFirebaseService, FirebaseService>();
             builder.Services.AddTransient<IAuthService, AuthService>();
             builder.Services.AddTransient<IMailService, MailService>();
+            builder.Services.AddTransient<IPdfGenerator, PdfGenerator>();
         }
         public static void ConfiguringCors(this WebApplicationBuilder builder)
         {

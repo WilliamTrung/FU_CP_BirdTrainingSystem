@@ -11,8 +11,8 @@ namespace AppRepository.Repository.Implement
         }
         public override Task Update(CustomerCertificateDetail entity)
         {
-            entity.ReceiveDate = DateTime.Now;
-            return base.Add(entity);
+            entity.ReceiveDate = DateTime.UtcNow.AddHours(7);
+            return base.Update(entity);
         }
     }
 }
