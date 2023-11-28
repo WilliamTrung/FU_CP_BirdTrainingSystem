@@ -5,7 +5,9 @@ using Models.Enum.OnlineCourse.Customer.Lesson;
 using Models.ServiceModels.OnlineCourseModels;
 using Models.ServiceModels.OnlineCourseModels.Certificate;
 using Models.ServiceModels.OnlineCourseModels.Operation;
+using Models.ServiceModels.WorkshopModels;
 using Models.ServiceModels.WorkshopModels.WorkshopClass;
+using SP_Extension;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +28,12 @@ namespace SP_AutoMapperConfig
             Map_OnlineCourseLessonAddModel_Lesson();
             Map_OnlineCourse_OnlineCourseAdminViewModel();
             Map_OnlineCourseCertificateAddModel_Certificate();
+            Map_CustomerCertificateDetail_OnlineCourseCertificateModel();
+        }
+        private void Map_CustomerCertificateDetail_OnlineCourseCertificateModel()
+        {
+            CreateMap<CustomerCertificateDetail, OnlineCourseCertificateModel>()
+                .AfterMap<MappingAction_CustomerCertificateDetail_OnlineCourseCertificate>();
         }
         private void Map_OnlineCourseCertificateAddModel_Certificate()
         {
@@ -105,6 +113,19 @@ namespace SP_AutoMapperConfig
                     }
                 }
                 return null;
+            }
+        }
+        public class MappingAction_CustomerCertificateDetail_OnlineCourseCertificate : IMappingAction<CustomerCertificateDetail, OnlineCourseCertificateModel>
+        {
+            public void Process(CustomerCertificateDetail source, OnlineCourseCertificateModel destination, ResolutionContext context)
+            {
+                destination.Picture = null;
+                destination.ReceivedDate = source.ReceiveDate.Value.ToDateOnly();
+                destination.Title = source.Certificate.Title;
+                destination.Description = source.Certificate.ShortDescrption;
+                destination.BirdCenterName = source.Certificate.BirdCenterName;
+                destination.CustomerName = source.Customer.User.Name;
+                destination.OnlineCourseId = source.Certificate.OnlineCourseId;
             }
         }
     }

@@ -17,6 +17,7 @@ namespace Models.ServiceModels.UserModels.Profile
         public bool? Gender { get; set; }
         public decimal? TotalPayment { get; set; }
         public string? Membership { get; set; }
+        public string? GgMeetLink {  get; set; }
         public bool? IsFulltime { get; set; }
         public string? Status { get; set; }
     }

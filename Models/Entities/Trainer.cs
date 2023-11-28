@@ -19,6 +19,7 @@ namespace Models.Entities
         public DateTime? BirthDay { get; set; }
         public bool? Gender { get; set; }
         public bool IsFullTime { get; set; }
+        public string? GgMeetLink { get; set; }
         public int Category { get; set; }
         public int Status { get; set; }
 

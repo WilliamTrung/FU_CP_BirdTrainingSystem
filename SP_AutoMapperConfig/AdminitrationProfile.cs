@@ -95,6 +95,7 @@ namespace SP_AutoMapperConfig
                 destination.Gender = trainer.Gender;
                 destination.IsFulltime = trainer.IsFullTime;
                 destination.Status = ((Models.Enum.Trainer.Status)Enum.ToObject(typeof(Models.Enum.Trainer.Status), trainer.Status)).ToString();
+                destination.GgMeetLink = trainer.GgMeetLink;
             }
 
         }

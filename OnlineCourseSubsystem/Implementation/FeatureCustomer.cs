@@ -44,6 +44,14 @@ namespace OnlineCourseSubsystem.Implementation
             }
             entity.Status = (int)Models.Enum.OnlineCourse.Customer.OnlineCourse.Status.Completed;
             await _unitOfWork.CustomerOnlineCourseDetailRepository.Update(entity);
+
+            var cert = await _unitOfWork.CustomerCertificateDetailRepository.GetFirst(c => c.CustomerId == customerId && c.Certificate.OnlineCourseId == courseId, nameof(CustomerCertificateDetail.Certificate));
+            if(cert == null)
+            {
+                throw new KeyNotFoundException("Certificate not found!");
+            }
+            //cert.ReceiveDate = DateTime.UtcNow.AddHours(7);
+            await _unitOfWork.CustomerCertificateDetailRepository.Update(cert);
         }
 
         public async Task CheckCompleteLesson(int customerId, int lessionId)
@@ -306,7 +314,8 @@ namespace OnlineCourseSubsystem.Implementation
                                                                                             , $"{nameof(CustomerOnlineCourseDetail.OnlineCourse)}.{nameof(OnlineCourse.Sections)}.{nameof(Section.Lessons)}.{nameof(Lesson.CustomerLessonDetails)}");
             if(courseRegistered == null )
             {
-                throw new InvalidOperationException("Customer has not enrolled to course!");
+                //throw new InvalidOperationException("Customer has not enrolled to course!");
+                return await GetCourseById(courseId);
             }
             foreach (var section in courseRegistered.OnlineCourse.Sections)
             {

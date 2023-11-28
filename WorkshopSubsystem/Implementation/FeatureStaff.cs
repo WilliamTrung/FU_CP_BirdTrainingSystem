@@ -33,7 +33,7 @@ namespace WorkshopSubsystem.Implementation
                 throw new InvalidOperationException($"{typeof(Workshop)} is inactive");
             }
             var entity = _mapper.Map<WorkshopClass>(workshopClass);            
-            var temp = DateTime.Now.ToDateOnly().AddDays(BR_WorkshopConstant.StartDateCreated).ToDateTime(new TimeOnly());
+            var temp = DateTime.UtcNow.AddHours(7).ToDateOnly().AddDays(BR_WorkshopConstant.StartDateCreated).ToDateTime(new TimeOnly());
             if (entity.StartTime < temp) {
                 throw new InvalidOperationException("Open registration day must be 5 days after from today!");
             }
@@ -270,10 +270,11 @@ namespace WorkshopSubsystem.Implementation
             });
             foreach (var customerCredential in customerCredentials)
             {                
-                var entity = await _unitOfWork.WorkshopAttendanceRepository.GetFirst(c => c.WorkshopClassDetailId == classSlotId
-                                                                                && customerCredential.Email == null ? false : c.Customer.User.Email == customerCredential.Email
+                var entity = await _unitOfWork.WorkshopAttendanceRepository.GetFirst(c => c.WorkshopClassDetail.DaySlotId == classSlotId
+                                                                                &&  c.Customer.User.Email == customerCredential.Email
                                                                                 , nameof(WorkshopAttendance.Customer)
-                                                                                , $"{nameof(WorkshopAttendance.Customer)}.{nameof(Customer.User)}");
+                                                                                , $"{nameof(WorkshopAttendance.Customer)}.{nameof(Customer.User)}"
+                                                                                , $"{nameof(WorkshopAttendance.WorkshopClassDetail)}.{nameof(WorkshopClassDetail.DaySlot)}");
                 if (entity == null)
                 {
                     throw new KeyNotFoundException("This account does not exist in list attendees!");
@@ -312,7 +313,7 @@ namespace WorkshopSubsystem.Implementation
                                                                                 , $"{nameof(WorkshopAttendance.WorkshopClassDetail)}.{nameof(WorkshopClassDetail.DaySlot)}"
                                                                                 , $"{nameof(WorkshopAttendance.WorkshopClassDetail)}.{nameof(WorkshopClassDetail.DaySlot)}.{nameof(TrainerSlot.Slot)}");
             entities = entities.Where(c => c.WorkshopClassDetail.DaySlot.Date <= DateTime.Today
-                                        && c.WorkshopClassDetail.DaySlot.Slot.EndTime < DateTime.Now.TimeOfDay);
+                                        && c.WorkshopClassDetail.DaySlot.Slot.EndTime < DateTime.UtcNow.AddHours(7).TimeOfDay);
             foreach (var entity  in entities)
             {
                 entity.Status = (int)Models.Enum.Workshop.Class.Customer.Status.Attended;
@@ -322,27 +323,29 @@ namespace WorkshopSubsystem.Implementation
         private async Task<bool> IsAbleToCheckAttendance(int classSlotId)
         {
             var classSlot = await _unitOfWork.WorkshopClassDetailRepository.GetFirst(c => c.DaySlotId == classSlotId 
-                                                                                        && c.WorkshopClass.Status == (int)Models.Enum.Workshop.Class.Status.OnGoing
+                                                                                        && (c.WorkshopClass.Status == (int)Models.Enum.Workshop.Class.Status.OnGoing || c.WorkshopClass.Status == (int)Models.Enum.Workshop.Class.Status.Completed)
                                                                                         , nameof(WorkshopClassDetail.DaySlot)
                                                                                         , nameof(WorkshopClassDetail.WorkshopClass)
                                                                                         , $"{nameof(WorkshopClassDetail.DaySlot)}.{nameof(TrainerSlot.Slot)}");
-            if(classSlot == null) return false;
+            if (classSlot == null)
+                return false;
+            //throw new Exception("classSlot is not found!");
             //check start time and end time to current time
 #pragma warning disable CS8629 // Nullable value type may be null.
             DateTime startTime = classSlot.DaySlot.Date.AddTicks(classSlot.DaySlot.Slot.StartTime.Value.Ticks);
-            if(DateTime.Now > startTime)
+            if(DateTime.UtcNow.AddHours(7) > startTime)
             {
                 DateTime endTime = classSlot.DaySlot.Date.AddTicks(classSlot.DaySlot.Slot.EndTime.Value.Ticks).AddHours(24);
-                if (DateTime.Now > endTime)
+                if (DateTime.UtcNow.AddHours(7) > endTime)
                 {
-                    return false;
+                    throw new InvalidOperationException($"The slot has exceeded 24 hours after ended!");
                 } else
                 {
                     return true;
                 }
-            }                        
-#pragma warning restore CS8629 // Nullable value type may be null.            
-            return false;
+            }
+#pragma warning restore CS8629 // Nullable value type may be null.     
+            throw new InvalidOperationException($"The slot has not started yet!");
         }
 
         public async Task<WorkshopClassAdminViewModel> GetClassAdminViewById(int classId)

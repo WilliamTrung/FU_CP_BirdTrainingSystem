@@ -20,6 +20,43 @@
     <ProjectReference Include="..\AppService\AppService.csproj" />
     <ProjectReference Include="..\SP_AutoMapperConfig\SP_AutoMapperConfig.csproj" />
     <ProjectReference Include="..\SP_Middleware\SP_Middleware.csproj" />
+    <ProjectReference Include="..\SP_PdfCertificateGenerator\SP_PdfCertificateGenerator.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="DiplomaCertificate.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Fonts\CALIBRI\CALIBRI.TTF">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Fonts\CALIBRI\CALIBRIB.TTF">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Fonts\CALIBRI\CALIBRII.TTF">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Fonts\CALIBRI\CALIBRIL.TTF">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Fonts\CALIBRI\CALIBRILI.TTF">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Fonts\CALIBRI\CALIBRIZ.TTF">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Fonts\TIMES\TIMES.TTF">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Fonts\TIMES\TIMESBD.TTF">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Fonts\TIMES\TIMESBI.TTF">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Fonts\TIMES\TIMESI.TTF">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
