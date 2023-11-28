@@ -65,6 +65,10 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
         Task<IActionResult> ViewCertificateByBirdTrainingCourseId(int birdTrainingCourseId);
 
         [HttpGet]
+        [Route("birdcertificatepicture-requestedId")]
+        Task<IActionResult> ViewCertificatePictureByBirdTrainingCourseId(int birdTrainingCourseId);
+
+        [HttpGet]
         [Route("birdcertificate-birdId")]
         Task<IActionResult> ViewCertificateByBirdCertificateId(int birdId);
     }

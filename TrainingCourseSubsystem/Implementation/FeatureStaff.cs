@@ -381,7 +381,7 @@ namespace TrainingCourseSubsystem.Implementation
             else
             {
                 var entity = _mapper.Map<Transaction>(transactionAddModel);
-                if(entity != null)
+                if (entity != null)
                 {
                     await _unitOfWork.TransactionRepository.Add(entity);
                 }
@@ -389,18 +389,26 @@ namespace TrainingCourseSubsystem.Implementation
         }
         private TransactionAddModel OfflineGenerateBill(BirdTrainingCourse entity)
         {
-            TransactionAddModel transactionAddModel = new TransactionAddModel()
+            var model = _mapper.Map<BirdTrainingCourseListView>(entity);
+            if (model != null)
             {
-                CustomerId = entity.CustomerId,
-                Title = $"Offline payment at center requestedId = {entity.Id}",
-                Detail = $"Offline payment at center requestedId = {entity.Id}",
-                EntityTypeId = (int)Models.Enum.EntityType.TrainingCourse,
-                EntityId = entity.Id,
-                TotalPayment = entity.DiscountedPrice,
-                PaymentCode = "Pay offline at center",
-                Status = (int)Models.Enum.Transaction.Status.Paid,
-            };
-            return transactionAddModel;
+                TransactionAddModel transactionAddModel = new TransactionAddModel()
+                {
+                    CustomerId = model.CustomerId,
+                    Title = $"Offline payment at center requestedId = {model.Id}",
+                    Detail = $"Offline payment at center requestedId = {model.Id}",
+                    EntityTypeId = (int)Models.Enum.EntityType.TrainingCourse,
+                    EntityId = model.Id,
+                    TotalPayment = model.ActualPrice,
+                    PaymentCode = "Pay offline at center",
+                    Status = (int)Models.Enum.Transaction.Status.Paid,
+                };
+                return transactionAddModel;
+            }
+            else
+            {
+                throw new Exception("Mapping error");
+            }
         }
         public async Task ReturnBird(BirdTrainingCourseReturnBird birdTrainingCourse)
         {
@@ -430,8 +438,8 @@ namespace TrainingCourseSubsystem.Implementation
 
                     await DeleteReportTrainerSlot(entity, (int)Models.Enum.BirdTrainingReport.Status.NotYet);
 
-                    //var transactionAddModel = OfflineGenerateBill(entity);
-                    //await CreateTransaction(transactionAddModel);
+                    var transactionAddModel = OfflineGenerateBill(entity);
+                    await CreateTransaction(transactionAddModel);
                 }
             }
         }

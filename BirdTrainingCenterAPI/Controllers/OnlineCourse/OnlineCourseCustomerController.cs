@@ -9,7 +9,9 @@ using Models.ApiParamModels.OnlineCourse;
 using Models.AuthModels;
 using Models.ServiceModels.OnlineCourseModels.Feedback;
 using Models.ServiceModels.OnlineCourseModels.Transaction;
+using Org.BouncyCastle.Utilities;
 using SP_Middleware;
+using TEST_CERTSAMPLE;
 
 namespace BirdTrainingCenterAPI.Controllers.OnlineCourse
 {
@@ -18,8 +20,10 @@ namespace BirdTrainingCenterAPI.Controllers.OnlineCourse
     [CustomAuthorize(roles: "Customer")]
     public class OnlineCourseCustomerController : OnlineCourseBaseController, IOnlineCourseCustomer
     {
-        public OnlineCourseCustomerController(IOnlineCourseService onlineCourseService, IAuthService authService) : base(onlineCourseService, authService)
+        private readonly IPdfGenerator _pdf;
+        public OnlineCourseCustomerController(IOnlineCourseService onlineCourseService, IAuthService authService, IPdfGenerator pdfGenerator) : base(onlineCourseService, authService)
         {
+            _pdf = pdfGenerator;
         }
         [HttpGet]
         [Route("billing-information")]
@@ -125,7 +129,9 @@ namespace BirdTrainingCenterAPI.Controllers.OnlineCourse
             }
             var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
             var result = await _onlineCourseService.Customer.GetCourseCertificate(Int32.Parse(customerId.Value), courseId);
-            return Ok(result);
+
+            var certBytes = _pdf.GenerateCertificate(result.CustomerName, result.Title, result.ReceivedDate.ToDateTime(new TimeOnly()));
+            return File(certBytes, "application/pdf");
         }
         [HttpGet]
         [Route("certificates")]

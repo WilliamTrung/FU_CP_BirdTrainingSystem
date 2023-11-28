@@ -1,4 +1,5 @@
 ﻿using AdviceConsultingSubsystem;
+using ApplicationService.MailSettings;
 using Models.Entities;
 using Models.ServiceModels.AdviceConsultantModels;
 using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
@@ -13,17 +14,33 @@ namespace AppService.AdviceConsultingService.Implementation
 {
     public class ServiceStaff : OtherService, IServiceStaff
     {
-        public ServiceStaff(IAdviceConsultingFeature consulting, IFeatureTransaction transaction) : base(consulting, transaction) 
-        { 
+        private readonly IMailService _mail;
+        public ServiceStaff(IAdviceConsultingFeature consulting, IFeatureTransaction transaction, IMailService mail) : base(consulting, transaction) 
+        {
+            _mail = mail;
         }
         public async Task ApproveConsultingTicket(int ticketId)
         {
             await _consulting.Staff.ApproveConsultingTicket(ticketId);
+            var ticket = await _consulting.Other.GetConsultingTicketById(ticketId);
+            var mailContent = new MailContent()
+            {
+                Subject = "Consultant Time",
+                HtmlMessage = ticket.GgMeetLink
+            };
+            await _mail.SendEmailAsync(ticket.CustomerEmail, mailContent);
         }
 
         public async Task AssignTrainer(int trainerId, int ticketId)
         {
             await _consulting.Staff.AssignTrainer(trainerId, ticketId);
+            var ticket = await _consulting.Other.GetConsultingTicketById(ticketId);
+            var mailContent = new MailContent()
+            {
+                Subject = "Consultant Time",
+                HtmlMessage = ticket.GgMeetLink
+            };
+            await _mail.SendEmailAsync(ticket.CustomerEmail, mailContent);
         }
 
         public async Task CancelConsultingTicket(int ticketId)

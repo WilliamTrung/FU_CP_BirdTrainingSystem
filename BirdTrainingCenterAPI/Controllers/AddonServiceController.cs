@@ -29,27 +29,37 @@ namespace BirdTrainingCenterAPI.Controllers
             return Ok();
         }
         [HttpPost("upload")]
-        public async Task<IActionResult> PostFile(IFormFile file)
+        public async Task<IActionResult> PostFile(List<IFormFile> files)
         {
             //for guidance used only
+            string mainUrl = string.Empty;
             string url = string.Empty;
-            if (file.IsImage())
+            foreach (var file in files)
             {
-                if(file.Length > 5 * 1024 * 1024)
+                if (file.IsImage())
                 {
-                    return BadRequest("Image too large!");
+                    if (file.Length > 5 * 1024 * 1024)
+                    {
+                        return BadRequest("Image too large!");
+                    }
+                    url = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.IMAGE, _bucket.General);
+                    mainUrl = mainUrl + $"{url}\n";
                 }
-                url = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.IMAGE, _bucket.General);
-            } else if(file.IsVideo())
-            {
-                url = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.VIDEO, _bucket.General);
-            } else
-            {
-                url = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.TEST, _bucket.General);
+                else if (file.IsVideo())
+                {
+                    url = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.VIDEO, _bucket.General);
+                    mainUrl = mainUrl + $"{url}\n";
+                }
+                else
+                {
+                    url = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.TEST, _bucket.General);
+                    mainUrl = mainUrl + $"{url}\n";
+                }
             }
-            if(url != string.Empty)
+          
+            if(mainUrl != string.Empty)
             {
-                return Ok(url);
+                return Ok(mainUrl);
             } else
             {
                 return BadRequest("Not an image or video");

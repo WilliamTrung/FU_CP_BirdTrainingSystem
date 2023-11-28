@@ -28,7 +28,7 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
                 foreach (var res in result_guest)
                 {
                     res.Registered = await _workshopService.All.GetRegistrationAmount(res.Id);
-                    res.Status = (Models.Enum.Workshop.Transaction.Status?)Models.Enum.Transaction.Status.Unpaid;
+                    //res.Status = (Models.Enum.Workshop.Transaction.Status?)Models.Enum.Transaction.Status.Unpaid;
                 }
                 return Ok(result_guest);
             }

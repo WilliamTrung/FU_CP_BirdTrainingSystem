@@ -18,7 +18,7 @@ using Models.Skills;
 namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
 {
     [Route("api/trainingcourse-manager")]
-    //[CustomAuthorize(roles: "Manager")]
+    [CustomAuthorize(roles: "Manager")]
     [ApiController]
     public class TrainingCourseManagerController : TrainingCourseBaseController, ITrainingCourseManager
     {

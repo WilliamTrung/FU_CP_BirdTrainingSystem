@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TimetableSubsystem;
 using TransactionSubsystem;
 
 namespace AdviceConsultingSubsystem.Implementation
@@ -13,14 +14,16 @@ namespace AdviceConsultingSubsystem.Implementation
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly ITimetableFeature _timetable;
 
-        public AdviceConsultingFeature (IUnitOfWork unitOfWork, IMapper mapper)
+        public AdviceConsultingFeature (IUnitOfWork unitOfWork, IMapper mapper, ITimetableFeature timetable)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _timetable = timetable;
         }
 
-        public IFeatureCustomer Customer => new FeatureCustomer(_unitOfWork, _mapper);
+        public IFeatureCustomer Customer => new FeatureCustomer(_unitOfWork, _mapper, _timetable);
 
         public IFeatureStaff Staff => new FeatureStaff(_unitOfWork, _mapper);
 

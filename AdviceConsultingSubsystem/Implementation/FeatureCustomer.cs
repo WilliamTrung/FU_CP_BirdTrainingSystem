@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TimetableSubsystem;
 using TransactionSubsystem;
 
 namespace AdviceConsultingSubsystem.Implementation
@@ -17,14 +18,27 @@ namespace AdviceConsultingSubsystem.Implementation
     {
         internal readonly IUnitOfWork _unitOfWork;
         internal readonly IMapper _mapper;
-        public FeatureCustomer(IUnitOfWork unitOfWork, IMapper mapper)
+        internal readonly ITimetableFeature _timetable;
+        public FeatureCustomer(IUnitOfWork unitOfWork, IMapper mapper, ITimetableFeature timetable)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _timetable = timetable;
         }
 
         public async Task SendConsultingTicket(ConsultingTicketCreateNewModel consultingTicket, int distance, decimal finalPrice, decimal discountedPrice)
-        {   
+        {
+            var date = consultingTicket.AppointmentDate;
+            var slotId = consultingTicket.ActualSlotStart;
+            var slotDetail = await _timetable.GetSlotBySlotId(slotId);
+            date = date + (TimeSpan)slotDetail.StartTime;
+            var trainer = await _unitOfWork.TrainerRepository.GetFirst(x => x.Id == consultingTicket.TrainerId);
+
+            if (date <= DateTime.Now.AddHours(7))
+            {
+                throw new Exception("We dont know how to time travel");
+            }
+
             var pricePolicy = await _unitOfWork.ConsultingPricePolicyRepository.GetFirst(x => x.OnlineOrOffline == consultingTicket.OnlineOrOffline);
 
             var distancePricePolicy = new DistancePrice(); 
@@ -59,6 +73,10 @@ namespace AdviceConsultingSubsystem.Implementation
             entity.Status = (int)Models.Enum.ConsultingTicket.Status.WaitingForApprove;
             entity.ConsultingPricePolicyId = pricePolicy.Id;
             entity.DistancePriceId = distancePricePolicy.Id;
+            entity.GgMeetLink = trainer.GgMeetLink;
+
+            await _unitOfWork.ConsultingTicketRepository.Add(entity);
+            //Add new Consulting Ticket
 
             //Cập nhật trainerSlot
             if (consultingTicket.TrainerId != 0)
@@ -68,9 +86,6 @@ namespace AdviceConsultingSubsystem.Implementation
                 var slotEntity = _mapper.Map<TrainerSlot>(trainerSlot);
                 await _unitOfWork.TrainerSlotRepository.Add(slotEntity);
             }
-
-            await _unitOfWork.ConsultingTicketRepository.Add(entity);
-            //Add new Consulting Ticket
         }
 
         public async Task<IEnumerable<ConsultingTicketListViewModel>> GetListConsultingTicketByCustomerID(int customerId)
