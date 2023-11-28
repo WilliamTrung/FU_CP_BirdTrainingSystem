@@ -276,6 +276,7 @@ namespace SP_AutoMapperConfig
             destination.RegisterEndDate = source.RegisterEndDate.Value;
             destination.WorkshopId = source.WorkshopId;
             destination.Status = null;
+            destination.ClassStatus = (Models.Enum.Workshop.Class.Status)source.Status;
             destination.Id = source.Id;
             foreach (var detail in source.WorkshopClassDetails)
             {
