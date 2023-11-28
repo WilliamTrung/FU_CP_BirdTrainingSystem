@@ -20,6 +20,13 @@
     <ProjectReference Include="..\AppService\AppService.csproj" />
     <ProjectReference Include="..\SP_AutoMapperConfig\SP_AutoMapperConfig.csproj" />
     <ProjectReference Include="..\SP_Middleware\SP_Middleware.csproj" />
+    <ProjectReference Include="..\SP_PdfCertificateGenerator\SP_PdfCertificateGenerator.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="DiplomaCertificate.pdf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

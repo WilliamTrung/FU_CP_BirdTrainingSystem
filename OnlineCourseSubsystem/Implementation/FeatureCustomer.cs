@@ -44,6 +44,14 @@ namespace OnlineCourseSubsystem.Implementation
             }
             entity.Status = (int)Models.Enum.OnlineCourse.Customer.OnlineCourse.Status.Completed;
             await _unitOfWork.CustomerOnlineCourseDetailRepository.Update(entity);
+
+            var cert = await _unitOfWork.CustomerCertificateDetailRepository.GetFirst(c => c.CustomerId == customerId && c.Certificate.OnlineCourseId == courseId, nameof(CustomerCertificateDetail.Certificate));
+            if(cert == null)
+            {
+                throw new KeyNotFoundException("Certificate not found!");
+            }
+            //cert.ReceiveDate = DateTime.UtcNow.AddHours(7);
+            await _unitOfWork.CustomerCertificateDetailRepository.Update(cert);
         }
 
         public async Task CheckCompleteLesson(int customerId, int lessionId)
