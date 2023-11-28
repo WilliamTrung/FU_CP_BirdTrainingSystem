@@ -65,6 +65,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         }
 
         [HttpGet]
+        [EnableQuery]
         [Route("basetrainingcourse")]
         public async Task<IActionResult> GetTrainingCourses()
         {
@@ -99,6 +100,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         }
 
         [HttpGet]
+        [EnableQuery]
         [Route("birdskillreceived")]
         public async Task<IActionResult> GetBirdSkillReceiveds()
         {
@@ -115,6 +117,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         }
 
         [HttpGet]
+        [EnableQuery]
         [Route("birdcertificatedetail")]
         public async Task<IActionResult> GetBirdCertificatesDetail()
         {
@@ -216,6 +219,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             return Ok(result);
         }
         [HttpGet]
+        [EnableQuery]
         [Route("trainer")]
         public async Task<IActionResult> GetTrainer()
         {
@@ -223,6 +227,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             return Ok(result);
         }
         [HttpGet]
+        [EnableQuery]
         [Route("trainer-birdskill")]
         public async Task<IActionResult> GetTrainerByBirdSkillId([FromQuery] int birdSkillId)
         {
@@ -237,6 +242,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             return Ok(result);
         }
         [HttpGet]
+        [EnableQuery]
         [Route("trainer-skill")]
         public async Task<IActionResult> GetTrainerByTrainerSkillId([FromQuery] int trainerSkillId)
         {
