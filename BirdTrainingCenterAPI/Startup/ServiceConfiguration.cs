@@ -60,7 +60,7 @@ namespace BirdTrainingCenterAPI.Startup
             builder.Services.AddTransient<IFirebaseService, FirebaseService>();
             builder.Services.AddTransient<IAuthService, AuthService>();
             builder.Services.AddTransient<IMailService, MailService>();
-            builder.Services.AddTransient<IPdfGenerator, PdfGenerator>();
+            builder.Services.AddSingleton<IPdfGenerator, PdfGenerator>();
         }
         public static void ConfiguringCors(this WebApplicationBuilder builder)
         {

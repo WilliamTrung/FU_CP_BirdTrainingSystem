@@ -41,12 +41,16 @@ namespace TEST_CERTSAMPLE
     }
     public class PdfGenerator : IPdfGenerator
     {
+        public PdfGenerator()
+        {
+            PdfSharp.Fonts.GlobalFontSettings.FontResolver = new CustomFontResolver();
+        }
         public byte[] GenerateCertificate(string name, string course, DateTime receivedDate)
         {
             try
             {
                 // Set the custom font resolver
-                GlobalFontSettings.FontResolver = new CustomFontResolver();
+                
 
                 using (var stream = new MemoryStream())
                 {
