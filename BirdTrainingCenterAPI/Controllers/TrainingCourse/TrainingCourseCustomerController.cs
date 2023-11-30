@@ -208,5 +208,22 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
                 return File(certiPdf, "application/pdf");
             }
         }
+        [HttpGet]
+        [Route("birdcertificatepicture-requestedId-base64")]
+        public async Task<IActionResult> ViewCertificatePictureByBirdTrainingCourseIdBase64(int birdTrainingCourseId)
+        {
+            var birdCerti = await _trainingCourseService.Customer.ViewCertificateByBirdTrainingCourseId(birdTrainingCourseId);
+            if (birdCerti == null)
+            {
+                return BadRequest("Not found certificate");
+            }
+            else
+            {
+                var certiPdf = _pdf.GenerateCertificate(birdCerti.BirdName, birdCerti.BirdCertificateViewModel.Title, birdCerti.ReceiveDate);
+                var base64Object = Convert.ToBase64String(certiPdf);
+                return Ok(base64Object);
+                //return File(certiPdf, "application/pdf");
+            }
+        }
     }
 }
