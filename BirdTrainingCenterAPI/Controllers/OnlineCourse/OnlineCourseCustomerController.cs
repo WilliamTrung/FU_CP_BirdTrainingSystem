@@ -131,7 +131,9 @@ namespace BirdTrainingCenterAPI.Controllers.OnlineCourse
             var result = await _onlineCourseService.Customer.GetCourseCertificate(Int32.Parse(customerId.Value), courseId);
 
             var certBytes = _pdf.GenerateCertificate(result.CustomerName, result.Title, result.ReceivedDate.ToDateTime(new TimeOnly()));
-            return File(certBytes, "application/pdf");
+            var base64Object = Convert.ToBase64String(certBytes);
+            return Ok(base64Object); 
+            //return File(certBytes, "application/pdf");
         }
         [HttpGet]
         [Route("certificates")]

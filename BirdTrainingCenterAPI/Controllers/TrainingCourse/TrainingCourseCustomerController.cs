@@ -203,7 +203,9 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             else
             {
                 var certiPdf = _pdf.GenerateCertificate(birdCerti.BirdName, birdCerti.BirdCertificateViewModel.Title, birdCerti.ReceiveDate);
-                return File(certiPdf, "application/pdf");
+                var base64Object = Convert.ToBase64String(certiPdf);
+                return Ok(base64Object);
+                //return File(certiPdf, "application/pdf");
             }
         }
     }
