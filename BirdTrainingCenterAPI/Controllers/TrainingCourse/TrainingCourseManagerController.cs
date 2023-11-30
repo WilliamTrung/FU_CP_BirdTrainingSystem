@@ -59,7 +59,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             var pictures = string.Empty;
             if(trainingCourse.Pictures != null)
             {
-                if (!trainingCourse.Pictures.Any(e => !e.IsImage()))
+                if (trainingCourse.Pictures.Any(e => !e.IsImage()))
                 {
                     return BadRequest("Upload image only!");
                 }
