@@ -116,12 +116,12 @@ namespace AppService.TrainingCourseService.Implement
             return await _trainingCourse.All.GetTrainerSkillsByTrainerId(trainerId);
         }
 
-        public Task<IEnumerable<TrainingCourseViewModel>> GetTrainingCourses()
+        public Task<IEnumerable<TrainingCourseManagementViewModel>> GetTrainingCourses()
         {
             return _trainingCourse.All.GetTrainingCourses();
         }
 
-        public Task<TrainingCourseViewModel> GetTrainingCoursesById(int courseId)
+        public Task<TrainingCourseManagementViewModel> GetTrainingCoursesById(int courseId)
         {
             return _trainingCourse.All.GetTrainingCoursesById(courseId);
         }
