@@ -20,7 +20,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
 {
     [Route("api/trainingcourse-staff")]
     [ApiController]
-    [CustomAuthorize(roles: "Staff")]
+    [CustomAuthorize(roles: "Manager,Staff")]
     public class TrainingCourseStaffController : TrainingCourseBaseController, ITrainingCourseStaff
     {
         private readonly IFirebaseService _firebaseService;

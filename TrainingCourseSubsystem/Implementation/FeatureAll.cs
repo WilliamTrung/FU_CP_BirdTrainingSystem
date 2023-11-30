@@ -119,18 +119,18 @@ namespace TrainingCourseSubsystem.Implementation
             return statuses;
         }
 
-        public async Task<IEnumerable<TrainingCourseViewModel>> GetTrainingCourses()
+        public async Task<IEnumerable<TrainingCourseManagementViewModel>> GetTrainingCourses()
         {
             var entities = await _unitOfWork.TrainingCourseRepository.Get(expression: null, nameof(TrainingCourse.BirdSpecies));
-            var models = _mapper.Map<IEnumerable<TrainingCourseViewModel>>(entities);
+            var models = _mapper.Map<IEnumerable<TrainingCourseManagementViewModel>>(entities);
             return models;
         }
 
-        public async Task<TrainingCourseViewModel> GetTrainingCoursesById(int courseId)
+        public async Task<TrainingCourseManagementViewModel> GetTrainingCoursesById(int courseId)
         {
             var entities = await _unitOfWork.TrainingCourseRepository.GetFirst(e => e.Id == courseId
                                                                                , nameof(TrainingCourse.BirdSpecies));
-            var models = _mapper.Map<TrainingCourseViewModel>(entities);
+            var models = _mapper.Map<TrainingCourseManagementViewModel>(entities);
             return models;
         }
 
