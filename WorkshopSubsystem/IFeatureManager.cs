@@ -19,5 +19,6 @@ namespace WorkshopSubsystem
         Task ModifyWorkshopDetailTemplate(WorkshopDetailTemplateModiyModel workshopDetail);
         Task ModifyWorkshopStatus(WorkshopStatusModifyModel workshop);
         Task<IEnumerable<WorkshopStatusModel>> GetWorkshopStatuses() => Task.FromResult(WorkshopStatusModel.All());
+        Task ModifyWorkshop(WorkshopModifyModel workshop);
     }
 }

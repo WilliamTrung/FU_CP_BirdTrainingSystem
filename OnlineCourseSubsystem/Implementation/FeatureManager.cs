@@ -69,11 +69,12 @@ namespace OnlineCourseSubsystem.Implementation
             await _unitOfWork.OnlineCourseRepository.Update(course);
         }
 
-        public async Task CreateOnlineCourse(OnlineCourseAddModel model)
+        public async Task<int> CreateOnlineCourse(OnlineCourseAddModel model)
         {
             var entity = _mapper.Map<OnlineCourse>(model);
             await _unitOfWork.OnlineCourseRepository.Add(entity);
             await GenerateCertificateOnCreateCourse(entity);
+            return entity.Id;
         }
 
         public async Task DeleteLesson(int lessonId)
