@@ -62,6 +62,7 @@ namespace AppCore.Context
         public virtual DbSet<WorkshopClassDetail> WorkshopClassDetails { get; set; } = null!;
         public virtual DbSet<WorkshopDetailTemplate> WorkshopDetailTemplates { get; set; } = null!;
         public virtual DbSet<WorkshopRefundPolicy> WorkshopRefundPolicies { get; set; } = null!;
+        public virtual DbSet<TrainingCourseCheckOutPolicy> TrainingCourseCheckOutPolicies { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -83,6 +84,13 @@ namespace AppCore.Context
             modelBuilder.AddTrainerSkills();
             modelBuilder.AddWorkshopRefundPolicies();
             modelBuilder.AddBirdSpecies();
+            modelBuilder.Entity<TrainingCourseCheckOutPolicy>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+
+                entity.HasMany(e => e.BirdTrainingCourses)
+                    .WithOne(r => r.TrainingCourseCheckOutPolicy);
+            });
             modelBuilder.Entity<AcquirableSkill>(entity =>
             {
                 entity.HasKey(e => new { e.BirdSpeciesId, e.BirdSkillId })
@@ -315,6 +323,11 @@ namespace AppCore.Context
                     .HasForeignKey(d => d.TrainingCourseId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKBird_Train368802");
+
+                entity.HasOne(d => d.TrainingCourseCheckOutPolicy)
+                    .WithMany(p => p.BirdTrainingCourses)
+                    .HasForeignKey(d => d.TrainingCourseCheckOutPolicyId)
+                    .OnDelete(DeleteBehavior.ClientSetNull);
             });
 
             modelBuilder.Entity<BirdTrainingProgress>(entity =>
