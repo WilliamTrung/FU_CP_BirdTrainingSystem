@@ -20,6 +20,9 @@ namespace Models.ServiceModels.WorkshopModels
         public string Title { get; set; } = null!;
         public string Description { get; set; } = null!;
         public string Picture { get; set; } = null!;
+        public string Location { get; set; } = null!;
+        public int MinimumRegistration { get; set; }
+        public int MaximumRegistration { get; set; }
         public int? RegisterEnd { get; set; }
         public decimal Price { get; set; }
         public int TotalSlot { get; set; }
