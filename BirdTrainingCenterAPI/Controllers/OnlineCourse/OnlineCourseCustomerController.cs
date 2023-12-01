@@ -134,6 +134,23 @@ namespace BirdTrainingCenterAPI.Controllers.OnlineCourse
             return File(certBytes, "application/pdf");
         }
         [HttpGet]
+        [Route("certificate-base64")]
+        public async Task<IActionResult> GetCertificateBase64([FromQuery] int courseId)
+        {
+            var accessToken = Request.DeserializeToken(_authService);
+            if (accessToken == null)
+            {
+                return Unauthorized();
+            }
+            var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
+            var result = await _onlineCourseService.Customer.GetCourseCertificate(Int32.Parse(customerId.Value), courseId);
+
+            var certBytes = _pdf.GenerateCertificate(result.CustomerName, result.Title, result.ReceivedDate.ToDateTime(new TimeOnly()));
+            var base64Object = Convert.ToBase64String(certBytes);
+            return Ok(base64Object);
+            //return File(certBytes, "application/pdf");
+        }
+        [HttpGet]
         [Route("certificates")]
         public async Task<IActionResult> GetCertificates()
         {
