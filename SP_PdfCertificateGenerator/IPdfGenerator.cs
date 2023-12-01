@@ -2,15 +2,14 @@
 using PdfSharp.Fonts;
 using PdfSharp.Pdf.IO;
 using PdfSharp.Pdf;
-    using System.Drawing;
+using System.Drawing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Aspose.Words.Saving;
-using Aspose.Words;
-using SkiaSharp;
+using IronSoftware.Drawing;
+
 
 namespace TEST_CERTSAMPLE
 {
@@ -49,26 +48,31 @@ namespace TEST_CERTSAMPLE
         {
             PdfSharp.Fonts.GlobalFontSettings.FontResolver = new CustomFontResolver();
         }
-        public byte[] ConvertWordPageToImage(Stream stream)
-        {
-            // Load the document from the stream
-            var doc = new Document(stream);
-
-            // Create an ImageSaveOptions object to specify the image format
-            var imageSaveOptions = new ImageSaveOptions(SaveFormat.Png);
-
-            // Create a MemoryStream to store the image bytes
-            using (var imageStream = new MemoryStream())
-            {
-                // Save the specific page as an image
-                doc.Save(imageStream, imageSaveOptions);
-
-                // Get the byte array of the image
-                byte[] imageBytes = imageStream.ToArray();
-
-                return imageBytes;
-            }
+        public void ConvertPdfToImage()
+        {           
+            var pdf = IronPdf.PdfDocument.FromFile("./generated-certificate.pdf");
+            pdf.RasterizeToImageFiles("./generated-certificate.png");
         }
+        //public byte[] ConvertWordPageToImage(Stream stream)
+        //{
+        //    // Load the document from the stream
+        //    var doc = new Document(stream);
+
+        //    // Create an ImageSaveOptions object to specify the image format
+        //    var imageSaveOptions = new ImageSaveOptions(SaveFormat.Png);
+
+        //    // Create a MemoryStream to store the image bytes
+        //    using (var imageStream = new MemoryStream())
+        //    {
+        //        // Save the specific page as an image
+        //        doc.Save(imageStream, imageSaveOptions);
+
+        //        // Get the byte array of the image
+        //        byte[] imageBytes = imageStream.ToArray();
+
+        //        return imageBytes;
+        //    }
+        //}
         public byte[] GenerateCertificate(string name, string course, DateTime receivedDate)
         {
             try
@@ -82,7 +86,7 @@ namespace TEST_CERTSAMPLE
                     using (var sourcePdfDocument = PdfReader.Open("./DiplomaCertificate.pdf", PdfDocumentOpenMode.Import))
                     {
                         // Create a new PDF document
-                        using (var destinationPdfDocument = new PdfDocument())
+                        using (var destinationPdfDocument = new PdfSharp.Pdf.PdfDocument())
                         {
                             // Iterate through pages in the source document
                             for (int pageIndex = 0; pageIndex < sourcePdfDocument.PageCount; pageIndex++)
@@ -119,8 +123,16 @@ namespace TEST_CERTSAMPLE
                             }
 
                             // Save the new PDF document to the memory stream
-                            destinationPdfDocument.Save(stream);
-                            
+                            destinationPdfDocument.Save("./generated-certificate.pdf");
+                            ConvertPdfToImage();
+                            System.Drawing.Image img = System.Drawing.Image.FromFile("./generated-certificate.png");
+                            byte[] arr;
+                            using (MemoryStream ms = new MemoryStream())
+                            {
+                                img.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                                arr = ms.ToArray();
+                                return arr;
+                            }
                         }
                     }
                     //return ConvertWordPageToImage(stream);

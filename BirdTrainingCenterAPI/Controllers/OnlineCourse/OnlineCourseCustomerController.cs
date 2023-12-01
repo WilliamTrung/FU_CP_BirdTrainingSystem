@@ -1,6 +1,5 @@
 ﻿using AppService;
 using AppService.OnlineCourseService;
-using Aspose.Words;
 using BirdTrainingCenterAPI.Controllers.Endpoints.OnlineCourse;
 using BirdTrainingCenterAPI.Helper;
 using Microsoft.AspNetCore.Http;
