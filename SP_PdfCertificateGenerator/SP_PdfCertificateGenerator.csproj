@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="IronPdf" Version="2023.12.6" />
+    <PackageReference Include="IronPdf.Native.Chrome.Linux" Version="2023.12.8" />
     <PackageReference Include="PDFsharp" Version="6.0.0" />
     <PackageReference Include="System.Drawing.Common" Version="8.0.0" />
   </ItemGroup>
