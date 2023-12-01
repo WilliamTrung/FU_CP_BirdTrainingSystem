@@ -90,6 +90,16 @@ namespace TrainingCourseSubsystem.Implementation
                     var bird = _unitOfWork.BirdRepository.GetFirst(e => e.Id == birdTrainingCourse.BirdId).Result;
                     bird.Status = (int)Models.Enum.Bird.Status.Ready;
 
+                    var pricePolicy = _unitOfWork.TrainingCourseCheckOutPolicyRepository.GetFirst(e => e.Name.ToLower().Contains("success requested"));
+                    if (pricePolicy == null)
+                    {
+                        throw new InvalidOperationException("Can not found price policy.");
+                    }
+                    else
+                    {
+                        birdTrainingCourse.TrainingCourseCheckOutPolicyId = pricePolicy.Id;
+                    }
+
                     await _unitOfWork.BirdTrainingCourseRepository.Update(birdTrainingCourse);
                     await _unitOfWork.BirdRepository.Update(bird);
 

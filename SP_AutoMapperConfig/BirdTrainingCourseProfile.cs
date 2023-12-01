@@ -25,61 +25,61 @@ namespace SP_AutoMapperConfig
                 .ForMember(m => m.TrainingCourseId, opt => opt.MapFrom(e => e.TrainingCourseId))
                 .ForMember(m => m.CustomerId, opt => opt.MapFrom(e => e.CustomerId))
                 .ForMember(m => m.TotalPrice, opt => opt.MapFrom(e => e.TotalPrice));
-                //.ForMember(m => m.DiscountedPrice, opt => opt.MapFrom(e => e.DiscountedPrice));
-                //.ForMember(m => m.LastestUpdate, opt => opt.MapFrom(e => DateTime.Now))
-                //.ForMember(m => m.Status, opt => opt.MapFrom(e => e.Status))
-                //.ForMember(m => m.Bird, opt => {
-                //    opt.PreCondition(e => e.Bird != null);
-                //    opt.MapFrom(e => e.Bird);
-                //})
-                //.ForMember(m => m.TrainingCourse, opt => {
-                //    opt.PreCondition(e => e.TrainingCourse != null);
-                //    opt.MapFrom(e => e.TrainingCourse);
-                //});
+            //.ForMember(m => m.DiscountedPrice, opt => opt.MapFrom(e => e.DiscountedPrice));
+            //.ForMember(m => m.LastestUpdate, opt => opt.MapFrom(e => DateTime.Now))
+            //.ForMember(m => m.Status, opt => opt.MapFrom(e => e.Status))
+            //.ForMember(m => m.Bird, opt => {
+            //    opt.PreCondition(e => e.Bird != null);
+            //    opt.MapFrom(e => e.Bird);
+            //})
+            //.ForMember(m => m.TrainingCourse, opt => {
+            //    opt.PreCondition(e => e.TrainingCourse != null);
+            //    opt.MapFrom(e => e.TrainingCourse);
+            //});
         }
         private void Map_BirdTrainingCourse_BirdTrainingCourseViewModel()
         {
             CreateMap<BirdTrainingCourse, BirdTrainingCourseViewModel>()
                 .AfterMap<MapAction_BirdTrainingCourse_BirdTrainingCourseViewModel>();
-                //.ForMember(m => m.Id, opt => opt.MapFrom(e => e.Id))
-                //.ForMember(m => m.RegisteredDate, opt => opt.MapFrom(e => e.RegisteredDate))
-                //.ForMember(m => m.StartTrainingDate, opt => opt.MapFrom(e => e.StartTrainingDate))
-                //.ForMember(m => m.TotalSlot, opt => {
-                //    opt.PreCondition(e => e.TrainingCourse != null);
-                //    opt.MapFrom(e => e.TrainingCourse.TotalSlot);
-                //})
-                //.ForMember(m => m.Status, opt => opt.MapFrom(e => e.Status))
-                //.ForMember(m => m.TrainingCourseTitle, opt => {
-                //    opt.PreCondition(e => e.TrainingCourse != null);
-                //    opt.MapFrom(e => e.TrainingCourse.Title);
-                //})
-                //.ForMember(m => m.TrainingCoursePicture, opt => {
-                //    opt.PreCondition(e => e.TrainingCourse != null);
-                //    opt.MapFrom(e => e.TrainingCourse.Picture);
-                //});
+            //.ForMember(m => m.Id, opt => opt.MapFrom(e => e.Id))
+            //.ForMember(m => m.RegisteredDate, opt => opt.MapFrom(e => e.RegisteredDate))
+            //.ForMember(m => m.StartTrainingDate, opt => opt.MapFrom(e => e.StartTrainingDate))
+            //.ForMember(m => m.TotalSlot, opt => {
+            //    opt.PreCondition(e => e.TrainingCourse != null);
+            //    opt.MapFrom(e => e.TrainingCourse.TotalSlot);
+            //})
+            //.ForMember(m => m.Status, opt => opt.MapFrom(e => e.Status))
+            //.ForMember(m => m.TrainingCourseTitle, opt => {
+            //    opt.PreCondition(e => e.TrainingCourse != null);
+            //    opt.MapFrom(e => e.TrainingCourse.Title);
+            //})
+            //.ForMember(m => m.TrainingCoursePicture, opt => {
+            //    opt.PreCondition(e => e.TrainingCourse != null);
+            //    opt.MapFrom(e => e.TrainingCourse.Picture);
+            //});
         }
         private void Map_BirdTrainingCourse_BirdTrainingCourseListView()
         {
             CreateMap<BirdTrainingCourse, BirdTrainingCourseListView>()
                 .AfterMap<MapAction_BirdTrainingCourse_BirdTrainingCourseListView>();
-                //.ForMember(m => m.Id, opt => opt.MapFrom(e => e.Id))
-                //.ForMember(m => m.TrainingCourseId, opt => opt.MapFrom(e => e.TrainingCourseId))
-                //.ForMember(m => m.BirdId, opt => opt.MapFrom(e => e.BirdId))
-                //.ForMember(m => m.BirdName, opt => {
-                //    opt.PreCondition(e => e.Bird != null);
-                //    opt.MapFrom(e => e.Bird.Name);
-                //})
-                //.ForMember(m => m.CustomerId, opt => opt.MapFrom(e => e.CustomerId))
-                //.ForMember(m => m.CustomerName, opt => {
-                //    opt.PreCondition(e => e.Customer != null);
-                //    opt.PreCondition(e => e.Customer.User != null);
-                //    opt.MapFrom(e => e.Customer.User.Name);
-                //}).ForMember(m => m.TrainingCourseTitle, opt => {
-                //    opt.PreCondition(e => e.TrainingCourse != null);
-                //    opt.MapFrom(e => e.TrainingCourse.Title);
-                //})
-                //.ForMember(m => m.RegisteredDate, opt => opt.MapFrom(e => e.RegisteredDate))
-                //.ForMember(m => m.Status, opt => opt.MapFrom(e => e.Status));
+            //.ForMember(m => m.Id, opt => opt.MapFrom(e => e.Id))
+            //.ForMember(m => m.TrainingCourseId, opt => opt.MapFrom(e => e.TrainingCourseId))
+            //.ForMember(m => m.BirdId, opt => opt.MapFrom(e => e.BirdId))
+            //.ForMember(m => m.BirdName, opt => {
+            //    opt.PreCondition(e => e.Bird != null);
+            //    opt.MapFrom(e => e.Bird.Name);
+            //})
+            //.ForMember(m => m.CustomerId, opt => opt.MapFrom(e => e.CustomerId))
+            //.ForMember(m => m.CustomerName, opt => {
+            //    opt.PreCondition(e => e.Customer != null);
+            //    opt.PreCondition(e => e.Customer.User != null);
+            //    opt.MapFrom(e => e.Customer.User.Name);
+            //}).ForMember(m => m.TrainingCourseTitle, opt => {
+            //    opt.PreCondition(e => e.TrainingCourse != null);
+            //    opt.MapFrom(e => e.TrainingCourse.Title);
+            //})
+            //.ForMember(m => m.RegisteredDate, opt => opt.MapFrom(e => e.RegisteredDate))
+            //.ForMember(m => m.Status, opt => opt.MapFrom(e => e.Status));
         }
 
         public class MapAction_BirdTrainingCourse_BirdTrainingCourseViewModel : IMappingAction<BirdTrainingCourse, BirdTrainingCourseViewModel>
@@ -96,13 +96,13 @@ namespace SP_AutoMapperConfig
             {
                 destination.Id = source.Id;
                 var trainingCourse = _unitOfWork.TrainingCourseRepository.GetFirst(e => e.Id == source.TrainingCourseId).Result;
-                if(trainingCourse != null )
+                if (trainingCourse != null)
                 {
                     destination.TrainingCourseTitle = trainingCourse.Title;
                     destination.TrainingCoursePicture = trainingCourse.Picture;
                     destination.TotalSlot = trainingCourse.TotalSlot;
                 }
-                if(source.RegisteredDate != null)
+                if (source.RegisteredDate != null)
                 {
                     destination.RegisteredDate = source.RegisteredDate.Value.ToString("dd-MM-yyyy hh:mm:ss");
                 }
@@ -135,8 +135,21 @@ namespace SP_AutoMapperConfig
                 _mapper = mapper;
             }
 
-            public void Process(BirdTrainingCourse source, BirdTrainingCourseListView destination, ResolutionContext context)
+            public async void Process(BirdTrainingCourse source, BirdTrainingCourseListView destination, ResolutionContext context)
             {
+                if (source.Status == (int)Models.Enum.BirdTrainingCourse.Status.TrainingDone)
+                {
+                    var pricePolicy = _unitOfWork.TrainingCourseCheckOutPolicyRepository.GetFirst(e => e.Name.ToLower().Contains("success requested"));
+                    if (pricePolicy == null)
+                    {
+                        throw new InvalidOperationException("Can not found price policy.");
+                    }
+                    else
+                    {
+                        source.TrainingCourseCheckOutPolicyId = pricePolicy.Id;
+                    }
+                    await _unitOfWork.BirdTrainingCourseRepository.Update(source);
+                }
                 destination.Id = source.Id;
                 var bird = _unitOfWork.BirdRepository.GetFirst(e => e.Id == source.BirdId).Result;
                 if (bird != null)
@@ -151,7 +164,7 @@ namespace SP_AutoMapperConfig
                 {
                     destination.CustomerId = customer.Id;
                     destination.CustomerName = customer.User.Name ?? "";
-                    if(customer.MembershipRank != null)
+                    if (customer.MembershipRank != null)
                     {
                         destination.MembershipRankId = customer.MembershipRank.Id;
                         destination.MembershipRank = customer.MembershipRank.Name;
@@ -182,38 +195,18 @@ namespace SP_AutoMapperConfig
                 if (source.DiscountedPrice != null)
                 {
                     destination.DiscountedPrice = source.DiscountedPrice;
-                    var progresses = _unitOfWork.BirdTrainingProgressRepository.Get(e => e.BirdTrainingCourseId == source.Id).Result.ToList();
-                    if (progresses != null)
+                    var pricePolicy = _unitOfWork.TrainingCourseCheckOutPolicyRepository.GetFirst(e => e.Id == source.TrainingCourseCheckOutPolicyId).Result;
+                    if (pricePolicy == null)
                     {
-                        if (progresses.Count > 0)
-                        {
-                            var reports = _unitOfWork.BirdTrainingReportRepository.Get(e => e.Status == (int)Models.Enum.BirdTrainingReport.Status.Done).Result.ToList();
-                            reports = reports.Where(r => progresses.Any(p => p.Id == r.BirdTrainingProgressId)).ToList();
-                            if (reports.Count > 0)
-                            {
-                                double tmp = (double)reports.Count / trainingCourse.TotalSlot;
-                                var actualPrice = source.DiscountedPrice * (decimal)tmp;
-                                if(actualPrice == source.DiscountedPrice)
-                                {
-                                    destination.ActualPrice = actualPrice;
-                                }
-                                else
-                                {
-                                    destination.ActualPrice = actualPrice + (source.DiscountedPrice * (decimal)(0.2));
-                                }
-                            }
-                        }
-                        else
-                        {
-                            destination.ActualPrice = (source.DiscountedPrice * (decimal)(0.2));
-                        }
+                        throw new InvalidOperationException("Can not found price policy.");
                     }
-                    if(source.Status == (int)Models.Enum.BirdTrainingCourse.Status.Confirmed)
+                    else
                     {
-                        destination.ActualPrice = (source.DiscountedPrice * (decimal)(0.2));
+                        destination.ActualPrice = (source.DiscountedPrice * (decimal)pricePolicy.ChargeRate);
                     }
                 }
             }
         }
     }
+}
 }

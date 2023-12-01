@@ -136,7 +136,7 @@ namespace TrainingCourseSubsystem.Implementation
             {
                 if(bird.BirdSpeciesId != trainingCourse.BirdSpeciesId)
                 {
-                    throw new Exception("Bird can not learn this course because of species difference.");
+                    throw new InvalidOperationException("Bird can not learn this course because of species difference.");
                 }
             }
             var entity = _mapper.Map<BirdTrainingCourse>(birdTrainingCourseRegister);
@@ -157,6 +157,16 @@ namespace TrainingCourseSubsystem.Implementation
                     var discount = customer.MembershipRank.Discount.HasValue ? customer.MembershipRank.Discount.Value : 0;
                     var discountedPrice = entity.TotalPrice - entity.TotalPrice * (decimal)discount;
                     entity.DiscountedPrice = discountedPrice;
+                }
+
+                var pricePolicy = _unitOfWork.TrainingCourseCheckOutPolicyRepository.GetFirst(e => e.Name.ToLower().Contains("center requested"));
+                if (pricePolicy == null)
+                {
+                    throw new InvalidOperationException("Can not found price policy.");
+                }
+                else
+                {
+                    entity.TrainingCourseCheckOutPolicyId = pricePolicy.Id;
                 }
 
                 await _unitOfWork.BirdTrainingCourseRepository.Add(entity);
