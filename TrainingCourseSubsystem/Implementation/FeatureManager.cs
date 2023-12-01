@@ -25,7 +25,7 @@ namespace TrainingCourseSubsystem.Implementation
         {
         }
         #region ManagerMainFunction
-        public async Task CreateCourse(TrainingCourseAddModel trainingCourse)
+        public async Task<int> CreateCourse(TrainingCourseAddModel trainingCourse)
         {
             if (trainingCourse == null)
             {
@@ -39,6 +39,7 @@ namespace TrainingCourseSubsystem.Implementation
                 throw new Exception("Entity is null.");
             }
             await _unitOfWork.TrainingCourseRepository.Add(entity);
+            return entity.Id;
         }
         public async Task EditCourse(TrainingCourseModifyModel trainingCourse)
         {
