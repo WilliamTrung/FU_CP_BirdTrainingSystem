@@ -131,10 +131,10 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
                 //ticket = paramTicket.Convert_ParamModel_ServiceModel(1);
 
                 int distance = 0;
-                //if (ticket.AddressDetail != null && ticket.OnlineOrOffline == false)
-                //{
-                //    distance = (int)await _googleMapService.CalculateDistance(ticket.AddressDetail);
-                //}
+                if (ticket.AddressDetail != null && ticket.OnlineOrOffline == false)
+                {
+                    distance = (int)await _googleMapService.CalculateDistance(ticket.AddressDetail);
+                }
                 await _consultingService.Customer.SendConsultingTicket(ticket, distance);
                 return Ok();
 
