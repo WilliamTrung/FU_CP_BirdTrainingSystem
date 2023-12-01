@@ -139,7 +139,8 @@ namespace SP_AutoMapperConfig
             {
                 if (source.Status == (int)Models.Enum.BirdTrainingCourse.Status.TrainingDone)
                 {
-                    var pricePolicy = _unitOfWork.TrainingCourseCheckOutPolicyRepository.GetFirst(e => e.Name.ToLower().Contains("success requested"));
+                    var pricePolicy = _unitOfWork.TrainingCourseCheckOutPolicyRepository.GetFirst(e => 
+                                                                                    e.Name.ToLower().Contains("success requested")).Result;
                     if (pricePolicy == null)
                     {
                         throw new InvalidOperationException("Can not found price policy.");
@@ -197,7 +198,8 @@ namespace SP_AutoMapperConfig
                     destination.DiscountedPrice = source.DiscountedPrice;
                     if(source.TrainingCourseCheckOutPolicyId != null)
                     {
-                        var pricePolicy = _unitOfWork.TrainingCourseCheckOutPolicyRepository.GetFirst(e => e.Id == source.TrainingCourseCheckOutPolicyId).Result;
+                        var pricePolicy = _unitOfWork.TrainingCourseCheckOutPolicyRepository.GetFirst(e => 
+                                                                                    e.Id == source.TrainingCourseCheckOutPolicyId).Result;
                         if (pricePolicy == null)
                         {
                             throw new InvalidOperationException("Can not found price policy.");
