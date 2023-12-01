@@ -18,27 +18,38 @@ namespace SP_AutoMapperConfig
         {
             Map_TrainingCourseAddModel_TrainingCourse();
             Map_TrainingCourse_TrainingCourseViewModel();
+            Map_TrainingCourse_TrainingCourseManagementViewModel();//Management
             Map_AddTrainingSkillModel_TrainingSkillModel();
             Map_Customer_CustomerModel();//training course
+        }
+
+        private void Map_TrainingCourse_TrainingCourseManagementViewModel()
+        {
+            CreateMap<TrainingCourse, TrainingCourseManagementViewModel>()
+                .AfterMap<MapAction_TrainingCourse_TrainingCourseManagementViewModel>();
         }
 
         private void Map_Customer_CustomerModel()
         {
             CreateMap<Customer, CustomerModel>()
                 .ForMember(m => m.Id, opt => opt.MapFrom(e => e.Id))
-                .ForMember(m => m.Name, opt => {
+                .ForMember(m => m.Name, opt =>
+                {
                     opt.PreCondition(m => m.User != null);
                     opt.MapFrom(e => e.User.Name);
                 })
-                .ForMember(m => m.Email, opt => {
+                .ForMember(m => m.Email, opt =>
+                {
                     opt.PreCondition(m => m.User != null);
                     opt.MapFrom(e => e.User.Email);
                 })
-                .ForMember(m => m.PhoneNumber, opt => {
+                .ForMember(m => m.PhoneNumber, opt =>
+                {
                     opt.PreCondition(m => m.User != null);
                     opt.MapFrom(e => e.User.PhoneNumber);
                 })
-                .ForMember(m => m.Avatar, opt => {
+                .ForMember(m => m.Avatar, opt =>
+                {
                     opt.PreCondition(m => m.User != null);
                     opt.MapFrom(e => e.User.Avatar);
                 });
@@ -56,17 +67,17 @@ namespace SP_AutoMapperConfig
         {
             CreateMap<TrainingCourse, TrainingCourseViewModel>()
                 .AfterMap<MapAction_TrainingCourse_TrainingCourseViewModel>();
-                //.ForMember(m => m.Id, opt => opt.MapFrom(e => e.Id))
-                //.ForMember(m => m.BirdSpeciesId, opt => opt.MapFrom(e => e.BirdSpeciesId))
-                //.ForMember(m => m.BirdSpeciesName, opt => {
-                //    opt.PreCondition(m => m.BirdSpecies != null);
-                //    opt.MapFrom(e => e.BirdSpecies.Name); 
-                //})
-                //.ForMember(m => m.Title, opt => opt.MapFrom(e => e.Title))
-                //.ForMember(m => m.Description, opt => opt.MapFrom(e => e.Description))
-                //.ForMember(m => m.Picture, opt => opt.MapFrom(e => e.Picture))
-                //.ForMember(m => m.TotalSlot, opt => opt.MapFrom(e => e.TotalSlot))
-                //.ForMember(m => m.TotalPrice, opt => opt.MapFrom(e => e.TotalPrice));
+            //.ForMember(m => m.Id, opt => opt.MapFrom(e => e.Id))
+            //.ForMember(m => m.BirdSpeciesId, opt => opt.MapFrom(e => e.BirdSpeciesId))
+            //.ForMember(m => m.BirdSpeciesName, opt => {
+            //    opt.PreCondition(m => m.BirdSpecies != null);
+            //    opt.MapFrom(e => e.BirdSpecies.Name); 
+            //})
+            //.ForMember(m => m.Title, opt => opt.MapFrom(e => e.Title))
+            //.ForMember(m => m.Description, opt => opt.MapFrom(e => e.Description))
+            //.ForMember(m => m.Picture, opt => opt.MapFrom(e => e.Picture))
+            //.ForMember(m => m.TotalSlot, opt => opt.MapFrom(e => e.TotalSlot))
+            //.ForMember(m => m.TotalPrice, opt => opt.MapFrom(e => e.TotalPrice));
         }
 
         private void Map_TrainingCourseAddModel_TrainingCourse()
@@ -103,17 +114,17 @@ namespace SP_AutoMapperConfig
                 destination.Status = (Models.Enum.TrainingCourse.Status)source.Status;
 
                 var birdSpecies = _unitOfWork.BirdSpeciesRepository.GetFirst(e => e.Id == source.BirdSpeciesId).Result;
-                if(birdSpecies != null )
+                if (birdSpecies != null)
                 {
                     destination.BirdSpeciesName = birdSpecies.Name;
                 }
                 var trainingSkills = _unitOfWork.TrainingCourseSkillRepository.Get(e => e.TrainingCourseId == source.Id
                                                                                     , nameof(TrainingCourseSkill.BirdSkill)).Result.ToList();
-                foreach( var skill in trainingSkills )
+                foreach (var skill in trainingSkills)
                 {
-                    if(skill != null)
+                    if (skill != null)
                     {
-                        if(skill.BirdSkill != null)
+                        if (skill.BirdSkill != null)
                         {
                             destination.BirdSkills.Add(_mapper.Map<BirdSkillViewModel>(skill.BirdSkill));
                         }
@@ -128,6 +139,49 @@ namespace SP_AutoMapperConfig
                     {
                         destination.RegisteredBird.Add(registeredCourse.BirdId);
                         destination.RegisteredBird = destination.RegisteredBird.Distinct().ToList();
+                    }
+                }
+            }
+        }
+        public class MapAction_TrainingCourse_TrainingCourseManagementViewModel : IMappingAction<TrainingCourse, TrainingCourseManagementViewModel>
+        {
+            private readonly IMapper _mapper;
+            private readonly IUnitOfWork _unitOfWork;
+            public MapAction_TrainingCourse_TrainingCourseManagementViewModel(IUnitOfWork unitOfWork, IMapper mapper)
+            {
+                _unitOfWork = unitOfWork;
+                _mapper = mapper;
+            }
+
+            public void Process(TrainingCourse source, TrainingCourseManagementViewModel destination, ResolutionContext context)
+            {
+                destination.Id = source.Id;
+                destination.BirdSpeciesId = source.BirdSpeciesId;
+                destination.Title = source.Title;
+                destination.Description = source.Description;
+                destination.Picture = source.Picture;
+                destination.TotalSlot = source.TotalSlot;
+                destination.TotalPrice = source.TotalPrice;
+                destination.Status = (Models.Enum.TrainingCourse.Status)source.Status;
+
+                var birdSpecies = _unitOfWork.BirdSpeciesRepository.GetFirst(e => e.Id == source.BirdSpeciesId).Result;
+                if (birdSpecies != null)
+                {
+                    destination.BirdSpeciesName = birdSpecies.Name;
+                }
+                var trainingSkills = _unitOfWork.TrainingCourseSkillRepository.Get(e => e.TrainingCourseId == source.Id
+                                                                                    , nameof(TrainingCourseSkill.BirdSkill)).Result.ToList();
+                foreach (var skill in trainingSkills)
+                {
+                    if (skill != null)
+                    {
+                        if (skill.BirdSkill != null)
+                        {
+                            destination.BirdSkills.Add(new TrainingCourseSkillModel() { 
+                                                                                        BirdSkill = _mapper.Map<BirdSkillViewModel>(skill.BirdSkill),
+                                                                                        TrainSlot = skill.TotalSlot, 
+                                                                                      });
+                        }
                     }
                 }
             }

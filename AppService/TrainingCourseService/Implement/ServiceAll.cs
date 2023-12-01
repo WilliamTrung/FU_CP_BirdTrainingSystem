@@ -6,6 +6,7 @@ using Models.ServiceModels.TrainingCourseModels.BirdCertificate.BirdCertificateD
 using Models.ServiceModels.TrainingCourseModels.BirdSkill;
 using Models.ServiceModels.TrainingCourseModels.TrainerSkill;
 using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
+using Models.ServiceModels.TrainingCourseModels.TrainingCourseCheckOutPolicy;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -116,12 +117,12 @@ namespace AppService.TrainingCourseService.Implement
             return await _trainingCourse.All.GetTrainerSkillsByTrainerId(trainerId);
         }
 
-        public Task<IEnumerable<TrainingCourseViewModel>> GetTrainingCourses()
+        public Task<IEnumerable<TrainingCourseManagementViewModel>> GetTrainingCourses()
         {
             return _trainingCourse.All.GetTrainingCourses();
         }
 
-        public Task<TrainingCourseViewModel> GetTrainingCoursesById(int courseId)
+        public Task<TrainingCourseManagementViewModel> GetTrainingCoursesById(int courseId)
         {
             return _trainingCourse.All.GetTrainingCoursesById(courseId);
         }
@@ -158,6 +159,11 @@ namespace AppService.TrainingCourseService.Implement
         public async Task<IEnumerable<CustomerModel>> GetCustomerModels()
         {
             return await _trainingCourse.All.GetCustomerModels();
+        }
+
+        public async Task<IEnumerable<TrainingCourseCheckOutPolicyModel>> GetTrainingCoursePricePolicies()
+        {
+            return await _trainingCourse.All.GetTrainingCoursePricePolicies();
         }
     }
 }

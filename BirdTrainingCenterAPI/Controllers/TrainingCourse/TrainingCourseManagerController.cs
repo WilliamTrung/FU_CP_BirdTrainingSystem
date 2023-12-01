@@ -14,6 +14,7 @@ using Models.ServiceModels.TrainingCourseModels.TrainerSkill;
 using Models.ServiceModels.TrainingCourseModels.Bird;
 using Models.Entities;
 using Models.Skills;
+using Models.ServiceModels.TrainingCourseModels.TrainingCourseCheckOutPolicy;
 
 namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
 {
@@ -59,7 +60,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             var pictures = string.Empty;
             if(trainingCourse.Pictures != null)
             {
-                if (!trainingCourse.Pictures.Any(e => !e.IsImage()))
+                if (trainingCourse.Pictures.Any(e => !e.IsImage()))
                 {
                     return BadRequest("Upload image only!");
                 }
@@ -270,5 +271,40 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             await _trainingCourseService.Manager.CreateBirdCertitficate(birdCertificateAdd);
             return Ok();
         }
+
+        #region CheckOutPolicies
+        [HttpPost]
+        [Route("create-checkoutpolicy")]
+        public async Task<IActionResult> CreateCheckOutPolicy([FromBody] PolicyAddModel policyAdd)
+        {
+            await _trainingCourseService.Manager.CreateCheckOutPolicy(policyAdd);
+            return Ok();
+        }
+
+        [HttpPut]
+        [Route("edit-checkoutpolicy")]
+        public async Task<IActionResult> EditCheckOutPolicy([FromBody] PolicyModModel policyMod)
+        {
+            await _trainingCourseService.Manager.EditCheckOutPolicy(policyMod);
+            return Ok();
+        }
+
+        [HttpPut]
+        [Route("active-checkoutpolicy")]
+        public async Task<IActionResult> ActiveCheckOutPolicy([FromQuery] int policyId)
+        {
+            await _trainingCourseService.Manager.ActiveCheckOutPolicy(policyId);
+            return Ok();
+        }
+
+        [HttpPut]
+        [Route("disable-checkoutpolicy")]
+        public async Task<IActionResult> DisableCheckOutPolicy([FromQuery] int policyId)
+        {
+            await _trainingCourseService.Manager.DisableCheckOutPolicy(policyId);
+            return Ok();
+        }
+
+        #endregion
     }
 }

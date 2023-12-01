@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Models.ServiceModels.TrainingCourseModels.BirdSkill;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Models.ServiceModels.TrainingCourseModels.TrainingCourse
 {
-    public class TrainingCourseCustomerViewModel
+    public class TrainingCourseManagementViewModel
     {
-        public TrainingCourseCustomerViewModel()
+        public TrainingCourseManagementViewModel()
         {
-            SkillNames = new List<string>();
+            BirdSkills = new List<TrainingCourseSkillModel>();
         }
         public int Id { get; set; }
         public int BirdSpeciesId { get; set; }
@@ -20,6 +21,7 @@ namespace Models.ServiceModels.TrainingCourseModels.TrainingCourse
         public string? Picture { get; set; }
         public int TotalSlot { get; set; }
         public decimal TotalPrice { get; set; }
-        public IEnumerable<string> SkillNames { get; set; }
+        public Models.Enum.TrainingCourse.Status Status { get; set; }
+        public List<TrainingCourseSkillModel> BirdSkills { get; set; }
     }
 }

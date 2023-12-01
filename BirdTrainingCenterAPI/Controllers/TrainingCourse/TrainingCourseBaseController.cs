@@ -109,6 +109,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         }
 
         [HttpGet]
+        [EnableQuery]
         [Route("birdskillreceived-bird")]
         public async Task<IActionResult> GetBirdSkillReceivedsByBirdId([FromQuery] int birdId)
         {
@@ -126,6 +127,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         }
 
         [HttpGet]
+        [EnableQuery]
         [Route("birdcertificatedetail-bird")]
         public async Task<IActionResult> GetBirdCertificatesDetailByBirdId([FromQuery] int birdId)
         {
@@ -195,6 +197,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         }
 
         [HttpGet]
+        [EnableQuery]
         [Route("accquirablebirdskill")]
         public async Task<IActionResult> GetAccquirableBirdSkill()
         {
@@ -212,6 +215,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         }
 
         [HttpGet]
+        [EnableQuery]
         [Route("bird-receivedskill")]
         public async Task<IActionResult> ViewBirdSkillReceived(int birdId)
         {
@@ -250,6 +254,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             return Ok(result);
         }
         [HttpGet]
+        [EnableQuery]
         [Route("birdskillreceived-birdid")]
         public async Task<IActionResult> GetBirdSkillReceivedByBirdId(int birdId)
         {
@@ -257,6 +262,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             return Ok(result);
         }
         [HttpGet]
+        [EnableQuery]
         [Route("all-requested-users")]
         public async Task<IActionResult> GetCustomerModels()
         {
@@ -269,6 +275,15 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         public async Task<IActionResult> GetTimetableReportView([FromQuery] int trainerSlotId)
         {
             var result = await _trainingCourseService.Trainer.GetTimetableReportView(trainerSlotId);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [EnableQuery]
+        [Route("trainingcourse-checkoutpolicies")]
+        public async Task<IActionResult> GetTrainingCoursePricePolicies()
+        {
+            var result = await _trainingCourseService.All.GetTrainingCoursePricePolicies();
             return Ok(result);
         }
     }

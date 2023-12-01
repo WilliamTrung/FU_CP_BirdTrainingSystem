@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Models.ServiceModels.TrainingCourseModels.BirdSkill;
 using Models.ServiceModels.TrainingCourseModels.TrainerSkill;
 using Models.ServiceModels.TrainingCourseModels;
+using Models.ServiceModels.TrainingCourseModels.TrainingCourseCheckOutPolicy;
 
 namespace AppService.TrainingCourseService
 {
@@ -17,8 +18,8 @@ namespace AppService.TrainingCourseService
     {
         Task<IEnumerable<BirdSpeciesViewModel>> GetBirdSpecies();
         Task<BirdSpeciesViewModel> GetBirdSpeciesById(int birdSpeciesId);
-        Task<IEnumerable<TrainingCourseViewModel>> GetTrainingCourses();
-        Task<TrainingCourseViewModel> GetTrainingCoursesById(int courseId);
+        Task<IEnumerable<TrainingCourseManagementViewModel>> GetTrainingCourses();
+        Task<TrainingCourseManagementViewModel> GetTrainingCoursesById(int courseId);
         //Task<IEnumerable<TrainingSkillViewModel>> GetTrainingSkillByCourseId(int courseId);
         IEnumerable<Models.Enum.BirdTrainingProgress.Status> GetEnumBirdTrainingProgressStatuses();
 
@@ -47,5 +48,7 @@ namespace AppService.TrainingCourseService
 
         Task<IEnumerable<BirdSkillReceivedViewModel>> GetBirdSkillReceivedByBirdId(int birdId);
         Task<IEnumerable<CustomerModel>> GetCustomerModels();
+
+        Task<IEnumerable<TrainingCourseCheckOutPolicyModel>> GetTrainingCoursePricePolicies();
     }
 }

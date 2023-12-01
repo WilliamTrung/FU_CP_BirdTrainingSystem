@@ -4,6 +4,7 @@ using Models.ServiceModels.TrainingCourseModels.BirdCertificate;
 using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
 using Models.ServiceModels.TrainingCourseModels.BirdSkill;
 using Models.ServiceModels.TrainingCourseModels;
+using Models.ServiceModels.TrainingCourseModels.TrainingCourseCheckOutPolicy;
 
 namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
 {
@@ -124,5 +125,9 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
         [HttpGet]
         [Route("timetable-slot-itemdetail")]
         Task<IActionResult> GetTimetableReportView([FromQuery] int trainerSlotId);
+
+        [HttpGet]
+        [Route("trainingcourse-checkoutpolicies")]
+        Task<IActionResult> GetTrainingCoursePricePolicies();
     }
 }
