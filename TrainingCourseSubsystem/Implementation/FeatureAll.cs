@@ -9,6 +9,7 @@ using Models.ServiceModels.TrainingCourseModels.BirdCertificate.BirdCertificateD
 using Models.ServiceModels.TrainingCourseModels.BirdSkill;
 using Models.ServiceModels.TrainingCourseModels.TrainerSkill;
 using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
+using Models.ServiceModels.TrainingCourseModels.TrainingCourseCheckOutPolicy;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -316,6 +317,13 @@ namespace TrainingCourseSubsystem.Implementation
             entities = entities.Where(e => request.Any(r => r.CustomerId == e.Id)).ToList();
 
             var models = _mapper.Map<IEnumerable<CustomerModel>>(entities);
+            return models;
+        }
+
+        public async Task<IEnumerable<TrainingCourseCheckOutPolicyModel>> GetTrainingCoursePricePolicies()
+        {
+            var entities = await _unitOfWork.TrainingCourseCheckOutPolicyRepository.Get();
+            var models = _mapper.Map<IEnumerable<TrainingCourseCheckOutPolicyModel>>(entities);
             return models;
         }
     }

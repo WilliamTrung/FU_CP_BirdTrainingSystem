@@ -277,5 +277,14 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             var result = await _trainingCourseService.Trainer.GetTimetableReportView(trainerSlotId);
             return Ok(result);
         }
+
+        [HttpGet]
+        [EnableQuery]
+        [Route("trainingcourse-checkoutpolicies")]
+        public async Task<IActionResult> GetTrainingCoursePricePolicies()
+        {
+            var result = await _trainingCourseService.All.GetTrainingCoursePricePolicies();
+            return Ok(result);
+        }
     }
 }

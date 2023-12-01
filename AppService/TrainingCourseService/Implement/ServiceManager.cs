@@ -4,6 +4,7 @@ using Models.ServiceModels.TrainingCourseModels.BirdCertificate;
 using Models.ServiceModels.TrainingCourseModels.BirdSkill;
 using Models.ServiceModels.TrainingCourseModels.TrainerSkill;
 using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
+using Models.ServiceModels.TrainingCourseModels.TrainingCourseCheckOutPolicy;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -119,6 +120,27 @@ namespace AppService.TrainingCourseService.Implement
         {
             await _trainingCourse.Manager.CreateBirdCertitficate(birdCertificateAdd);
         }
+
+        #region CheckOutPolicies
+
+        public async Task CreateCheckOutPolicy(PolicyAddModel policyAdd)
+        {
+            await _trainingCourse.Manager.CreateCheckOutPolicy(policyAdd);
+        }
+        public async Task EditCheckOutPolicy(PolicyModModel policyMod)
+        {
+            await _trainingCourse.Manager.EditCheckOutPolicy(policyMod);
+        }
+        public async Task ActiveCheckOutPolicy(int policyId)
+        {
+            await _trainingCourse.Manager.ActiveCheckOutPolicy(policyId);
+        }
+        public async Task DisableCheckOutPolicy(int policyId)
+        {
+            await _trainingCourse.Manager.DisableCheckOutPolicy(policyId);
+        }
+
+        #endregion
         #endregion
     }
 }

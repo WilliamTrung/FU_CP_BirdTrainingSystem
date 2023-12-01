@@ -8,6 +8,7 @@ using Models.ServiceModels.TrainingCourseModels.BirdCertificate;
 using Models.ServiceModels.TrainingCourseModels.BirdSkill;
 using Models.ServiceModels.TrainingCourseModels.TrainerSkill;
 using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
+using Models.ServiceModels.TrainingCourseModels.TrainingCourseCheckOutPolicy;
 using Models.Skills;
 using System;
 using System.Collections.Generic;
@@ -88,6 +89,10 @@ namespace TrainingCourseSubsystem.Implementation
             }
             else
             {
+                if(entity.TotalSlot < 1)
+                {
+                    throw new InvalidOperationException("Please complete course details.");
+                }
                 entity.Status = (int)Models.Enum.TrainingCourse.Status.Active;
                 await _unitOfWork.TrainingCourseRepository.Update(entity);
 
@@ -409,6 +414,63 @@ namespace TrainingCourseSubsystem.Implementation
                     }
                 }
             }
+        }
+
+        #endregion
+        #region CheckOutPolicies
+
+        public async Task CreateCheckOutPolicy(PolicyAddModel policyAdd)
+        {
+            if (policyAdd == null)
+            {
+                throw new InvalidOperationException("Client send null param");
+            }
+            else
+            {
+                var entity = _mapper.Map<TrainingCourseCheckOutPolicy>(policyAdd);
+                entity.Status = (int)Models.Enum.TCCheckOutPolicy.Status.Active;
+                await _unitOfWork.TrainingCourseCheckOutPolicyRepository.Add(entity);
+            }
+        }
+        public async Task EditCheckOutPolicy(PolicyModModel policyMod)
+        {
+            if (policyMod == null)
+            {
+                throw new InvalidOperationException("Client send null param");
+            }
+            else
+            {
+                var entity = _mapper.Map<TrainingCourseCheckOutPolicy>(policyMod);
+                entity.Status = (int)Models.Enum.TCCheckOutPolicy.Status.Disable;
+                await _unitOfWork.TrainingCourseCheckOutPolicyRepository.Update(entity);
+            }
+        }
+        public async Task ActiveCheckOutPolicy(int policyId)
+        {
+            var entity = await _unitOfWork.TrainingCourseCheckOutPolicyRepository.GetFirst(e => e.Id == policyId);
+            if(entity == null)
+            {
+                throw new KeyNotFoundException("Entity is null");
+            }
+            else
+            {
+                entity.Status = (int)Models.Enum.TCCheckOutPolicy.Status.Active;
+                await _unitOfWork.TrainingCourseCheckOutPolicyRepository.Update(entity);
+            }
+        }
+        public async Task DisableCheckOutPolicy(int policyId)
+        {
+            var entity = await _unitOfWork.TrainingCourseCheckOutPolicyRepository.GetFirst(e => e.Id == policyId);
+            if (entity == null)
+            {
+                throw new KeyNotFoundException("Entity is null");
+            }
+            else
+            {
+                entity.Status = (int)Models.Enum.TCCheckOutPolicy.Status.Disable;
+                await _unitOfWork.TrainingCourseCheckOutPolicyRepository.Update(entity);
+            }
+
         }
 
         #endregion

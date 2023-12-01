@@ -6,6 +6,7 @@ using Models.ServiceModels.TrainingCourseModels.BirdCertificate;
 using Models.ServiceModels.TrainingCourseModels.BirdSkill;
 using Models.ServiceModels.TrainingCourseModels.TrainerSkill;
 using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
+using Models.ServiceModels.TrainingCourseModels.TrainingCourseCheckOutPolicy;
 
 namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
 {
@@ -97,6 +98,22 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
         [HttpPost]
         [Route("birdcertificate")]
         Task<IActionResult> CreateBirdCertitficate(BirdCertificateAddParamModel birdCertificateAddParam);
+        #endregion
+
+        #region CheckOutPolicies
+        [HttpPost]
+        [Route("create-checkoutpolicy")]
+        Task<IActionResult> CreateCheckOutPolicy(PolicyAddModel policyAdd);
+        [HttpPut]
+        [Route("edit-checkoutpolicy")]
+        Task<IActionResult> EditCheckOutPolicy(PolicyModModel policyMod);
+        [HttpPut]
+        [Route("active-checkoutpolicy")]
+        Task<IActionResult> ActiveCheckOutPolicy(int policyId);
+        [HttpPut]
+        [Route("disable-checkoutpolicy")]
+        Task<IActionResult> DisableCheckOutPolicy(int policyId);
+
         #endregion
     }
 }

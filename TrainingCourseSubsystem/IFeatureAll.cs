@@ -5,6 +5,7 @@ using Models.ServiceModels.TrainingCourseModels.BirdCertificate.BirdCertificateD
 using Models.ServiceModels.TrainingCourseModels.BirdSkill;
 using Models.ServiceModels.TrainingCourseModels.TrainerSkill;
 using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
+using Models.ServiceModels.TrainingCourseModels.TrainingCourseCheckOutPolicy;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,5 +47,6 @@ namespace TrainingCourseSubsystem
 
         Task<IEnumerable<BirdSkillReceivedViewModel>> GetBirdSkillReceivedByBirdId(int birdId);
         Task<IEnumerable<CustomerModel>> GetCustomerModels();
+        Task<IEnumerable<TrainingCourseCheckOutPolicyModel>> GetTrainingCoursePricePolicies();
     }
 }
