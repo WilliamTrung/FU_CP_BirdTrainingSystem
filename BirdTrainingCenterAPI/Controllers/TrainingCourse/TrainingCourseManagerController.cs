@@ -49,8 +49,8 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             pictures = pictures.Substring(0, pictures.Length - 1);
             var trainingCourseModel = trainingCourse.ToTrainingCourseModel(pictures);
 
-            await _trainingCourseService.Manager.CreateCourse(trainingCourseModel);
-            return Ok();
+            var rs = await _trainingCourseService.Manager.CreateCourse(trainingCourseModel);
+            return Ok(rs);
         }
 
         [HttpPut]

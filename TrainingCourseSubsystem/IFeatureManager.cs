@@ -19,7 +19,7 @@ namespace TrainingCourseSubsystem
         //Can create new training course
         //Can edit training course
         //Can archive training course
-        Task CreateCourse(TrainingCourseAddModel trainingCourse);
+        Task<int> CreateCourse(TrainingCourseAddModel trainingCourse);
         Task EditCourse(TrainingCourseModifyModel trainingCourse);
         Task ActiveTrainingCourse(int trainingCourseId);
         Task DisableTrainingCourse(int trainingCourseId);

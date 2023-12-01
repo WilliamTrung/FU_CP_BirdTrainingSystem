@@ -21,9 +21,10 @@ namespace AppService.TrainingCourseService.Implement
         {
         }
         #region ManagerBase
-        public async Task CreateCourse(TrainingCourseAddModel trainingCourse)
+        public async Task<int> CreateCourse(TrainingCourseAddModel trainingCourse)
         {
-            await _trainingCourse.Manager.CreateCourse(trainingCourse);
+            var rs = await _trainingCourse.Manager.CreateCourse(trainingCourse);
+            return rs;
         }
 
         public async Task EditCourse(TrainingCourseModifyModel trainingCourse)
