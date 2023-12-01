@@ -1,5 +1,6 @@
 ﻿using AppService;
 using AppService.OnlineCourseService;
+using Aspose.Words;
 using BirdTrainingCenterAPI.Controllers.Endpoints.OnlineCourse;
 using BirdTrainingCenterAPI.Helper;
 using Microsoft.AspNetCore.Http;
@@ -11,6 +12,7 @@ using Models.ServiceModels.OnlineCourseModels.Feedback;
 using Models.ServiceModels.OnlineCourseModels.Transaction;
 using Org.BouncyCastle.Utilities;
 using SP_Middleware;
+using System.Reflection.Metadata;
 using TEST_CERTSAMPLE;
 
 namespace BirdTrainingCenterAPI.Controllers.OnlineCourse

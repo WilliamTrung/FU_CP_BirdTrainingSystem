@@ -2,11 +2,15 @@
 using PdfSharp.Fonts;
 using PdfSharp.Pdf.IO;
 using PdfSharp.Pdf;
+    using System.Drawing;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Aspose.Words.Saving;
+using Aspose.Words;
+using SkiaSharp;
 
 namespace TEST_CERTSAMPLE
 {
@@ -45,12 +49,32 @@ namespace TEST_CERTSAMPLE
         {
             PdfSharp.Fonts.GlobalFontSettings.FontResolver = new CustomFontResolver();
         }
+        public byte[] ConvertWordPageToImage(Stream stream)
+        {
+            // Load the document from the stream
+            var doc = new Document(stream);
+
+            // Create an ImageSaveOptions object to specify the image format
+            var imageSaveOptions = new ImageSaveOptions(SaveFormat.Png);
+
+            // Create a MemoryStream to store the image bytes
+            using (var imageStream = new MemoryStream())
+            {
+                // Save the specific page as an image
+                doc.Save(imageStream, imageSaveOptions);
+
+                // Get the byte array of the image
+                byte[] imageBytes = imageStream.ToArray();
+
+                return imageBytes;
+            }
+        }
         public byte[] GenerateCertificate(string name, string course, DateTime receivedDate)
         {
             try
             {
                 // Set the custom font resolver
-                
+
 
                 using (var stream = new MemoryStream())
                 {
@@ -64,15 +88,14 @@ namespace TEST_CERTSAMPLE
                             for (int pageIndex = 0; pageIndex < sourcePdfDocument.PageCount; pageIndex++)
                             {
                                 // Add the page directly from the source document to the destination document
-                                var newPage = destinationPdfDocument.AddPage(sourcePdfDocument.Pages[pageIndex]);
-
+                                var newPage = destinationPdfDocument.AddPage(sourcePdfDocument.Pages[pageIndex]);                                
                                 // Draw receiver name
                                 using (var gfx = XGraphics.FromPdfPage(newPage))
                                 {
                                     var font = new XFont("TIMES", 48);
                                     var brush = new XSolidBrush(XColor.FromArgb(191, 146, 55));
                                     var center_X = (newPage.Width.Point - gfx.MeasureString(name, font).Width) / 2;
-                                    gfx.DrawString(name, font, brush, new XRect(center_X, 220, newPage.Width.Point, newPage.Height.Point), XStringFormats.TopLeft);
+                                    gfx.DrawString(name, font, brush, new XRect(center_X, 220, newPage.Width.Point, newPage.Height.Point), XStringFormats.TopLeft);                                    
                                 }
 
                                 // Draw course name
@@ -97,11 +120,11 @@ namespace TEST_CERTSAMPLE
 
                             // Save the new PDF document to the memory stream
                             destinationPdfDocument.Save(stream);
+                            
                         }
                     }
-
-                    // Return the byte array of the modified PDF
-                    return stream.ToArray();
+                    return ConvertWordPageToImage(stream);
+                    //return stream.ToArray();
                 }
             }
             catch (Exception ex)
