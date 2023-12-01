@@ -59,6 +59,7 @@ builder.Services.AddControllers().AddOData(options => options
                        x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.OnlineCourse.Status>());
                        x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.Workshop.Transaction.Status>());
                        x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.TrainingCourse.Status>());
+                       x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.TCCheckOutPolicy.Status>());
 
                    }
                );

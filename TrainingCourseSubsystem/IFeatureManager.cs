@@ -4,6 +4,7 @@ using Models.ServiceModels.TrainingCourseModels.BirdCertificate;
 using Models.ServiceModels.TrainingCourseModels.BirdSkill;
 using Models.ServiceModels.TrainingCourseModels.TrainerSkill;
 using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
+using Models.ServiceModels.TrainingCourseModels.TrainingCourseCheckOutPolicy;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,6 +49,15 @@ namespace TrainingCourseSubsystem
         #region BirdCertificate
 
         Task CreateBirdCertitficate(BirdCertificateAddModel birdCertificateAdd);
+
+        #endregion
+
+        #region CheckOutPolicies
+
+        Task CreateCheckOutPolicy(PolicyAddModel policyAdd);
+        Task EditCheckOutPolicy(PolicyModModel policyMod);
+        Task ActiveCheckOutPolicy(int policyId);
+        Task DisableCheckOutPolicy(int policyId);
 
         #endregion
     }

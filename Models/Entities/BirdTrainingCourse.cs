@@ -30,6 +30,7 @@ namespace Models.Entities
         public DateTime? StartTrainingDate { get; set; }
         public DateTime? TrainingDoneDate { get; set; }
         public int Status { get; set; }
+        public int? TrainingCourseCheckOutPolicyId { get; set; }
 
         public virtual Bird Bird { get; set; } = null!;
         public virtual Customer Customer { get; set; } = null!;
@@ -37,5 +38,6 @@ namespace Models.Entities
         public virtual TrainingCourse TrainingCourse { get; set; } = null!;
         public virtual ICollection<BirdTrainingProgress> BirdTrainingProgresses { get; set; }
         public virtual ICollection<BirdCertificateDetail> BirdCertificateDetails { get; set; }
+        public virtual TrainingCourseCheckOutPolicy? TrainingCourseCheckOutPolicy { get; set; }
     }
 }
