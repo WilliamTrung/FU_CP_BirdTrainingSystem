@@ -51,5 +51,6 @@ namespace AppRepository.UnitOfWork
         public IWorkshopClassDetailRepository WorkshopClassDetailRepository { get; }
         public IWorkshopDetailTemplateRepository WorkshopDetailTemplateRepository { get; }
         public IWorkshopRefundPolicyRepository WorkshopRefundPolicyRepository { get; }
+        public ITrainingCourseCheckOutPolicyRepository TrainingCourseCheckOutPolicyRepository { get; }
     }
 }
