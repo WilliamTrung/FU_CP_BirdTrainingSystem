@@ -23,7 +23,6 @@ namespace Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse
         public int Id { get; set; }
         public int ReturnStaffId { get; set; }
         public int TrainingPricePolicyId { get; set; }
-        public decimal ActualPrice { get; set; }
         public string? ReturnNote { get; set; }
         public string? ReturnPicture { get; set; }
     }

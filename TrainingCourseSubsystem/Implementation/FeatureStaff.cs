@@ -429,14 +429,16 @@ namespace TrainingCourseSubsystem.Implementation
                 //}
                 else
                 {
+
+                    entity.TrainingCourseCheckOutPolicyId = birdTrainingCourse.TrainingPricePolicyId;
+                    await _unitOfWork.BirdTrainingCourseRepository.Update(entity);
+
                     entity.ReturnStaffId = birdTrainingCourse.ReturnStaffId;
                     entity.DateReceived = DateTime.Now;
                     entity.ReturnNote = birdTrainingCourse.ReturnNote;
                     entity.ReturnPicture = birdTrainingCourse.ReturnPicture;
-                    entity.TrainingCourseCheckOutPolicyId = birdTrainingCourse.TrainingPricePolicyId;
                     if (entity.Status == (int)Models.Enum.BirdTrainingCourse.Status.Training)
                     {
-                        entity.DiscountedPrice = birdTrainingCourse.ActualPrice;
                         await DeleteReportTrainerSlot(entity, (int)Models.Enum.BirdTrainingReport.Status.NotYet);
                     }
                     entity.Status = (int)Models.Enum.BirdTrainingCourse.Status.Complete;

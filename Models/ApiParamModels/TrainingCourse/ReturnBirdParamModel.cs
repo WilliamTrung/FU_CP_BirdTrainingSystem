@@ -16,7 +16,6 @@ namespace Models.ApiParamModels.TrainingCourse
         public int BirdTrainingCourseId { get; set; }
         public string? ReturnNote { get; set; }
         public int TrainingPricePolicyId { get; set; }
-        public decimal ActualPrice { get; set; }
         //[FileImageValidator]
         public List<IFormFile>? ReturnPictures { get; set; }
         public BirdTrainingCourseReturnBird ToBirdTrainingCourseReturnBird(string returnPicture)

@@ -195,18 +195,24 @@ namespace SP_AutoMapperConfig
                 if (source.DiscountedPrice != null)
                 {
                     destination.DiscountedPrice = source.DiscountedPrice;
-                    var pricePolicy = _unitOfWork.TrainingCourseCheckOutPolicyRepository.GetFirst(e => e.Id == source.TrainingCourseCheckOutPolicyId).Result;
-                    if (pricePolicy == null)
+                    if(source.TrainingCourseCheckOutPolicyId != null)
                     {
-                        throw new InvalidOperationException("Can not found price policy.");
+                        var pricePolicy = _unitOfWork.TrainingCourseCheckOutPolicyRepository.GetFirst(e => e.Id == source.TrainingCourseCheckOutPolicyId).Result;
+                        if (pricePolicy == null)
+                        {
+                            throw new InvalidOperationException("Can not found price policy.");
+                        }
+                        else
+                        {
+                            destination.ActualPrice = (source.DiscountedPrice * (decimal)pricePolicy.ChargeRate);
+                        }
                     }
                     else
                     {
-                        destination.ActualPrice = (source.DiscountedPrice * (decimal)pricePolicy.ChargeRate);
+                        destination.ActualPrice = source.DiscountedPrice;
                     }
                 }
             }
         }
     }
-}
 }
