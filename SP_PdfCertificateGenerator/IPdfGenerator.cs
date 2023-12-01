@@ -1,14 +1,7 @@
 ﻿using PdfSharp.Drawing;
 using PdfSharp.Fonts;
 using PdfSharp.Pdf.IO;
-using PdfSharp.Pdf;
 using System.Drawing;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using IronSoftware.Drawing;
 
 
 namespace TEST_CERTSAMPLE
@@ -125,14 +118,15 @@ namespace TEST_CERTSAMPLE
                             // Save the new PDF document to the memory stream
                             destinationPdfDocument.Save("./generated-certificate.pdf");
                             ConvertPdfToImage();
-                            System.Drawing.Image img = System.Drawing.Image.FromFile("./generated-certificate.png");
-                            byte[] arr;
-                            using (MemoryStream ms = new MemoryStream())
-                            {
-                                img.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
-                                arr = ms.ToArray();
-                                return arr;
-                            }
+                            string imageLocation = "./generated-certificate.png";
+                            //System.Drawing.Image img = System.Drawing.Image.FromFile("./generated-certificate.png");
+                            byte[] imageData = null;
+                            FileInfo fileInfo = new FileInfo(imageLocation);
+                            long imageFileLength = fileInfo.Length;
+                            FileStream fs = new FileStream(imageLocation, FileMode.Open, FileAccess.Read);
+                            BinaryReader br = new BinaryReader(fs);
+                            imageData = br.ReadBytes((int)imageFileLength);
+                            return imageData;
                         }
                     }
                     //return ConvertWordPageToImage(stream);
