@@ -63,11 +63,6 @@ namespace SP_AutoMapperConfig
             CreateMap<Workshop, WorkshopAdminModel>()
                 .ForMember(c => c.Status, opt => opt.MapFrom(e => e.Status));
         }
-        private void Map_WorkshopAddParamModel_WorkshopAddModel()
-        {
-            CreateMap<WorkshopAddParamModel, WorkshopAddModel>()
-                .ForMember(d => d.Picture, opt => opt.Ignore());
-        }
         private void Map_WorkshopRefundPolicy_WorkshopRefundPolicyModel()
         {
             CreateMap<WorkshopRefundPolicy, WorkshopRefundPolicyModel>();
@@ -87,7 +82,12 @@ namespace SP_AutoMapperConfig
         }
         private void Map_WorkshopClass_WorkshopClassAdminViewModel()
         {
-            CreateMap<WorkshopClass, WorkshopClassAdminViewModel>();                
+            CreateMap<WorkshopClass, WorkshopClassAdminViewModel>()
+                .ForMember(m => m.MinimumRegistration, opt =>
+                {
+                    opt.PreCondition(e => e.Workshop != null);
+                    opt.MapFrom(e => e.Workshop.MinimumRegistration);
+                });                
         }
         private void Map_WorkshopClassAddModel_WorkshopClass()
         {
@@ -157,6 +157,9 @@ namespace SP_AutoMapperConfig
         {
             destination.Picture = source.Picture;
             destination.Status = (int)Models.Enum.Workshop.Status.Inactive;
+            destination.Location = source.Location;
+            destination.MinimumRegistration = source.MinimumRegistration;
+            destination.MaximumRegistration = source.MaximumRegistration;
             //destination.WorkshopRefundPolicyId = 1;
             destination.Description = source.Description;
             destination.Price = source.Price;
@@ -277,6 +280,8 @@ namespace SP_AutoMapperConfig
             destination.WorkshopId = source.WorkshopId;
             destination.Status = null;
             destination.ClassStatus = (Models.Enum.Workshop.Class.Status)source.Status;
+            destination.Location = source.Workshop.Location;
+            destination.MinimumRegistration = source.Workshop.MinimumRegistration;            
             destination.Id = source.Id;
             foreach (var detail in source.WorkshopClassDetails)
             {

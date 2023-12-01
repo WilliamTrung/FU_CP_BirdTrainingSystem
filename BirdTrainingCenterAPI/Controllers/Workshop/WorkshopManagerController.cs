@@ -46,6 +46,38 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             var id = await _workshopService.Manager.CreateWorkshop(workshopAdd);
             return Ok(id);                 
         }
+        [HttpPut]
+        [Route("modify")]
+        public async Task<IActionResult> ModifyWorkshop([FromForm] WorkshopModifyParamModel workshop)
+        {
+            string? pictures = null;
+            if(workshop.Pictures != null)
+            {
+                if (workshop.Pictures.Any(e => !e.IsImage()))
+                {
+                    return BadRequest("Upload image only!");
+                }
+                var workshops = await _workshopService.Manager.GetAllWorkshops();
+                var workshopCurrent = workshops.First(c => c.Id == workshop.Id);
+                var workshopPictures = workshopCurrent.Picture;
+                foreach (var picture in workshopPictures.Split(","))
+                {
+                    await _firebaseService.DeleteFile(picture, _bucket.General);
+                }
+                pictures = string.Empty;
+                foreach (var file in workshop.Pictures)
+                {
+                    var temp = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.WOKRSHOP, _bucket.General);
+                    pictures += $"{temp},";
+                }
+            }
+           
+            pictures = pictures.Substring(0, pictures.Length - 1);
+            var workshopAdd = workshop.ToWorkshopModifyModel(pictures);
+
+            await _workshopService.Manager.ModifyWorkshop(workshopAdd);
+            return Ok();
+        }
         [HttpGet]
         [EnableQuery]
         [Route("detail-template")]
