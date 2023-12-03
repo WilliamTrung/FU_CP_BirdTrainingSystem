@@ -30,12 +30,13 @@ namespace TrainingCourseSubsystem.Implementation
         public async Task<TimetableReportView> GetTimetableReportView(int trainerSlotId)
         {
             var entity = await _unitOfWork.TrainerSlotRepository.GetFirst(e => e.Id == trainerSlotId);
-            if(entity == null)
+            if (entity == null)
             {
                 throw new Exception($"{nameof(TrainerSlot)} is not found");
-            }else
+            }
+            else
             {
-                if(entity.EntityTypeId == (int)Models.Enum.EntityType.TrainingCourse)
+                if (entity.EntityTypeId == (int)Models.Enum.EntityType.TrainingCourse)
                 {
                     var report = _unitOfWork.BirdTrainingReportRepository.GetFirst(e => e.TrainerSlotId == entity.Id
                                                                                     , nameof(BirdTrainingReport.TrainerSlot)).Result;
@@ -141,7 +142,7 @@ namespace TrainingCourseSubsystem.Implementation
                     var passedSkill = _unitOfWork.BirdTrainingProgressRepository.Get(e => e.BirdTrainingCourseId == birdTrainingCourse.Id
                                                                                       && e.Status == (int)Models.Enum.BirdTrainingProgress.Status.Pass
                                                                                       , nameof(BirdTrainingProgress.TrainingCourseSkill)
-                                                                                      ,$"{nameof(BirdTrainingProgress.TrainingCourseSkill)}.{nameof(BirdTrainingProgress.TrainingCourseSkill.BirdSkill)}").Result.ToList();
+                                                                                      , $"{nameof(BirdTrainingProgress.TrainingCourseSkill)}.{nameof(BirdTrainingProgress.TrainingCourseSkill.BirdSkill)}").Result.ToList();
                     if (passedSkill != null && passedSkill.Count() > 0)
                     {
                         foreach (var skill in passedSkill)
@@ -165,17 +166,26 @@ namespace TrainingCourseSubsystem.Implementation
         public async Task<int> MarkTrainingSlotDone(int birdTrainingReportId)//status 206 de chuyen qua trang khac
         {
             int result = (int)Models.Enum.BirdTrainingReport.FirstOrEnd.MidSlot;
-            var entity = await _unitOfWork.BirdTrainingReportRepository.GetFirst(e => e.Id == birdTrainingReportId, nameof(BirdTrainingReport.TrainerSlot));
+            var entity = await _unitOfWork.BirdTrainingReportRepository.GetFirst(e => e.Id == birdTrainingReportId
+                                              , nameof(BirdTrainingReport.TrainerSlot)
+                                              , $"{nameof(BirdTrainingReport.TrainerSlot)}.{nameof(BirdTrainingReport.TrainerSlot.Slot)}");
             if (entity == null)
             {
                 throw new Exception("Entity not found");
             }
-            if(entity.TrainerSlot.Date.CompareTo(DateTime.Now) >= 0)
-            {
-                throw new Exception($"Can not mark this training slot as done please wait until Slot 1 {entity.TrainerSlot.Date:dd/MM/yyyy-t}");
-            }
             else
             {
+                DateTime currentDate = DateTime.UtcNow.AddHours(7);
+                DateTime trainDate = (DateTime)(entity.TrainerSlot.Date + entity.TrainerSlot.Slot.StartTime);
+
+                int tmpRes = currentDate.CompareTo(trainDate);
+                if (tmpRes < 0)
+                {
+                    throw new InvalidOperationException($"Can not mark this training slot as done please wait until " +
+                                $"{entity.TrainerSlot.Slot.StartTime} {entity.TrainerSlot.Date:dd/MM/yyyy}"); 
+                }
+
+
                 var birdProgress = _unitOfWork.BirdTrainingProgressRepository.GetFirst(e => e.Id == entity.BirdTrainingProgressId
                                                                                         , nameof(BirdTrainingProgress.BirdTrainingCourse)).Result;
                 if (birdProgress != null)

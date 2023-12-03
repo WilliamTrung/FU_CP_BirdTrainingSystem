@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Models.ServiceModels.WorkshopModels;
-using SP_Validator;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,21 +8,22 @@ using System.Threading.Tasks;
 
 namespace Models.ApiParamModels.Workshop
 {
-    public class WorkshopAddParamModel
+    public class WorkshopModifyParamModel
     {
-        public string Title { get; set; } = null!;
-        public string Description { get; set; } = null!;
-        public List<IFormFile> Pictures { get; set; } = null!;
+        public int Id { get; set; }
+        public string? Location { get; set; }
+        public int? MinimumRegistration { get; set; }
+        public int? MaximumRegistration { get; set; }
+        public string? Title { get; set; }
+        public string? Description { get; set; }
+        public List<IFormFile>? Pictures { get; set; }
         public int? RegisterEnd { get; set; }
-        public decimal Price { get; set; }
-        public int TotalSlot { get; set; }
-        public string Location { get; set; } = null!;
-        public int MinimumRegistration { get; set; }
-        public int MaximumRegistration { get; set; }
+        public decimal? Price { get; set; }
+        public int? TotalSlot { get; set; }
 
-        public WorkshopAddModel ToWorkshopAddModel(string picture)
+        public WorkshopModifyModel ToWorkshopModifyModel(string? picture)
         {
-            return new WorkshopAddModel
+            return new WorkshopModifyModel
             {
                 Description = this.Description,
                 Title = this.Title,

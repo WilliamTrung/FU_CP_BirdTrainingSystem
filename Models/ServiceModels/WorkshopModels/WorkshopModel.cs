@@ -11,6 +11,9 @@ namespace Models.ServiceModels.WorkshopModels
         public int Id { get; set; }
         //public WorkshopRefundPolicyModel RefundPolicy { get; set; } = null!;
         public string Title { get; set; } = null!;
+        public string Location { get; set; } = null!;
+        public int MinimumRegistration { get; set; }
+        public int MaximumRegistration { get; set; }
         public string Description { get; set; } = null!;
         public string? Picture { get; set; } = null!;
         public int? RegisterEnd { get; set; } 

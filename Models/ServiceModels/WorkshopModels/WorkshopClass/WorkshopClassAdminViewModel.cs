@@ -14,6 +14,7 @@ namespace Models.ServiceModels.WorkshopModels.WorkshopClass
         public DateTime StartTime { get; set; }
         public DateTime RegisterEndDate { get; set; }
         public RegistrationAmountModel? RegistrationAmount { get; set; }
+        public int MinimumRegistration { get; set; }
         public Models.Enum.Workshop.Class.Status Status { get; set; }
     }
 }

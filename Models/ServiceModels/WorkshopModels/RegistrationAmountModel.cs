@@ -11,6 +11,6 @@ namespace Models.ServiceModels.WorkshopModels
     {
         public int? ClassId { get; set; }   
         public int Registered { get; set; }
-        public int Maximum { get; set; } = BR_WorkshopConstant.MaximumRegisteredCustomer;
+        public int Maximum { get; set; }
     }
 }

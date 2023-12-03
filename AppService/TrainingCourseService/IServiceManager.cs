@@ -15,7 +15,7 @@ namespace AppService.TrainingCourseService
 {
     public interface IServiceManager : IServiceAll
     {
-        Task CreateCourse(TrainingCourseAddModel trainingCourse);
+        Task<int> CreateCourse(TrainingCourseAddModel trainingCourse);
         Task EditCourse(TrainingCourseModifyModel trainingCourse);
         Task ActiveTrainingCourse(int trainingCourseId);
         Task DisableTrainingCourse(int trainingCourseId);

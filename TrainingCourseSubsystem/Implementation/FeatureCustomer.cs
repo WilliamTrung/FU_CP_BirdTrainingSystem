@@ -159,7 +159,8 @@ namespace TrainingCourseSubsystem.Implementation
                     entity.DiscountedPrice = discountedPrice;
                 }
 
-                var pricePolicy = _unitOfWork.TrainingCourseCheckOutPolicyRepository.GetFirst(e => e.Name.ToLower().Contains("center requested"));
+                var pricePolicy = _unitOfWork.TrainingCourseCheckOutPolicyRepository.GetFirst(e => 
+                                                                                    e.Name.ToLower().Contains("center requested")).Result;
                 if (pricePolicy == null)
                 {
                     throw new InvalidOperationException("Can not found price policy.");
