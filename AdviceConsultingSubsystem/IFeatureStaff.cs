@@ -19,5 +19,11 @@ namespace AdviceConsultingSubsystem
         Task CancelConsultingTicket(int ticketId);
         Task<IEnumerable<ConsultingTicketListViewModel>> GetListNotAssignedConsultingTicket();
         Task<IEnumerable<ConsultingTicketListViewModel>> GetListAssignedConsultingTicket();
+        Task CreateNewConsultingPricePolicy(ConsultingPricePolicyCreateNewServiceModel pricePolicy);
+        Task UpdateConsultantPricePolicy(ConsultingPricePolicyServiceModel pricePolicy);
+        Task DeleteConsultingPricePolicy(int policyId);
+        Task CreateNewDistancePricePolicy(DistancePricePolicyCreateNewServiceModel distancePricePolicy);
+        Task UpdateDistancePricePolicy(DistancePricePolicyUpdateServiceModel distancePricePolicy);
+        Task DeleteDistancePricePolicy(int distancePricePolicyId);
     }
 }

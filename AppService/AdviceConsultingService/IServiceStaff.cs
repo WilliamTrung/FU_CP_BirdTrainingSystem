@@ -1,4 +1,5 @@
 ﻿using Models.Entities;
+using Models.ServiceModels.AdviceConsultantModels;
 using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
 using System;
 using System.Collections.Generic;
@@ -19,5 +20,11 @@ namespace AppService.AdviceConsultingService
         Task CancelConsultingTicket(int ticketId);
         Task<IEnumerable<ConsultingTicketListViewModel>> GetListNotAssignedConsultingTicket();
         Task<IEnumerable<ConsultingTicketListViewModel>> GetListAssignedConsultingTicket();
+        Task CreateNewPricePolicy(ConsultingPricePolicyCreateNewServiceModel pricePolicy);
+        Task UpdateConsultantPricePolicy(ConsultingPricePolicyServiceModel pricePolicy);
+        Task DeleteConsultingPricePolicy(int policyId);
+        Task CreateNewDistancePricePolicy(DistancePricePolicyCreateNewServiceModel distancePricePolicy);
+        Task UpdateDistancePricePolicy(DistancePricePolicyUpdateServiceModel distancePricePolicy);
+        Task DeleteDistancePricePolicy(int distancePricePolicyId);
     }
 }
