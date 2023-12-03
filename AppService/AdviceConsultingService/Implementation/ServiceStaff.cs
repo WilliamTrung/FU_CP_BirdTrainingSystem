@@ -48,6 +48,26 @@ namespace AppService.AdviceConsultingService.Implementation
             await _consulting.Staff.CancelConsultingTicket(ticketId);
         }
 
+        public async Task CreateNewDistancePricePolicy(DistancePricePolicyCreateNewServiceModel distancePricePolicy)
+        {
+            await _consulting.Staff.CreateNewDistancePricePolicy(distancePricePolicy);
+        }
+
+        public async Task CreateNewPricePolicy(ConsultingPricePolicyCreateNewServiceModel pricePolicy)
+        {
+            await _consulting.Staff.CreateNewConsultingPricePolicy(pricePolicy);
+        }
+
+        public async Task DeleteConsultingPricePolicy(int policyId)
+        {
+            await _consulting.Staff.DeleteConsultingPricePolicy(policyId);
+        }
+
+        public async Task DeleteDistancePricePolicy(int distancePricePolicyId)
+        {
+            await _consulting.Staff.DeleteDistancePricePolicy(distancePricePolicyId);
+        }
+
         public async Task<ConsultingTicketDetailViewModel> GetConsultingTicketByID(int id)
         {
             return await _consulting.Staff.GetConsultingTicketByID(id);
@@ -71,6 +91,16 @@ namespace AppService.AdviceConsultingService.Implementation
         public async Task<IEnumerable<ConsultingTicketListViewModel>> GetListNotAssignedConsultingTicket()
         {
             return await _consulting.Staff.GetListNotAssignedConsultingTicket();
+        }
+
+        public async Task UpdateConsultantPricePolicy(ConsultingPricePolicyServiceModel pricePolicy)
+        {
+            await _consulting.Staff.UpdateConsultantPricePolicy(pricePolicy);
+        }
+
+        public async Task UpdateDistancePricePolicy(DistancePricePolicyUpdateServiceModel distancePricePolicy)
+        {
+            await _consulting.Staff.UpdateDistancePricePolicy(distancePricePolicy);
         }
     }
 }
