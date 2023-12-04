@@ -90,6 +90,11 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         [Route("createNewConsultantPricePolicy")]
         public async Task<IActionResult> CreateNewConsultantPricePolicy(ConsultingPricePolicyCreateNewServiceModel pricePolicy)
         {
+            var accessToken = Request.DeserializeToken(_authService);
+            if (accessToken == null)
+            {
+                return Unauthorized();
+            }
             var listPrice = await _consultingService.Other.GetConsultingPricePolicy();
             foreach (var price in listPrice)
             {
@@ -106,6 +111,11 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         [Route("createNewDistancePricePolicy")]
         public async Task<IActionResult> CreateNewDistancePricePolicy(DistancePricePolicyCreateNewServiceModel distancePricePolicy)
         {
+            var accessToken = Request.DeserializeToken(_authService);
+            if (accessToken == null)
+            {
+                return Unauthorized();
+            }
             var listDistancePrice = await _consultingService.Other.GetDistancePrice();
             foreach(var distancePrice in listDistancePrice)
             {
@@ -124,6 +134,11 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         [Route("deleteConsultantPricePolicy")]
         public async Task<IActionResult> DeleteConsultingPricePolicy(int policyId)
         {
+            var accessToken = Request.DeserializeToken(_authService);
+            if (accessToken == null)
+            {
+                return Unauthorized();
+            }
             await _consultingService.Staff.DeleteConsultingPricePolicy(policyId);
             return Ok();
         }
@@ -132,19 +147,25 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         [Route("deleteDistancePricePolicy")]
         public async Task<IActionResult> DeleteDistancePricePolicy(int distancePricePolicyId)
         {
+            var accessToken = Request.DeserializeToken(_authService);
+            if (accessToken == null)
+            {
+                return Unauthorized();
+            }
             await  _consultingService.Staff.DeleteDistancePricePolicy(distancePricePolicyId);
             return Ok();
         }
 
         [HttpPut]
         [Route("updateConsultantPricePolicy")]
-        public async Task<IActionResult> UpdateConsultantPricePolicy(ConsultingPricePolicyServiceModel pricePolicy)
+        public async Task<IActionResult> UpdateConsultantPricePolicy(ConsultingPricePolicyUpdateServiceModel pricePolicy)
         {
-            if (pricePolicy.OnlineOrOffline == null)
+            var accessToken = Request.DeserializeToken(_authService);
+            if (accessToken == null)
             {
-                return StatusCode(StatusCodes.Status503ServiceUnavailable, "Please choose Online Or Offline");
+                return Unauthorized();
             }
-            else if (pricePolicy.Price == null)
+            if (pricePolicy.Price == null)
             {
                 return StatusCode(StatusCodes.Status503ServiceUnavailable, "Please insert the price");
             }
@@ -156,6 +177,11 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         [Route("updateDistancePricePolicy")]
         public async Task<IActionResult> UpdateDistancePricePolicy(DistancePricePolicyUpdateServiceModel distancePricePolicy)
         {
+            var accessToken = Request.DeserializeToken(_authService);
+            if (accessToken == null)
+            {
+                return Unauthorized();
+            }
             if (distancePricePolicy.PricePerKm == null)
             {
                 return StatusCode(StatusCodes.Status503ServiceUnavailable, "Please insert the price");

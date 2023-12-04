@@ -93,7 +93,7 @@ namespace AppService.AdviceConsultingService.Implementation
             return await _consulting.Staff.GetListNotAssignedConsultingTicket();
         }
 
-        public async Task UpdateConsultantPricePolicy(ConsultingPricePolicyServiceModel pricePolicy)
+        public async Task UpdateConsultantPricePolicy(ConsultingPricePolicyUpdateServiceModel pricePolicy)
         {
             await _consulting.Staff.UpdateConsultantPricePolicy(pricePolicy);
         }

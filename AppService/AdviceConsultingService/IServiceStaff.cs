@@ -21,7 +21,7 @@ namespace AppService.AdviceConsultingService
         Task<IEnumerable<ConsultingTicketListViewModel>> GetListNotAssignedConsultingTicket();
         Task<IEnumerable<ConsultingTicketListViewModel>> GetListAssignedConsultingTicket();
         Task CreateNewPricePolicy(ConsultingPricePolicyCreateNewServiceModel pricePolicy);
-        Task UpdateConsultantPricePolicy(ConsultingPricePolicyServiceModel pricePolicy);
+        Task UpdateConsultantPricePolicy(ConsultingPricePolicyUpdateServiceModel pricePolicy);
         Task DeleteConsultingPricePolicy(int policyId);
         Task CreateNewDistancePricePolicy(DistancePricePolicyCreateNewServiceModel distancePricePolicy);
         Task UpdateDistancePricePolicy(DistancePricePolicyUpdateServiceModel distancePricePolicy);
