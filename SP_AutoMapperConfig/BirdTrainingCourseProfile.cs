@@ -139,7 +139,7 @@ namespace SP_AutoMapperConfig
             {
                 if (source.Status == (int)Models.Enum.BirdTrainingCourse.Status.TrainingDone)
                 {
-                    var pricePolicy = _unitOfWork.TrainingCourseCheckOutPolicyRepository.GetFirst(e => e.Name.ToLower().Contains("success requested"));
+                    var pricePolicy = _unitOfWork.TrainingCourseCheckOutPolicyRepository.GetFirst(e => e.Name.ToLower().Contains("success requested")).Result;
                     if (pricePolicy == null)
                     {
                         throw new InvalidOperationException("Can not found price policy.");
