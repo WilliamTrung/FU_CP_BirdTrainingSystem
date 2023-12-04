@@ -14,6 +14,7 @@ namespace Models.ServiceModels.TrainingCourseModels.BirdTrainingReport
         public DateTime Date { get; set; }
         public int? TrainerId { get; set; }
         public string? TrainerName { get; set; }
+        public string? TrainerEmail { get; set; }
         public Models.Enum.BirdTrainingReport.Status Status { get; set; }
     }
 }
