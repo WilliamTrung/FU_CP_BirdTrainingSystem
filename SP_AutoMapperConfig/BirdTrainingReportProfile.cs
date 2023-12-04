@@ -84,6 +84,7 @@ namespace SP_AutoMapperConfig
                                                                                 , nameof(Trainer.User)).Result;
                         destination.TrainerId = trainer.Id;
                         destination.TrainerName = trainer.User.Name;
+                        destination.TrainerEmail = trainer.User.Email;
                     }
                 }
                 if (source.Status != null)

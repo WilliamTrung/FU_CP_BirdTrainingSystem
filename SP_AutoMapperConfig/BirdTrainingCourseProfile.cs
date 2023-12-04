@@ -135,22 +135,8 @@ namespace SP_AutoMapperConfig
                 _mapper = mapper;
             }
 
-            public async void Process(BirdTrainingCourse source, BirdTrainingCourseListView destination, ResolutionContext context)
+            public void Process(BirdTrainingCourse source, BirdTrainingCourseListView destination, ResolutionContext context)
             {
-                if (source.Status == (int)Models.Enum.BirdTrainingCourse.Status.TrainingDone)
-                {
-                    var pricePolicy = _unitOfWork.TrainingCourseCheckOutPolicyRepository.GetFirst(e => 
-                                                                                    e.Name.ToLower().Contains("success requested")).Result;
-                    if (pricePolicy == null)
-                    {
-                        throw new InvalidOperationException("Can not found price policy.");
-                    }
-                    else
-                    {
-                        source.TrainingCourseCheckOutPolicyId = pricePolicy.Id;
-                    }
-                    await _unitOfWork.BirdTrainingCourseRepository.Update(source);
-                }
                 destination.Id = source.Id;
                 var bird = _unitOfWork.BirdRepository.GetFirst(e => e.Id == source.BirdId).Result;
                 if (bird != null)
@@ -165,6 +151,7 @@ namespace SP_AutoMapperConfig
                 {
                     destination.CustomerId = customer.Id;
                     destination.CustomerName = customer.User.Name ?? "";
+                    destination.CustomerEmail = customer.User.Email;
                     if (customer.MembershipRank != null)
                     {
                         destination.MembershipRankId = customer.MembershipRank.Id;
@@ -192,6 +179,10 @@ namespace SP_AutoMapperConfig
                 if (source.TotalPrice != null)
                 {
                     destination.TotalPrice = source.TotalPrice;
+                }
+                if (source.TrainingCourseCheckOutPolicyId != null)
+                {
+                    destination.PricePolicyId = source.TrainingCourseCheckOutPolicyId;
                 }
                 if (source.DiscountedPrice != null)
                 {

@@ -14,6 +14,7 @@ namespace Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse
         public string BirdName { get; set; } = null!;
         public int CustomerId { get; set; }
         public string CustomerName { get; set; } = null!;
+        public string CustomerEmail { get; set; } = null!;
         public string TrainingCourseTitle { get; set; } = null!;
         public string? RegisteredDate { get; set; }
         public string? StartTrainingDate { get; set; }
@@ -23,6 +24,7 @@ namespace Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse
         public decimal? ActualPrice { get; set; }
         public int? MembershipRankId { get; set; }
         public string? MembershipRank { get; set; }
+        public int? PricePolicyId { get; set; }
         public Models.Enum.BirdTrainingCourse.Status Status { get; set; }
 
     }
