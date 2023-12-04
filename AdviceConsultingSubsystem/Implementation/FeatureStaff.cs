@@ -148,7 +148,7 @@ namespace AdviceConsultingSubsystem.Implementation
             await _unitOfWork.ConsultingPricePolicyRepository.Add(entity);
         }
 
-        public async Task UpdateConsultantPricePolicy(ConsultingPricePolicyServiceModel pricePolicy)
+        public async Task UpdateConsultantPricePolicy(ConsultingPricePolicyUpdateServiceModel pricePolicy)
         {
             var entity = await _unitOfWork.ConsultingPricePolicyRepository.GetFirst(x => x.Id == pricePolicy.Id);
             entity.Price = (decimal)pricePolicy.Price;

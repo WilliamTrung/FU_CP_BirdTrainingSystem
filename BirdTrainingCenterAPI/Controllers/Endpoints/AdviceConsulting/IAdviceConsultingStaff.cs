@@ -36,7 +36,7 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting
 
         [HttpPut]
         [Route("updateConsultantPricePolicy")]
-        Task<IActionResult> UpdateConsultantPricePolicy(ConsultingPricePolicyServiceModel pricePolicy);
+        Task<IActionResult> UpdateConsultantPricePolicy(ConsultingPricePolicyUpdateServiceModel pricePolicy);
 
         [HttpDelete]
         [Route("deleteConsultantPricePolicy")]
