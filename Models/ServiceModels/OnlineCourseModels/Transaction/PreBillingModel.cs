@@ -8,6 +8,7 @@ namespace Models.ServiceModels.OnlineCourseModels.Transaction
 {
     public class PreBillingModel
     {
+        public string CourseTitle { get; set; } = null!;
         public string MembershipName { get; set; } = null!;
         public float DiscountPercent { get; set; }
         public decimal CoursePrice { get; set; }

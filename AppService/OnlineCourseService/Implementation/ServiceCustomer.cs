@@ -70,6 +70,7 @@ namespace AppService.OnlineCourseService.Implementation
             var billing = new BillingModel()
             {
                 CourseId = courseId,
+                CourseTitle = preBillingInformation.CourseTitle,
                 CoursePrice = preBillingInformation.CoursePrice,
                 DiscountRate = preBillingInformation.DiscountPercent,
                 MembershipName = preBillingInformation.MembershipName,

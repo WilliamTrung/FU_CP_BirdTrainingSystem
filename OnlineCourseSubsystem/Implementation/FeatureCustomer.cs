@@ -201,7 +201,8 @@ namespace OnlineCourseSubsystem.Implementation
             {
                 CoursePrice = course.Price.Value,
                 DiscountPercent = customer.MembershipRank.Discount.Value,
-                MembershipName = customer.MembershipRank.Name
+                MembershipName = customer.MembershipRank.Name,
+                CourseTitle = course.Title
             };
 #pragma warning restore CS8601 // Possible null reference assignment.
 #pragma warning restore CS8629 // Nullable value type may be null.

@@ -46,11 +46,13 @@ namespace AppService.WorkshopService.Implementation
             var final = preBillingInfo.WorkshopPrice - discounted;
             var billingInfo = new BillingModel
             {
+                WorkshopClassId = workshopClassId,
                 DiscountedPrice = discounted,
                 MembershipName = preBillingInfo.MembershipName,
                 DiscountRate = preBillingInfo.DiscountPercent,
                 TotalPrice = final,
                 WorkshopPrice = preBillingInfo.WorkshopPrice,
+                WorkshopTitle = preBillingInfo.WorkshopTitle
             };
             return billingInfo;
         }

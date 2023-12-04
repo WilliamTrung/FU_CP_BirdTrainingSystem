@@ -169,6 +169,7 @@ namespace WorkshopSubsystem.Implementation
 #pragma warning disable CS8601 // Possible null reference assignment.
             var result = new PreBillingInformation()
             {
+                WorkshopTitle = workshopClass.Workshop.Title,
                 MembershipName = customer.MembershipRank.Name,
                 DiscountPercent = customer.MembershipRank.Discount.Value,
                 WorkshopPrice = workshopClass.Workshop.Price,

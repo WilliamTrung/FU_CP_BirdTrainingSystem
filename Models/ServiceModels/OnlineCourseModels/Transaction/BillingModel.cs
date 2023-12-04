@@ -9,6 +9,7 @@ namespace Models.ServiceModels.OnlineCourseModels.Transaction
     public class BillingModel
     {
         public int CourseId { get; set; }
+        public string CourseTitle { get; set; } = null!;
         public decimal CoursePrice { get; set; }
         public decimal DiscountedPrice { get; set; }
         public decimal TotalPrice { get; set; }
