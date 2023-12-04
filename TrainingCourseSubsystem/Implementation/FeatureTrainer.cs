@@ -91,7 +91,7 @@ namespace TrainingCourseSubsystem.Implementation
                     var bird = _unitOfWork.BirdRepository.GetFirst(e => e.Id == birdTrainingCourse.BirdId).Result;
                     bird.Status = (int)Models.Enum.Bird.Status.Ready;
 
-                    var pricePolicy = _unitOfWork.TrainingCourseCheckOutPolicyRepository.GetFirst(e => e.Name.ToLower().Contains("success requested"));
+                    var pricePolicy = _unitOfWork.TrainingCourseCheckOutPolicyRepository.GetFirst(e => e.Name.ToLower().Contains("success requested")).Result;
                     if (pricePolicy == null)
                     {
                         throw new InvalidOperationException("Can not found price policy.");
