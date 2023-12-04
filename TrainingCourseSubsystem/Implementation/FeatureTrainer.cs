@@ -182,7 +182,7 @@ namespace TrainingCourseSubsystem.Implementation
                 if (tmpRes < 0)
                 {
                     throw new InvalidOperationException($"Can not mark this training slot as done please wait until " +
-                                $"{entity.TrainerSlot.Slot.StartTime} {entity.TrainerSlot.Date:dd/MM/yyyy}"); 
+                                $"{entity.TrainerSlot.Slot.StartTime} {entity.TrainerSlot.Date:dd/MM/yyyy}");
                 }
 
 
