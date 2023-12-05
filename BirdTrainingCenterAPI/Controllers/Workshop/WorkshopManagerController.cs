@@ -70,9 +70,8 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
                     var temp = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.WOKRSHOP, _bucket.General);
                     pictures += $"{temp},";
                 }
-            }
-           
-            pictures = pictures.Substring(0, pictures.Length - 1);
+                pictures = pictures.Substring(0, pictures.Length - 1);
+            }                       
             var workshopAdd = workshop.ToWorkshopModifyModel(pictures);
 
             await _workshopService.Manager.ModifyWorkshop(workshopAdd);

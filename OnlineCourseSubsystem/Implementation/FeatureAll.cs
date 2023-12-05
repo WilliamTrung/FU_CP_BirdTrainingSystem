@@ -22,7 +22,7 @@ namespace OnlineCourseSubsystem.Implementation
 
         public virtual async Task<IEnumerable<OnlineCourseModel>> GetCourses()
         {
-            var entities = await _unitOfWork.OnlineCourseRepository.Get(expression: null);
+            var entities = await _unitOfWork.OnlineCourseRepository.Get(expression: c => c.Status == (int)Models.Enum.OnlineCourse.Status.ACTIVE);
             entities.ToList().ForEach(entity =>
             {
                 entity.Status = -1;
@@ -37,6 +37,10 @@ namespace OnlineCourseSubsystem.Implementation
             if(entity == null)
             {
                 throw new KeyNotFoundException("This course is not found!");
+            }
+            if(entity.Status != (int)Models.Enum.OnlineCourse.Status.ACTIVE)
+            {
+                throw new InvalidDataException("This course has been deactivated!");
             }
             entity.Status = -1;
             var model = _mapper.Map<OnlineCourseModel>(entity);
