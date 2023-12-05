@@ -19,9 +19,9 @@ namespace AppService.AdviceConsultingService.Implementation
         {
             _mail = mail;
         }
-        public async Task ApproveConsultingTicket(int ticketId)
+        public async Task ApproveConsultingTicket(int ticketId, int distance)
         {
-            await _consulting.Staff.ApproveConsultingTicket(ticketId);
+            await _consulting.Staff.ApproveConsultingTicket(ticketId, distance);
             var ticket = await _consulting.Other.GetConsultingTicketById(ticketId);
             var mailContent = new MailContent()
             {

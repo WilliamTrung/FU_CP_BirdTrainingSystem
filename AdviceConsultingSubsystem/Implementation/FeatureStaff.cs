@@ -87,7 +87,7 @@ namespace AdviceConsultingSubsystem.Implementation
             await _unitOfWork.TrainerSlotRepository.Add(slotEntity);
         }
 
-        public async Task ApproveConsultingTicket(int ticketId)
+        public async Task ApproveConsultingTicket(int ticketId, int distance)
         {
             var entity = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id.Equals(ticketId));
             if (entity == null)
@@ -95,6 +95,7 @@ namespace AdviceConsultingSubsystem.Implementation
                 throw new KeyNotFoundException($"{nameof(entity)} not found for id: {ticketId}");
             }
 
+            entity.Distance = distance;
             entity.Status = (int)Models.Enum.ConsultingTicket.Status.Approved;
             await _unitOfWork.ConsultingTicketRepository.Update(entity);
         }

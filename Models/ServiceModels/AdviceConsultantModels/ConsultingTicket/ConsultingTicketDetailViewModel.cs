@@ -11,6 +11,7 @@ namespace Models.ServiceModels.AdviceConsultantModels.ConsultingTicket
         public int Id { get; set; }
         public string CustomerName { get; set; } = null!;
         public string CustomerEmail { get; set; }
+        public decimal? CustomerPhone { get; set; }
         public string AddressDetail { get; set; } = null!;
         public string ConsultingType { get; set; } = null!;
         public string TrainerName { get; set; } = null!;
