@@ -22,7 +22,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         }
         [HttpPut]
         [Route("approveConsultingTicket")]
-        public async Task<IActionResult> ApproveConsultingTicket(int ticketId)
+        public async Task<IActionResult> ApproveConsultingTicket(int ticketId, int distance)
         {
             try
             {
@@ -37,7 +37,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
                 var date = (DateTime)ticket.AppointmentDate;
                 var slotId = ticket.ActualSlotStart;
                 
-                await _consultingService.Staff.ApproveConsultingTicket(ticketId);
+                await _consultingService.Staff.ApproveConsultingTicket(ticketId, distance);
                 return Ok();
             }
             catch (Exception ex)
