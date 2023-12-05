@@ -81,6 +81,10 @@ namespace AdviceConsultingSubsystem.Implementation
             entity.TrainerId = trainerId;
             entity.Status = (int)Models.Enum.ConsultingTicket.Status.Approved;
             await _unitOfWork.ConsultingTicketRepository.Update(entity);
+
+            var trainerSlot = new AdviceConsultingTrainerSlotServiceModel((int)entity.TrainerId, entity.ActualSlotStart, DateOnly.FromDateTime((DateTime)entity.AppointmentDate), entity.Id);
+            var slotEntity = _mapper.Map<TrainerSlot>(trainerSlot);
+            await _unitOfWork.TrainerSlotRepository.Add(slotEntity);
         }
 
         public async Task ApproveConsultingTicket(int ticketId)
