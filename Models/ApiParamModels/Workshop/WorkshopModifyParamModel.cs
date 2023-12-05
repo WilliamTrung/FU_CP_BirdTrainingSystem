@@ -25,6 +25,7 @@ namespace Models.ApiParamModels.Workshop
         {
             return new WorkshopModifyModel
             {
+                Id = this.Id,
                 Description = this.Description,
                 Title = this.Title,
                 RegisterEnd = this.RegisterEnd,
