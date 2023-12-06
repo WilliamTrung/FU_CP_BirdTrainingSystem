@@ -156,6 +156,8 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
             return Ok();
         }
 
+        [HttpGet]
+        [Route("preCalculateConsultantPrice")]
         public async Task<IActionResult> PreCalculateConsultantPrice(int ticketId, int distance)
         {
             var price = await _consultingService.Staff.PreCalculateConsultantPrice(ticketId, distance);
