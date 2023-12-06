@@ -26,5 +26,6 @@ namespace AppService.AdviceConsultingService
         Task CreateNewDistancePricePolicy(DistancePricePolicyCreateNewServiceModel distancePricePolicy);
         Task UpdateDistancePricePolicy(DistancePricePolicyUpdateServiceModel distancePricePolicy);
         Task DeleteDistancePricePolicy(int distancePricePolicyId);
+        Task<decimal> PreCalculateConsultantPrice(int ticketId, int distance);
     }
 }

@@ -100,6 +100,14 @@ namespace AppService.AdviceConsultingService.Implementation
             return await _consulting.Staff.GetListNotAssignedConsultingTicket();
         }
 
+        public async Task<decimal> PreCalculateConsultantPrice(int ticketId, int distance)
+        {
+            dynamic price = await _transaction.CalculateConsultingTicketFinalPrice(ticketId, distance);
+            decimal finalPrice = price.GetType().GetProperty("FinalPrice").GetValue(price, null);
+
+            return finalPrice;
+        }
+
         public async Task UpdateConsultantPricePolicy(ConsultingPricePolicyUpdateServiceModel pricePolicy)
         {
             await _consulting.Staff.UpdateConsultantPricePolicy(pricePolicy);

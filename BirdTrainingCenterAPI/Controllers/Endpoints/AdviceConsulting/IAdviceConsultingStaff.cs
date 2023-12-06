@@ -53,5 +53,9 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting
         [HttpDelete]
         [Route("deleteDistancePricePolicy")]
         Task<IActionResult> DeleteDistancePricePolicy(int distancePricePolicyId);
+
+        [HttpGet]
+        [Route("preCalculateConsultantPrice")]
+        Task<IActionResult> PreCalculateConsultantPrice(int ticketId, int distance);
     }
 }
