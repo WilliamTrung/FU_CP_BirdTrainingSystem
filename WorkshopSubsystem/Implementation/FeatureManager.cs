@@ -19,6 +19,13 @@ namespace WorkshopSubsystem.Implementation
 
         public async Task<int> CreateWorkshop(WorkshopAddModel workshop)
         {
+            if (workshop.MinimumRegistration > workshop.MaximumRegistration)
+            {
+                throw new InvalidDataException("Minimum registration must be smaller than maximum registration");
+            } else if (workshop.MinimumRegistration < 1 || workshop.MaximumRegistration < 1 || workshop.RegisterEnd < 1 || workshop.Price < 1 || workshop.TotalSlot < 1)
+            {
+                throw new InvalidDataException("Value must be positive number");
+            }
             var entity = _mapper.Map<Workshop>(workshop);
             await _unitOfWork.WorkshopRepository.Add(entity);
             //add workshop class details to class
@@ -80,10 +87,10 @@ namespace WorkshopSubsystem.Implementation
             {
                 entity.Title = workshop.Title;
             }
-            if (workshop.TotalSlot != null)
-            {
-                entity.TotalSlot = (int)workshop.TotalSlot;
-            }
+            //if (workshop.TotalSlot != null)
+            //{
+            //    entity.TotalSlot = (int)workshop.TotalSlot;
+            //}
             if (workshop.Location != null)
             {
                 entity.Location = workshop.Location;
