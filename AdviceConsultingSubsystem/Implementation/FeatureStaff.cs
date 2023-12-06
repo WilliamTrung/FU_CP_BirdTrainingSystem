@@ -70,7 +70,7 @@ namespace AdviceConsultingSubsystem.Implementation
             return model;
         }
 
-        public async Task AssignTrainer(int trainerId, int ticketId)
+        public async Task AssignTrainer(int trainerId, int ticketId, int distance, decimal finalPrice, decimal discountedPrice)
         {
             var entity = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id.Equals(ticketId));
             if (entity == null)
@@ -78,6 +78,24 @@ namespace AdviceConsultingSubsystem.Implementation
                 throw new KeyNotFoundException($"{nameof(entity)} not found for id: {ticketId}");
             }
 
+            if (entity.OnlineOrOffline == false)
+            {
+                entity.Distance = distance;
+            }
+
+            var distancePricePolicy = new DistancePrice();
+            if (distance != 0)
+            {
+                distancePricePolicy = await _unitOfWork.DistancePriceRepository.GetFirst(x => x.From < distance && x.To > distance);
+            }
+            else
+            {
+                distancePricePolicy = await _unitOfWork.DistancePriceRepository.GetFirst(x => x.PricePerKm == 0);
+            }
+
+            entity.Price = finalPrice;
+            entity.DiscountedPrice = discountedPrice;
+            entity.DistancePriceId = distancePricePolicy.Id;
             entity.TrainerId = trainerId;
             entity.Status = (int)Models.Enum.ConsultingTicket.Status.Approved;
             await _unitOfWork.ConsultingTicketRepository.Update(entity);
@@ -87,7 +105,7 @@ namespace AdviceConsultingSubsystem.Implementation
             await _unitOfWork.TrainerSlotRepository.Add(slotEntity);
         }
 
-        public async Task ApproveConsultingTicket(int ticketId, int distance)
+        public async Task ApproveConsultingTicket(int ticketId, int distance, decimal finalPrice, decimal discountedPrice)
         {
             var entity = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id.Equals(ticketId));
             if (entity == null)
@@ -95,7 +113,25 @@ namespace AdviceConsultingSubsystem.Implementation
                 throw new KeyNotFoundException($"{nameof(entity)} not found for id: {ticketId}");
             }
 
-            entity.Distance = distance;
+            if (entity.OnlineOrOffline == false)
+            {
+                entity.Distance = distance;
+            }
+
+            var distancePricePolicy = new DistancePrice();
+            if (distance != 0)
+            {
+                distancePricePolicy = await _unitOfWork.DistancePriceRepository.GetFirst(x => x.From < distance && x.To > distance);
+            }
+            else
+            {
+                distancePricePolicy = await _unitOfWork.DistancePriceRepository.GetFirst(x => x.PricePerKm == 0);
+            }
+
+            entity.Price = finalPrice;
+            entity.DiscountedPrice = discountedPrice;
+            entity.DistancePriceId = distancePricePolicy.Id;
+
             entity.Status = (int)Models.Enum.ConsultingTicket.Status.Approved;
             await _unitOfWork.ConsultingTicketRepository.Update(entity);
         }

@@ -28,7 +28,7 @@ namespace AppService.AdviceConsultingService.Implementation
 
         public async Task SendConsultingTicket(ConsultingTicketCreateNewModel consultingTicket, int distance)
         {
-            dynamic price = await _transaction.CalculateConsultingTicketFinalPrice(consultingTicket, distance);
+            dynamic price = await _transaction.CalculateConsultingTicketFinalPriceForCustomer(consultingTicket, distance);
             decimal finalPrice = price.GetType().GetProperty("FinalPrice").GetValue(price, null);
             decimal discountedPrice = price.GetType().GetProperty("DiscountedPrice").GetValue(price, null);
             await _consulting.Customer.SendConsultingTicket(consultingTicket, distance, finalPrice, discountedPrice);
