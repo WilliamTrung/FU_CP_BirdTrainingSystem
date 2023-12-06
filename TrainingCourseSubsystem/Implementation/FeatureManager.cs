@@ -420,7 +420,7 @@ namespace TrainingCourseSubsystem.Implementation
         #endregion
         #region CheckOutPolicies
 
-        public async Task CreateCheckOutPolicy(PolicyAddModel policyAdd)
+        public async Task<int> CreateCheckOutPolicy(PolicyAddModel policyAdd)
         {
             if (policyAdd == null)
             {
@@ -431,6 +431,7 @@ namespace TrainingCourseSubsystem.Implementation
                 var entity = _mapper.Map<TrainingCourseCheckOutPolicy>(policyAdd);
                 entity.Status = (int)Models.Enum.TCCheckOutPolicy.Status.Active;
                 await _unitOfWork.TrainingCourseCheckOutPolicyRepository.Add(entity);
+                return entity.Id;
             }
         }
         public async Task EditCheckOutPolicy(PolicyModModel policyMod)
