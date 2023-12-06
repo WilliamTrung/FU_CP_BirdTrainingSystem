@@ -49,7 +49,7 @@ namespace AppService.TrainingCourseService
 
         #region CheckOutPolicies
 
-        Task CreateCheckOutPolicy(PolicyAddModel policyAdd);
+        Task<int> CreateCheckOutPolicy(PolicyAddModel policyAdd);
         Task EditCheckOutPolicy(PolicyModModel policyMod);
         Task ActiveCheckOutPolicy(int policyId);
         Task DisableCheckOutPolicy(int policyId);

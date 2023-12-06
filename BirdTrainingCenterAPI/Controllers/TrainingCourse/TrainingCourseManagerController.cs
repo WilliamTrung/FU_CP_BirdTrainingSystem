@@ -277,8 +277,8 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         [Route("create-checkoutpolicy")]
         public async Task<IActionResult> CreateCheckOutPolicy([FromBody] PolicyAddModel policyAdd)
         {
-            await _trainingCourseService.Manager.CreateCheckOutPolicy(policyAdd);
-            return Ok();
+            var rs = await _trainingCourseService.Manager.CreateCheckOutPolicy(policyAdd);
+            return Ok(rs);
         }
 
         [HttpPut]

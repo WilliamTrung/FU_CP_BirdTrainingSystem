@@ -124,9 +124,9 @@ namespace AppService.TrainingCourseService.Implement
 
         #region CheckOutPolicies
 
-        public async Task CreateCheckOutPolicy(PolicyAddModel policyAdd)
+        public async Task<int> CreateCheckOutPolicy(PolicyAddModel policyAdd)
         {
-            await _trainingCourse.Manager.CreateCheckOutPolicy(policyAdd);
+            return await _trainingCourse.Manager.CreateCheckOutPolicy(policyAdd);
         }
         public async Task EditCheckOutPolicy(PolicyModModel policyMod)
         {
