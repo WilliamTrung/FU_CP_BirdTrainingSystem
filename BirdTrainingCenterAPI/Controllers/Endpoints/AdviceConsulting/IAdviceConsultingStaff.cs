@@ -12,7 +12,7 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting
 
         [HttpPut]
         [Route("assignTrainer")]
-        Task<IActionResult> AssignTrainer(int trainerId, int ticketId);
+        Task<IActionResult> AssignTrainer(int trainerId, int ticketId, int distance);
 
         [HttpPut]
         [Route("approveConsultingTicket")]

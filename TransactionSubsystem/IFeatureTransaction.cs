@@ -12,7 +12,8 @@ namespace TransactionSubsystem
     {
         Task<decimal> CalculateDistancePrice(int distance);
         Task<decimal> CalculateMemberShipDiscountedPrice(int customerId, decimal price);
-        Task<dynamic> CalculateConsultingTicketFinalPrice(ConsultingTicketCreateNewModel consultingTicket, int distance);
+        Task<dynamic> CalculateConsultingTicketFinalPrice(int ticketId, int distance);
+        Task<dynamic> CalculateConsultingTicketFinalPriceForCustomer(ConsultingTicketCreateNewModel consultingTicket, int distance);
         Task<dynamic> CalculateFinalPrice(int customerId, decimal price);
         Task AddTransaction(TransactionAddModel transaction);
     }

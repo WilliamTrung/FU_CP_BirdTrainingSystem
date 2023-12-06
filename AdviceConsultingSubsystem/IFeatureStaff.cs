@@ -14,8 +14,8 @@ namespace AdviceConsultingSubsystem
         Task<IEnumerable<ConsultingTicketListViewModel>> GetListConsultingTicketsByCustomerID(int customerID);
         Task<IEnumerable<ConsultingTicketListViewModel>> GetListHandledConsultingTicket();
         Task<ConsultingTicketDetailViewModel> GetConsultingTicketByID(int id);
-        Task AssignTrainer(int trainerId, int ticketId);
-        Task ApproveConsultingTicket(int ticketId, int distance);
+        Task AssignTrainer(int trainerId, int ticketId, int distance, decimal finalPrice, decimal discountedPrice);
+        Task ApproveConsultingTicket(int ticketId, int distance, decimal finalPrice, decimal discountedPrice);
         Task CancelConsultingTicket(int ticketId);
         Task<IEnumerable<ConsultingTicketListViewModel>> GetListNotAssignedConsultingTicket();
         Task<IEnumerable<ConsultingTicketListViewModel>> GetListAssignedConsultingTicket();

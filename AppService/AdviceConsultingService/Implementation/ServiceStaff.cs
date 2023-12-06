@@ -1,4 +1,5 @@
 ﻿using AdviceConsultingSubsystem;
+using AppCore.Models;
 using ApplicationService.MailSettings;
 using Models.Entities;
 using Models.ServiceModels.AdviceConsultantModels;
@@ -21,7 +22,10 @@ namespace AppService.AdviceConsultingService.Implementation
         }
         public async Task ApproveConsultingTicket(int ticketId, int distance)
         {
-            await _consulting.Staff.ApproveConsultingTicket(ticketId, distance);
+            dynamic price = await _transaction.CalculateConsultingTicketFinalPrice(ticketId, distance);
+            decimal finalPrice = price.GetType().GetProperty("FinalPrice").GetValue(price, null);
+            decimal discountedPrice = price.GetType().GetProperty("DiscountedPrice").GetValue(price, null);
+            await _consulting.Staff.ApproveConsultingTicket(ticketId, distance, finalPrice, discountedPrice);
             var ticket = await _consulting.Other.GetConsultingTicketById(ticketId);
             var mailContent = new MailContent()
             {
@@ -31,9 +35,12 @@ namespace AppService.AdviceConsultingService.Implementation
             await _mail.SendEmailAsync(ticket.CustomerEmail, mailContent);
         }
 
-        public async Task AssignTrainer(int trainerId, int ticketId)
+        public async Task AssignTrainer(int trainerId, int ticketId, int distance)
         {
-            await _consulting.Staff.AssignTrainer(trainerId, ticketId);
+            dynamic price = await _transaction.CalculateConsultingTicketFinalPrice(ticketId, distance);
+            decimal finalPrice = price.GetType().GetProperty("FinalPrice").GetValue(price, null);
+            decimal discountedPrice = price.GetType().GetProperty("DiscountedPrice").GetValue(price, null);
+            await _consulting.Staff.AssignTrainer(trainerId, ticketId, distance, finalPrice, discountedPrice);
             var ticket = await _consulting.Other.GetConsultingTicketById(ticketId);
             var mailContent = new MailContent()
             {

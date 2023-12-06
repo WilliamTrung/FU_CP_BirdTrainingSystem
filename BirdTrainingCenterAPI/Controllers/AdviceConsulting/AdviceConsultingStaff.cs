@@ -48,7 +48,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
 
         [HttpPut]
         [Route("assignTrainer")]
-        public async Task<IActionResult> AssignTrainer(int trainerId, int ticketId)
+        public async Task<IActionResult> AssignTrainer(int trainerId, int ticketId, int distance)
         {
             try
             {
@@ -57,7 +57,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
                 {
                     return Unauthorized();
                 }
-                await _consultingService.Staff.AssignTrainer(trainerId, ticketId);
+                await _consultingService.Staff.AssignTrainer(trainerId, ticketId, distance);
                 return Ok();
             }
             catch (Exception ex)
