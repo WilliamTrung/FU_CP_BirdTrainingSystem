@@ -25,7 +25,8 @@ namespace WorkshopSubsystem.Implementation
                                                                                     && workshopId == c.WorkshopClass.WorkshopId
                                                                                     && c.Status == (int)Models.Enum.Workshop.Transaction.Status.Paid
                                                                                 , nameof(CustomerWorkshopClass.WorkshopClass)
-                                                                                , $"{nameof(CustomerWorkshopClass.WorkshopClass)}.{nameof(WorkshopClass.WorkshopClassDetails)}");
+                                                                                , $"{nameof(CustomerWorkshopClass.WorkshopClass)}.{nameof(WorkshopClass.WorkshopClassDetails)}"
+                                                                                , $"{nameof(CustomerWorkshopClass.WorkshopClass)}.{nameof(WorkshopClass.Workshop)}");
             var models = new List<WorkshopClassViewModel>();
             foreach (var entity in entities)
             {
