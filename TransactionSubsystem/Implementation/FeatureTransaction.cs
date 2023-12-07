@@ -75,10 +75,10 @@ namespace TransactionSubsystem.Implementation
             int bachientai = 0;
             int khoangcachbac = Models.ConfigModels.TransactionConstant.KhoangCachBac;
             decimal totalDistancePrice = 0;
-            decimal t = calculated - khoangcachbac;
             bool check = true;
             while (check)
             {
+                decimal t = calculated - khoangcachbac;
                 if (t > 0)
                 {
                     totalDistancePrice += listDistancePrice.ElementAt(bachientai) * khoangcachbac;
