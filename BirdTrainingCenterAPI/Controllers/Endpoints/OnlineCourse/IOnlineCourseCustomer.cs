@@ -13,7 +13,7 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.OnlineCourse
         Task<IActionResult> GetBillingInformation([FromQuery] int courseId);
         [HttpPost]
         [Route("/enroll")]
-        Task<IActionResult> EnrollCourse([FromBody] BillingModel billing);
+        Task<IActionResult> EnrollCourse([FromBody] PaymentModel paymentModel);
         [HttpGet]
         [EnableQuery]
         [Route("/enrolled-courses")]

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Models.ApiParamModels.Workshop;
 using Models.ServiceModels.WorkshopModels.Feedback;
 
 namespace BirdTrainingCenterAPI.Controllers.Endpoints.Workshop
@@ -18,7 +19,7 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.Workshop
         [Route("billing-information")]
         Task<IActionResult> GetBillingInformation(int workshopClassId);
         [Route("purchase")]
-        Task<IActionResult> Purchase(int workshopClassId);
+        Task<IActionResult> Purchase(WorkshopPaymentModel paymentModel);
         [Route("feedback")]
         Task<IActionResult> DoFeedback([FromBody] FeedbackWorkshopCustomerAddModel model);
         [Route("get-feedback")]

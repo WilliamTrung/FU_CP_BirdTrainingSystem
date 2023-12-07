@@ -1,5 +1,6 @@
 ﻿using GoogleApi.Entities.Maps.StreetView.Request.Enums;
 using Models.Enum.OnlineCourse.Customer.OnlineCourse;
+using Models.ServiceModels;
 using Models.ServiceModels.OnlineCourseModels;
 using Models.ServiceModels.OnlineCourseModels.Certificate;
 using Models.ServiceModels.OnlineCourseModels.Feedback;
@@ -48,12 +49,26 @@ namespace AppService.OnlineCourseService.Implementation
             throw new NotImplementedException();
         }
 
-        public async Task EnrollCourse(int customerId, BillingModel billing)
+        public async Task EnrollCourse(int customerId, int courseId, string paymentCode)
         {
-            if (await _onlineCourse.Customer.CheckEnrolledCourse(customerId, billing.CourseId) != Models.Enum.OnlineCourse.Customer.OnlineCourse.Status.Unenrolled)
+            if (await _onlineCourse.Customer.CheckEnrolledCourse(customerId, courseId) != Models.Enum.OnlineCourse.Customer.OnlineCourse.Status.Unenrolled)
             {
                 throw new InvalidOperationException("Customer has enrolled to course!");
             }
+            var billing = await GetBillingInformation(customerId, courseId);
+            string formattedDateTime = DateTime.UtcNow.AddHours(7).ToString("ddMMMyyyyhhmm");
+            var transactionAddModel = new TransactionAddModel()
+            {
+                CustomerId = customerId,
+                EntityId = courseId,
+                EntityTypeId = (int)Models.Enum.EntityType.WorkshopClass,
+                PaymentCode = paymentCode,
+                Detail = $"{paymentCode}:{customerId}:{billing.Email}-enroll online course {courseId}:{billing.CourseTitle}-at:{formattedDateTime}",
+                Status = (int)Models.Enum.Transaction.Status.Paid,
+                Title = "Online course enrolled",
+                TotalPayment = billing.TotalPrice,
+            };
+            await _transaction.AddTransaction(transactionAddModel);
             await _onlineCourse.Customer.EnrollCourse(customerId, billing);
         }
 
@@ -69,6 +84,7 @@ namespace AppService.OnlineCourseService.Implementation
             var DiscountedPrice = final.GetType().GetProperty("DiscountedPrice").GetValue(final, null);
             var billing = new BillingModel()
             {
+                Email = preBillingInformation.Email,
                 CourseId = courseId,
                 CourseTitle = preBillingInformation.CourseTitle,
                 CoursePrice = preBillingInformation.CoursePrice,

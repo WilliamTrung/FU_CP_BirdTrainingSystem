@@ -185,7 +185,7 @@ namespace OnlineCourseSubsystem.Implementation
 
         public async Task<PreBillingModel> GetPreBillingInformation(int customerId, int courseId)
         {
-            var customer = await _unitOfWork.CustomerRepository.GetFirst(c => c.Id == customerId, nameof(Customer.MembershipRank));
+            var customer = await _unitOfWork.CustomerRepository.GetFirst(c => c.Id == customerId, nameof(Customer.MembershipRank), nameof(Customer.User));
             if(customer == null)
             {
                 throw new KeyNotFoundException("Customer is not found!");
@@ -199,6 +199,7 @@ namespace OnlineCourseSubsystem.Implementation
 #pragma warning disable CS8601 // Possible null reference assignment.
             var preBillingModel = new PreBillingModel()
             {
+                Email = customer.User.Email,
                 CoursePrice = course.Price.Value,
                 DiscountPercent = customer.MembershipRank.Discount.Value,
                 MembershipName = customer.MembershipRank.Name,
