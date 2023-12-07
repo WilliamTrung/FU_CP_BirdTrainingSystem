@@ -96,7 +96,7 @@ namespace WorkshopSubsystem.Implementation
                 await _unitOfWork.CustomerWorkshopClassRepository.Update(customerRegistered);
             }
         }
-        public async Task OnPurchaseClass(int customerId, int workshopClassId, BillingModel billingModel)
+        public async Task<CustomerWorkshopClass> OnPurchaseClass(int customerId, int workshopClassId, BillingModel billingModel)
         {
             var workshopClass = await _unitOfWork.WorkshopClassRepository.GetFirst(c => c.Id == workshopClassId, nameof(WorkshopClass.Workshop));
             if (workshopClass == null)
@@ -118,12 +118,22 @@ namespace WorkshopSubsystem.Implementation
                 throw new InvalidOperationException("Customer is currently unavailable!");
             }
             await Register(customerId, workshopClassId);
-            var customerRegistered = await _unitOfWork.CustomerWorkshopClassRepository.GetFirst(c => c.WorkshopClassId == workshopClassId && c.CustomerId == customerId);
+            var customerRegistered = await _unitOfWork.CustomerWorkshopClassRepository.GetFirst(c => c.WorkshopClassId == workshopClassId 
+                                                                                                    && c.CustomerId == customerId
+                                                                                                    ,nameof(CustomerWorkshopClass.Customer)
+                                                                                                    , $"Customer.{nameof(Customer.User)}"
+                                                                                                    , nameof(CustomerWorkshopClass.WorkshopClass)
+                                                                                                    , $"WorkshopClass.{nameof(WorkshopClass.Workshop)}");
+            if(customerRegistered == null)
+            {
+                throw new KeyNotFoundException("Could not register this workshop!");
+            }
             customerRegistered.Price = billingModel.TotalPrice;
             customerRegistered.DiscountedPrice = billingModel.DiscountedPrice;
             customerRegistered.RefundRate = 0;
             customerRegistered.Status = (int)Models.Enum.Workshop.Transaction.Status.Paid;
             await _unitOfWork.CustomerWorkshopClassRepository.Update(customerRegistered);
+            return customerRegistered;
 
             //var transaction = new Transaction
             //{
