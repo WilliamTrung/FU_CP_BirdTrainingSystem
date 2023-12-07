@@ -888,17 +888,17 @@ namespace AppCore.Context
                 entity.Property(e => e.DateCreate).HasColumnType("date");
 
                 entity.Property(e => e.Detail)
-                    .HasMaxLength(100)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.Property(e => e.PaymentCode)
-                    .HasMaxLength(100)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.Property(e => e.PaymentDate).HasColumnType("date");
 
                 entity.Property(e => e.Title)
-                    .HasMaxLength(50)
+                    .HasMaxLength(255)
                     .IsUnicode(false);
 
                 entity.Property(e => e.TotalPayment).HasColumnType("money");

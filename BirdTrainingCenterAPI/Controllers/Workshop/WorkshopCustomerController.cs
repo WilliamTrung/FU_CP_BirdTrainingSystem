@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
+using Models.ApiParamModels.Workshop;
 using Models.AuthModels;
 using Models.ServiceModels.WorkshopModels.Feedback;
 using SP_Middleware;
@@ -96,7 +97,7 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
         }
         [HttpPost]
         [Route("purchase")]
-        public async Task<IActionResult> Purchase(int workshopClassId)
+        public async Task<IActionResult> Purchase(WorkshopPaymentModel paymentModel)
         {
             var accessToken = Request.DeserializeToken(_authService);
             if (accessToken == null)
@@ -104,7 +105,7 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
                 return Unauthorized();
             }
             var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
-            await _workshopService.Customer.PurchaseClass(Int32.Parse(customerId.Value), workshopClassId);
+            await _workshopService.Customer.PurchaseClass(Int32.Parse(customerId.Value), paymentModel.WorkshopClassId, paymentModel.PaymentCode);
             return Ok();
         }
         [HttpPost]
