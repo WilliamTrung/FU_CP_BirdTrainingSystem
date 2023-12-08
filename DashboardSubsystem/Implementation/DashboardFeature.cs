@@ -74,5 +74,13 @@ namespace DashboardSubsystem.Implementation
             return model;
 
         }
+
+        public async Task<IEnumerable<TransactionModel>> GetTransactions()
+        {
+            var entities = await _uow.TransactionRepository.Get(null, nameof(Transaction.Customer)
+                                                                    , $"{nameof(Transaction.Customer)}.{nameof(Customer.User)}");
+            var models = _mapper.Map<IEnumerable<TransactionModel>>(entities);
+            return models;
+        }
     }
 }
