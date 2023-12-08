@@ -27,7 +27,7 @@ namespace AppService.DashboardService.Implementation
 
         public Task<DashboardWorkshop> GetDashboardWorkshop()
         {
-            throw new NotImplementedException();
+            return _dashboard.GetDashboardWorkshop();
         }
     }
 }

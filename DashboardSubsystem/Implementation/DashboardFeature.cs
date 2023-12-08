@@ -1,6 +1,7 @@
 ﻿using AppRepository.UnitOfWork;
 using AutoMapper;
 using Models.DashboardModels;
+using Models.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,9 +52,27 @@ namespace DashboardSubsystem.Implementation
             return model;
         }
 
-        public Task<DashboardWorkshop> GetDashboardWorkshop()
+        public async Task<DashboardWorkshop> GetDashboardWorkshop()
         {
-            throw new NotImplementedException();
+            var entities = await _uow.CustomerWorkshopClassRepository.Get();
+            var totalAmount = entities.Count();
+            var attendances = await _uow.WorkshopAttendanceRepository.Get(c => c.Status != (int)Models.Enum.Workshop.Class.Customer.Status.NotYet);
+            var totalAttendance = attendances.Count();
+            var presentAmount = attendances.Count(c => c.Status == (int)Models.Enum.Workshop.Class.Customer.Status.Attended);
+            float presentRatio = (float)presentAmount / totalAttendance;
+
+            var classes = await _uow.WorkshopClassRepository.Get(c => c.Workshop.Status == (int)Models.Enum.Workshop.Status.Active
+                                                                    && c.Status != (int)Models.Enum.Workshop.Class.Status.Cancelled
+                                                                    && c.Status != (int)Models.Enum.Workshop.Class.Status.Completed
+                                                                    , nameof(WorkshopClass.Workshop));
+            var model = new DashboardWorkshop()
+            {
+                CustomerAttempts = totalAmount,
+                PresentRatio = presentRatio,
+                WorkshopClass = classes.Count(),
+            };
+            return model;
+
         }
     }
 }
