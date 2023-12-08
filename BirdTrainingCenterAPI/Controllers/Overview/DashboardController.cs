@@ -35,9 +35,10 @@ namespace BirdTrainingCenterAPI.Controllers.Overview
         [HttpGet]
         [Route("workshop")]
         [EnableQuery]
-        public Task<IActionResult> GetWorkshopOverview()
+        public async Task<IActionResult> GetWorkshopOverview()
         {
-            throw new NotImplementedException();
+            var result = await _dashboard.GetDashboardWorkshop();
+            return Ok(result);
         }
         [HttpGet]
         [Route("training-course")]
