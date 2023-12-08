@@ -170,7 +170,7 @@ namespace AdministrativeSubsystem.Implementation
 
         public async Task<IEnumerable<TrainerModel>> GetTrainersInformation()
         {
-            var trainers = await _uow.TrainerRepository.Get(expression: null
+            var trainers = await _uow.TrainerRepository.Get(expression: c => c.User.RoleId == (int)Models.Enum.Role.Trainer
                                                                    , nameof(Trainer.TrainerSkills)
                                                                    , nameof(Trainer.User));
             var trainerModels = _mapper.Map<List<TrainerModel>>(trainers);
