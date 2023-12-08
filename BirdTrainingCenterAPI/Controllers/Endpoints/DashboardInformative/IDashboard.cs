@@ -21,5 +21,9 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.DashboardInformative
         [Route("training-course")]
         [EnableQuery]
         Task<IActionResult> GetTrainingCourseOverview();
+        [HttpGet]
+        [Route("transactions")]
+        [EnableQuery]
+        Task<IActionResult> GetTransactions();
     }
 }

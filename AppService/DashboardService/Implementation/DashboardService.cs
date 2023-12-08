@@ -29,5 +29,10 @@ namespace AppService.DashboardService.Implementation
         {
             return _dashboard.GetDashboardWorkshop();
         }
+
+        public Task<IEnumerable<TransactionModel>> GetTransactions()
+        {
+            return _dashboard.GetTransactions();
+        }
     }
 }

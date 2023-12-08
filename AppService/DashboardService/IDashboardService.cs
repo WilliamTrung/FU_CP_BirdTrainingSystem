@@ -13,5 +13,6 @@ namespace AppService.DashboardService
         Task<DashboardConsultingTicket> GetDashboardConsultingTicket();
         Task<DashboardOnlineCourse> GetDashboardOnlineCourse();
         Task<DashboardWorkshop> GetDashboardWorkshop();
+        Task<IEnumerable<TransactionModel>> GetTransactions();
     }
 }

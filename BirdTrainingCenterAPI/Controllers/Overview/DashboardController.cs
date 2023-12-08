@@ -47,5 +47,13 @@ namespace BirdTrainingCenterAPI.Controllers.Overview
         {
             throw new NotImplementedException();
         }
+        [HttpGet]
+        [Route("transactions")]
+        [EnableQuery]
+        public async Task<IActionResult> GetTransactions()
+        {
+            var result = await _dashboard.GetTransactions();
+            return Ok(result);
+        }
     }
 }
