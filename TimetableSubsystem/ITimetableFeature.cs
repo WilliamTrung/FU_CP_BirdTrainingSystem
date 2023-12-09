@@ -19,8 +19,8 @@ namespace TimetableSubsystem
         Task<TrainerSlotDetailModel> GetTrainerSlotDetail(int trainerSlotId); 
         Task<bool> CheckTrainerFree(int trainerId, DateTime date, int slotId);
         Task<IEnumerable<TimetableModel>> GetTrainerTimetable(DateOnly from, DateOnly to, int trainerId);
-        Task<IEnumerable<TrainerModel>> GetListTrainer(Models.Enum.Trainer.Category category);
-        Task<IEnumerable<TrainerModel>> GetListFreeTrainerOnSlotAndDate(DateOnly date, int slotId, Models.Enum.Trainer.Category category);
+        Task<IEnumerable<TrainerModel>> GetListTrainer();
+        Task<IEnumerable<TrainerModel>> GetListFreeTrainerOnSlotAndDate(DateOnly date, int slotId);
         Task<SlotModel> GetSlotBySlotId(int slotId);
     }
 }
