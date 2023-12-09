@@ -14,4 +14,5 @@ namespace Models.Enum
         Manager = 3,
         Administrator = 4,
     }
+    //public enum 
 }
