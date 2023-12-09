@@ -62,6 +62,23 @@ namespace TransactionSubsystem.Implementation
             return price;
         }
 
+        public async Task<dynamic> CalculateConsultingTicketFinalPriceForTrainer(int ticketId, int totalSlot)
+        {
+            var ticket = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id == ticketId);
+            decimal distancePrice = 0;
+            if (ticket.OnlineOrOffline == true)
+            {
+                distancePrice = await CalculateDistancePrice((int)ticket.Distance);
+            }
+            var pricePolicy = await _unitOfWork.ConsultingPricePolicyRepository.GetFirst(x => x.OnlineOrOffline == ticket.OnlineOrOffline);
+            var totalPrice = distancePrice + pricePolicy.Price*totalSlot;
+            var discountedPrice = await CalculateMemberShipDiscountedPrice(ticket.CustomerId, totalPrice);
+            var finalPrice = totalPrice - distancePrice;
+
+            dynamic price = new { FinalPrice = finalPrice, DiscountedPrice = discountedPrice };
+            return price;
+        }
+
         public async Task<decimal> CalculateDistancePrice(int distance)
         {
             if (distance == 0)

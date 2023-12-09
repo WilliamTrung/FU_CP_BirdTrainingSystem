@@ -221,5 +221,24 @@ namespace AdviceConsultingSubsystem.Implementation
             var entity = await _unitOfWork.DistancePriceRepository.GetFirst(x => x.Id == distancePricePolicyId);
             await _unitOfWork.DistancePriceRepository.Update(entity);
         }
+
+        public async Task CreateConsultingType(ConsultingTypeCreateNewServiceModel consultingType)
+        {
+            var entity = _mapper.Map<ConsultingType>(consultingType);
+            await _unitOfWork.ConsultingTypeRepository.Add(entity);
+        }
+
+        public async Task UpdateConsultingType(ConsultingTypeServiceModel consultingType)
+        {
+            var entity = await _unitOfWork.ConsultingTypeRepository.GetFirst(x => x.Id == consultingType.Id);
+            entity.Name = consultingType.Name;
+            await _unitOfWork.ConsultingTypeRepository.Update(entity);
+        }
+
+        public async Task DeleteConsultingType(int consultingTypeId)
+        {
+            var entity = await _unitOfWork.ConsultingTypeRepository.GetFirst(x => x.Id == consultingTypeId);
+            await _unitOfWork.ConsultingTypeRepository.Delete(entity);
+        }
     }
 }

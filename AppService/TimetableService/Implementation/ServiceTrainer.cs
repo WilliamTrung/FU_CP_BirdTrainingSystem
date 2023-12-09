@@ -17,6 +17,12 @@ namespace AppService.TimetableService.Implementation
         {
         }
 
+        public async Task<IEnumerable<SlotModel>> GetAvailableFinishTime(string actualSlotStart)
+        {
+            var result = await _timetable.GetAvailableFinishTime(actualSlotStart);
+            return result;
+        }
+
         public async Task<IEnumerable<TrainerSlotModel>> GetTrainerSlotDetail(int trainerId, DateTime from, DateTime to)
         {
             var result = await _timetable.GetTrainerOccupiedSlots(from.ToDateOnly(), to.ToDateOnly(), trainerId);
