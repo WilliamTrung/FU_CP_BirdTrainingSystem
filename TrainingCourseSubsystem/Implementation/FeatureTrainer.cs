@@ -61,7 +61,7 @@ namespace TrainingCourseSubsystem.Implementation
             else
             {
                 entity.Evidence = markDone.Evidence;
-                entity.TrainingDoneDate = DateTime.Now;
+                entity.TrainingDoneDate = DateTime.UtcNow.AddHours(7);
                 if (Enum.TryParse(markDone.Status, out Models.Enum.BirdTrainingProgress.Status result))
                 {
                     entity.Status = (int)result;
@@ -85,7 +85,7 @@ namespace TrainingCourseSubsystem.Implementation
                 {
                     var birdTrainingCourse = _unitOfWork.BirdTrainingCourseRepository.GetFirst(e => e.Id == entity.BirdTrainingCourseId
                                                                                                , nameof(BirdTrainingCourse.TrainingCourse)).Result;
-                    birdTrainingCourse.TrainingDoneDate = DateTime.Now;
+                    birdTrainingCourse.TrainingDoneDate = DateTime.UtcNow.AddHours(7);
                     birdTrainingCourse.Status = (int)Models.Enum.BirdTrainingCourse.Status.TrainingDone;
 
                     var bird = _unitOfWork.BirdRepository.GetFirst(e => e.Id == birdTrainingCourse.BirdId).Result;
@@ -163,7 +163,7 @@ namespace TrainingCourseSubsystem.Implementation
             }
         }
 
-        public async Task<int> MarkTrainingSlotDone(int birdTrainingReportId)//status 206 de chuyen qua trang khac
+        public async Task<int> MarkTrainingSlotDone(int birdTrainingReportId)//status 206 de chuyen qua trang
         {
             int result = (int)Models.Enum.BirdTrainingReport.FirstOrEnd.MidSlot;
             var entity = await _unitOfWork.BirdTrainingReportRepository.GetFirst(e => e.Id == birdTrainingReportId
