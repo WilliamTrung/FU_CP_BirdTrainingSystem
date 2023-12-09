@@ -20,5 +20,7 @@ namespace AppService.AdministrativeService
         IEnumerable<Models.Enum.Trainer.Status> GetTrainerStatuses();
         Task UpdateStatus(UserStatusUpdateModel model);
         Task DeleteUser(int userId);
+        Task<int> CreateUser(UserAdminAddModel model);
+        Task TopupCustomer(int customerId, decimal amount);
     }
 }

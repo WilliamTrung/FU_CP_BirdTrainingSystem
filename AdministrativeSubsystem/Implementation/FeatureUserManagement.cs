@@ -6,6 +6,7 @@ using Models.Enum;
 using Models.ServiceModels;
 using Models.ServiceModels.UserModels;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
@@ -34,20 +35,136 @@ namespace AdministrativeSubsystem.Implementation
             return models;
         }
 
-        public Task UpdateRecord(UserAdminUpdateModel user)
+        public async Task UpdateRecord(UserAdminUpdateModel user)
         {
-            throw new NotImplementedException();
+            if(user.Role == Role.Customer)
+            {
+                throw new InvalidOperationException("Cannot change customer information");
+            }
+            if(user.Role == Role.Trainer)
+            {
+                var trainer = await _uow.TrainerRepository.GetFirst(c => c.Id == user.Id, nameof(Trainer.User));
+                if (trainer == null)
+                {
+                    throw new KeyNotFoundException("Trainer not found!");
+                }
+                if (user.BirthDay != null)
+                {
+                    trainer.BirthDay = user.BirthDay;
+                }
+                if (user.Gender != null)
+                {
+                    trainer.Gender = user.Gender;
+                }
+                if(user.IsFullTime != null)
+                {
+                    trainer.IsFullTime = (bool)user.IsFullTime;
+                }
+                if(user.Consultantable != null)
+                {
+                    trainer.ConsultantAble = (bool)user.Consultantable;
+                }
+                if(user.GgMeetLink != null)
+                {
+                    trainer.GgMeetLink = user.GgMeetLink;
+                }
+
+                if(user.PhoneNumber != null)
+                {
+                    var phone = decimal.Parse(user.PhoneNumber);
+                    var find = await _uow.TrainerRepository.Get(c => c.User.PhoneNumber == phone && c.Id != user.Id, nameof(Trainer.User));
+                    if (find.Any())
+                    {
+                        throw new InvalidOperationException("This phone number has existed!");
+                    }
+                    trainer.User.PhoneNumber = phone;
+                }
+                if(user.Name != null)
+                {
+                    trainer.User.Name = user.Name;
+                }
+                if(user.Password != null)
+                {
+                    trainer.User.Password = user.Password;
+                }
+                await _uow.TrainerRepository.Update(trainer);
+            } else
+            {
+                var staff = await _uow.UserRepository.GetFirst(c => c.Id == user.Id);
+                if(staff == null)
+                {
+                    throw new KeyNotFoundException("User not found!");
+                }
+                if (user.PhoneNumber != null)
+                {
+                    var phone = decimal.Parse(user.PhoneNumber);
+                    var find = await _uow.UserRepository.Get(c => c.PhoneNumber == phone && c.Id != user.Id);
+                    if (find.Any())
+                    {
+                        throw new InvalidOperationException("This phone number has existed!");
+                    }
+                    staff.PhoneNumber = phone;
+                }
+                if (user.Name != null)
+                {
+                    staff.Name = user.Name;
+                }
+                if (user.Password != null)
+                {
+                    
+                    staff.Password = user.Password;
+                }
+                await _uow.UserRepository.Update(staff);
+            }
         }
 
         public async Task UpdateRole(UserRoleUpdateModel model)
         {
-            var entity = await _uow.UserRepository.GetFirst(c => c.Id == model.Id);
-            if(entity.RoleId == (int)model.Role)
+            if(model.UserId == null && model.TrainerId == null)
             {
-                throw new InvalidOperationException("Role is unchanged!");
+                throw new InvalidDataException("No id passed!");
+            } else if (model.UserId != null && model.TrainerId != null) {
+                throw new InvalidDataException("Ambiguous id!");
             }
-            entity.RoleId = (int)model.Role;
-            await _uow.UserRepository.Update(entity);
+            if(model.UserId != null)
+            {
+                var entity = await _uow.UserRepository.GetFirst(c => c.Id == model.UserId);
+                if (entity.RoleId == (int)model.Role)
+                {
+                    throw new InvalidOperationException("Role is unchanged!");
+                }
+                if (typeof(AdministrativeRole).IsEnumDefined(entity.RoleId) && typeof(AdministrativeRole).IsEnumDefined((int)model.Role))
+                {
+                    entity.RoleId = (int)model.Role;
+                    await _uow.UserRepository.Update(entity);
+                }
+                else
+                {
+                    throw new InvalidOperationException("Current role cannot be changed!");
+                }
+
+            } else
+            {
+                var entity = await _uow.TrainerRepository.GetFirst(c => c.Id == model.TrainerId, nameof(Trainer.User));
+                if (entity.User.RoleId == (int)model.Role)
+                {
+                    throw new InvalidOperationException("Role is unchanged!");
+                }
+                if (!typeof(AdministrativeRole).IsEnumDefined(entity.User.RoleId))
+                {
+                    throw new InvalidOperationException("Current role cannot be changed!");
+                } else if (!typeof(AdministrativeRole).IsEnumDefined((int)model.Role))
+                {
+                    throw new InvalidOperationException("Cannot change to this role!");
+                }
+                else
+                {
+                    entity.User.RoleId = (int)model.Role;
+                    await _uow.TrainerRepository.Update(entity);                    
+                }
+            }
+            
+            
         }
         public IEnumerable<AdministrativeRole> GetRoles()
         {
@@ -177,9 +294,26 @@ namespace AdministrativeSubsystem.Implementation
             return trainerModels;
         }
 
-        public Task CreateAdministrativeAccount()
+        public async Task<int> CreateAdministrativeAccount(UserAdminAddModel model)
         {
-            throw new NotImplementedException();
+            //check duplicate email
+            var check = await _uow.UserRepository.GetFirst(c => c.Email == model.Email || c.PhoneNumber == Decimal.Parse(model.PhoneNumber));
+            if (check != null)
+            {
+                throw new InvalidOperationException("Existing email or phone number!");
+            }
+            //add user and customer record
+            var user = _mapper.Map<User>(model);
+            await _uow.UserRepository.Add(user);
+            if(model.Role == AdministrativeRole.Trainer)
+            {
+                var trainer = _mapper.Map<Trainer>(model);
+                trainer.UserId = user.Id;
+                await _uow.TrainerRepository.Add(trainer);
+                return trainer.Id;
+            }
+            return user.Id;
+
         }
     }
 }

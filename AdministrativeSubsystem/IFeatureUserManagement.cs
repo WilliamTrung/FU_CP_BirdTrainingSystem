@@ -20,6 +20,6 @@ namespace AdministrativeSubsystem
         Task GenerateRoleModel(int userId);
         Task UpdateStatus(UserStatusUpdateModel model);
         Task DeleteUser(int userId);
-        Task CreateAdministrativeAccount();
+        Task<int> CreateAdministrativeAccount(UserAdminAddModel model);
     }
 }

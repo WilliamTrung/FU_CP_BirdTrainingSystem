@@ -8,7 +8,8 @@ namespace Models.ServiceModels.UserModels
 {
     public class UserRoleUpdateModel
     {
-        public int Id { get; set; }
+        public int? TrainerId { get; set; }
+        public int? UserId { get; set; }
         public Models.Enum.Role Role { get; set; }
     }
 }
