@@ -9,6 +9,7 @@ using Models.ServiceModels.UserModels.Profile;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,6 +21,18 @@ namespace SP_AutoMapperConfig
         public AdminitrationProfile() {
             Map_User_UserAdminViewModel();
             Map_User_ProfileViewModel();
+            Map_UserAdminAddModel_Trainer();
+            Map_UserAdminAddModel_User();
+        }
+        private void Map_UserAdminAddModel_User()
+        {
+            CreateMap<UserAdminAddModel, User>()
+                .AfterMap<MappingAction_UserAdminAddModel_User>();
+        }
+        private void Map_UserAdminAddModel_Trainer()
+        {
+            CreateMap<UserAdminAddModel, Trainer>()
+                .AfterMap<MappingAction_UserAdminAddModel_Trainer>();
         }
         private void Map_User_UserAdminViewModel()
         {
@@ -56,7 +69,7 @@ namespace SP_AutoMapperConfig
                 destination.BirthDay = customer.BirthDay;
                 destination.Membership = customer.MembershipRank.Name;
                 destination.Gender = customer.Gender;
-                
+                destination.Id = customer.Id;
                 destination.TotalPayment = customer.TotalPayment;
                 destination.Status = ((Models.Enum.Customer.Status)Enum.ToObject(typeof(Models.Enum.Customer.Status), customer.Status)).ToString();
             } else if(destination.Role == Role.Trainer)
@@ -64,6 +77,7 @@ namespace SP_AutoMapperConfig
                 _adminFeature.User.GenerateRoleModel(destination.Id).Wait();
                 Trainer customer = _uow.TrainerRepository.GetFirst(c => c.UserId == destination.Id).Result;
                 var trainer = source.Trainers.First();  
+                destination.Id = trainer.Id;
                 destination.BirthDay = trainer.BirthDay;
                 destination.Gender = trainer.Gender;
                 destination.IsFulltime = trainer.IsFullTime;
@@ -100,6 +114,30 @@ namespace SP_AutoMapperConfig
                 destination.GgMeetLink = trainer.GgMeetLink;
             }
 
+        }
+    }
+    public class MappingAction_UserAdminAddModel_User : IMappingAction<UserAdminAddModel, User>
+    {
+        public void Process(UserAdminAddModel source, User destination, ResolutionContext context)
+        {
+            destination.PhoneNumber = decimal.Parse(source.PhoneNumber);
+            destination.Avatar = source.Avatar == null?string.Empty:source.Avatar;
+            destination.Email = source.Email;
+            destination.Name = source.Name;
+            destination.Password = source.Password;
+            destination.RoleId = (int)source.Role;          
+        }
+    }
+    public class MappingAction_UserAdminAddModel_Trainer : IMappingAction<UserAdminAddModel, Trainer>
+    {
+        public void Process(UserAdminAddModel source, Trainer destination, ResolutionContext context)
+        {
+            destination.BirthDay = source.BirthDay;
+            destination.ConsultantAble = source.Consultantable.HasValue ? source.Consultantable.Value : false;
+            destination.Gender = source.Gender;
+            destination.GgMeetLink = source.GgMeetLink;
+            destination.IsFullTime = source.IsFulltime.HasValue ? source.IsFulltime.Value : true;
+                destination.Status = (int)Models.Enum.Trainer.Status.Working;
         }
     }
 }
