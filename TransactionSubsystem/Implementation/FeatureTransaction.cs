@@ -25,6 +25,13 @@ namespace TransactionSubsystem.Implementation
         {
             var entity = _mapper.Map<Transaction>(transaction);
             await _unitOfWork.TransactionRepository.Add(entity);
+
+            var customer = await _unitOfWork.CustomerRepository.GetFirst(x => x.Id == entity.CustomerId);
+            if (customer != null) 
+            {
+                customer.TotalPayment += entity.TotalPayment;
+                await _unitOfWork.CustomerRepository.Update(customer);
+            }
         }
 
         public async Task<dynamic> CalculateConsultingTicketFinalPrice(int ticketId, int distance)

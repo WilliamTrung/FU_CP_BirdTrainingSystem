@@ -46,10 +46,10 @@ namespace TimetableSubsystem.Implementation
             return true;
         }
 
-        public async Task<IEnumerable<TrainerModel>> GetListFreeTrainerOnSlotAndDate(DateOnly date, int slotId, Models.Enum.Trainer.Category category)
+        public async Task<IEnumerable<TrainerModel>> GetListFreeTrainerOnSlotAndDate(DateOnly date, int slotId)
         {
             var trainerFreeOnSLotAndDate = new List<TrainerModel>();
-            var freeTrainerOnDate = await _unitOfWork.TrainerRepository.Get(x => x.Category == (int)category && !(x.TrainerSlots.Count(slot => slot.Date.Day == date.Day
+            var freeTrainerOnDate = await _unitOfWork.TrainerRepository.Get(x => !(x.TrainerSlots.Count(slot => slot.Date.Day == date.Day
                                                                                             && slot.Date.Month == date.Month
                                                                                             && slot.Date.Year == date.Year
                                                                                             && slot.Status == (int)Models.Enum.TrainerSlotStatus.Enabled)
@@ -80,9 +80,9 @@ namespace TimetableSubsystem.Implementation
             return trainerFreeOnSLotAndDate;
         }
 
-        public async Task<IEnumerable<TrainerModel>> GetListTrainer(Models.Enum.Trainer.Category category)
+        public async Task<IEnumerable<TrainerModel>> GetListTrainer()
         {
-            var entities = await _unitOfWork.TrainerRepository.Get(x => x.Category == (int)category, nameof(Trainer.User));
+            var entities = await _unitOfWork.TrainerRepository.Get();
             var models = new List<TrainerModel>();
             foreach (var entity in entities) 
             {

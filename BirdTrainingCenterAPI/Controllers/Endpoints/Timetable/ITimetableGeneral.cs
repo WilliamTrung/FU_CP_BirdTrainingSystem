@@ -10,6 +10,6 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.Timetable
         Task<IActionResult> GetOccupiedSlots([FromQuery] int trainerSlotId);
         [HttpPost]
         [Route("free-trainers")]
-        Task<IActionResult> GetTrainerFreeOnSlotAndDate([FromBody] GetTrainerFreeOnSlotAndDate model, [FromQuery] string category);
+        Task<IActionResult> GetTrainerFreeOnSlotAndDate([FromBody] GetTrainerFreeOnSlotAndDate model);
     }
 }

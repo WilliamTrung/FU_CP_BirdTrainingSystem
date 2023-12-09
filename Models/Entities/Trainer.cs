@@ -20,7 +20,7 @@ namespace Models.Entities
         public bool? Gender { get; set; }
         public bool IsFullTime { get; set; }
         public string? GgMeetLink { get; set; }
-        public int Category { get; set; }
+        public bool ConsultantAble { get; set; }
         public int Status { get; set; }
 
         public virtual User User { get; set; } = null!;
