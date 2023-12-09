@@ -429,6 +429,12 @@ namespace TrainingCourseSubsystem.Implementation
                 //}
                 else
                 {
+                    var policy = _unitOfWork.TrainingCourseCheckOutPolicyRepository.GetFirst(e => e.Id == birdTrainingCourse.TrainingPricePolicyId
+                                                                                                  && e.Status == (int)Models.Enum.TCCheckOutPolicy.Status.Active);
+                    if(policy == null)
+                    {
+                        throw new InvalidOperationException("Training Price Policy is not valid or active");
+                    }
 
                     entity.TrainingCourseCheckOutPolicyId = birdTrainingCourse.TrainingPricePolicyId;
                     await _unitOfWork.BirdTrainingCourseRepository.Update(entity);
