@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AppRepository\AppRepository.csproj" />
+    <ProjectReference Include="..\TimetableSubsystem\TimetableSubsystem.csproj" />
   </ItemGroup>
 
 </Project>

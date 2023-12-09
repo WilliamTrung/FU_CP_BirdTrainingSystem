@@ -10,6 +10,7 @@ using Models.AuthModels;
 using Models.ApiParamModels.AdviceConsulting;
 using Models.ConfigModels;
 using Microsoft.Extensions.Options;
+using AppService.TimetableService;
 
 namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
 {
@@ -19,10 +20,12 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
     {
         private readonly IFirebaseService _firebaseService;
         private readonly FirebaseBucket _bucket;
-        public AdviceConsultingTrainer(IAdviceConsultingService adviceConsultingService, IAuthService authService, IFirebaseService firebaseService, IOptions<FirebaseBucket> bucket) : base(adviceConsultingService, authService)
+        private readonly ITimetableService _timetableService;
+        public AdviceConsultingTrainer(IAdviceConsultingService adviceConsultingService, IAuthService authService, IFirebaseService firebaseService, IOptions<FirebaseBucket> bucket, ITimetableService timetableService) : base(adviceConsultingService, authService)
         {
             _firebaseService = firebaseService;
             _bucket = bucket.Value;
+            _timetableService = timetableService;
         }
 
         [HttpPut]
@@ -116,6 +119,14 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
+        }
+
+        [HttpGet]
+        [Route("getAvailableFinishTime")]
+        public async Task<IActionResult> GetAvailableFinishTime(string actualStartSlot)
+        {
+            var result = await _timetableService.Trainer.GetAvailableFinishTime(actualStartSlot);
+            return Ok(result);
         }
     }
 }

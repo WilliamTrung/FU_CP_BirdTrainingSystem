@@ -429,12 +429,18 @@ namespace TrainingCourseSubsystem.Implementation
                 //}
                 else
                 {
+                    var policy = _unitOfWork.TrainingCourseCheckOutPolicyRepository.GetFirst(e => e.Id == birdTrainingCourse.TrainingPricePolicyId
+                                                                                                  && e.Status == (int)Models.Enum.TCCheckOutPolicy.Status.Active);
+                    if(policy == null)
+                    {
+                        throw new InvalidOperationException("Training Price Policy is not valid or active");
+                    }
 
                     entity.TrainingCourseCheckOutPolicyId = birdTrainingCourse.TrainingPricePolicyId;
                     await _unitOfWork.BirdTrainingCourseRepository.Update(entity);
 
                     entity.ReturnStaffId = birdTrainingCourse.ReturnStaffId;
-                    entity.DateReceived = DateTime.UtcNow.AddHours(7);
+                    entity.DateReturn = DateTime.UtcNow.AddHours(7);
                     entity.ReturnNote = birdTrainingCourse.ReturnNote;
                     entity.ReturnPicture = birdTrainingCourse.ReturnPicture;
                     if (entity.Status != (int)Models.Enum.BirdTrainingCourse.Status.TrainingDone)

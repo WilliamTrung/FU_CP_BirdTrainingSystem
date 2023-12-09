@@ -24,6 +24,7 @@ namespace AppService.TimetableService.Implementation
             return await _timetable.GetListTrainer();
         }
 
+
         public async Task<IEnumerable<SlotModel>> GetSlots()
         {
             return await _timetable.GetSlotData();
@@ -43,6 +44,12 @@ namespace AppService.TimetableService.Implementation
         public async Task<IEnumerable<TrainerModel>> GetListFreeTrainerOnSlotAndDate(DateOnly date, int slotId)
         {
             var result = await _timetable.GetListFreeTrainerOnSlotAndDate(date, slotId);
+            return result;
+        }
+
+        public async Task<IEnumerable<TrainerModel>> GetListConsultantTrainer()
+        {
+            var result = await _timetable.GetListConsultantTrainer();
             return result;
         }
     }

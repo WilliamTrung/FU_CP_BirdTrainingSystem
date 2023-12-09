@@ -176,7 +176,7 @@ namespace SP_AutoMapperConfig
 
             private string FormatSlotTime(TimeSpan startTime, TimeSpan endTime)
             {
-                return $"{FormatTimeSpan(startTime)} - {FormatTimeSpan(endTime)}";
+                return $"{FormatTimeSpan(startTime)}-{FormatTimeSpan(endTime)}";
             }
             public void Process (ConsultingTicket source, ConsultingTicketDetailViewModel destination, ResolutionContext context)
             {
