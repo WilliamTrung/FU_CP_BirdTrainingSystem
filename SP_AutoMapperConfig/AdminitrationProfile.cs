@@ -56,6 +56,7 @@ namespace SP_AutoMapperConfig
                 destination.BirthDay = customer.BirthDay;
                 destination.Membership = customer.MembershipRank.Name;
                 destination.Gender = customer.Gender;
+                
                 destination.TotalPayment = customer.TotalPayment;
                 destination.Status = ((Models.Enum.Customer.Status)Enum.ToObject(typeof(Models.Enum.Customer.Status), customer.Status)).ToString();
             } else if(destination.Role == Role.Trainer)
@@ -66,6 +67,7 @@ namespace SP_AutoMapperConfig
                 destination.BirthDay = trainer.BirthDay;
                 destination.Gender = trainer.Gender;
                 destination.IsFulltime = trainer.IsFullTime;
+                destination.Consultantable = trainer.ConsultantAble;
                 destination.Status = ((Models.Enum.Trainer.Status)Enum.ToObject(typeof(Models.Enum.Trainer.Status), trainer.Status)).ToString();
             }
             

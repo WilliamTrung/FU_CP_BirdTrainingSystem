@@ -17,6 +17,7 @@ namespace Models.ServiceModels.UserModels
         public Models.Enum.Role Role { get; set; }
         public DateTime? BirthDay { get; set; }
         public bool? Gender { get; set; }
+        public bool? Consultantable { get; set; }
         public decimal? TotalPayment { get; set; }
         public string? Membership { get; set; } 
         public bool? IsFulltime { get; set; }
