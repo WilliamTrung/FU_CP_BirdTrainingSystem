@@ -434,7 +434,7 @@ namespace TrainingCourseSubsystem.Implementation
                     await _unitOfWork.BirdTrainingCourseRepository.Update(entity);
 
                     entity.ReturnStaffId = birdTrainingCourse.ReturnStaffId;
-                    entity.DateReceived = DateTime.UtcNow.AddHours(7);
+                    entity.DateReturn = DateTime.UtcNow.AddHours(7);
                     entity.ReturnNote = birdTrainingCourse.ReturnNote;
                     entity.ReturnPicture = birdTrainingCourse.ReturnPicture;
                     if (entity.Status != (int)Models.Enum.BirdTrainingCourse.Status.TrainingDone)
