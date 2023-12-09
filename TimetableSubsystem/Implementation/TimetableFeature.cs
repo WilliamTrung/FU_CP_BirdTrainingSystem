@@ -92,6 +92,18 @@ namespace TimetableSubsystem.Implementation
             return models;
         }
 
+        public async Task<IEnumerable<TrainerModel>> GetListConsultantTrainer()
+        {
+            var entities = await _unitOfWork.TrainerRepository.Get(x => x.ConsultantAble == true, nameof(Trainer.User));
+            var models = new List<TrainerModel>();
+            foreach (var entity in entities)
+            {
+                var model = _mapper.Map<TrainerModel>(entity);
+                models.Add(model);
+            }
+            return models;
+        }
+
         public async Task<SlotModel> GetSlotBySlotId(int slotId)
         {
             var entity = await _unitOfWork.SlotRepository.GetFirst(x => x.Id == slotId);

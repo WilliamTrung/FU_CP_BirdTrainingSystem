@@ -22,5 +22,6 @@ namespace TimetableSubsystem
         Task<IEnumerable<TrainerModel>> GetListTrainer();
         Task<IEnumerable<TrainerModel>> GetListFreeTrainerOnSlotAndDate(DateOnly date, int slotId);
         Task<SlotModel> GetSlotBySlotId(int slotId);
+        Task<IEnumerable<TrainerModel>> GetListConsultantTrainer();
     }
 }

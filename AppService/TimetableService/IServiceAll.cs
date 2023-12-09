@@ -15,5 +15,6 @@ namespace AppService.TimetableService
         Task<IEnumerable<TrainerModel>> GetListTrainer();
         Task<IEnumerable<SlotModel>> GetFreeSlotOnSelectedDateOfTrainer(DateTime date, int trainerId);
         Task<IEnumerable<TrainerModel>> GetListFreeTrainerOnSlotAndDate(DateOnly date, int slotId);
+        Task<IEnumerable<TrainerModel>> GetListConsultantTrainer();
     }
 }

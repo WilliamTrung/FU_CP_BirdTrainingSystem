@@ -69,7 +69,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         {
             try
             {
-                var result = await _timetableService.All.GetListTrainer();
+                var result = await _timetableService.All.GetListConsultantTrainer();
                 return Ok(result);
             }
             catch (Exception ex)
