@@ -91,10 +91,10 @@ namespace WorkshopSubsystem.Implementation
             //{
             //    entity.TotalSlot = (int)workshop.TotalSlot;
             //}
-            if (workshop.Location != null)
-            {
-                entity.Location = workshop.Location;
-            }
+            //if (workshop.Location != null)
+            //{
+            //    entity.Location = workshop.Location;
+            //}
             await _unitOfWork.WorkshopRepository.Update(entity);
         }
 

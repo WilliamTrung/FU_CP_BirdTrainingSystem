@@ -994,7 +994,7 @@ namespace AppCore.Context
                 entity.Property(e => e.RegisterEndDate).HasColumnType("date");
 
                 entity.Property(e => e.StartTime).HasColumnType("date");
-
+                entity.Property(e => e.Location).HasMaxLength(512);
                 entity.HasOne(d => d.Workshop)
                     .WithMany(p => p.WorkshopClasses)
                     .HasForeignKey(d => d.WorkshopId)
