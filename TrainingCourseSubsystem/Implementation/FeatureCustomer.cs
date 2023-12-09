@@ -131,7 +131,12 @@ namespace TrainingCourseSubsystem.Implementation
             if (birdTrainingCourseRegister == null)
                 throw new Exception("Client send null model.");
             var bird = _unitOfWork.BirdRepository.GetFirst(e => e.Id == birdTrainingCourseRegister.BirdId).Result;
-            var trainingCourse = _unitOfWork.TrainingCourseRepository.GetFirst(e => e.Id == birdTrainingCourseRegister.TrainingCourseId).Result;
+            var trainingCourse = _unitOfWork.TrainingCourseRepository.GetFirst(e => e.Id == birdTrainingCourseRegister.TrainingCourseId
+                                                                                    && e.Status == (int)Models.Enum.TrainingCourse.Status.Active).Result;
+            if (trainingCourse == null)
+            {
+                throw new InvalidOperationException("Training course is not found or active");
+            }
             if (trainingCourse != null && bird != null)
             {
                 if(bird.BirdSpeciesId != trainingCourse.BirdSpeciesId)
