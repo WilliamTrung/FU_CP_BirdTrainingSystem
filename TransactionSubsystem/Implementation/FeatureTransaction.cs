@@ -27,7 +27,22 @@ namespace TransactionSubsystem.Implementation
             await _unitOfWork.TransactionRepository.Add(entity);
         }
 
-        public async Task<dynamic> CalculateConsultingTicketFinalPrice(ConsultingTicketCreateNewModel consultingTicket, int distance)
+        public async Task<dynamic> CalculateConsultingTicketFinalPrice(int ticketId, int distance)
+        {
+            var ticket = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id == ticketId);
+            var distancePrice = await CalculateDistancePrice(distance);
+
+            var pricePolicy = await _unitOfWork.ConsultingPricePolicyRepository.GetFirst(x => x.OnlineOrOffline == ticket.OnlineOrOffline);
+            var totalPrice = distancePrice + pricePolicy.Price;
+            var discountedPrice = await CalculateMemberShipDiscountedPrice(ticket.CustomerId, totalPrice);
+            var finalPrice = totalPrice - discountedPrice;
+
+            dynamic price = new { FinalPrice = finalPrice, DiscountedPrice = discountedPrice };
+            //return finalPrice;
+            return price;
+        }
+
+        public async Task<dynamic> CalculateConsultingTicketFinalPriceForCustomer(ConsultingTicketCreateNewModel consultingTicket, int distance)
         {
             var distancePrice = await CalculateDistancePrice(distance);
 
@@ -37,7 +52,6 @@ namespace TransactionSubsystem.Implementation
             var finalPrice = totalPrice - discountedPrice;
 
             dynamic price = new { FinalPrice = finalPrice, DiscountedPrice = discountedPrice };
-            //return finalPrice;
             return price;
         }
 
@@ -61,10 +75,10 @@ namespace TransactionSubsystem.Implementation
             int bachientai = 0;
             int khoangcachbac = Models.ConfigModels.TransactionConstant.KhoangCachBac;
             decimal totalDistancePrice = 0;
-            decimal t = calculated - khoangcachbac;
             bool check = true;
             while (check)
             {
+                decimal t = calculated - khoangcachbac;
                 if (t > 0)
                 {
                     totalDistancePrice += listDistancePrice.ElementAt(bachientai) * khoangcachbac;

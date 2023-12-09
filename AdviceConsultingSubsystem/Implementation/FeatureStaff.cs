@@ -70,7 +70,7 @@ namespace AdviceConsultingSubsystem.Implementation
             return model;
         }
 
-        public async Task AssignTrainer(int trainerId, int ticketId)
+        public async Task AssignTrainer(int trainerId, int ticketId, int distance, decimal finalPrice, decimal discountedPrice)
         {
             var entity = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id.Equals(ticketId));
             if (entity == null)
@@ -78,18 +78,59 @@ namespace AdviceConsultingSubsystem.Implementation
                 throw new KeyNotFoundException($"{nameof(entity)} not found for id: {ticketId}");
             }
 
+            if (entity.OnlineOrOffline == false)
+            {
+                entity.Distance = distance;
+            }
+
+            var distancePricePolicy = new DistancePrice();
+            if (distance != 0)
+            {
+                distancePricePolicy = await _unitOfWork.DistancePriceRepository.GetFirst(x => x.From < distance && x.To > distance);
+            }
+            else
+            {
+                distancePricePolicy = await _unitOfWork.DistancePriceRepository.GetFirst(x => x.PricePerKm == 0);
+            }
+
+            entity.Price = finalPrice;
+            entity.DiscountedPrice = discountedPrice;
+            entity.DistancePriceId = distancePricePolicy.Id;
             entity.TrainerId = trainerId;
             entity.Status = (int)Models.Enum.ConsultingTicket.Status.Approved;
             await _unitOfWork.ConsultingTicketRepository.Update(entity);
+
+            var trainerSlot = new AdviceConsultingTrainerSlotServiceModel((int)entity.TrainerId, entity.ActualSlotStart, DateOnly.FromDateTime((DateTime)entity.AppointmentDate), entity.Id);
+            var slotEntity = _mapper.Map<TrainerSlot>(trainerSlot);
+            await _unitOfWork.TrainerSlotRepository.Add(slotEntity);
         }
 
-        public async Task ApproveConsultingTicket(int ticketId)
+        public async Task ApproveConsultingTicket(int ticketId, int distance, decimal finalPrice, decimal discountedPrice)
         {
             var entity = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id.Equals(ticketId));
             if (entity == null)
             {
                 throw new KeyNotFoundException($"{nameof(entity)} not found for id: {ticketId}");
             }
+
+            if (entity.OnlineOrOffline == false)
+            {
+                entity.Distance = distance;
+            }
+
+            var distancePricePolicy = new DistancePrice();
+            if (distance != 0)
+            {
+                distancePricePolicy = await _unitOfWork.DistancePriceRepository.GetFirst(x => x.From < distance && x.To > distance);
+            }
+            else
+            {
+                distancePricePolicy = await _unitOfWork.DistancePriceRepository.GetFirst(x => x.PricePerKm == 0);
+            }
+
+            entity.Price = finalPrice;
+            entity.DiscountedPrice = discountedPrice;
+            entity.DistancePriceId = distancePricePolicy.Id;
 
             entity.Status = (int)Models.Enum.ConsultingTicket.Status.Approved;
             await _unitOfWork.ConsultingTicketRepository.Update(entity);
@@ -140,6 +181,45 @@ namespace AdviceConsultingSubsystem.Implementation
             }
 
             return models;
+        }
+
+        public async Task CreateNewConsultingPricePolicy(ConsultingPricePolicyCreateNewServiceModel pricePolicy)
+        {
+            var entity = _mapper.Map<ConsultingPricePolicy>(pricePolicy);
+            await _unitOfWork.ConsultingPricePolicyRepository.Add(entity);
+        }
+
+        public async Task UpdateConsultantPricePolicy(ConsultingPricePolicyUpdateServiceModel pricePolicy)
+        {
+            var entity = await _unitOfWork.ConsultingPricePolicyRepository.GetFirst(x => x.Id == pricePolicy.Id);
+            entity.Price = (decimal)pricePolicy.Price;
+            await _unitOfWork.ConsultingPricePolicyRepository.Update(entity);
+        }
+
+        public async Task DeleteConsultingPricePolicy(int policyId)
+        {
+            var entity = await _unitOfWork.ConsultingPricePolicyRepository.GetFirst(x => x.Id == policyId);
+            await _unitOfWork.ConsultingPricePolicyRepository.Delete(entity);
+        }
+
+        public async Task CreateNewDistancePricePolicy(DistancePricePolicyCreateNewServiceModel distancePricePolicy)
+        {
+            var entity = _mapper.Map<DistancePrice>(distancePricePolicy);
+            await _unitOfWork.DistancePriceRepository.Add(entity);
+        }
+
+        public async Task UpdateDistancePricePolicy(DistancePricePolicyUpdateServiceModel distancePricePolicy)
+        {
+            var entity = await _unitOfWork.DistancePriceRepository.GetFirst(x => x.Id == distancePricePolicy.Id);
+            entity.PricePerKm = distancePricePolicy.PricePerKm;
+            await _unitOfWork.DistancePriceRepository.Update(entity);
+
+        }
+
+        public async Task DeleteDistancePricePolicy(int distancePricePolicyId)
+        {
+            var entity = await _unitOfWork.DistancePriceRepository.GetFirst(x => x.Id == distancePricePolicyId);
+            await _unitOfWork.DistancePriceRepository.Update(entity);
         }
     }
 }

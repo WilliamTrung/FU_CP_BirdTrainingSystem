@@ -215,7 +215,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             var birdCerti = await _trainingCourseService.Customer.ViewCertificateByBirdTrainingCourseId(birdTrainingCourseId);
             if (birdCerti == null)
             {
-                return BadRequest("Not found certificate");
+                throw new KeyNotFoundException("Certificate not found!");
             }
             else
             {

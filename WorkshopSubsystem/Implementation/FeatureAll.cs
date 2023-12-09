@@ -74,9 +74,11 @@ namespace WorkshopSubsystem.Implementation
 
         public async Task<bool> SetWorkshopClassFull(int workshopClassId)
         {
-            var entity = await _unitOfWork.WorkshopClassRepository.GetFirst(c => c.Id == workshopClassId);
+            var entity = await _unitOfWork.WorkshopClassRepository.GetFirst(c => c.Id == workshopClassId, nameof(WorkshopClass.Workshop));
             var registered = await _unitOfWork.CustomerWorkshopClassRepository.Get(c => c.WorkshopClassId == workshopClassId && c.Status == (int)Models.Enum.Workshop.Transaction.Status.Paid);
-            if(registered.Count() == BR_WorkshopConstant.MaximumRegisteredCustomer)
+
+            //if(registered.Count() == BR_WorkshopConstant.MaximumRegisteredCustomer)
+            if (registered.Count() == entity.Workshop.MaximumRegistration)
             {
                 entity.Status = (int)Models.Enum.Workshop.Class.Status.ClosedRegistration;
                 await _unitOfWork.WorkshopClassRepository.Update(entity);
@@ -155,11 +157,12 @@ namespace WorkshopSubsystem.Implementation
 
         public async Task<RegistrationAmountModel> GetRegistrationAmount(int workshopClassId)
         {
-            var entity = await _unitOfWork.WorkshopClassRepository.GetFirst(c => c.Id == workshopClassId);
+            var entity = await _unitOfWork.WorkshopClassRepository.GetFirst(c => c.Id == workshopClassId, nameof(WorkshopClass.Workshop));
             var registered = await _unitOfWork.CustomerWorkshopClassRepository.Get(c => c.WorkshopClassId == workshopClassId && c.Status == (int)Models.Enum.Workshop.Transaction.Status.Paid);
             var result = new RegistrationAmountModel()
             {
-                Registered = registered.Count()
+                Registered = registered.Count(),
+                Maximum = entity.Workshop.MaximumRegistration            
             };
             return result;
         }

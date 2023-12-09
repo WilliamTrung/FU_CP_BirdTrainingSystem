@@ -1,4 +1,5 @@
-﻿using Models.ServiceModels.WorkshopModels;
+﻿using Models.ServiceModels;
+using Models.ServiceModels.WorkshopModels;
 using Models.ServiceModels.WorkshopModels.Feedback;
 using Models.ServiceModels.WorkshopModels.WorkshopClass;
 using System;
@@ -46,16 +47,18 @@ namespace AppService.WorkshopService.Implementation
             var final = preBillingInfo.WorkshopPrice - discounted;
             var billingInfo = new BillingModel
             {
+                WorkshopClassId = workshopClassId,
                 DiscountedPrice = discounted,
                 MembershipName = preBillingInfo.MembershipName,
                 DiscountRate = preBillingInfo.DiscountPercent,
                 TotalPrice = final,
                 WorkshopPrice = preBillingInfo.WorkshopPrice,
+                WorkshopTitle = preBillingInfo.WorkshopTitle
             };
             return billingInfo;
         }
 
-        public async Task PurchaseClass(int customerId, int workshopClassId)
+        public async Task PurchaseClass(int customerId, int workshopClassId, string paymentCode)
         {
             //var customerRegistered = await _workshop.Customer.GetCustomerRegistrationInfo(customerId, workshopClassId);
             if (await _workshop.All.SetWorkshopClassFull(workshopClassId))
@@ -63,7 +66,22 @@ namespace AppService.WorkshopService.Implementation
                 throw new InvalidOperationException("This workshop class is full!");
             }            
             var billingInfo = await GetBillingInformation(customerId, workshopClassId);
-            await _workshop.Customer.OnPurchaseClass(customerId, workshopClassId, billingInfo);
+            var customerRegistered = await _workshop.Customer.OnPurchaseClass(customerId, workshopClassId, billingInfo);
+
+            //add transaction information
+            string formattedDateTime = DateTime.UtcNow.AddHours(7).ToString("ddMMMyyyyhhmm");
+            var transactionAddModel = new TransactionAddModel()
+            {
+                CustomerId = customerId,
+                EntityId = workshopClassId,
+                EntityTypeId = (int)Models.Enum.EntityType.WorkshopClass,
+                PaymentCode = paymentCode,
+                Detail = $"{paymentCode}:{customerRegistered.CustomerId}:{customerRegistered.Customer.User.Email}-buy workshop class {customerRegistered.WorkshopClassId}:{customerRegistered.WorkshopClass.Workshop.Title}-at:{formattedDateTime}",
+                Status = (int)Models.Enum.Transaction.Status.Paid,
+                Title = "Workshop class enrolled",
+                TotalPayment = billingInfo.TotalPrice,               
+            };
+            await _transaction.AddTransaction(transactionAddModel);
             await _workshop.Staff.GenerateWorkshopAttendance(customerId, workshopClassId);
         }
         public async Task<IEnumerable<WorkshopClassViewModel>> GetWorkshopClassesByWorkshopId(int customerId, int workshopId)

@@ -50,7 +50,7 @@ namespace AdviceConsultingSubsystem.Implementation
             foreach (var entity in entities)
             {
                 var model = _mapper.Map<ConsultingPricePolicyServiceModel>(entity);
-                models.Add(model);  
+                models.Add(model);
             }
 
             return models;
@@ -91,6 +91,14 @@ namespace AdviceConsultingSubsystem.Implementation
                 if (entity.AppointmentDate < date && entity.Status == (int)Models.Enum.ConsultingTicket.Status.WaitingForApprove)
                 {
                     entity.Status = (int)Models.Enum.ConsultingTicket.Status.Cancelled;
+
+                    var trainerSlot = await _unitOfWork.TrainerSlotRepository.GetFirst(x => x.Date == entity.AppointmentDate &&
+                    x.SlotId == entity.ActualSlotStart &&
+                    x.TrainerId == entity.TrainerId);
+                    if (trainerSlot != null && trainerSlot.EntityTypeId == (int)Models.Enum.EntityType.AdviceConsulting)
+                    {
+                        await _unitOfWork.TrainerSlotRepository.Delete(trainerSlot);
+                    }
                 }
             }
         }

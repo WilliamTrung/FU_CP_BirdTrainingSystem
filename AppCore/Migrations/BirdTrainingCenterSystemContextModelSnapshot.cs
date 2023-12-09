@@ -1526,9 +1526,9 @@ namespace AppCore.Migrations
                         .HasColumnType("date");
 
                     b.Property<string>("Detail")
-                        .HasMaxLength(100)
+                        .HasMaxLength(255)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(255)");
 
                     b.Property<int?>("EntityId")
                         .HasColumnType("integer");
@@ -1537,9 +1537,9 @@ namespace AppCore.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("PaymentCode")
-                        .HasMaxLength(100)
+                        .HasMaxLength(255)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("character varying(255)");
 
                     b.Property<DateTime?>("PaymentDate")
                         .HasColumnType("date");
@@ -1548,9 +1548,9 @@ namespace AppCore.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("Title")
-                        .HasMaxLength(50)
+                        .HasMaxLength(255)
                         .IsUnicode(false)
-                        .HasColumnType("character varying(50)");
+                        .HasColumnType("character varying(255)");
 
                     b.Property<decimal?>("TotalPayment")
                         .HasColumnType("money");
@@ -1621,6 +1621,16 @@ namespace AppCore.Migrations
                         .HasMaxLength(1000)
                         .IsUnicode(false)
                         .HasColumnType("character varying(1000)");
+
+                    b.Property<string>("Location")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("MaximumRegistration")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("MinimumRegistration")
+                        .HasColumnType("integer");
 
                     b.Property<string>("Picture")
                         .HasMaxLength(512)

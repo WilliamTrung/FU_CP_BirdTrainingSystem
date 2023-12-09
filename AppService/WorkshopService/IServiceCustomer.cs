@@ -15,7 +15,7 @@ namespace AppService.WorkshopService
         Task<IEnumerable<WorkshopClassViewModel>> GetRegisteredClass(int customerId, int workshopId);
         Task<IEnumerable<WorkshopModel>> GetRegisteredWorkshopss(int customerId);
         Task<BillingModel> GetBillingInformation(int customerId, int workshopClassId);
-        Task PurchaseClass(int customerId, int workshopClassId);
+        Task PurchaseClass(int customerId, int workshopClassId, string paymentCode);
         Task<IEnumerable<WorkshopClassViewModel>> GetWorkshopClassesByWorkshopId(int customerId, int workshopId);
         Task DoFeedback(int customerId, FeedbackWorkshopCustomerAddModel model);
         Task<FeedbackWorkshopCustomerViewModel?> GetFeedback(int customerId, int workshopId);

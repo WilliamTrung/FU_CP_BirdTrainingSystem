@@ -9,6 +9,9 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.Workshop
         [HttpPost]
         [Route("create")]
         Task<IActionResult> CreateWorkshop([FromForm] WorkshopAddParamModel workshop);
+        [HttpPut]
+        [Route("modify")]
+        Task<IActionResult> ModifyWorkshop([FromForm] WorkshopModifyParamModel workshop);
 
         [HttpGet]
         [Route("detail-template")]

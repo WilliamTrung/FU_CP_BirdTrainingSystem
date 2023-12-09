@@ -14,10 +14,16 @@ namespace AdviceConsultingSubsystem
         Task<IEnumerable<ConsultingTicketListViewModel>> GetListConsultingTicketsByCustomerID(int customerID);
         Task<IEnumerable<ConsultingTicketListViewModel>> GetListHandledConsultingTicket();
         Task<ConsultingTicketDetailViewModel> GetConsultingTicketByID(int id);
-        Task AssignTrainer(int trainerId, int ticketId);
-        Task ApproveConsultingTicket(int ticketId);
+        Task AssignTrainer(int trainerId, int ticketId, int distance, decimal finalPrice, decimal discountedPrice);
+        Task ApproveConsultingTicket(int ticketId, int distance, decimal finalPrice, decimal discountedPrice);
         Task CancelConsultingTicket(int ticketId);
         Task<IEnumerable<ConsultingTicketListViewModel>> GetListNotAssignedConsultingTicket();
         Task<IEnumerable<ConsultingTicketListViewModel>> GetListAssignedConsultingTicket();
+        Task CreateNewConsultingPricePolicy(ConsultingPricePolicyCreateNewServiceModel pricePolicy);
+        Task UpdateConsultantPricePolicy(ConsultingPricePolicyUpdateServiceModel pricePolicy);
+        Task DeleteConsultingPricePolicy(int policyId);
+        Task CreateNewDistancePricePolicy(DistancePricePolicyCreateNewServiceModel distancePricePolicy);
+        Task UpdateDistancePricePolicy(DistancePricePolicyUpdateServiceModel distancePricePolicy);
+        Task DeleteDistancePricePolicy(int distancePricePolicyId);
     }
 }

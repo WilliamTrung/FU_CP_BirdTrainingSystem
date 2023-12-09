@@ -17,6 +17,9 @@ namespace Models.ApiParamModels.Workshop
         public int? RegisterEnd { get; set; }
         public decimal Price { get; set; }
         public int TotalSlot { get; set; }
+        public string Location { get; set; } = null!;
+        public int MinimumRegistration { get; set; }
+        public int MaximumRegistration { get; set; }
 
         public WorkshopAddModel ToWorkshopAddModel(string picture)
         {
@@ -27,7 +30,10 @@ namespace Models.ApiParamModels.Workshop
                 RegisterEnd = this.RegisterEnd,
                 Price = this.Price,
                 TotalSlot = this.TotalSlot,
-                Picture = picture
+                Picture = picture,
+                Location = this.Location,
+                MinimumRegistration = this.MinimumRegistration,
+                MaximumRegistration = this.MaximumRegistration,
             };
         }
     }

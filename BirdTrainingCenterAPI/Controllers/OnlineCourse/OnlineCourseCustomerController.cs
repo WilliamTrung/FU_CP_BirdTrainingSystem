@@ -41,7 +41,7 @@ namespace BirdTrainingCenterAPI.Controllers.OnlineCourse
         }
         [HttpPost]
         [Route("enroll")]
-        public async Task<IActionResult> EnrollCourse([FromBody] BillingModel billing)
+        public async Task<IActionResult> EnrollCourse([FromBody] PaymentModel paymentModel)
         {
             var accessToken = Request.DeserializeToken(_authService);
             if (accessToken == null)
@@ -49,7 +49,7 @@ namespace BirdTrainingCenterAPI.Controllers.OnlineCourse
                 return Unauthorized();
             }
             var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
-            await _onlineCourseService.Customer.EnrollCourse(Int32.Parse(customerId.Value), billing);
+            await _onlineCourseService.Customer.EnrollCourse(Int32.Parse(customerId.Value), paymentModel.CourseId, paymentModel.PaymentCode);
             return Ok();
         }
         [HttpGet]

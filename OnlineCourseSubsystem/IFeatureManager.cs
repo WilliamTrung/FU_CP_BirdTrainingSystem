@@ -9,7 +9,7 @@ namespace OnlineCourseSubsystem
 {
     public interface IFeatureManager
     {
-        Task CreateOnlineCourse(OnlineCourseAddModel model);
+        Task<int> CreateOnlineCourse(OnlineCourseAddModel model);
         Task AddSection(OnlineCourseSectionAddModel model);
         Task AddLesson(OnlineCourseLessonAddModel model);
         Task ModifySection(OnlineCourseSectionModifyModel model);

@@ -1,4 +1,5 @@
 ﻿using AdviceConsultingSubsystem;
+using AppCore.Models;
 using ApplicationService.MailSettings;
 using Models.Entities;
 using Models.ServiceModels.AdviceConsultantModels;
@@ -19,9 +20,12 @@ namespace AppService.AdviceConsultingService.Implementation
         {
             _mail = mail;
         }
-        public async Task ApproveConsultingTicket(int ticketId)
+        public async Task ApproveConsultingTicket(int ticketId, int distance)
         {
-            await _consulting.Staff.ApproveConsultingTicket(ticketId);
+            dynamic price = await _transaction.CalculateConsultingTicketFinalPrice(ticketId, distance);
+            decimal finalPrice = price.GetType().GetProperty("FinalPrice").GetValue(price, null);
+            decimal discountedPrice = price.GetType().GetProperty("DiscountedPrice").GetValue(price, null);
+            await _consulting.Staff.ApproveConsultingTicket(ticketId, distance, finalPrice, discountedPrice);
             var ticket = await _consulting.Other.GetConsultingTicketById(ticketId);
             var mailContent = new MailContent()
             {
@@ -31,9 +35,12 @@ namespace AppService.AdviceConsultingService.Implementation
             await _mail.SendEmailAsync(ticket.CustomerEmail, mailContent);
         }
 
-        public async Task AssignTrainer(int trainerId, int ticketId)
+        public async Task AssignTrainer(int trainerId, int ticketId, int distance)
         {
-            await _consulting.Staff.AssignTrainer(trainerId, ticketId);
+            dynamic price = await _transaction.CalculateConsultingTicketFinalPrice(ticketId, distance);
+            decimal finalPrice = price.GetType().GetProperty("FinalPrice").GetValue(price, null);
+            decimal discountedPrice = price.GetType().GetProperty("DiscountedPrice").GetValue(price, null);
+            await _consulting.Staff.AssignTrainer(trainerId, ticketId, distance, finalPrice, discountedPrice);
             var ticket = await _consulting.Other.GetConsultingTicketById(ticketId);
             var mailContent = new MailContent()
             {
@@ -46,6 +53,26 @@ namespace AppService.AdviceConsultingService.Implementation
         public async Task CancelConsultingTicket(int ticketId)
         {
             await _consulting.Staff.CancelConsultingTicket(ticketId);
+        }
+
+        public async Task CreateNewDistancePricePolicy(DistancePricePolicyCreateNewServiceModel distancePricePolicy)
+        {
+            await _consulting.Staff.CreateNewDistancePricePolicy(distancePricePolicy);
+        }
+
+        public async Task CreateNewPricePolicy(ConsultingPricePolicyCreateNewServiceModel pricePolicy)
+        {
+            await _consulting.Staff.CreateNewConsultingPricePolicy(pricePolicy);
+        }
+
+        public async Task DeleteConsultingPricePolicy(int policyId)
+        {
+            await _consulting.Staff.DeleteConsultingPricePolicy(policyId);
+        }
+
+        public async Task DeleteDistancePricePolicy(int distancePricePolicyId)
+        {
+            await _consulting.Staff.DeleteDistancePricePolicy(distancePricePolicyId);
         }
 
         public async Task<ConsultingTicketDetailViewModel> GetConsultingTicketByID(int id)
@@ -71,6 +98,24 @@ namespace AppService.AdviceConsultingService.Implementation
         public async Task<IEnumerable<ConsultingTicketListViewModel>> GetListNotAssignedConsultingTicket()
         {
             return await _consulting.Staff.GetListNotAssignedConsultingTicket();
+        }
+
+        public async Task<decimal> PreCalculateConsultantPrice(int ticketId, int distance)
+        {
+            dynamic price = await _transaction.CalculateConsultingTicketFinalPrice(ticketId, distance);
+            decimal finalPrice = price.GetType().GetProperty("FinalPrice").GetValue(price, null);
+
+            return finalPrice;
+        }
+
+        public async Task UpdateConsultantPricePolicy(ConsultingPricePolicyUpdateServiceModel pricePolicy)
+        {
+            await _consulting.Staff.UpdateConsultantPricePolicy(pricePolicy);
+        }
+
+        public async Task UpdateDistancePricePolicy(DistancePricePolicyUpdateServiceModel distancePricePolicy)
+        {
+            await _consulting.Staff.UpdateDistancePricePolicy(distancePricePolicy);
         }
     }
 }

@@ -34,7 +34,7 @@ namespace AdviceConsultingSubsystem.Implementation
             date = date + (TimeSpan)slotDetail.StartTime;
             var trainer = await _unitOfWork.TrainerRepository.GetFirst(x => x.Id == consultingTicket.TrainerId);
 
-            if (date <= DateTime.Now.AddHours(7))
+            if (date <= DateTime.UtcNow.AddHours(7))
             {
                 throw new Exception("We dont know how to time travel");
             }

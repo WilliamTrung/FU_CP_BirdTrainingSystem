@@ -19,6 +19,13 @@ namespace WorkshopSubsystem.Implementation
 
         public async Task<int> CreateWorkshop(WorkshopAddModel workshop)
         {
+            if (workshop.MinimumRegistration > workshop.MaximumRegistration)
+            {
+                throw new InvalidDataException("Minimum registration must be smaller than maximum registration");
+            } else if (workshop.MinimumRegistration < 1 || workshop.MaximumRegistration < 1 || workshop.RegisterEnd < 1 || workshop.Price < 1 || workshop.TotalSlot < 1)
+            {
+                throw new InvalidDataException("Value must be positive number");
+            }
             var entity = _mapper.Map<Workshop>(workshop);
             await _unitOfWork.WorkshopRepository.Add(entity);
             //add workshop class details to class
@@ -45,41 +52,51 @@ namespace WorkshopSubsystem.Implementation
             return models;
         }
 
-
-
-        //public async Task ModifyWorkshop(WorkshopModifyModel workshop)
-        //{
-        //    var entity = await _unitOfWork.WorkshopRepository.GetFirst(c => c.Id == workshop.Id);
-        //    if(entity == null)
-        //    {
-        //        throw new KeyNotFoundException($"{typeof(Workshop)} is not found at id: {workshop.Id}");
-        //    }
-        //    if(workshop.Title != null)
-        //    {
-        //        entity.Title = workshop.Title;
-        //    }
-        //    if(workshop.Description != null)
-        //    {
-        //        entity.Description = workshop.Description;
-        //    }
-        //    if (workshop.Picture != null)
-        //    {
-        //        entity.Picture = workshop.Picture;
-        //    }
-        //    if (workshop.RegisterEnd != null)
-        //    {
-        //        entity.RegisterEnd = workshop.RegisterEnd;
-        //    }
-        //    if (workshop.Price != null)
-        //    {
-        //        entity.Price = workshop.Price.Value;
-        //    }
-        //    if (workshop.TotalSlot != null)
-        //    {
-        //        entity.RegisterEnd = workshop.TotalSlot;
-        //    }
-        //    await _unitOfWork.WorkshopRepository.Update(entity);
-        //}
+        public async Task ModifyWorkshop(WorkshopModifyModel workshop)
+        {
+            var entity = await _unitOfWork.WorkshopRepository.GetFirst(c => c.Id == workshop.Id);
+            if(entity == null)
+            {
+                throw new KeyNotFoundException("Workshop not found for id: " + workshop.Id);    
+            }
+            if(workshop.RegisterEnd != null)
+            {
+                entity.RegisterEnd = workshop.RegisterEnd;
+            }
+            if (workshop.MinimumRegistration != null)
+            {
+                entity.MinimumRegistration = (int)workshop.MinimumRegistration;
+            }
+            if (workshop.MaximumRegistration != null)
+            {
+                entity.MaximumRegistration = (int)workshop.MaximumRegistration;
+            }
+            if (workshop.Picture != null)
+            {
+                entity.Picture = workshop.Picture;
+            }
+            if (workshop.Price != null)
+            {
+                entity.Price = (decimal)workshop.Price;
+            }
+            if (workshop.Description != null)
+            {
+                entity.Description = workshop.Description;
+            }
+            if (workshop.Title != null)
+            {
+                entity.Title = workshop.Title;
+            }
+            //if (workshop.TotalSlot != null)
+            //{
+            //    entity.TotalSlot = (int)workshop.TotalSlot;
+            //}
+            if (workshop.Location != null)
+            {
+                entity.Location = workshop.Location;
+            }
+            await _unitOfWork.WorkshopRepository.Update(entity);
+        }
 
         public async Task ModifyWorkshopDetailTemplate(WorkshopDetailTemplateModiyModel workshopDetail)
         {

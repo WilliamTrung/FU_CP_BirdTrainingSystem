@@ -83,6 +83,7 @@ builder.AddTrainingCourseFeature();
 builder.AddAdviceConsultinFeature();
 builder.AddOnlineCourseFeature();
 builder.AddTrainingSkillFeature();
+builder.AddDashboardFeature();
 builder.AddWorkshopHostedService();
 
 var app = builder.Build();

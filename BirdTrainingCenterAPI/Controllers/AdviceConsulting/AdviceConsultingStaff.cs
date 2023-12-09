@@ -7,6 +7,7 @@ using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
 using TimetableSubsystem;
 using AppService.TimetableService;
 using BirdTrainingCenterAPI.Helper;
+using Models.ServiceModels.AdviceConsultantModels;
 
 namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
 {
@@ -21,7 +22,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         }
         [HttpPut]
         [Route("approveConsultingTicket")]
-        public async Task<IActionResult> ApproveConsultingTicket(int ticketId)
+        public async Task<IActionResult> ApproveConsultingTicket(int ticketId, int distance)
         {
             try
             {
@@ -36,7 +37,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
                 var date = (DateTime)ticket.AppointmentDate;
                 var slotId = ticket.ActualSlotStart;
                 
-                await _consultingService.Staff.ApproveConsultingTicket(ticketId);
+                await _consultingService.Staff.ApproveConsultingTicket(ticketId, distance);
                 return Ok();
             }
             catch (Exception ex)
@@ -47,7 +48,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
 
         [HttpPut]
         [Route("assignTrainer")]
-        public async Task<IActionResult> AssignTrainer(int trainerId, int ticketId)
+        public async Task<IActionResult> AssignTrainer(int trainerId, int ticketId, int distance)
         {
             try
             {
@@ -56,7 +57,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
                 {
                     return Unauthorized();
                 }
-                await _consultingService.Staff.AssignTrainer(trainerId, ticketId);
+                await _consultingService.Staff.AssignTrainer(trainerId, ticketId, distance);
                 return Ok();
             }
             catch (Exception ex)
@@ -83,6 +84,119 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
+        }
+
+        [HttpPost]
+        [Route("createNewConsultantPricePolicy")]
+        public async Task<IActionResult> CreateNewConsultantPricePolicy(ConsultingPricePolicyCreateNewServiceModel pricePolicy)
+        {
+            var accessToken = Request.DeserializeToken(_authService);
+            if (accessToken == null)
+            {
+                return Unauthorized();
+            }
+            var listPrice = await _consultingService.Other.GetConsultingPricePolicy();
+            foreach (var price in listPrice)
+            {
+                if (pricePolicy.OnlineOrOffline == price.OnlineOrOffline && pricePolicy.Price == price.Price)
+                {
+                    return StatusCode(StatusCodes.Status503ServiceUnavailable, "This Price Policy Is Already Existed!");
+                }
+            }
+            await _consultingService.Staff.CreateNewPricePolicy(pricePolicy);
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("createNewDistancePricePolicy")]
+        public async Task<IActionResult> CreateNewDistancePricePolicy(DistancePricePolicyCreateNewServiceModel distancePricePolicy)
+        {
+            var accessToken = Request.DeserializeToken(_authService);
+            if (accessToken == null)
+            {
+                return Unauthorized();
+            }
+            var listDistancePrice = await _consultingService.Other.GetDistancePrice();
+            foreach(var distancePrice in listDistancePrice)
+            {
+                if (distancePricePolicy.From == distancePrice.From && 
+                    distancePrice.To == distancePrice.To &&
+                    distancePrice.PricePerKm == distancePrice.PricePerKm)
+                {
+                    return StatusCode(StatusCodes.Status503ServiceUnavailable, "This Distance Price Policy Is Already Existed!");
+                }
+            } 
+            await _consultingService.Staff.CreateNewDistancePricePolicy(distancePricePolicy);
+            return Ok();
+        }
+
+        [HttpDelete]
+        [Route("deleteConsultantPricePolicy")]
+        public async Task<IActionResult> DeleteConsultingPricePolicy(int policyId)
+        {
+            var accessToken = Request.DeserializeToken(_authService);
+            if (accessToken == null)
+            {
+                return Unauthorized();
+            }
+            await _consultingService.Staff.DeleteConsultingPricePolicy(policyId);
+            return Ok();
+        }
+
+        [HttpDelete]
+        [Route("deleteDistancePricePolicy")]
+        public async Task<IActionResult> DeleteDistancePricePolicy(int distancePricePolicyId)
+        {
+            var accessToken = Request.DeserializeToken(_authService);
+            if (accessToken == null)
+            {
+                return Unauthorized();
+            }
+            await  _consultingService.Staff.DeleteDistancePricePolicy(distancePricePolicyId);
+            return Ok();
+        }
+
+        [HttpGet]
+        [Route("preCalculateConsultantPrice")]
+        public async Task<IActionResult> PreCalculateConsultantPrice(int ticketId, int distance)
+        {
+            var price = await _consultingService.Staff.PreCalculateConsultantPrice(ticketId, distance);
+            return Ok(price);
+        }
+
+        [HttpPut]
+        [Route("updateConsultantPricePolicy")]
+        public async Task<IActionResult> UpdateConsultantPricePolicy(ConsultingPricePolicyUpdateServiceModel pricePolicy)
+        {
+            var accessToken = Request.DeserializeToken(_authService);
+            if (accessToken == null)
+            {
+                return Unauthorized();
+            }
+            if (pricePolicy.Price == null)
+            {
+                return StatusCode(StatusCodes.Status503ServiceUnavailable, "Please insert the price");
+            }
+            await _consultingService.Staff.UpdateConsultantPricePolicy(pricePolicy);
+            return Ok();
+        }
+
+        [HttpPut]
+        [Route("updateDistancePricePolicy")]
+        public async Task<IActionResult> UpdateDistancePricePolicy(DistancePricePolicyUpdateServiceModel distancePricePolicy)
+        {
+            var accessToken = Request.DeserializeToken(_authService);
+            if (accessToken == null)
+            {
+                return Unauthorized();
+            }
+            if (distancePricePolicy.PricePerKm == null)
+            {
+                return StatusCode(StatusCodes.Status503ServiceUnavailable, "Please insert the price");
+            }
+
+            await _consultingService.Staff.UpdateDistancePricePolicy(distancePricePolicy);
+            return Ok();
         }
 
         [HttpGet]
