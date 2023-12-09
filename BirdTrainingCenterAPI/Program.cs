@@ -46,6 +46,7 @@ builder.Services.AddControllers().AddOData(options => options
                        x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.Workshop.Class.Status>());
                        x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.EntityType>());
                        x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.Role>());
+                       x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.AdministrativeRole>());
                        x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.Customer.Status>());
                        x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.Trainer.Status>());
                        x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.BirdTrainingProgress.Status>());
