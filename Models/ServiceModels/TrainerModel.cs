@@ -20,7 +20,6 @@ namespace Models.ServiceModels
         public string Email { get; set; } = null!;
         public string Avatar { get; set; } = null!;
         public string PhoneNumber { get; set; } = null!;
-        public Models.Enum.Trainer.Category Category { get; set; }
         public Models.Enum.Trainer.Status? Status { get; set; }
         public List<TrainerSkillModel> Skills { get; set; } = null!;
     }

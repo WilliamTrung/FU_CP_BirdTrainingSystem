@@ -143,7 +143,7 @@ namespace SP_AutoMapperConfig
                 var trainerSkillModel = _mapper.Map<TrainerSkillModel>(skill);
                 trainerSkillModels.Add(trainerSkillModel);
             }
-            destination.Category = (Models.Enum.Trainer.Category)source.Category;
+            //destination.Category = (Models.Enum.Trainer.Category)source.Category;
             destination.Status = (Models.Enum.Trainer.Status)source.Status;
             destination.Skills = trainerSkillModels;
         }

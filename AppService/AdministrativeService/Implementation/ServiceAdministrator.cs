@@ -30,7 +30,7 @@ namespace AppService.AdministrativeService.Implementation
             return result;
         }
 
-        public IEnumerable<Role> GetRoles()
+        public IEnumerable<AdministrativeRole> GetRoles()
         {
             var result = _admin.User.GetRoles();
             return result;

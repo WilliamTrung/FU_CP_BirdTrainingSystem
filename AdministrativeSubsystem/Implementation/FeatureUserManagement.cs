@@ -49,9 +49,9 @@ namespace AdministrativeSubsystem.Implementation
             entity.RoleId = (int)model.Role;
             await _uow.UserRepository.Update(entity);
         }
-        public IEnumerable<Role> GetRoles()
+        public IEnumerable<AdministrativeRole> GetRoles()
         {
-            var roles = Enum.GetValues(typeof(Role)).Cast<Role>();
+            var roles = Enum.GetValues(typeof(AdministrativeRole)).Cast<AdministrativeRole>();
             return roles;
         }
 
@@ -175,6 +175,11 @@ namespace AdministrativeSubsystem.Implementation
                                                                    , nameof(Trainer.User));
             var trainerModels = _mapper.Map<List<TrainerModel>>(trainers);
             return trainerModels;
+        }
+
+        public Task CreateAdministrativeAccount()
+        {
+            throw new NotImplementedException();
         }
     }
 }

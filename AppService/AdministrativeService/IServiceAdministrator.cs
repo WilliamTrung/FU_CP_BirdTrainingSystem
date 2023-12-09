@@ -1,4 +1,5 @@
-﻿using Models.ServiceModels;
+﻿using Models.Enum;
+using Models.ServiceModels;
 using Models.ServiceModels.UserModels;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,7 @@ namespace AppService.AdministrativeService
         Task<IEnumerable<TrainerModel>> GetTrainersInformation();
         Task UpdateRecord(UserAdminUpdateModel record);
         Task UpdateRole(UserRoleUpdateModel model);
-        IEnumerable<Models.Enum.Role> GetRoles();
+        IEnumerable<AdministrativeRole> GetRoles();
         IEnumerable<Models.Enum.Customer.Status> GetCustomerStatuses();
         IEnumerable<Models.Enum.Trainer.Status> GetTrainerStatuses();
         Task UpdateStatus(UserStatusUpdateModel model);
