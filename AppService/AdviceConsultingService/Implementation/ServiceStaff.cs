@@ -55,6 +55,11 @@ namespace AppService.AdviceConsultingService.Implementation
             await _consulting.Staff.CancelConsultingTicket(ticketId);
         }
 
+        public async Task CreateConsultingType(ConsultingTypeCreateNewServiceModel consultingType)
+        {
+            await _consulting.Staff.CreateConsultingType(consultingType);
+        }
+
         public async Task CreateNewDistancePricePolicy(DistancePricePolicyCreateNewServiceModel distancePricePolicy)
         {
             await _consulting.Staff.CreateNewDistancePricePolicy(distancePricePolicy);
@@ -68,6 +73,11 @@ namespace AppService.AdviceConsultingService.Implementation
         public async Task DeleteConsultingPricePolicy(int policyId)
         {
             await _consulting.Staff.DeleteConsultingPricePolicy(policyId);
+        }
+
+        public async Task DeleteConsultingType(int consultingTypeId)
+        {
+            await _consulting.Staff.DeleteConsultingType(consultingTypeId);
         }
 
         public async Task DeleteDistancePricePolicy(int distancePricePolicyId)
@@ -111,6 +121,11 @@ namespace AppService.AdviceConsultingService.Implementation
         public async Task UpdateConsultantPricePolicy(ConsultingPricePolicyUpdateServiceModel pricePolicy)
         {
             await _consulting.Staff.UpdateConsultantPricePolicy(pricePolicy);
+        }
+
+        public async Task UpdateConsultingType(ConsultingTypeServiceModel consultingType)
+        {
+            await _consulting.Staff.UpdateConsultingType(consultingType);
         }
 
         public async Task UpdateDistancePricePolicy(DistancePricePolicyUpdateServiceModel distancePricePolicy)

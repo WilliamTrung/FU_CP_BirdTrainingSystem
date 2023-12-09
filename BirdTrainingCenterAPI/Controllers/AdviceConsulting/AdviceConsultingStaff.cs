@@ -87,6 +87,19 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         }
 
         [HttpPost]
+        [Route("createConsultingType")]
+        public async Task<IActionResult> CreateConsultingType(ConsultingTypeCreateNewServiceModel consultingType)
+        {
+            var accessToken = Request.DeserializeToken(_authService);
+            if (accessToken == null)
+            {
+                return Unauthorized();
+            }
+            await _consultingService.Staff.CreateConsultingType(consultingType);
+            return Ok();
+        }
+
+        [HttpPost]
         [Route("createNewConsultantPricePolicy")]
         public async Task<IActionResult> CreateNewConsultantPricePolicy(ConsultingPricePolicyCreateNewServiceModel pricePolicy)
         {
@@ -144,6 +157,19 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         }
 
         [HttpDelete]
+        [Route("deleteConsultingType")]
+        public async Task<IActionResult> DeleteConsultingType(int consultingTypeId)
+        {
+            var accessToken = Request.DeserializeToken(_authService);
+            if (accessToken == null)
+            {
+                return Unauthorized();
+            }
+            await _consultingService.Staff.DeleteConsultingType(consultingTypeId);
+            return Ok();
+        }
+
+        [HttpDelete]
         [Route("deleteDistancePricePolicy")]
         public async Task<IActionResult> DeleteDistancePricePolicy(int distancePricePolicyId)
         {
@@ -178,6 +204,19 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
                 return StatusCode(StatusCodes.Status503ServiceUnavailable, "Please insert the price");
             }
             await _consultingService.Staff.UpdateConsultantPricePolicy(pricePolicy);
+            return Ok();
+        }
+
+        [HttpPut]
+        [Route("updateConsultingType")]
+        public async Task<IActionResult> UpdateConsultingType(ConsultingTypeServiceModel consultingType)
+        {
+            var accessToken = Request.DeserializeToken(_authService);
+            if (accessToken == null)
+            {
+                return Unauthorized();
+            }
+            await _consultingService.Staff.UpdateConsultingType(consultingType);
             return Ok();
         }
 

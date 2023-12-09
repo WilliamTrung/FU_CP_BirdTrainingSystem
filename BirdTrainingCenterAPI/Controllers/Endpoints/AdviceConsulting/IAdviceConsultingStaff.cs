@@ -57,5 +57,17 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting
         [HttpGet]
         [Route("preCalculateConsultantPrice")]
         Task<IActionResult> PreCalculateConsultantPrice(int ticketId, int distance);
+
+        [HttpPut]
+        [Route("updateConsultingType")]
+        Task<IActionResult> UpdateConsultingType(ConsultingTypeServiceModel consultingType);
+
+        [HttpDelete]
+        [Route("deleteConsultingType")]
+        Task<IActionResult> DeleteConsultingType(int consultingTypeId);
+
+        [HttpPost]
+        [Route("createConsultingType")]
+        Task<IActionResult> CreateConsultingType(ConsultingTypeCreateNewServiceModel consultingType);
     }
 }
