@@ -50,16 +50,18 @@ namespace AdviceConsultingSubsystem.Implementation
             await _unitOfWork.ConsultingTicketRepository.Update(entity);
         }
 
-        public async Task FinishAppointment(ConsultingTicketTrainerFinishModel ticket)
+        public async Task FinishAppointment(ConsultingTicketTrainerFinishModel ticket, decimal finalPrice, decimal discountedPrice)
         {
             var entity = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id == ticket.Id);
             if (entity == null)
             {
                 throw new KeyNotFoundException($"{nameof(entity)} not found for id: {ticket.Id}");
             }
-
+            
             entity.ActualEndSlot = ticket.ActualEndSlot;
             entity.Evidence = ticket.Evidence;
+            entity.Price = finalPrice;
+            entity.DiscountedPrice = discountedPrice;
             entity.Status = (int)Models.Enum.ConsultingTicket.Status.Finished;
 
             await _unitOfWork.ConsultingTicketRepository.Update(entity);

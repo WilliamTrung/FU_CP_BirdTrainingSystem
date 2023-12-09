@@ -1,4 +1,5 @@
 ﻿using Models.ServiceModels;
+using Models.ServiceModels.SlotModels;
 using Models.ServiceModels.TimetableModels;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,7 @@ namespace AppService.TimetableService
     public interface IServiceTrainer : IServiceAll
     {
         //Task<IEnumerable<TrainerSlotModel>> GetTrainerSlotDetail(int trainerId, DateTime from, DateTime to);
-        Task<IEnumerable<TimetableModel>> GetTrainerTimetable(int trainerId, DateTime from, DateTime to);        
+        Task<IEnumerable<TimetableModel>> GetTrainerTimetable(int trainerId, DateTime from, DateTime to);
+        Task<IEnumerable<SlotModel>> GetAvailableFinishTime(string actualSlotStart);
     }
 }

@@ -13,6 +13,6 @@ namespace AdviceConsultingSubsystem
     {
         Task<IEnumerable<ConsultingTicketListViewModel>> GetListAssignedConsultingTicket(int trainerId);
         Task UpdateAppointment(int ticketId, string ggmeetLink);
-        Task FinishAppointment(ConsultingTicketTrainerFinishModel consultingTicket);
+        Task FinishAppointment(ConsultingTicketTrainerFinishModel consultingTicket, decimal finalPrice, decimal discountedPrice);
     }
 }

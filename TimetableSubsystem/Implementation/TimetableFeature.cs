@@ -186,5 +186,30 @@ namespace TimetableSubsystem.Implementation
             var slots = _mapper.Map<List<TimetableModel>>(trainerSlots);
             return slots;
         }
+
+        public async Task<IEnumerable<SlotModel>> GetAvailableFinishTime(string actualSlotStart)
+        {
+            string[] parts = actualSlotStart.Split('-');
+            string endTimeString = parts[1].Trim();
+            TimeSpan endTime = TimeSpan.Parse(endTimeString);
+
+            var entities = await _unitOfWork.SlotRepository.Get(x => x.EndTime >= endTime);
+            var models = _mapper.Map<IEnumerable<SlotModel>>(entities);
+            return models;
+        }
+
+        public async Task<IEnumerable<SlotModel>> GetSlotRangeForConsultant(string actualSlotStart, int actualEndSlot)
+        {
+            var endSlot = await _unitOfWork.SlotRepository.GetFirst(x => x.Id == actualEndSlot);
+            string[] startParts = actualSlotStart.Split('-');
+
+            string startString = startParts[1].Trim();
+
+            TimeSpan start = TimeSpan.Parse(startString);
+
+            var entities = await _unitOfWork.SlotRepository.Get(x => x.EndTime >= start && x.EndTime <= endSlot.EndTime);
+            var models = _mapper.Map<IEnumerable<SlotModel>>(entities);
+            return models;
+        }
     }
 }
