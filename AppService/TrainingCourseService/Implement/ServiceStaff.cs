@@ -1,4 +1,6 @@
-﻿using Models.ApiParamModels.TrainingCourse;
+﻿using Models.ApiParamModels.OnlineCourse;
+using Models.ApiParamModels.TrainingCourse;
+using Models.ServiceModels;
 using Models.ServiceModels.SlotModels;
 using Models.ServiceModels.TrainingCourseModels;
 using Models.ServiceModels.TrainingCourseModels.BirdCertificate.BirdCertificateDetail;
@@ -14,13 +16,16 @@ using System.Text;
 using System.Threading.Tasks;
 using TimetableSubsystem;
 using TrainingCourseSubsystem;
+using TransactionSubsystem;
 
 namespace AppService.TrainingCourseService.Implement
 {
     public class ServiceStaff : ServiceAll, IServiceStaff
     {
-        public ServiceStaff(ITrainingCourseFeature trainingCourse, ITimetableFeature timetable) : base(trainingCourse, timetable)
+        private readonly IFeatureTransaction _transaction;
+        public ServiceStaff(ITrainingCourseFeature trainingCourse, ITimetableFeature timetable, IFeatureTransaction transaction) : base(trainingCourse, timetable)
         {
+            _transaction = transaction;
         }
         public async Task<IEnumerable<BirdTrainingCourseListView>> GetBirdTrainingCourse()
         {
@@ -144,6 +149,25 @@ namespace AppService.TrainingCourseService.Implement
         public async Task ReturnBird(BirdTrainingCourseReturnBird birdTrainingCourse)
         {
             await _trainingCourse.Staff.ReturnBird(birdTrainingCourse);
+
+            var requests = _trainingCourse.Staff.GetBirdTrainingCourse().Result.ToList();
+            var request = requests.FirstOrDefault(e => e.Id == birdTrainingCourse.Id);
+
+            string paymentCode = "offline";
+            string formattedDateTime = DateTime.UtcNow.AddHours(7).ToString("ddMMMyyyyhhmm");
+            var transactionAddModel = new TransactionAddModel()
+            {
+                CustomerId = request.CustomerId,
+                EntityId = request.Id,
+                EntityTypeId = (int)Models.Enum.EntityType.TrainingCourse,
+                PaymentCode = paymentCode,
+                Detail = $"{paymentCode}:{request.CustomerId}:{request.CustomerEmail}-" +
+                    $"check out training course {request.TrainingCourseId}:{request.TrainingCourseTitle}-at:{formattedDateTime}",
+                Status = (int)Models.Enum.Transaction.Status.Paid,
+                Title = "Training course check out",
+                TotalPayment = request.ActualPrice,
+            };
+            await _transaction.AddTransaction(transactionAddModel);
         }
 
         public async Task<IEnumerable<ReportModifyViewModel>> GetReportByProgressId(int progressId)

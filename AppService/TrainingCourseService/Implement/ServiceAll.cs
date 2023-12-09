@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TimetableSubsystem;
 using TrainingCourseSubsystem;
+using TransactionSubsystem;
 
 namespace AppService.TrainingCourseService.Implement
 {
