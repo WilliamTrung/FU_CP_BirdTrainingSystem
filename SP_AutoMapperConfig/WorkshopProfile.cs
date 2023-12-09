@@ -157,7 +157,7 @@ namespace SP_AutoMapperConfig
         {
             destination.Picture = source.Picture;
             destination.Status = (int)Models.Enum.Workshop.Status.Inactive;
-            destination.Location = source.Location;
+            //destination.Location = source.Location;
             destination.MinimumRegistration = source.MinimumRegistration;
             destination.MaximumRegistration = source.MaximumRegistration;
             //destination.WorkshopRefundPolicyId = 1;
@@ -280,7 +280,7 @@ namespace SP_AutoMapperConfig
             destination.WorkshopId = source.WorkshopId;
             destination.Status = null;
             destination.ClassStatus = (Models.Enum.Workshop.Class.Status)source.Status;
-            destination.Location = source.Workshop.Location;
+            //destination.Location = source.Workshop.Location;
             destination.MinimumRegistration = source.Workshop.MinimumRegistration;            
             destination.Id = source.Id;
             foreach (var detail in source.WorkshopClassDetails)

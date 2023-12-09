@@ -51,7 +51,6 @@ builder.Services.AddControllers().AddOData(options => options
                        x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.BirdTrainingProgress.Status>());
                        x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.BirdTrainingCourse.Status>());
                        x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.BirdTrainingReport.Status>());
-                       x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.Trainer.Category>());
                        x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.OnlineCourse.Customer.OnlineCourse.Status>());
                        x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.Workshop.Class.Customer.Status>());
                        x.JsonSerializerOptions.Converters.Add(new StringEnumConverter<Models.Enum.OnlineCourse.Customer.Section.Status>());
@@ -83,6 +82,7 @@ builder.AddTrainingCourseFeature();
 builder.AddAdviceConsultinFeature();
 builder.AddOnlineCourseFeature();
 builder.AddTrainingSkillFeature();
+builder.AddDashboardFeature();
 builder.AddWorkshopHostedService();
 
 var app = builder.Build();
