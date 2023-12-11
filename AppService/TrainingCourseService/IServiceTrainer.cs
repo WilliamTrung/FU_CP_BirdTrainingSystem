@@ -10,7 +10,7 @@ namespace AppService.TrainingCourseService
 {
     public interface IServiceTrainer : IServiceAll
     {
-        Task<IEnumerable<BirdTrainingProgressModel>> GetBirdTrainingProgressByTrainerId(int trainerId);
+        Task<IEnumerable<BirdTrainingProgressViewModel>> GetBirdTrainingProgressByTrainerId(int trainerId);
         Task MarkTrainingSkillDone(MarkSkillDone markDone);
         Task<int> MarkTrainingSlotDone(int birdTrainingProgressId);
         Task<TimetableReportView> GetTimetableReportView(int trainerSlotId);

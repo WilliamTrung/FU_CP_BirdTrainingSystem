@@ -16,7 +16,7 @@ namespace AppService.TrainingCourseService.Implement
         {
         }
 
-        public async Task<IEnumerable<BirdTrainingProgressModel>> GetBirdTrainingProgressByTrainerId(int trainerId)
+        public async Task<IEnumerable<BirdTrainingProgressViewModel>> GetBirdTrainingProgressByTrainerId(int trainerId)
         {
             return await _trainingCourse.Trainer.GetBirdTrainingProgressByTrainerId(trainerId);
         }
