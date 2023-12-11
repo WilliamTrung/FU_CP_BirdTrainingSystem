@@ -10,26 +10,6 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
 {
     public interface ITrainingCourseStaff : ITrainingCourseAll
     {
-        [HttpGet]
-        [Route("birdtrainingcourse")]
-        Task<IActionResult> GetBirdTrainingCourse();
-
-        [HttpGet]
-        [Route("birdtrainingcourse-bird")]
-        Task<IActionResult> GetBirdTrainingCourseByBirdId([FromQuery] int birdId);
-
-        [HttpGet]
-        [Route("birdtrainingcourse-customer")]
-        Task<IActionResult> GetBirdTrainingCourseByCustomerId(int customerId);
-
-        //[HttpPost]
-        //[Route("confirm-birdtrainingcourse")]
-        //Task ConfirmBirdTrainingCourse(int birdTrainingCourseId);
-
-        [HttpGet]
-        [Route("birdtrainingprogress-requestedId")]
-        Task<IActionResult> GetBirdTrainingCourseProgressByBirdTrainingCourseId([FromQuery] int birdTrainingCourseId);
-
         //[HttpPost]
         //[Route("generate-trainerslot")]
         //Task<IActionResult> GenerateTrainerTimetable([FromBody] IEnumerable<int> progressId);
@@ -53,10 +33,6 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
         [HttpPost]
         [Route("birdtrainingcourse-cancel")]
         Task<IActionResult> CancelBirdTrainingCourse(int birdTrainingCourseId);
-
-        [HttpGet]
-        [Route("birdtrainingreport-progressid")]
-        Task<IActionResult> GetReportByProgressId(int progressId);
 
         [HttpPut]
         [Route("assigntrainertoprogress")]

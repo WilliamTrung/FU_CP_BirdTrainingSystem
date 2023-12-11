@@ -11,6 +11,30 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.TrainingCourse
     public interface ITrainingCourseAll
     {
         [HttpGet]
+        [Route("birdtrainingcourse")]
+        Task<IActionResult> GetBirdTrainingCourse();
+
+        [HttpGet]
+        [Route("birdtrainingcourse-bird")]
+        Task<IActionResult> GetBirdTrainingCourseByBirdId([FromQuery] int birdId);
+
+        [HttpGet]
+        [Route("birdtrainingcourse-customer")]
+        Task<IActionResult> GetBirdTrainingCourseByCustomerId(int customerId);
+
+        //[HttpPost]
+        //[Route("confirm-birdtrainingcourse")]
+        //Task ConfirmBirdTrainingCourse(int birdTrainingCourseId);
+
+        [HttpGet]
+        [Route("birdtrainingprogress-requestedId")]
+        Task<IActionResult> GetBirdTrainingCourseProgressByBirdTrainingCourseId([FromQuery] int birdTrainingCourseId);
+
+        [HttpGet]
+        [Route("birdtrainingreport-progressid")]
+        Task<IActionResult> GetReportByProgressId(int progressId);
+
+        [HttpGet]
         [Route("birdspecies-id")]
         Task<IActionResult> GetBirdSpeciesById([FromQuery] int birdSpeciesId);
 

@@ -11,11 +11,21 @@ using Models.ServiceModels.TrainingCourseModels.BirdSkill;
 using Models.ServiceModels.TrainingCourseModels.TrainerSkill;
 using Models.ServiceModels.TrainingCourseModels;
 using Models.ServiceModels.TrainingCourseModels.TrainingCourseCheckOutPolicy;
+using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
+using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
+using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
 
 namespace AppService.TrainingCourseService
 {
     public interface IServiceAll
     {
+
+        Task<IEnumerable<BirdTrainingCourseListView>> GetBirdTrainingCourse();
+        Task<IEnumerable<BirdTrainingCourseListView>> GetBirdTrainingCourseByCustomerId(int customerId);
+        Task<IEnumerable<BirdTrainingCourseListView>> GetBirdTrainingCourseByBirdId(int birdId);
+        Task<IEnumerable<BirdTrainingProgressViewModel>> GetTrainingCourseSkill(int birdTrainingCourseId);
+        Task<IEnumerable<ReportModifyViewModel>> GetReportByProgressId(int progressId);
+
         Task<IEnumerable<BirdSpeciesViewModel>> GetBirdSpecies();
         Task<BirdSpeciesViewModel> GetBirdSpeciesById(int birdSpeciesId);
         Task<IEnumerable<TrainingCourseManagementViewModel>> GetTrainingCourses();

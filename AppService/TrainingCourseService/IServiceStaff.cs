@@ -35,16 +35,10 @@ namespace AppService.TrainingCourseService
         //Task<TrainerModel> GetTrainerById(int trainerId);//lay trainer theo id
         //Task<IEnumerable<TrainerModel>> GetTrainerByTrainerSkillId(int trainerSkillId);//lay danh sach trainer theo ki nang Trainer
 
-        Task<IEnumerable<BirdTrainingCourseListView>> GetBirdTrainingCourse();
-        Task<IEnumerable<BirdTrainingCourseListView>> GetBirdTrainingCourseByCustomerId(int customerId);
-        Task<IEnumerable<BirdTrainingCourseListView>> GetBirdTrainingCourseByBirdId(int birdId);
-
         Task<IEnumerable<BirdTrainingProgressViewModel>> ConfirmBirdTrainingCourse(BirdTrainingCourseConfirm confirmModel);//return list of progress
         //Task<TrainerSlotModel> CreateTrainerSlot(TrainerSlotAddModel trainerSlotModel);//non api
         //Task CreateTrainingReport(InitReportTrainerSlot report);//non api
         Task CancelBirdTrainingCourse(int birdTrainingCourseId);
-        Task<IEnumerable<BirdTrainingProgressViewModel>> GetTrainingCourseSkill(int birdTrainingCourseId);
-        Task<IEnumerable<ReportModifyViewModel>> GetReportByProgressId(int progressId);
         Task<BirdTrainingProgressViewModel> AssignTrainer(int progressId, int trainerId);
         Task ModifyTrainingSlot(ReportModifyModel reportModModel);
 

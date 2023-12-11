@@ -27,20 +27,6 @@ namespace AppService.TrainingCourseService.Implement
         {
             _transaction = transaction;
         }
-        public async Task<IEnumerable<BirdTrainingCourseListView>> GetBirdTrainingCourse()
-        {
-            return await _trainingCourse.Staff.GetBirdTrainingCourse();
-        }
-
-        public Task<IEnumerable<BirdTrainingCourseListView>> GetBirdTrainingCourseByCustomerId(int customerId)
-        {
-            return _trainingCourse.Staff.GetBirdTrainingCourseByCustomerId(customerId);
-        }
-
-        public async Task<IEnumerable<BirdTrainingCourseListView>> GetBirdTrainingCourseByBirdId(int birdId)
-        {
-            return await _trainingCourse.Staff.GetBirdTrainingCourseByBirdId(birdId);
-        }
         public async Task<IEnumerable<BirdTrainingProgressViewModel>> ConfirmBirdTrainingCourse(BirdTrainingCourseConfirm confirmModel)
         {
             List<int> progresses = _trainingCourse.Staff.ConfirmBirdTrainingCourse(confirmModel).Result.ToList();
@@ -70,10 +56,6 @@ namespace AppService.TrainingCourseService.Implement
         public async Task GenerateTrainerTimetable(DateTime startTrainingDate, int startTrainingSlot, IEnumerable<int> progressId)
         {
             await _trainingCourse.Staff.GenerateTrainerTimetable(startTrainingDate, startTrainingSlot, progressId);
-        }
-        public async Task<IEnumerable<BirdTrainingProgressViewModel>> GetTrainingCourseSkill(int trainingCourseId)
-        {
-            return await _trainingCourse.Staff.GetTrainingCourseSkill(trainingCourseId);
         }
 
         //public async Task GenerateTrainingTimetable(SelectedSlotInProgress selectedSlot)
@@ -168,11 +150,6 @@ namespace AppService.TrainingCourseService.Implement
                 TotalPayment = request.ActualPrice,
             };
             await _transaction.AddTransaction(transactionAddModel);
-        }
-
-        public async Task<IEnumerable<ReportModifyViewModel>> GetReportByProgressId(int progressId)
-        {
-            return await _trainingCourse.Staff.GetReportByProgressId(progressId);
         }
 
         public async Task<BirdTrainingProgressViewModel> AssignTrainer(int progressId, int trainerId)
