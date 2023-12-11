@@ -19,6 +19,10 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
         [Route("create-class")]
         public async Task<IActionResult> CreateWorkshopClass([FromBody] WorkshopClassAddModel workshopClass)
         {
+            if(workshopClass.Location.Length < 1)
+            {
+                throw new InvalidDataException("Location is required!");
+            }
             await _workshopService.Staff.CreateWorkshopClass(workshopClass);
             return Ok();
         }
