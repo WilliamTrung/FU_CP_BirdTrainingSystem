@@ -107,7 +107,7 @@ namespace SP_AutoMapperConfig
                 _mapper = mapper;
                 _unitOfWork = unitOfWork;
             }
-            public async void Process(Trainer source, TrainerModel destination, ResolutionContext context)
+            public void Process(Trainer source, TrainerModel destination, ResolutionContext context)
             {
                 destination.Id = source.Id;
                 destination.Name = source.User.Name;

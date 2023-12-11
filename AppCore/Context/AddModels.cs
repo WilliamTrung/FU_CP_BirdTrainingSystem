@@ -164,14 +164,14 @@ namespace AppCore.Context
                     Id= 2,
                     Name = "Gold",
                     Discount = 0.1f,
-                    Requirement = 50*1000*1000,
+                    Requirement = 5*1000*1000,
                 },
                 new MembershipRank
                 {
                     Id = 3,
                     Name = "Platinum",
                     Discount = 0.2f,
-                    Requirement = 100*1000*1000
+                    Requirement = 10*1000*1000
                 });
         }
         public static void AddBirdSpecies(this ModelBuilder modelBuilder)

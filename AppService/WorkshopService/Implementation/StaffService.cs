@@ -224,5 +224,10 @@ namespace AppService.WorkshopService.Implementation
         {
             await _workshop.Staff.SetClosedRegistrationForClass(workshopClassId);
         }
+
+        public async Task ModifyWorkshopClass(WorkshopClassModifyModel modified)
+        {
+            await _workshop.Staff.ModifyWorkshopClass(modified);
+        }
     }
 }

@@ -23,5 +23,6 @@ namespace AppService.WorkshopService
         Task<IEnumerable<RegisteredCustomerModel>> GetAttendeesInSlot(int classSlotId);
         Task SubmitAttendance(int classSlotId, List<CheckAttendanceCredentials> customerCredentials);
         Task<WorkshopClassAdminViewModel> GetClassAdminViewById(int classId);
+        Task ModifyWorkshopClass(WorkshopClassModifyModel modified);
     }
 }

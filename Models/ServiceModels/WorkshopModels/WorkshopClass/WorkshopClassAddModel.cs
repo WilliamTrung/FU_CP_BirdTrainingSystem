@@ -14,5 +14,6 @@ namespace Models.ServiceModels.WorkshopModels.WorkshopClass
         public int WorkshopId { get; set; }
         //[SP_Validator.ClassStartTimeValidator]
         public DateOnly StartTime { get; set; }
+        public string Location { get; set; } = null!;
     }
 }

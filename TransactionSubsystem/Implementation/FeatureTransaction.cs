@@ -30,6 +30,13 @@ namespace TransactionSubsystem.Implementation
             if (customer != null) 
             {
                 customer.TotalPayment += entity.TotalPayment;
+#pragma warning disable CS8629 // Nullable value type may be null.
+                var membership = await MembershipRankAtCost((decimal)customer.TotalPayment);
+                if (customer.MembershipRankId != membership.Id)
+                {
+                    customer.MembershipRankId = membership.Id;
+                }
+#pragma warning restore CS8629 // Nullable value type may be null.
                 await _unitOfWork.CustomerRepository.Update(customer);
             }
         }
@@ -140,12 +147,18 @@ namespace TransactionSubsystem.Implementation
             {
                 throw new KeyNotFoundException($"{nameof(customer)} not found for id: {customerId}");
             }
-
-            decimal discountRate = (decimal)customer.MembershipRank.Discount;
+            var membership = await MembershipRankAtCost((decimal)customer.TotalPayment);
+            decimal discountRate = (decimal)membership.Discount;
 
             decimal discountedAmount = price * discountRate;
 
             return discountedAmount;
+        }
+        private async Task<MembershipRank?> MembershipRankAtCost(decimal totalAmount)
+        {
+            var memberships = await _unitOfWork.MembershipRankRepository.Get(c => totalAmount >= c.Requirement);
+            var membershipRank = memberships.MaxBy(c => c.Requirement);
+            return membershipRank;
         }
     }
 }
