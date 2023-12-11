@@ -100,5 +100,12 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             var result = await _workshopService.Manager.GetAllWorkshops();
             return Ok(result);
         }
+        [HttpPut]
+        [Route("modify-class")]
+        public async Task<IActionResult> ModifyWorkshopClass([FromBody] WorkshopClassModifyModel modified)
+        {
+            await _workshopService.Staff.ModifyWorkshopClass(modified);
+            return Ok();
+        }
     }
 }

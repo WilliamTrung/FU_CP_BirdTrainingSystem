@@ -94,7 +94,8 @@ namespace SP_AutoMapperConfig
             CreateMap<WorkshopClassAddModel, WorkshopClass>()
                 .ForMember(e => e.StartTime, opt => opt.MapFrom(c => c.StartTime.ToDateTime(new TimeOnly(0, 0, 0))))
                 .ForMember(e => e.WorkshopId, opt => opt.MapFrom(c => c.WorkshopId))
-                .ForMember(e => e.Status, opt => opt.MapFrom(c => (int)Models.Enum.Workshop.Class.Status.Pending));
+                .ForMember(e => e.Status, opt => opt.MapFrom(c => (int)Models.Enum.Workshop.Class.Status.Pending))
+                .ForMember(e => e.Location, opt => opt.MapFrom(c => c.Location));
         }
         private void Map_WorkshopDetailTemplateAddModel_WorkshopDetailTemplate()
         {

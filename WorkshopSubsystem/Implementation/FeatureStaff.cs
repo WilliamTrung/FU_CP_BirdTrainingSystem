@@ -405,5 +405,27 @@ namespace WorkshopSubsystem.Implementation
             }
             return false;
         }
+
+        public async Task ModifyWorkshopClass(WorkshopClassModifyModel modified)
+        {
+            var workshopClass = await _unitOfWork.WorkshopClassRepository.GetFirst(c => c.Id == modified.Id, nameof(WorkshopClass.WorkshopClassDetails));
+            if(workshopClass.Status != (int)Models.Enum.Workshop.Class.Status.Pending)
+            {
+                throw new InvalidOperationException("Class must be at pending state!");
+            }
+            if(modified.StartTime != null && modified.StartTime != workshopClass.StartTime.Value.ToDateOnly())
+            {
+                if(modified.StartTime.Value < DateTime.UtcNow.AddDays(BR_WorkshopConstant.StartDateCreated).AddHours(7).ToDateOnly())
+                {
+                    throw new InvalidOperationException("Start time must be 5 days after current day!");
+                }
+                workshopClass.StartTime = modified.StartTime.Value.ToDateTime(new TimeOnly());
+            }
+            if(modified.Location != null)
+            {
+                workshopClass.Location = modified.Location;
+            }
+            await _unitOfWork.WorkshopClassRepository.Update(workshopClass);
+        }
     }
 }
