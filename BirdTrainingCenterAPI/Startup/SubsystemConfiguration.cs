@@ -31,7 +31,7 @@ namespace BirdTrainingCenterAPI.Startup
             builder.Services.AddTransient<AdministrativeSubsystem.IFeatureProfileManagement, AdministrativeSubsystem.Implementation.FeatureProfileManagement>();
             builder.Services.AddTransient<IAdminFeature, AdminFeature>();
 
-            builder.Services.AddTransient<IServiceAdministrator, ServiceAdministrator>();
+            builder.Services.AddTransient<AppService.AdministrativeService.IServiceAdministrator, ServiceAdministrator>();
             builder.Services.AddTransient<IServiceProfile, ServiceProfile>();
 
             builder.Services.AddTransient<IAdministrativeService, AdministrativeService>();
@@ -81,6 +81,7 @@ namespace BirdTrainingCenterAPI.Startup
             builder.Services.AddTransient<AppService.TimetableService.IServiceStaff, AppService.TimetableService.Implementation.ServiceStaff>();
             builder.Services.AddTransient<AppService.TimetableService.IServiceTrainer, AppService.TimetableService.Implementation.ServiceTrainer>();
             builder.Services.AddTransient<ITimetableService, TimetableService>();
+            builder.Services.AddTransient<AppService.TimetableService.IServiceAdministrator, AppService.TimetableService.Implementation.ServiceAdministrator>();
         }
 
         public static void AddAdviceConsultinFeature(this WebApplicationBuilder builder)

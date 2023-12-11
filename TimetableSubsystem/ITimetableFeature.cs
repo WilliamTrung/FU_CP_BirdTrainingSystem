@@ -12,7 +12,6 @@ namespace TimetableSubsystem
 
     public interface ITimetableFeature
     {
-        Task<IEnumerable<SlotModel>> GetSlotData();
         Task<IEnumerable<TrainerModel>> GetTrainerFreeOnDate(DateTime date);
         Task<IEnumerable<SlotModel>> GetTrainerFreeSlotOnDate(DateOnly date, int trainerId);
         Task<IEnumerable<TrainerSlotModel>> GetTrainerOccupiedSlots(DateOnly from, DateOnly to, int trainerId);
@@ -25,5 +24,9 @@ namespace TimetableSubsystem
         Task<IEnumerable<TrainerModel>> GetListConsultantTrainer();
         Task<IEnumerable<SlotModel>> GetAvailableFinishTime(string actualSlotStart);
         Task<IEnumerable<SlotModel>> GetSlotRangeForConsultant(string  actualSlotStart, int actualEndSlot);
+
+        //CRUD Slot
+        Task<IEnumerable<SlotModel>> GetSlotData();
+        Task UpdateSlot(int minute);
     }
 }

@@ -1,4 +1,5 @@
-﻿using AppRepository.UnitOfWork;
+﻿using AppRepository.Repository.Implement;
+using AppRepository.UnitOfWork;
 using AutoMapper;
 using Models.Entities;
 using Models.ServiceModels;
@@ -210,6 +211,21 @@ namespace TimetableSubsystem.Implementation
             var entities = await _unitOfWork.SlotRepository.Get(x => x.EndTime >= start && x.EndTime <= endSlot.EndTime);
             var models = _mapper.Map<IEnumerable<SlotModel>>(entities);
             return models;
+        }
+
+        public async Task UpdateSlot(int minute)
+        {
+            var entities = await _unitOfWork.SlotRepository.Get();
+            if (minute > 60 || minute < 30)
+            {
+                throw new Exception("Duration each slot must be long 30 ~ 60 minute");
+            }
+            foreach (var entity in entities)
+            {
+                TimeSpan startTime = (TimeSpan)entity.StartTime;
+                entity.EndTime = startTime.Add(TimeSpan.FromMinutes(minute));
+                await _unitOfWork.SlotRepository.Update(entity);
+            }
         }
     }
 }

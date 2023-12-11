@@ -9,7 +9,7 @@ namespace BirdTrainingCenterAPI.Controllers.Timetable
 {
     [Route("api/slot")]
     [ApiController]
-    public class SlotController : ODataController, ISlotGeneral, ISlotStaff
+    public class SlotController : ODataController, ISlotGeneral, ISlotStaff, ISlotAdministrator
     {
         private readonly ITimetableService _timetableService;
         public SlotController(ITimetableService timetableService)
@@ -58,6 +58,18 @@ namespace BirdTrainingCenterAPI.Controllers.Timetable
             {
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
+        }
+
+        [HttpPut]
+        [Route("updateSlot")]
+        public async Task<IActionResult> UpdateSlot(int minute)
+        {
+            if (minute > 60 || minute < 30)
+            {
+                return StatusCode(StatusCodes.Status503ServiceUnavailable, "Duration each slot must be long 30 ~ 60 minute");
+            }
+            await _timetableService.Admin.UpdateSlot(minute);
+            return Ok();
         }
     }
 }
