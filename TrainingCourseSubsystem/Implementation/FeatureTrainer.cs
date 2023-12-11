@@ -130,7 +130,7 @@ namespace TrainingCourseSubsystem.Implementation
                 var checkCertificate = _unitOfWork.BirdCertificateDetailRepository.Get(e => e.BirdTrainingCourseId == birdCertificateDetailAdd.BirdTrainingCourseId).Result;
                 if (checkCertificate != null && checkCertificate.Count() > 0)
                 {
-                    throw new Exception($"Bird certificate already given.");
+                    throw new InvalidOperationException($"Bird certificate already given.");
                 }
 
                 var entity = _mapper.Map<BirdCertificateDetail>(birdCertificateDetailAdd);
