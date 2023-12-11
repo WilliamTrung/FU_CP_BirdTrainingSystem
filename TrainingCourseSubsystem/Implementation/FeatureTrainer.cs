@@ -20,10 +20,10 @@ namespace TrainingCourseSubsystem.Implementation
         {
         }
 
-        public async Task<IEnumerable<BirdTrainingProgressModel>> GetBirdTrainingProgressByTrainerId(int trainerId)
+        public async Task<IEnumerable<BirdTrainingProgressViewModel>> GetBirdTrainingProgressByTrainerId(int trainerId)
         {
             var entities = await _unitOfWork.BirdTrainingProgressRepository.Get(e => e.TrainerId == trainerId);
-            var models = _mapper.Map<IEnumerable<BirdTrainingProgressModel>>(entities);
+            var models = _mapper.Map<IEnumerable<BirdTrainingProgressViewModel>>(entities);
             return models;
         }
 
@@ -130,32 +130,33 @@ namespace TrainingCourseSubsystem.Implementation
                 var checkCertificate = _unitOfWork.BirdCertificateDetailRepository.Get(e => e.BirdTrainingCourseId == birdCertificateDetailAdd.BirdTrainingCourseId).Result;
                 if (checkCertificate != null && checkCertificate.Count() > 0)
                 {
-                    throw new InvalidOperationException($"Bird certificate already given.");
+                    //throw new InvalidOperationException($"Bird certificate already given.");
                 }
-
-                var entity = _mapper.Map<BirdCertificateDetail>(birdCertificateDetailAdd);
-                await _unitOfWork.BirdCertificateDetailRepository.Add(entity);
-
-                var birdTrainingCourse = _unitOfWork.BirdTrainingCourseRepository.GetFirst(e => e.Id == entity.BirdTrainingCourseId).Result;
-                if (birdTrainingCourse != null)
+                else
                 {
-                    var passedSkill = _unitOfWork.BirdTrainingProgressRepository.Get(e => e.BirdTrainingCourseId == birdTrainingCourse.Id
-                                                                                      && e.Status == (int)Models.Enum.BirdTrainingProgress.Status.Pass
-                                                                                      , nameof(BirdTrainingProgress.TrainingCourseSkill)
-                                                                                      , $"{nameof(BirdTrainingProgress.TrainingCourseSkill)}.{nameof(BirdTrainingProgress.TrainingCourseSkill.BirdSkill)}").Result.ToList();
-                    if (passedSkill != null && passedSkill.Count() > 0)
+                    var entity = _mapper.Map<BirdCertificateDetail>(birdCertificateDetailAdd);
+                    await _unitOfWork.BirdCertificateDetailRepository.Add(entity);
+
+                    var birdTrainingCourse = _unitOfWork.BirdTrainingCourseRepository.GetFirst(e => e.Id == entity.BirdTrainingCourseId).Result;
+                    if (birdTrainingCourse != null)
                     {
-                        foreach (var skill in passedSkill)
+                        var passedSkill = _unitOfWork.BirdTrainingProgressRepository.Get(e => e.BirdTrainingCourseId == birdTrainingCourse.Id
+                                                                                          && e.Status == (int)Models.Enum.BirdTrainingProgress.Status.Pass
+                                                                                          , nameof(BirdTrainingProgress.TrainingCourseSkill)
+                                                                                          , $"{nameof(BirdTrainingProgress.TrainingCourseSkill)}.{nameof(BirdTrainingProgress.TrainingCourseSkill.BirdSkill)}").Result.ToList();
+                        if (passedSkill != null && passedSkill.Count() > 0)
                         {
-                            if (skill != null)
+                            foreach (var skill in passedSkill)
                             {
-                                BirdSkillReceivedAddDeleteModel birdSkillReceivedAddModel = new BirdSkillReceivedAddDeleteModel()
+                                if (skill != null)
                                 {
-                                    BirdId = entity.BirdId,
-                                    BirdSkillId = skill.TrainingCourseSkill.BirdSkill.Id,
-                                };
-                                var birdSkillReceivedAdd = _mapper.Map<BirdSkillReceived>(birdSkillReceivedAddModel);
-                                await _unitOfWork.BirdSkillReceivedRepository.Add(birdSkillReceivedAdd);
+                                    BirdSkillReceivedAddDeleteModel birdSkillReceivedAddModel = new BirdSkillReceivedAddDeleteModel()
+                                    {
+                                        BirdId = entity.BirdId,
+                                        BirdSkillId = skill.TrainingCourseSkill.BirdSkill.Id,
+                                    };
+                                    await CreateBirdSkillReceived(birdSkillReceivedAddModel);
+                                }
                             }
                         }
                     }

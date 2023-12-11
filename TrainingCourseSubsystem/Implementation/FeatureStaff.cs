@@ -191,12 +191,6 @@ namespace TrainingCourseSubsystem.Implementation
         {
             var entities = await _unitOfWork.BirdTrainingProgressRepository.Get(e => e.BirdTrainingCourseId == birdTrainingCourseId);
             var models = _mapper.Map<IEnumerable<BirdTrainingProgressViewModel>>(entities);
-
-            //foreach (var entity in entities)
-            //{
-            //    await _unitOfWork.BirdTrainingProgressRepository.Delete(entity);
-            //}
-
             return models;
         }
         public async Task<IEnumerable<ReportModifyViewModel>> GetReportByProgressId(int progressId)

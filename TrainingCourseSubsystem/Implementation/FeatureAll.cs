@@ -68,8 +68,22 @@ namespace TrainingCourseSubsystem.Implementation
             }
             else
             {
-                var entity = _mapper.Map<BirdSkillReceived>(addDeleteModel);
-                await _unitOfWork.BirdSkillReceivedRepository.Add(entity);
+                var birdSkillReceiveds = _unitOfWork.BirdSkillReceivedRepository.Get(e => e.BirdId == addDeleteModel.BirdId).Result.ToList();
+                foreach(var skill in birdSkillReceiveds)
+                {
+                    if(skill.BirdSkillId != addDeleteModel.BirdSkillId)
+                    {
+                        var entity = _mapper.Map<BirdSkillReceived>(addDeleteModel);
+                        await _unitOfWork.BirdSkillReceivedRepository.Add(entity);
+                        break;
+                    }
+                    else
+                    {
+                        skill.ReceivedDate = DateTime.UtcNow.AddHours(7);
+                        await _unitOfWork.BirdSkillReceivedRepository.Update(skill);
+                        break;
+                    }
+                }
             }
         }
 
