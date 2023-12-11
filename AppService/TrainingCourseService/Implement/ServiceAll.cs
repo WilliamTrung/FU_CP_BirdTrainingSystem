@@ -4,6 +4,9 @@ using Models.ServiceModels.TrainingCourseModels.Bird;
 using Models.ServiceModels.TrainingCourseModels.BirdCertificate;
 using Models.ServiceModels.TrainingCourseModels.BirdCertificate.BirdCertificateDetail;
 using Models.ServiceModels.TrainingCourseModels.BirdSkill;
+using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
+using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
+using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
 using Models.ServiceModels.TrainingCourseModels.TrainerSkill;
 using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
 using Models.ServiceModels.TrainingCourseModels.TrainingCourseCheckOutPolicy;
@@ -26,6 +29,29 @@ namespace AppService.TrainingCourseService.Implement
         {
             _timetable = timetable;
             _trainingCourse = trainingCourse;
+        }
+        public async Task<IEnumerable<BirdTrainingCourseListView>> GetBirdTrainingCourse()
+        {
+            return await _trainingCourse.All.GetBirdTrainingCourse();
+        }
+
+        public Task<IEnumerable<BirdTrainingCourseListView>> GetBirdTrainingCourseByCustomerId(int customerId)
+        {
+            return _trainingCourse.All.GetBirdTrainingCourseByCustomerId(customerId);
+        }
+
+        public async Task<IEnumerable<BirdTrainingCourseListView>> GetBirdTrainingCourseByBirdId(int birdId)
+        {
+            return await _trainingCourse.All.GetBirdTrainingCourseByBirdId(birdId);
+        }
+        public async Task<IEnumerable<BirdTrainingProgressViewModel>> GetTrainingCourseSkill(int trainingCourseId)
+        {
+            return await _trainingCourse.All.GetTrainingCourseSkill(trainingCourseId);
+        }
+
+        public async Task<IEnumerable<ReportModifyViewModel>> GetReportByProgressId(int progressId)
+        {
+            return await _trainingCourse.All.GetReportByProgressId(progressId);
         }
 
         public async Task CreateBirdSkillReceived(BirdSkillReceivedAddDeleteModel addDeleteModel)

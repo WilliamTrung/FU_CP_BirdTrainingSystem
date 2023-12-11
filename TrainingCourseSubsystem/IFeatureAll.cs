@@ -3,6 +3,9 @@ using Models.ServiceModels.TrainingCourseModels.Bird;
 using Models.ServiceModels.TrainingCourseModels.BirdCertificate;
 using Models.ServiceModels.TrainingCourseModels.BirdCertificate.BirdCertificateDetail;
 using Models.ServiceModels.TrainingCourseModels.BirdSkill;
+using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
+using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
+using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
 using Models.ServiceModels.TrainingCourseModels.TrainerSkill;
 using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
 using Models.ServiceModels.TrainingCourseModels.TrainingCourseCheckOutPolicy;
@@ -16,6 +19,12 @@ namespace TrainingCourseSubsystem
 {
     public interface IFeatureAll
     {
+        Task<IEnumerable<BirdTrainingCourseListView>> GetBirdTrainingCourse();
+        Task<IEnumerable<BirdTrainingCourseListView>> GetBirdTrainingCourseByCustomerId(int customerId);
+        Task<IEnumerable<BirdTrainingCourseListView>> GetBirdTrainingCourseByBirdId(int birdId);
+        Task<IEnumerable<BirdTrainingProgressViewModel>> GetTrainingCourseSkill(int birdTrainingCourseId);
+        Task<IEnumerable<ReportModifyViewModel>> GetReportByProgressId(int progressId);
+
         Task<IEnumerable<BirdSpeciesViewModel>> GetBirdSpecies();
         Task<BirdSpeciesViewModel> GetBirdSpeciesById(int birdSpeciesId);
         Task<IEnumerable<TrainingCourseManagementViewModel>> GetTrainingCourses();

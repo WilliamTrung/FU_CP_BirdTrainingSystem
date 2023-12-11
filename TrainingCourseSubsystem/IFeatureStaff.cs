@@ -23,17 +23,11 @@ namespace TrainingCourseSubsystem
         //FE34[Staff] confirm[Bird] completing the[Training Course] - by checking all the progression in each[Training Course Detail]
         //FE36[Staff] notify[Customer] - to receive[Bird] - [Customer] must be at the center to receive[Bird]
 
-        Task<IEnumerable<BirdTrainingCourseListView>> GetBirdTrainingCourse();
-        Task<IEnumerable<BirdTrainingCourseListView>> GetBirdTrainingCourseByCustomerId(int customerId);
-        Task<IEnumerable<BirdTrainingCourseListView>> GetBirdTrainingCourseByBirdId(int birdId);
-
         Task<IEnumerable<int>> ConfirmBirdTrainingCourse(BirdTrainingCourseConfirm confirmModel);//return list of progress
         Task CancelBirdTrainingCourse(int birdTrainingCourseId);
         Task<TrainingCourseTrainerSlotModel> CreateTrainerSlot(TrainerSlotAddModel trainerSlotModel);//non api
         Task CreateTrainingReport(InitReportTrainerSlot report);//non api
 
-        Task<IEnumerable<BirdTrainingProgressViewModel>> GetTrainingCourseSkill(int birdTrainingCourseId);
-        Task<IEnumerable<ReportModifyViewModel>> GetReportByProgressId(int progressId);
         Task<BirdTrainingProgressViewModel> AssignTrainer(int progressId, int trainerId);
         Task ModifyTrainingSlot(ReportModifyModel reportModModel);
 

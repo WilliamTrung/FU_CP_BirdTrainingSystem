@@ -30,38 +30,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             _firebaseService = firebaseService;
             _bucket = bucket.Value;
         }
-        
-        [HttpGet]
-        [EnableQuery]
-        [Route("birdtrainingcourse")]
-        public async Task<IActionResult> GetBirdTrainingCourse()
-        {
-            var result = await _trainingCourseService.Staff.GetBirdTrainingCourse();
-            return Ok(result);
-        }
-        [HttpGet]
-        [EnableQuery]
-        [Route("birdtrainingcourse-bird")]
-        public async Task<IActionResult> GetBirdTrainingCourseByBirdId([FromQuery] int birdId)
-        {
-            var result = await _trainingCourseService.Staff.GetBirdTrainingCourseByBirdId(birdId);
-            return Ok(result);
-        }
-        [HttpGet]
-        [EnableQuery]
-        [Route("birdtrainingcourse-customer")]
-        public async Task<IActionResult> GetBirdTrainingCourseByCustomerId([FromQuery] int customerId)
-        {
-            var result = await _trainingCourseService.Staff.GetBirdTrainingCourseByCustomerId(customerId);
-            return Ok(result);
-        }
-        [HttpGet]
-        [Route("birdtrainingprogress-requestedId")]
-        public async Task<IActionResult> GetBirdTrainingCourseProgressByBirdTrainingCourseId([FromQuery] int birdTrainingCourseId)
-        {
-            var result = await _trainingCourseService.Staff.GetTrainingCourseSkill(birdTrainingCourseId);
-            return Ok(result);
-        }
+
         [HttpPut]
         [Route("receive-bird")]
         public async Task<IActionResult> ReceiveBird([FromForm] ReceiveBirdParamModel birdTrainingCourse)
@@ -174,13 +143,6 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         {
             await _trainingCourseService.Staff.CancelBirdTrainingCourse(birdTrainingCourseId);
             return Ok();
-        }
-        [HttpGet]
-        [Route("birdtrainingreport-progressid")]
-        public async Task<IActionResult> GetReportByProgressId([FromQuery] int progressId)
-        {
-            var result = await _trainingCourseService.Staff.GetReportByProgressId(progressId);
-            return Ok(result);
         }
 
         [HttpPut]

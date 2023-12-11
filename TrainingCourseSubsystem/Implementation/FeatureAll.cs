@@ -7,6 +7,9 @@ using Models.ServiceModels.TrainingCourseModels.Bird;
 using Models.ServiceModels.TrainingCourseModels.BirdCertificate;
 using Models.ServiceModels.TrainingCourseModels.BirdCertificate.BirdCertificateDetail;
 using Models.ServiceModels.TrainingCourseModels.BirdSkill;
+using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
+using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
+using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
 using Models.ServiceModels.TrainingCourseModels.TrainerSkill;
 using Models.ServiceModels.TrainingCourseModels.TrainingCourse;
 using Models.ServiceModels.TrainingCourseModels.TrainingCourseCheckOutPolicy;
@@ -27,7 +30,52 @@ namespace TrainingCourseSubsystem.Implementation
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
+        public async Task<IEnumerable<BirdTrainingCourseListView>> GetBirdTrainingCourse()
+        {
+            var entities = await _unitOfWork.BirdTrainingCourseRepository.Get(expression: null
+                                                                                , nameof(BirdTrainingCourse.TrainingCourse)
+                                                                                , nameof(BirdTrainingCourse.Bird)
+                                                                                , nameof(BirdTrainingCourse.Customer)
+                                                                                , $"{nameof(BirdTrainingCourse.Customer)}.{nameof(BirdTrainingCourse.Customer.User)}");
+            var models = _mapper.Map<IEnumerable<BirdTrainingCourseListView>>(entities);
+            return models.OrderByDescending(e => e.Status);
+        }
 
+        public async Task<IEnumerable<BirdTrainingCourseListView>> GetBirdTrainingCourseByBirdId(int birdId)
+        {
+            var entities = await _unitOfWork.BirdTrainingCourseRepository.Get(e => e.BirdId == birdId
+                                                                                , nameof(BirdTrainingCourse.TrainingCourse)
+                                                                                , nameof(BirdTrainingCourse.Bird)
+                                                                                , nameof(BirdTrainingCourse.Customer)
+                                                                                , $"{nameof(BirdTrainingCourse.Customer)}.{nameof(BirdTrainingCourse.Customer.User)}");
+            var models = _mapper.Map<IEnumerable<BirdTrainingCourseListView>>(entities);
+            return models.OrderByDescending(e => e.Status);
+        }
+
+        public async Task<IEnumerable<BirdTrainingCourseListView>> GetBirdTrainingCourseByCustomerId(int customerId)
+        {
+            var entities = await _unitOfWork.BirdTrainingCourseRepository.Get(e => e.CustomerId == customerId
+                                                                                , nameof(BirdTrainingCourse.TrainingCourse)
+                                                                                , nameof(BirdTrainingCourse.Bird)
+                                                                                , nameof(BirdTrainingCourse.Customer)
+                                                                                , $"{nameof(BirdTrainingCourse.Customer)}.{nameof(BirdTrainingCourse.Customer.User)}");
+            var models = _mapper.Map<IEnumerable<BirdTrainingCourseListView>>(entities);
+            return models;
+        }
+
+        public async Task<IEnumerable<BirdTrainingProgressViewModel>> GetTrainingCourseSkill(int birdTrainingCourseId)
+        {
+            var entities = await _unitOfWork.BirdTrainingProgressRepository.Get(e => e.BirdTrainingCourseId == birdTrainingCourseId);
+            var models = _mapper.Map<IEnumerable<BirdTrainingProgressViewModel>>(entities);
+            return models;
+        }
+        public async Task<IEnumerable<ReportModifyViewModel>> GetReportByProgressId(int progressId)
+        {
+            var entities = await _unitOfWork.BirdTrainingReportRepository.Get(e => e.BirdTrainingProgressId == progressId
+                                                                               , nameof(BirdTrainingReport.TrainerSlot));
+            var models = _mapper.Map<IEnumerable<ReportModifyViewModel>>(entities);
+            return models;
+        }
         public async Task<IEnumerable<BirdCertificateDetailViewModel>> GetBirdCertificatesDetail()
         {
             var entities = await _unitOfWork.BirdCertificateDetailRepository.Get();
