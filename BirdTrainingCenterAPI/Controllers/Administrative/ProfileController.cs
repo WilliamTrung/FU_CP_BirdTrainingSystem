@@ -104,7 +104,8 @@ namespace BirdTrainingCenterAPI.Controllers.Administrative
                 {
                     return BadRequest("Upload image only!");
                 }
-                avatarUrl = await _firebaseService.UploadFile(avatar, $"{avatar.FileName}_{DateTime.Now.ToString("yyyyMMddHHmmss")}", FirebaseFolder.PROFILE_USER, _bucket.General);                
+                var extension = Path.GetExtension(avatar.FileName);
+                avatarUrl = await _firebaseService.UploadFile(avatar, $"{Guid.NewGuid}{extension}", FirebaseFolder.PROFILE_USER, _bucket.General);                
 
                 var oldAvatar = await _admin.Profile.UpdateAvatar(Int32.Parse(id.Value), roleEnum, avatarUrl);
                 if(oldAvatar != null && oldAvatar != string.Empty)
@@ -116,12 +117,12 @@ namespace BirdTrainingCenterAPI.Controllers.Administrative
             catch (KeyNotFoundException ex)
             {
                 await _firebaseService.DeleteFile(avatarUrl, _bucket.General);
-                return Unauthorized(ex.Message);
+                throw new KeyNotFoundException(ex.Message);
             }
             catch (Exception ex)
             {
                 await _firebaseService.DeleteFile(avatarUrl, _bucket.General);
-                return StatusCode(StatusCodes.Status400BadRequest, ex.Message);
+                throw new InvalidDataException(ex.Message);
             }
         }
     }

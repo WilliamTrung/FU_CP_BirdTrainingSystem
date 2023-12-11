@@ -1,9 +1,17 @@
-﻿using AppService.AdministrativeService;
+﻿using AppService;
+using AppService.AdministrativeService;
+using AppService.Implementation;
 using BirdTrainingCenterAPI.Controllers.Endpoints.Administrative;
+using BirdTrainingCenterAPI.Helper;
+using Google.Apis.Storage.v1.Data;
+using Grpc.Core;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
+using Microsoft.Extensions.Options;
+using Models.ApiParamModels.Administrative;
+using Models.ConfigModels;
 using Models.ServiceModels.UserModels;
 using SP_Middleware;
 
@@ -14,9 +22,13 @@ namespace BirdTrainingCenterAPI.Controllers.Administrative
     public class UserManagementController : ODataController, IUserManagement
     {
         private readonly IAdministrativeService _admin;
-        public UserManagementController(IAdministrativeService admin)
+        private readonly IFirebaseService _firebaseService;
+        private readonly FirebaseBucket _bucket;
+        public UserManagementController(IAdministrativeService admin, IFirebaseService firebaseService, IOptions<FirebaseBucket> bucket)
         {
             _admin = admin;
+            _firebaseService = firebaseService;
+            _bucket = bucket.Value;
         }
         [HttpGet]
         [EnableQuery]
@@ -55,9 +67,20 @@ namespace BirdTrainingCenterAPI.Controllers.Administrative
         [HttpPut]
         [Route("update")]
         [CustomAuthorize(roles: "Administrator")]
-        public async Task<IActionResult> UpdateRecord(UserAdminUpdateModel model)
+        public async Task<IActionResult> UpdateRecord([FromForm]UserAdminUpdateParamModel model)
         {
-            await _admin.Administrator.UpdateRecord(model);
+            var modelUpdate = model.ToModel();
+            await _admin.Administrator.UpdateRecord(modelUpdate);
+            if (model.Avatar != null && !model.Avatar.IsImage())
+            {
+                throw new InvalidOperationException("Uploaded avatar is invalid format!");
+            } else if(model.Avatar != null)
+            {
+                var extension = Path.GetExtension(model.Avatar.FileName);
+                var picture = await _firebaseService.UploadFile(model.Avatar, $"{Guid.NewGuid().ToString()}{extension}", FirebaseFolder.PROFILE_USER, _bucket.General);
+                var oldPic = await _admin.Profile.UpdateAvatar(model.Id, model.Role, picture);
+                await _firebaseService.DeleteFile(oldPic, _bucket.General);
+            }
             return Ok();
         }
         [HttpGet]
@@ -82,6 +105,33 @@ namespace BirdTrainingCenterAPI.Controllers.Administrative
         public async Task<IActionResult> UpdateStatus(UserStatusUpdateModel model)
         {
             await _admin.Administrator.UpdateStatus(model);
+            return Ok();
+        }
+        [HttpPost]
+        [Route("create")]
+        public async Task<IActionResult> CreateAccount([FromForm]UserAdminAddParamModel model)
+        {
+            
+            var modelAdd = model.ToModel(null);
+            var id = await _admin.Administrator.CreateUser(modelAdd);
+            string? picture = null;
+            if (model.Avatar != null && !model.Avatar.IsImage())
+            {
+                return BadRequest("Upload image only!");
+            }
+            else if (model.Avatar != null)
+            {
+                var extension = Path.GetExtension(model.Avatar.FileName);
+                picture = await _firebaseService.UploadFile(model.Avatar, $"{Guid.NewGuid().ToString()}{extension}", FirebaseFolder.PROFILE_USER, _bucket.General);
+                await _admin.Profile.UpdateAvatar(id, ((Models.Enum.Role)((int)model.Role)), picture);
+            }
+            return Ok(id);
+        }
+        [HttpPost]
+        [Route("topup")]
+        public async Task<IActionResult> TopupCustomer(int customerId, decimal amount)
+        {
+            await _admin.Administrator.TopupCustomer(customerId, amount);
             return Ok();
         }
     }

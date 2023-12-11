@@ -25,5 +25,8 @@ namespace AdviceConsultingSubsystem
         Task CreateNewDistancePricePolicy(DistancePricePolicyCreateNewServiceModel distancePricePolicy);
         Task UpdateDistancePricePolicy(DistancePricePolicyUpdateServiceModel distancePricePolicy);
         Task DeleteDistancePricePolicy(int distancePricePolicyId);
+        Task CreateConsultingType(ConsultingTypeCreateNewServiceModel consultingType);
+        Task UpdateConsultingType(ConsultingTypeServiceModel consultingType);
+        Task DeleteConsultingType(int consultingTypeId);
     }
 }

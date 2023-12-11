@@ -25,6 +25,20 @@ namespace TransactionSubsystem.Implementation
         {
             var entity = _mapper.Map<Transaction>(transaction);
             await _unitOfWork.TransactionRepository.Add(entity);
+
+            var customer = await _unitOfWork.CustomerRepository.GetFirst(x => x.Id == entity.CustomerId);
+            if (customer != null) 
+            {
+                customer.TotalPayment += entity.TotalPayment;
+#pragma warning disable CS8629 // Nullable value type may be null.
+                var membership = await MembershipRankAtCost((decimal)customer.TotalPayment);
+                if (customer.MembershipRankId != membership.Id)
+                {
+                    customer.MembershipRankId = membership.Id;
+                }
+#pragma warning restore CS8629 // Nullable value type may be null.
+                await _unitOfWork.CustomerRepository.Update(customer);
+            }
         }
 
         public async Task<dynamic> CalculateConsultingTicketFinalPrice(int ticketId, int distance)
@@ -50,6 +64,23 @@ namespace TransactionSubsystem.Implementation
             var totalPrice = distancePrice + pricePolicy.Price;
             var discountedPrice = await CalculateMemberShipDiscountedPrice(consultingTicket.CustomerId, totalPrice);
             var finalPrice = totalPrice - discountedPrice;
+
+            dynamic price = new { FinalPrice = finalPrice, DiscountedPrice = discountedPrice };
+            return price;
+        }
+
+        public async Task<dynamic> CalculateConsultingTicketFinalPriceForTrainer(int ticketId, int totalSlot)
+        {
+            var ticket = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id == ticketId);
+            decimal distancePrice = 0;
+            if (ticket.OnlineOrOffline == true)
+            {
+                distancePrice = await CalculateDistancePrice((int)ticket.Distance);
+            }
+            var pricePolicy = await _unitOfWork.ConsultingPricePolicyRepository.GetFirst(x => x.OnlineOrOffline == ticket.OnlineOrOffline);
+            var totalPrice = distancePrice + pricePolicy.Price*totalSlot;
+            var discountedPrice = await CalculateMemberShipDiscountedPrice(ticket.CustomerId, totalPrice);
+            var finalPrice = totalPrice - distancePrice;
 
             dynamic price = new { FinalPrice = finalPrice, DiscountedPrice = discountedPrice };
             return price;
@@ -116,12 +147,18 @@ namespace TransactionSubsystem.Implementation
             {
                 throw new KeyNotFoundException($"{nameof(customer)} not found for id: {customerId}");
             }
-
-            decimal discountRate = (decimal)customer.MembershipRank.Discount;
+            var membership = await MembershipRankAtCost((decimal)customer.TotalPayment);
+            decimal discountRate = (decimal)membership.Discount;
 
             decimal discountedAmount = price * discountRate;
 
             return discountedAmount;
+        }
+        private async Task<MembershipRank?> MembershipRankAtCost(decimal totalAmount)
+        {
+            var memberships = await _unitOfWork.MembershipRankRepository.Get(c => totalAmount >= c.Requirement);
+            var membershipRank = memberships.MaxBy(c => c.Requirement);
+            return membershipRank;
         }
     }
 }

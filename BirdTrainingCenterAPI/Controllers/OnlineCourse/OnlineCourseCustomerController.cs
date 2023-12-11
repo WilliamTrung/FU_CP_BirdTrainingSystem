@@ -166,26 +166,27 @@ namespace BirdTrainingCenterAPI.Controllers.OnlineCourse
         }
         [HttpPost]
         [Route("feedback")]
-        public async Task<IActionResult> DoFeedback([FromBody] FeedbackOnlineCourseCustomerAddModel feedback)
+        public Task<IActionResult> DoFeedback([FromBody] FeedbackOnlineCourseCustomerAddModel feedback)
         {
-            var accessToken = Request.DeserializeToken(_authService);
-            if (accessToken == null)
-            {
-                return Unauthorized();
-            }
-            var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
             throw new NotImplementedException();
+            //var accessToken = Request.DeserializeToken(_authService);
+            //if (accessToken == null)
+            //{
+            //    return Unauthorized();
+            //}
+            //var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
+            //throw new NotImplementedException();
         }
         [HttpGet]
         [Route("feedback")]
-        public async Task<IActionResult> GetFeedback([FromQuery] int courseId)
+        public Task<IActionResult> GetFeedback([FromQuery] int courseId)
         {
-            var accessToken = Request.DeserializeToken(_authService);
-            if (accessToken == null)
-            {
-                return Unauthorized();
-            }
-            var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
+            //var accessToken = Request.DeserializeToken(_authService);
+            //if (accessToken == null)
+            //{
+            //    return Unauthorized();
+            //}
+            //var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
             throw new NotImplementedException();
         }
     }

@@ -12,6 +12,7 @@ namespace Models.Enum
         AdviceConsulting = 2,
         WorkshopClass = 3,
         OnlineCourse = 4,
-        TrainingCourse = 5
+        TrainingCourse = 5,
+        Topup = 6,
     }
 }

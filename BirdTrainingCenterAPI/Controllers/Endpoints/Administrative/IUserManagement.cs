@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Models.ApiParamModels.Administrative;
 using Models.ServiceModels.UserModels;
 
 namespace BirdTrainingCenterAPI.Controllers.Endpoints.Administrative
@@ -25,6 +26,12 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.Administrative
         Task<IActionResult> UpdateStatus(UserStatusUpdateModel model);
         [HttpPut]
         [Route("/update")]
-        Task<IActionResult> UpdateRecord(UserAdminUpdateModel model);
+        Task<IActionResult> UpdateRecord(UserAdminUpdateParamModel model);
+        [HttpPost]
+        [Route("/create")]
+        Task<IActionResult> CreateAccount(UserAdminAddParamModel model);
+        [HttpPost]
+        [Route("/topup")]
+        Task<IActionResult> TopupCustomer(int customerId, decimal amount);
     }
 }

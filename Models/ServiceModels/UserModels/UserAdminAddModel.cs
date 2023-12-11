@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,22 +7,19 @@ using System.Threading.Tasks;
 
 namespace Models.ServiceModels.UserModels
 {
-    public class UserAdminViewModel
+    public class UserAdminAddModel
     {
-        public int Id { get; set; }
         public string Name { get; set; } = null!;
         public string Email { get; set; } = null!;
-        public string PhoneNumber { get; set; } = null!; 
-        public string Avatar { get; set; } = string.Empty;
+        [SP_Validator.PhoneValidator]
+        public string PhoneNumber { get; set; } = null!;
+        public string? Avatar { get; set; }
         public string Password { get; set; } = null!;
-        public Models.Enum.Role Role { get; set; }
+        public Models.Enum.AdministrativeRole Role { get; set; }
         public DateTime? BirthDay { get; set; }
+        public string? GgMeetLink { get; set; }
         public bool? Gender { get; set; }
         public bool? Consultantable { get; set; }
-        public decimal? TotalPayment { get; set; }
-        public string? Membership { get; set; } 
         public bool? IsFulltime { get; set; }
-        public string? Status { get; set; }
-
     }
 }

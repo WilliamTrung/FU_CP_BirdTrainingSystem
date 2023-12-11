@@ -19,10 +19,11 @@ namespace AppService.TimetableService.Implementation
             _timetable = timetable;
         }
         
-        public async Task<IEnumerable<TrainerModel>> GetListTrainer(Models.Enum.Trainer.Category category)
+        public async Task<IEnumerable<TrainerModel>> GetListTrainer()
         {
-            return await _timetable.GetListTrainer(category);
+            return await _timetable.GetListTrainer();
         }
+
 
         public async Task<IEnumerable<SlotModel>> GetSlots()
         {
@@ -40,9 +41,15 @@ namespace AppService.TimetableService.Implementation
             return result;
         }
 
-        public async Task<IEnumerable<TrainerModel>> GetListFreeTrainerOnSlotAndDate(DateOnly date, int slotId, Models.Enum.Trainer.Category category)
+        public async Task<IEnumerable<TrainerModel>> GetListFreeTrainerOnSlotAndDate(DateOnly date, int slotId)
         {
-            var result = await _timetable.GetListFreeTrainerOnSlotAndDate(date, slotId, category);
+            var result = await _timetable.GetListFreeTrainerOnSlotAndDate(date, slotId);
+            return result;
+        }
+
+        public async Task<IEnumerable<TrainerModel>> GetListConsultantTrainer()
+        {
+            var result = await _timetable.GetListConsultantTrainer();
             return result;
         }
     }

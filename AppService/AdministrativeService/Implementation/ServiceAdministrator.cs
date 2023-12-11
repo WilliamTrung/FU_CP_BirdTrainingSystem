@@ -1,12 +1,15 @@
 ﻿using AdministrativeSubsystem;
+using Models.ApiParamModels.OnlineCourse;
 using Models.Enum;
 using Models.ServiceModels;
 using Models.ServiceModels.UserModels;
+using Org.BouncyCastle.Asn1.Ocsp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TransactionSubsystem;
 
 namespace AppService.AdministrativeService.Implementation
 {
@@ -14,9 +17,16 @@ namespace AppService.AdministrativeService.Implementation
     public class ServiceAdministrator : IServiceAdministrator
     {
         private readonly IAdminFeature _admin;
-        public ServiceAdministrator(IAdminFeature admin)
+        private readonly IFeatureTransaction _transaction;
+        public ServiceAdministrator(IAdminFeature admin, IFeatureTransaction transaction)
         {
             _admin = admin;
+            _transaction = transaction;
+        }
+
+        public async Task<int> CreateUser(UserAdminAddModel model)
+        {
+            return await _admin.User.CreateAdministrativeAccount(model);
         }
 
         public async Task DeleteUser(int userId)
@@ -30,7 +40,7 @@ namespace AppService.AdministrativeService.Implementation
             return result;
         }
 
-        public IEnumerable<Role> GetRoles()
+        public IEnumerable<AdministrativeRole> GetRoles()
         {
             var result = _admin.User.GetRoles();
             return result;
@@ -53,15 +63,43 @@ namespace AppService.AdministrativeService.Implementation
             return result;
         }
 
-        public Task UpdateRecord(UserAdminUpdateModel record)
+        public async Task TopupCustomer(int customerId, decimal amount)
         {
-            throw new NotImplementedException();
+            string paymentCode = "admin_topup";
+            var models = await GetUsersInformation();
+            var customer = models.FirstOrDefault(c => c.Id == customerId && c.Role == Role.Customer);
+            if(customer == null)
+            {
+                throw new KeyNotFoundException("Customer not found!");
+            }
+            string formattedDateTime = DateTime.UtcNow.AddHours(7).ToString("ddMMMyyyyhhmm");
+            var transaction = new TransactionAddModel()
+            {
+                CustomerId = customerId,
+                EntityId = null,
+                EntityTypeId = (int)Models.Enum.EntityType.Topup,
+                PaymentCode = paymentCode,
+                Detail = $"{paymentCode}:{customerId}:{customer.Email}-" +
+                    $"admin topup account-at:{formattedDateTime}",
+                Status = (int)Models.Enum.Transaction.Status.Paid,
+                Title = "Admin topup",
+                TotalPayment = amount,
+            };
+            await _transaction.AddTransaction(transaction);
+        }
+
+        public async Task UpdateRecord(UserAdminUpdateModel record)
+        {
+            await _admin.User.UpdateRecord(record);
         }
 
         public async Task UpdateRole(UserRoleUpdateModel model)
         {
             await _admin.User.UpdateRole(model);
-            await _admin.User.GenerateRoleModel(model.Id);
+            if(model.UserId != null)
+            {
+                await _admin.User.GenerateRoleModel(model.UserId.Value);
+            }            
         }
 
         public async Task UpdateStatus(UserStatusUpdateModel model)

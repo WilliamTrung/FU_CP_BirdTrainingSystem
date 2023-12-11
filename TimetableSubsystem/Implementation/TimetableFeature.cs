@@ -46,10 +46,10 @@ namespace TimetableSubsystem.Implementation
             return true;
         }
 
-        public async Task<IEnumerable<TrainerModel>> GetListFreeTrainerOnSlotAndDate(DateOnly date, int slotId, Models.Enum.Trainer.Category category)
+        public async Task<IEnumerable<TrainerModel>> GetListFreeTrainerOnSlotAndDate(DateOnly date, int slotId)
         {
             var trainerFreeOnSLotAndDate = new List<TrainerModel>();
-            var freeTrainerOnDate = await _unitOfWork.TrainerRepository.Get(x => x.Category == (int)category && !(x.TrainerSlots.Count(slot => slot.Date.Day == date.Day
+            var freeTrainerOnDate = await _unitOfWork.TrainerRepository.Get(x => !(x.TrainerSlots.Count(slot => slot.Date.Day == date.Day
                                                                                             && slot.Date.Month == date.Month
                                                                                             && slot.Date.Year == date.Year
                                                                                             && slot.Status == (int)Models.Enum.TrainerSlotStatus.Enabled)
@@ -80,11 +80,23 @@ namespace TimetableSubsystem.Implementation
             return trainerFreeOnSLotAndDate;
         }
 
-        public async Task<IEnumerable<TrainerModel>> GetListTrainer(Models.Enum.Trainer.Category category)
+        public async Task<IEnumerable<TrainerModel>> GetListTrainer()
         {
-            var entities = await _unitOfWork.TrainerRepository.Get(x => x.Category == (int)category, nameof(Trainer.User));
+            var entities = await _unitOfWork.TrainerRepository.Get();
             var models = new List<TrainerModel>();
             foreach (var entity in entities) 
+            {
+                var model = _mapper.Map<TrainerModel>(entity);
+                models.Add(model);
+            }
+            return models;
+        }
+
+        public async Task<IEnumerable<TrainerModel>> GetListConsultantTrainer()
+        {
+            var entities = await _unitOfWork.TrainerRepository.Get(x => x.ConsultantAble == true, nameof(Trainer.User));
+            var models = new List<TrainerModel>();
+            foreach (var entity in entities)
             {
                 var model = _mapper.Map<TrainerModel>(entity);
                 models.Add(model);
@@ -173,6 +185,31 @@ namespace TimetableSubsystem.Implementation
             //var tesst = _mapper.Map<TimetableModel>(trainerSlots.First());
             var slots = _mapper.Map<List<TimetableModel>>(trainerSlots);
             return slots;
+        }
+
+        public async Task<IEnumerable<SlotModel>> GetAvailableFinishTime(string actualSlotStart)
+        {
+            string[] parts = actualSlotStart.Split('-');
+            string endTimeString = parts[1].Trim();
+            TimeSpan endTime = TimeSpan.Parse(endTimeString);
+
+            var entities = await _unitOfWork.SlotRepository.Get(x => x.EndTime >= endTime);
+            var models = _mapper.Map<IEnumerable<SlotModel>>(entities);
+            return models;
+        }
+
+        public async Task<IEnumerable<SlotModel>> GetSlotRangeForConsultant(string actualSlotStart, int actualEndSlot)
+        {
+            var endSlot = await _unitOfWork.SlotRepository.GetFirst(x => x.Id == actualEndSlot);
+            string[] startParts = actualSlotStart.Split('-');
+
+            string startString = startParts[1].Trim();
+
+            TimeSpan start = TimeSpan.Parse(startString);
+
+            var entities = await _unitOfWork.SlotRepository.Get(x => x.EndTime >= start && x.EndTime <= endSlot.EndTime);
+            var models = _mapper.Map<IEnumerable<SlotModel>>(entities);
+            return models;
         }
     }
 }

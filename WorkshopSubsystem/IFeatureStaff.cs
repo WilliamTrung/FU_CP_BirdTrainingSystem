@@ -15,7 +15,8 @@ namespace WorkshopSubsystem
         Task CreateWorkshopClass(WorkshopClassAddModel workshopClass);
         Task<IEnumerable<WorkshopClassAdminViewModel>> GetWorkshopClassAdminViewModels(int workshopId);
         Task<IEnumerable<WorkshopClassDetailViewModel>> GetWorkshopClassDetailViewModels(int workshopClassId);
-        
+
+        Task ModifyWorkshopClass(WorkshopClassModifyModel modified);
         Task ModifyWorkshopClassDetailTrainerSlot(WorkshopClassDetailTrainerSlotModifyModel workshopClass);
         Task ModifyWorkshopClassDetailSlotOnly(WorkshopClassDetailTrainerSlotOnlyModifyModel workshopClass);
         Task<bool> CheckPassEndRegistrationDay(int workshopClassDetailId, DateOnly compareDate);

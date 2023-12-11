@@ -69,7 +69,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         {
             try
             {
-                var result = await _timetableService.All.GetListTrainer(Models.Enum.Trainer.Category.Consulting);
+                var result = await _timetableService.All.GetListConsultantTrainer();
                 return Ok(result);
             }
             catch (Exception ex)
@@ -100,7 +100,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         {
             try
             {
-                var result = await _timetableService.All.GetListFreeTrainerOnSlotAndDate(date.ToDateOnly(), slotId, Models.Enum.Trainer.Category.Consulting);
+                var result = await _timetableService.All.GetListFreeTrainerOnSlotAndDate(date.ToDateOnly(), slotId);
                 if (result == null)
                 {
                     return StatusCode(StatusCodes.Status503ServiceUnavailable, "There is no free trainer");

@@ -22,5 +22,9 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting
         [HttpPut]
         [Route("finishOnlineAppointment")]
         Task<IActionResult> FinishOnlineAppointment(ConsultingTicketTrainerFinishModel consultingTicket);
+
+        [HttpGet]
+        [Route("getAvailableFinishTime")]
+        Task<IActionResult> GetAvailableFinishTime(string actualSlotStart);
     }
 }

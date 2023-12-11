@@ -130,7 +130,7 @@ namespace TEST_CERTSAMPLE
                         }
                     }
                     //return ConvertWordPageToImage(stream);
-                    return stream.ToArray();
+                    //return stream.ToArray();
                 }
             }
             catch (Exception ex)
