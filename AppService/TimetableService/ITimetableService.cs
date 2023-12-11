@@ -14,6 +14,7 @@ namespace AppService.TimetableService
         IServiceStaff Staff { get; }
         IServiceManager Manager { get; }
         IServiceTrainer Trainer { get; }
+        IServiceAdministrator Admin { get; }
     }
     public class TimetableService : ITimetableService
     {
@@ -22,13 +23,15 @@ namespace AppService.TimetableService
         private readonly IServiceStaff _staff;
         private readonly IServiceManager _manager;
         private readonly IServiceTrainer _trainer;
-        public TimetableService(IServiceAll all, IServiceStaff staff, IServiceManager manager, IServiceTrainer trainer)
+        private readonly IServiceAdministrator _admin;
+        public TimetableService(IServiceAll all, IServiceStaff staff, IServiceManager manager, IServiceTrainer trainer, IServiceAdministrator admin)
         {
             _all = all;
             //_customer = customer;
             _staff = staff;
             _manager = manager;
             _trainer = trainer;
+            _admin = admin;
         }
 
         public IServiceAll All => _all;
@@ -40,5 +43,6 @@ namespace AppService.TimetableService
         public IServiceManager Manager => _manager;
 
         public IServiceTrainer Trainer => _trainer;
+        public IServiceAdministrator Admin => _admin;
     }
 }
