@@ -11,7 +11,7 @@ namespace Models.ServiceModels.WorkshopModels.WorkshopClass
     {
         public int Id { get; set; }
         public int WorkshopId { get; set; }
-        public int ReisterPeriod { get; set; }
+        public int RegisterPeriod { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime RegisterEndDate { get; set; }
         public RegistrationAmountModel? RegistrationAmount { get; set; }
