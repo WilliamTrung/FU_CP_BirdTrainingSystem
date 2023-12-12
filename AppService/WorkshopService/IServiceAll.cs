@@ -1,6 +1,7 @@
 ﻿using Models.ServiceModels.WorkshopModels;
 using Models.ServiceModels.WorkshopModels.Feedback;
 using Models.ServiceModels.WorkshopModels.WorkshopClass;
+using Models.ServiceModels.WorkshopModels.WorkshopRefundPolicy;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace AppService.WorkshopService
         Task<IEnumerable<WorkshopClassViewModel>> GetWorkshopClassesByWorkshopId(int workshopId);
         Task<IEnumerable<WorkshopClassDetailViewModel>> GetWorkshopClassDetailByWorkshopClassId(int workshopClassId);
         Task<WorkshopClassDetailViewModel> GetWorkshopClassDetailById(int workshopClassDetailId);
-        Task<IEnumerable<WorkshopRefundPolicyModel>> GetRefundPolicies();
+        Task<IEnumerable<WorkshopRefundPolicyViewModModel>> GetRefundPolicies();
         Task<RegistrationAmountModel> GetRegistrationAmount(int workshopClassId);
         Task<WorkshopClassViewModel> GetWorkshopClass(int workshopClassId);
         Task<float> GetRating(int workshopId);

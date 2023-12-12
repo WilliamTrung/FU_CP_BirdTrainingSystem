@@ -11,6 +11,7 @@ using MimeKit;
 using Models.ApiParamModels.Workshop;
 using Models.ConfigModels;
 using Models.ServiceModels.WorkshopModels;
+using Models.ServiceModels.WorkshopModels.WorkshopRefundPolicy;
 using SP_Middleware;
 using System.Net.Mime;
 
@@ -139,6 +140,21 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             await _workshopService.Manager.ModifyWorkshopStatus(workshop);
             return Ok();
         }
-       
+
+        [HttpPost]
+        [Route("refund-policies")]
+        public async Task<IActionResult> CreateRefundPolicy(WorkshopRefundPolicyAddModel addModel)
+        {
+            await _workshopService.Manager.CreateRefundPolicy(addModel);
+            return Ok();
+        }
+
+        [HttpPut]
+        [Route("refund-policies")]
+        public async Task<IActionResult> EditRefundPolicy(WorkshopRefundPolicyViewModModel modModel)
+        {
+            await _workshopService.Manager.EditRefundPolicy(modModel);
+            return Ok();
+        }
     }
 }

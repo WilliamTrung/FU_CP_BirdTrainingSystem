@@ -1,5 +1,6 @@
 ﻿using Models.ServiceModels.WorkshopModels;
 using Models.ServiceModels.WorkshopModels.WorkshopClass;
+using Models.ServiceModels.WorkshopModels.WorkshopRefundPolicy;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,5 +21,8 @@ namespace WorkshopSubsystem
         Task ModifyWorkshopStatus(WorkshopStatusModifyModel workshop);
         Task<IEnumerable<WorkshopStatusModel>> GetWorkshopStatuses() => Task.FromResult(WorkshopStatusModel.All());
         Task ModifyWorkshop(WorkshopModifyModel workshop);
+
+        Task CreateRefundPolicy(WorkshopRefundPolicyAddModel addModel);
+        Task EditRefundPolicy(WorkshopRefundPolicyViewModModel modModel);
     }
 }

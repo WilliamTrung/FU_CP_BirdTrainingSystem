@@ -20,7 +20,6 @@ namespace SP_AutoMapperConfig
             Map_WorkshopAddModel_Workshop();
             Map_WorkshopClassDetail_WorkshopDetailViewModel();
             Map_WorkshopDetailTemplateAddModel_WorkshopDetailTemplate();
-            Map_WorkshopRefundPolicy_WorkshopRefundPolicyModel();
             Map_WorkshopClass_WorkshopClassAdminViewModel();
             Map_WorkshopClassDetailTemplate_WorkshopClassDetailTemplateViewModel();
             Map_WorkshopClassAddModel_WorkshopClass();
@@ -62,10 +61,6 @@ namespace SP_AutoMapperConfig
         {
             CreateMap<Workshop, WorkshopAdminModel>()
                 .ForMember(c => c.Status, opt => opt.MapFrom(e => e.Status));
-        }
-        private void Map_WorkshopRefundPolicy_WorkshopRefundPolicyModel()
-        {
-            CreateMap<WorkshopRefundPolicy, WorkshopRefundPolicyModel>();
         }
         private void Map_Workshop_WorkshopModel()
         {
