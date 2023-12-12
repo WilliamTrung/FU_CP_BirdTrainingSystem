@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Models.ApiParamModels.Workshop;
 using Models.ServiceModels.WorkshopModels;
+using Models.ServiceModels.WorkshopModels.WorkshopRefundPolicy;
 
 namespace BirdTrainingCenterAPI.Controllers.Endpoints.Workshop
 {
@@ -28,6 +29,14 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.Workshop
         [HttpGet]
         [Route("status")]
         Task<IActionResult> GetWorkshopStatuses();
+
+        [HttpPost]
+        [Route("refund-policies")]
+        Task<IActionResult> CreateRefundPolicy(WorkshopRefundPolicyAddModel addModel);
+
+        [HttpPut]
+        [Route("refund-policies")]
+        Task<IActionResult> EditRefundPolicy(WorkshopRefundPolicyViewModModel modModel);
 
     }
 }

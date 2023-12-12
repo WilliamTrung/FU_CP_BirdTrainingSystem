@@ -6,6 +6,7 @@ using Models.Enum.Workshop.Class;
 using Models.ServiceModels.WorkshopModels;
 using Models.ServiceModels.WorkshopModels.Feedback;
 using Models.ServiceModels.WorkshopModels.WorkshopClass;
+using Models.ServiceModels.WorkshopModels.WorkshopRefundPolicy;
 using SP_Extension;
 using System;
 using System.Collections.Generic;
@@ -65,10 +66,10 @@ namespace WorkshopSubsystem.Implementation
             var models = _mapper.Map<IEnumerable<WorkshopModel>>(entities);
             return models;
         }
-        public async Task<IEnumerable<WorkshopRefundPolicyModel>> GetRefundPolicies()
+        public async Task<IEnumerable<WorkshopRefundPolicyViewModModel>> GetRefundPolicies()
         {
             var entities = await _unitOfWork.WorkshopRefundPolicyRepository.Get();
-            var models = _mapper.Map<List<WorkshopRefundPolicyModel>>(entities);
+            var models = _mapper.Map<List<WorkshopRefundPolicyViewModModel>>(entities);
             return models;
         }
 

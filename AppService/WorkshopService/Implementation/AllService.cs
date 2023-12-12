@@ -1,6 +1,7 @@
 ﻿using Models.ServiceModels.WorkshopModels;
 using Models.ServiceModels.WorkshopModels.Feedback;
 using Models.ServiceModels.WorkshopModels.WorkshopClass;
+using Models.ServiceModels.WorkshopModels.WorkshopRefundPolicy;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace AppService.WorkshopService.Implementation
             _timetable = timetable;
             _workshop = workshop;
         }
-        public async Task<IEnumerable<WorkshopRefundPolicyModel>> GetRefundPolicies()
+        public async Task<IEnumerable<WorkshopRefundPolicyViewModModel>> GetRefundPolicies()
         {
             return await _workshop.All.GetRefundPolicies();
         }

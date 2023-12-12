@@ -1,8 +1,10 @@
-﻿using AppRepository.UnitOfWork;
+﻿using AppCore.Context;
+using AppRepository.UnitOfWork;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Models.Entities;
 using Models.ServiceModels.WorkshopModels;
+using Models.ServiceModels.WorkshopModels.WorkshopRefundPolicy;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +24,8 @@ namespace WorkshopSubsystem.Implementation
             if (workshop.MinimumRegistration > workshop.MaximumRegistration)
             {
                 throw new InvalidDataException("Minimum registration must be smaller than maximum registration");
-            } else if (workshop.MinimumRegistration < 1 || workshop.MaximumRegistration < 1 || workshop.RegisterEnd < 1 || workshop.Price < 1 || workshop.TotalSlot < 1)
+            }
+            else if (workshop.MinimumRegistration < 1 || workshop.MaximumRegistration < 1 || workshop.RegisterEnd < 1 || workshop.Price < 1 || workshop.TotalSlot < 1)
             {
                 throw new InvalidDataException("Value must be positive number");
             }
@@ -33,7 +36,7 @@ namespace WorkshopSubsystem.Implementation
             {
                 var detailTemplate = new WorkshopDetailTemplateAddModel(entity.Id);
                 var enttiy_detailTemplate = _mapper.Map<WorkshopDetailTemplate>(detailTemplate);
-                await _unitOfWork.WorkshopDetailTemplateRepository.Add(enttiy_detailTemplate);                
+                await _unitOfWork.WorkshopDetailTemplateRepository.Add(enttiy_detailTemplate);
             }
             return entity.Id;
         }
@@ -55,11 +58,11 @@ namespace WorkshopSubsystem.Implementation
         public async Task ModifyWorkshop(WorkshopModifyModel workshop)
         {
             var entity = await _unitOfWork.WorkshopRepository.GetFirst(c => c.Id == workshop.Id);
-            if(entity == null)
+            if (entity == null)
             {
-                throw new KeyNotFoundException("Workshop not found for id: " + workshop.Id);    
+                throw new KeyNotFoundException("Workshop not found for id: " + workshop.Id);
             }
-            if(workshop.RegisterEnd != null)
+            if (workshop.RegisterEnd != null)
             {
                 entity.RegisterEnd = workshop.RegisterEnd;
             }
@@ -101,20 +104,21 @@ namespace WorkshopSubsystem.Implementation
         public async Task ModifyWorkshopDetailTemplate(WorkshopDetailTemplateModiyModel workshopDetail)
         {
             var entity = await _unitOfWork.WorkshopDetailTemplateRepository.GetFirst(c => c.Id == workshopDetail.Id);
-            if(entity == null)
+            if (entity == null)
             {
                 throw new KeyNotFoundException(nameof(workshopDetail));
             }
             entity.Detail = workshopDetail.Detail;
             await _unitOfWork.WorkshopDetailTemplateRepository.Update(entity);
 
-           
+
         }
 
         public async Task ModifyWorkshopStatus(WorkshopStatusModifyModel workshop)
         {
             var entity = await _unitOfWork.WorkshopRepository.GetFirst(c => c.Id == workshop.Id);
-            if(entity == null) {
+            if (entity == null)
+            {
                 throw new KeyNotFoundException($"{typeof(Workshop)} is not found at id: {workshop.Id}");
             }
             //entity.Status = workshop.Status;
@@ -132,15 +136,57 @@ namespace WorkshopSubsystem.Implementation
                 //26-10-2023 - TrungNT - Delete End
                 entity.Status = workshop.Status;
                 await _unitOfWork.WorkshopRepository.Update(entity);
-            } else if (details.All(c => c.Detail != string.Empty) && workshop.Status == (int)Models.Enum.Workshop.Status.Active)
+            }
+            else if (details.All(c => c.Detail != string.Empty) && workshop.Status == (int)Models.Enum.Workshop.Status.Active)
             {
                 //set workshop status to active
                 entity.Status = workshop.Status;
                 await _unitOfWork.WorkshopRepository.Update(entity);
-            } else
+            }
+            else
             {
                 throw new InvalidOperationException("Detail templates are not fulfilled!");
             }
+        }
+
+        public async Task CreateRefundPolicy(WorkshopRefundPolicyAddModel addModel)
+        {
+            if (addModel.TotalDayBeforeStart < 0)
+            {
+                throw new InvalidDataException("Total date before start must be positive");
+            }
+            if (addModel.RefundRate < 0 || addModel.RefundRate == null)
+            {
+                throw new InvalidDataException("Refund Rate must be positive");
+            }
+            var entity = _mapper.Map<WorkshopRefundPolicy>(addModel);
+            await _unitOfWork.WorkshopRefundPolicyRepository.Add(entity);
+        }
+
+        public async Task EditRefundPolicy(WorkshopRefundPolicyViewModModel modModel)
+        {
+            if (modModel.TotalDayBeforeStart < 0)
+            {
+                throw new InvalidDataException("Total date before start must be positive");
+            }
+            if (modModel.RefundRate < 0 || modModel.RefundRate == null)
+            {
+                throw new InvalidDataException("Refund Rate must be positive");
+            }
+            var entity = await _unitOfWork.WorkshopRefundPolicyRepository.GetFirst(e => e.Id == modModel.Id);
+            if (entity == null)
+            {
+                throw new KeyNotFoundException($"{typeof(WorkshopRefundPolicy)} is not found at id: {modModel.Id}");
+            }
+            if (modModel.TotalDayBeforeStart >= 0)
+            {
+                entity.TotalDayBeforeStart = modModel.TotalDayBeforeStart;
+            }
+            if (modModel.RefundRate >= 0 && modModel.RefundRate != null)
+            {
+                entity.RefundRate = modModel.RefundRate;
+            }
+            await _unitOfWork.WorkshopRefundPolicyRepository.Update(entity);
         }
     }
 }

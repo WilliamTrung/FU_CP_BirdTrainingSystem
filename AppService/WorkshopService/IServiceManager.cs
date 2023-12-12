@@ -1,4 +1,5 @@
 ﻿using Models.ServiceModels.WorkshopModels;
+using Models.ServiceModels.WorkshopModels.WorkshopRefundPolicy;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,9 @@ namespace AppService.WorkshopService
         Task ModifyWorkshopDetailTemplate(WorkshopDetailTemplateModiyModel workshopDetail);
         Task ModifyWorkshopStatus(WorkshopStatusModifyModel workshop);
         Task<IEnumerable<WorkshopStatusModel>> GetWorkshopStatuses();
-        Task<IEnumerable<WorkshopAdminModel>> GetAllWorkshops();        
+        Task<IEnumerable<WorkshopAdminModel>> GetAllWorkshops();
+
+        Task CreateRefundPolicy(WorkshopRefundPolicyAddModel addModel);
+        Task EditRefundPolicy(WorkshopRefundPolicyViewModModel modModel);
     }
 }

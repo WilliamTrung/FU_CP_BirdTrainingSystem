@@ -1,4 +1,6 @@
-﻿using Models.ServiceModels.WorkshopModels;
+﻿using AppCore.Context;
+using Models.ServiceModels.WorkshopModels;
+using Models.ServiceModels.WorkshopModels.WorkshopRefundPolicy;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +21,6 @@ namespace AppService.WorkshopService.Implementation
         {
             return await _workshop.Manager.CreateWorkshop(workshop);
         }
-
         public async Task<IEnumerable<WorkshopAdminModel>> GetAllWorkshops()
         {
             return await _workshop.Manager.GetWorkshops();
@@ -49,5 +50,16 @@ namespace AppService.WorkshopService.Implementation
         {
             await _workshop.Manager.ModifyWorkshopStatus(workshop);
         }
+
+        public async Task CreateRefundPolicy(WorkshopRefundPolicyAddModel addModel)
+        {
+            await _workshop.Manager.CreateRefundPolicy(addModel);
+        }
+
+        public async Task EditRefundPolicy(WorkshopRefundPolicyViewModModel modModel)
+        {
+            await _workshop.Manager.EditRefundPolicy(modModel);
+        }
+
     }
 }
