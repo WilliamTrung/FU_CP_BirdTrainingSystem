@@ -136,6 +136,7 @@ namespace BirdTrainingCenterAPI.Startup
             builder.Services.AddTransient<MembershipSubSystem.IMembershipFeature, MembershipSubSystem.Implementation.MembershipFeature>();
 
             builder.Services.AddTransient<AppService.MembershipService.IServiceAdministrator, AppService.MembershipService.Implementation.ServiceAdministrator>();
+            builder.Services.AddTransient<AppService.MembershipService.IMembershipService, AppService.MembershipService.IMembershipService.MembershipService>();
         }
     }
 }

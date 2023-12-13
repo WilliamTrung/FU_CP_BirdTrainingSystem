@@ -22,6 +22,14 @@ namespace MembershipSubSystem.Implementation
 
         public async Task CreateMembershipRank(MembershipCreateNewServiceModel membership)
         {
+            var membershipRanks = await _unitOfWork.MembershipRankRepository.Get();
+            foreach (var membershipRank in membershipRanks)
+            {
+                if (membership.Name == membershipRank.Name || membership.Discount == membershipRank.Discount || membership.Requirement == membershipRank.Requirement)
+                {
+                    throw new InvalidOperationException("Membership Rank with one of these field is already exist!");
+                }
+            }
             var entity = _mapper.Map<MembershipRank>(membership);
             await _unitOfWork.MembershipRankRepository.Add(entity);
 
@@ -77,20 +85,35 @@ namespace MembershipSubSystem.Implementation
         public async Task UpdateMembershipRank(MembershipUpdateServiceModel membership)
         {
             var entity = await _unitOfWork.MembershipRankRepository.GetFirst(x => x.Id == membership.Id);
-            entity.Name = membership.Name;
-            entity.Requirement = membership.Requirement;
-            entity.Discount = membership.Discount;
-            await _unitOfWork.MembershipRankRepository.Update(entity);
-
-            var memberShips = _unitOfWork.MembershipRankRepository.Get().Result.OrderByDescending(x => x.Requirement);
-            var customers = await _unitOfWork.CustomerRepository.Get(x => x.MembershipRankId == entity.Id);
-            foreach (var customer in customers)
+            if (entity != null && membership.Id != 1)
             {
-                if (customer.TotalPayment >= entity.Requirement)
+                if (membership.Name != null)
                 {
-                    customer.MembershipRankId = entity.Id;
+                    entity.Name = membership.Name;
+                }
+                if (membership.Requirement != null)
+                {
+                    entity.Requirement = membership.Requirement;
+                }
+                if (membership.Discount != null)
+                {
+                    entity.Discount = membership.Discount;
+                }
+
+                await _unitOfWork.MembershipRankRepository.Update(entity);
+
+                var memberShips = _unitOfWork.MembershipRankRepository.Get().Result.OrderByDescending(x => x.Requirement);
+                var customers = await _unitOfWork.CustomerRepository.Get(x => x.MembershipRankId == entity.Id);
+                foreach (var customer in customers)
+                {
+                    var rank = memberShips.First(x => x.Requirement <= customer.TotalPayment);
+                    customer.MembershipRankId = rank.Id;
                     await _unitOfWork.CustomerRepository.Update(customer);
                 }
+            }
+            else
+            {
+                throw new KeyNotFoundException($"Not found Membership Rank with id: {membership.Id}");
             }
         }
     }

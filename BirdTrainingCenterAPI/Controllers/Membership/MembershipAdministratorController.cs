@@ -1,6 +1,7 @@
 ﻿using AppService;
 using AppService.MembershipService;
 using BirdTrainingCenterAPI.Controllers.Endpoints.Membership;
+using BirdTrainingCenterAPI.Helper;
 using Microsoft.AspNetCore.Mvc;
 using Models.ServiceModels.MembershipModels;
 
@@ -18,7 +19,16 @@ namespace BirdTrainingCenterAPI.Controllers.Membership
         public async Task<IActionResult> CreateNewMembership(MembershipCreateNewServiceModel membership)
         {
             //AccessToken
+            var accessToken = Request.DeserializeToken(_authService);
+            if (accessToken == null)
+            {
+                return Unauthorized();
+            }
 
+            if (membership.Discount <= 0 || membership.Requirement <= 0)
+            {
+                return StatusCode(StatusCodes.Status503ServiceUnavailable, "Discount or Requirement must greater than 0");
+            }
             await _membershipService.Admin.CreateMembershipRank(membership);
             return Ok();
         }
@@ -28,6 +38,11 @@ namespace BirdTrainingCenterAPI.Controllers.Membership
         public async Task<IActionResult> DeleteMembership(int id)
         {
             //AccessToken
+            var accessToken = Request.DeserializeToken(_authService);
+            if (accessToken == null)
+            {
+                return Unauthorized();
+            }
 
             await _membershipService.Admin.DeleteMembershipRank(id);
             return Ok();
@@ -54,6 +69,11 @@ namespace BirdTrainingCenterAPI.Controllers.Membership
         public async Task<IActionResult> UpdateMembership(MembershipUpdateServiceModel membership)
         {
             //AccessToken
+            var accessToken = Request.DeserializeToken(_authService);
+            if (accessToken == null)
+            {
+                return Unauthorized();
+            }
 
             await _membershipService.Admin.UpdateMembershipRank(membership);
             return Ok();
