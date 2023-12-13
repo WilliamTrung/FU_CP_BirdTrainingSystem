@@ -30,9 +30,10 @@ namespace AppService.OnlineCourseService.Implementation
             await _onlineCourse.Manager.ChangeCourseStatus(courseId, status);
         }
 
-        public async Task CreateOnlineCourse(OnlineCourseAddModel model)
+        public async Task<int> CreateOnlineCourse(OnlineCourseAddModel model)
         {
-            await _onlineCourse.Manager.CreateOnlineCourse(model);
+            var id = await _onlineCourse.Manager.CreateOnlineCourse(model);
+            return id;
         }
 
         public async Task DeleteLesson(int lessonId)
@@ -48,6 +49,11 @@ namespace AppService.OnlineCourseService.Implementation
         public async Task ModifyLesson(OnlineCourseLessonModifyModel model)
         {
             await _onlineCourse.Manager.ModifyLesson(model);
+        }
+
+        public async Task ModifyOnlineCourse(OnlineCourseModifyModel model)
+        {
+            await _onlineCourse.Manager.ModifyCourse(model);
         }
 
         public async Task ModifySection(OnlineCourseSectionModifyModel model)
