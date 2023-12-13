@@ -7,6 +7,8 @@ using Models.ServiceModels.MembershipModels;
 
 namespace BirdTrainingCenterAPI.Controllers.Membership
 {
+    [Route("api/[controller]")]
+    [ApiController]
     public class MembershipAdministratorController : MembershipBaseController, IMembershipAdministrator
     {
         public MembershipAdministratorController(IMembershipService membershipService, IAuthService authService) : base(membershipService, authService) 
