@@ -16,6 +16,7 @@ namespace Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress
         public string? BirdSkillPicture { get; set; }
         public int? TrainerId { get; set; }
         public string? TrainerName { get; set; }
+        public string? TrainerEmail { get; set; }
         public string? Evidence { get; set; }
         public double TrainingProgression { get; set; } = 0;
         public int TotalTrainingSlot { get; set; }
