@@ -1,5 +1,4 @@
-﻿//using AppCore.Models;
-using AppRepository.UnitOfWork;
+﻿using AppRepository.UnitOfWork;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Models.ConfigModels;
@@ -115,7 +114,8 @@ namespace WorkshopSubsystem.Implementation
 
         public async Task<IEnumerable<WorkshopClassAdminViewModel>> GetWorkshopClassAdminViewModels(int workshopId)
         {
-            var entities = await _unitOfWork.WorkshopClassRepository.Get(c => c.WorkshopId == workshopId);
+            var entities = await _unitOfWork.WorkshopClassRepository.Get(c => c.WorkshopId == workshopId
+                                                                            , nameof(WorkshopClass.Workshop));
                                                                            //&& c.Status != (int)Models.Enum.Workshop.Class.Status.Cancelled);
             var models = _mapper.Map<List<WorkshopClassAdminViewModel>>(entities);
             return models;
@@ -350,7 +350,7 @@ namespace WorkshopSubsystem.Implementation
 
         public async Task<WorkshopClassAdminViewModel> GetClassAdminViewById(int classId)
         {
-            var entity = await _unitOfWork.WorkshopClassRepository.GetFirst(c => c.Id == classId);
+            var entity = await _unitOfWork.WorkshopClassRepository.GetFirst(c => c.Id == classId, nameof(WorkshopClass.Workshop));
             //&& c.Status != (int)Models.Enum.Workshop.Class.Status.Cancelled);
             var model = _mapper.Map<WorkshopClassAdminViewModel>(entity);
             return model;
@@ -408,7 +408,9 @@ namespace WorkshopSubsystem.Implementation
 
         public async Task ModifyWorkshopClass(WorkshopClassModifyModel modified)
         {
-            var workshopClass = await _unitOfWork.WorkshopClassRepository.GetFirst(c => c.Id == modified.Id, nameof(WorkshopClass.WorkshopClassDetails));
+            var workshopClass = await _unitOfWork.WorkshopClassRepository.GetFirst(c => c.Id == modified.Id
+                                                                                        , nameof(WorkshopClass.WorkshopClassDetails)
+                                                                                        , nameof(WorkshopClass.Workshop));
             if(workshopClass.Status != (int)Models.Enum.Workshop.Class.Status.Pending)
             {
                 throw new InvalidOperationException("Class must be at pending state!");
@@ -420,6 +422,7 @@ namespace WorkshopSubsystem.Implementation
                     throw new InvalidOperationException("Start time must be 5 days after current day!");
                 }
                 workshopClass.StartTime = modified.StartTime.Value.ToDateTime(new TimeOnly());
+                workshopClass.RegisterEndDate = workshopClass.StartTime.Value.AddDays(double.Parse(workshopClass.Workshop.RegisterEnd.ToString()));
             }
             if(modified.Location != null)
             {

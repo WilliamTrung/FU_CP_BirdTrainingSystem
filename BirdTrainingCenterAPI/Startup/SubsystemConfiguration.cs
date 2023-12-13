@@ -31,7 +31,7 @@ namespace BirdTrainingCenterAPI.Startup
             builder.Services.AddTransient<AdministrativeSubsystem.IFeatureProfileManagement, AdministrativeSubsystem.Implementation.FeatureProfileManagement>();
             builder.Services.AddTransient<IAdminFeature, AdminFeature>();
 
-            builder.Services.AddTransient<IServiceAdministrator, ServiceAdministrator>();
+            builder.Services.AddTransient<AppService.AdministrativeService.IServiceAdministrator, ServiceAdministrator>();
             builder.Services.AddTransient<IServiceProfile, ServiceProfile>();
 
             builder.Services.AddTransient<IAdministrativeService, AdministrativeService>();
@@ -81,6 +81,7 @@ namespace BirdTrainingCenterAPI.Startup
             builder.Services.AddTransient<AppService.TimetableService.IServiceStaff, AppService.TimetableService.Implementation.ServiceStaff>();
             builder.Services.AddTransient<AppService.TimetableService.IServiceTrainer, AppService.TimetableService.Implementation.ServiceTrainer>();
             builder.Services.AddTransient<ITimetableService, TimetableService>();
+            builder.Services.AddTransient<AppService.TimetableService.IServiceAdministrator, AppService.TimetableService.Implementation.ServiceAdministrator>();
         }
 
         public static void AddAdviceConsultinFeature(this WebApplicationBuilder builder)
@@ -127,6 +128,15 @@ namespace BirdTrainingCenterAPI.Startup
             builder.Services.AddTransient<DashboardSubsystem.IDashboardFeature, DashboardSubsystem.Implementation.DashboardFeature>();
 
             builder.Services.AddTransient<AppService.DashboardService.IDashboardService, AppService.DashboardService.Implementation.DashboardService> ();
+        }
+
+        public static void AddMembershipFeature(this WebApplicationBuilder builder)
+        {
+            builder.Services.AddTransient<MembershipSubSystem.IFeatureAdministrator, MembershipSubSystem.Implementation.FeatureAdministrator>();
+            builder.Services.AddTransient<MembershipSubSystem.IMembershipFeature, MembershipSubSystem.Implementation.MembershipFeature>();
+
+            builder.Services.AddTransient<AppService.MembershipService.IServiceAdministrator, AppService.MembershipService.Implementation.ServiceAdministrator>();
+            builder.Services.AddTransient<AppService.MembershipService.IMembershipService, AppService.MembershipService.IMembershipService.MembershipService>();
         }
     }
 }

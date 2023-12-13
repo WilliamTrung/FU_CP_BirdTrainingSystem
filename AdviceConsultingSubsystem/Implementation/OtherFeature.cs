@@ -100,6 +100,15 @@ namespace AdviceConsultingSubsystem.Implementation
                         await _unitOfWork.TrainerSlotRepository.Delete(trainerSlot);
                     }
                 }
+                else if (entity.AppointmentDate < date && entity.Status == (int)Models.Enum.ConsultingTicket.Status.Approved)
+                {
+                    var customer = await _unitOfWork.CustomerRepository.GetFirst(x => x.Id == entity.CustomerId);
+                    if (customer.Status != (int)Models.Enum.Customer.Status.Charged)
+                    {
+                        customer.Status = (int)Models.Enum.Customer.Status.Charged;
+                        await _unitOfWork.CustomerRepository.Update(customer);
+                    }
+                }
             }
         }
 

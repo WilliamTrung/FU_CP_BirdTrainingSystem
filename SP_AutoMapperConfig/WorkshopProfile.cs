@@ -82,7 +82,17 @@ namespace SP_AutoMapperConfig
                 {
                     opt.PreCondition(e => e.Workshop != null);
                     opt.MapFrom(e => e.Workshop.MinimumRegistration);
-                });                
+                })
+                 .ForMember(m => m.MaximumRegistration, opt =>
+                 {
+                     opt.PreCondition(e => e.Workshop != null);
+                     opt.MapFrom(e => e.Workshop.MaximumRegistration);
+                 })
+                 .ForMember(m => m.RegisterPeriod, opt =>
+                 {
+                     opt.PreCondition(e => e.Workshop != null);
+                     opt.MapFrom(e => e.Workshop.RegisterEnd);
+                 });                
         }
         private void Map_WorkshopClassAddModel_WorkshopClass()
         {

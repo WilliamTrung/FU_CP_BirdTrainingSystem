@@ -1,4 +1,5 @@
-﻿using AppRepository.UnitOfWork;
+﻿using AppRepository.Repository.Implement;
+using AppRepository.UnitOfWork;
 using AutoMapper;
 using Models.Entities;
 using Models.ServiceModels;
@@ -53,7 +54,9 @@ namespace TimetableSubsystem.Implementation
                                                                                             && slot.Date.Month == date.Month
                                                                                             && slot.Date.Year == date.Year
                                                                                             && slot.Status == (int)Models.Enum.TrainerSlotStatus.Enabled)
-                                                                                            == 8) && x.Id != 0
+                                                                                            == 8) 
+                                                                                            && x.Id != 0
+                                                                                            && x.User.RoleId == (int)Models.Enum.Role.Trainer
                                                                      , nameof(Trainer.TrainerSlots)
                                                                      , nameof(Trainer.TrainerSkills)
                                                                      , nameof(Trainer.User));
@@ -82,7 +85,7 @@ namespace TimetableSubsystem.Implementation
 
         public async Task<IEnumerable<TrainerModel>> GetListTrainer()
         {
-            var entities = await _unitOfWork.TrainerRepository.Get();
+            var entities = await _unitOfWork.TrainerRepository.Get(c => c.User.RoleId == (int)Models.Enum.Role.Trainer, nameof(Trainer.User));
             var models = new List<TrainerModel>();
             foreach (var entity in entities) 
             {
@@ -94,7 +97,7 @@ namespace TimetableSubsystem.Implementation
 
         public async Task<IEnumerable<TrainerModel>> GetListConsultantTrainer()
         {
-            var entities = await _unitOfWork.TrainerRepository.Get(x => x.ConsultantAble == true, nameof(Trainer.User));
+            var entities = await _unitOfWork.TrainerRepository.Get(x => x.ConsultantAble == true && x.User.RoleId == (int)Models.Enum.Role.Trainer, nameof(Trainer.User));
             var models = new List<TrainerModel>();
             foreach (var entity in entities)
             {
@@ -125,6 +128,7 @@ namespace TimetableSubsystem.Implementation
                                                                                             && slot.Date.Year == date.Year
                                                                                             && slot.Status == (int)Models.Enum.TrainerSlotStatus.Enabled)
                                                                                             == 8)
+                                                                        && c.User.RoleId == (int)Models.Enum.Role.Trainer
                                                                      , nameof(Trainer.TrainerSlots)
                                                                      , nameof(Trainer.TrainerSkills)
                                                                      , nameof(Trainer.User));
@@ -150,8 +154,11 @@ namespace TimetableSubsystem.Implementation
         public async Task<IEnumerable<TrainerSlotModel>> GetTrainerOccupiedSlots(DateOnly from, DateOnly to, int trainerId)
         {
             var trainerSlots = await _unitOfWork.TrainerSlotRepository.Get(c => c.TrainerId == trainerId
+                                                                            && c.Trainer.User.RoleId == (int)Models.Enum.Role.Trainer
                                                                              && c.Status != (int)Models.Enum.TrainerSlotStatus.Disabled
-                                                                             , nameof(TrainerSlot.Slot));
+                                                                             , nameof(TrainerSlot.Slot)
+                                                                             , nameof(TrainerSlot.Trainer)
+                                                                             , $"{nameof(TrainerSlot.Trainer)}.{nameof(Trainer.User)}");
             trainerSlots = trainerSlots.Where(c => c.Date.Day >= from.Day
                                                 && c.Date.Month >= from.Month
                                                 && c.Date.Year >= from.Year
@@ -210,6 +217,21 @@ namespace TimetableSubsystem.Implementation
             var entities = await _unitOfWork.SlotRepository.Get(x => x.EndTime >= start && x.EndTime <= endSlot.EndTime);
             var models = _mapper.Map<IEnumerable<SlotModel>>(entities);
             return models;
+        }
+
+        public async Task UpdateSlot(int minute)
+        {
+            var entities = await _unitOfWork.SlotRepository.Get();
+            if (minute > 60 || minute < 30)
+            {
+                throw new Exception("Duration each slot must be long 30 ~ 60 minute");
+            }
+            foreach (var entity in entities)
+            {
+                TimeSpan startTime = (TimeSpan)entity.StartTime;
+                entity.EndTime = startTime.Add(TimeSpan.FromMinutes(minute));
+                await _unitOfWork.SlotRepository.Update(entity);
+            }
         }
     }
 }

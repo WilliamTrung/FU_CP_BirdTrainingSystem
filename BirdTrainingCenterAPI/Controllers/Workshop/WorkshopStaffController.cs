@@ -15,10 +15,22 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
         public WorkshopStaffController(IWorkshopService workshopService, IAuthService authService) : base(workshopService, authService)
         {
         }
+        [HttpGet]
+        [EnableQuery]
+        [Route("detail-template")]
+        public async Task<IActionResult> GetWorkshopDetailTemplate([FromQuery] int workshopId)
+        {
+            var result = await _workshopService.Manager.GetDetailTemplatesByWorkshopId(workshopId);
+            return Ok(result);
+        }
         [HttpPost]
         [Route("create-class")]
         public async Task<IActionResult> CreateWorkshopClass([FromBody] WorkshopClassAddModel workshopClass)
         {
+            if(workshopClass.Location.Length < 1)
+            {
+                throw new InvalidDataException("Location is required!");
+            }
             await _workshopService.Staff.CreateWorkshopClass(workshopClass);
             return Ok();
         }
