@@ -8,7 +8,6 @@ namespace Models.Entities
         public Trainer()
         {
             BirdTrainingProgresses = new HashSet<BirdTrainingProgress>();
-            BirdTrainingReports = new HashSet<BirdTrainingReport>();
             ConsultingTickets = new HashSet<ConsultingTicket>();
             TrainerSkills = new HashSet<TrainerSkill>();
             TrainerSlots = new HashSet<TrainerSlot>();
@@ -25,7 +24,6 @@ namespace Models.Entities
 
         public virtual User User { get; set; } = null!;
         public virtual ICollection<BirdTrainingProgress> BirdTrainingProgresses { get; set; }
-        public virtual ICollection<BirdTrainingReport> BirdTrainingReports { get; set; }
         public virtual ICollection<ConsultingTicket> ConsultingTickets { get; set; }
         public virtual ICollection<TrainerSkill> TrainerSkills { get; set; }
         public virtual ICollection<TrainerSlot> TrainerSlots { get; set; }
