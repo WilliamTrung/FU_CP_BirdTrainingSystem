@@ -14,9 +14,6 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.Workshop
         [Route("modify")]
         Task<IActionResult> ModifyWorkshop([FromForm] WorkshopModifyParamModel workshop);
 
-        [HttpGet]
-        [Route("detail-template")]
-        Task<IActionResult> GetWorkshopDetailTemplate([FromQuery] int workshopId);
         [HttpPut]
         [Route("modify-detail-template")]
         Task<IActionResult> ModifyWorkshopDetail([FromBody] WorkshopDetailTemplateModiyModel workshopDetail);
