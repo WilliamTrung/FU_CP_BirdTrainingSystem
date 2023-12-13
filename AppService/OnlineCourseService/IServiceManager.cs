@@ -9,7 +9,7 @@ namespace AppService.OnlineCourseService
 {
     public interface IServiceManager : IServiceStaff
     {
-        Task CreateOnlineCourse(OnlineCourseAddModel model);
+        Task<int> CreateOnlineCourse(OnlineCourseAddModel model);
         Task AddSection(OnlineCourseSectionAddModel model);
         Task AddLesson(OnlineCourseLessonAddModel model);
         Task ModifySection(OnlineCourseSectionModifyModel model);
@@ -17,5 +17,6 @@ namespace AppService.OnlineCourseService
         Task DeleteSection(int sectionId);
         Task DeleteLesson(int lessonId);
         Task ChangeCourseStatus(int courseId, Models.Enum.OnlineCourse.Status status);
+        Task ModifyOnlineCourse(OnlineCourseModifyModel model);
     }
 }

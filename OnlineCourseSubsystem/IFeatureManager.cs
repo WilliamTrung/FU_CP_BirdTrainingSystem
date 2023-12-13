@@ -17,6 +17,7 @@ namespace OnlineCourseSubsystem
         Task DeleteSection(int sectionId);
         Task DeleteLesson(int lessonId);
         Task ChangeCourseStatus(int courseId, Models.Enum.OnlineCourse.Status status);
-        
+
+        Task ModifyCourse(OnlineCourseModifyModel model);
     }
 }

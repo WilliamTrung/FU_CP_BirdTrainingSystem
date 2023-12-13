@@ -97,6 +97,28 @@ namespace OnlineCourseSubsystem.Implementation
             await _unitOfWork.SectionRepository.Delete(section);
         }
 
+        public async Task ModifyCourse(OnlineCourseModifyModel model)
+        {
+            var course = await _unitOfWork.OnlineCourseRepository.GetFirst(c => c.Id == model.Id);
+            if(course == null)
+            {
+                throw new KeyNotFoundException($"Course not found at id: {model.Id}");
+            }
+            if(model.Picture != null)
+            {
+                course.Picture = model.Picture;
+            }
+            if(model.Title != null)
+            {
+                course.Title = model.Title;
+            }
+            if(model.Price != null)
+            {
+                course.Price = model.Price;
+            }
+            await _unitOfWork.OnlineCourseRepository.Update(course);
+        }
+
         public async Task ModifyLesson(OnlineCourseLessonModifyModel model)
         {
             Lesson? lesson = await _unitOfWork.LessonRepository.GetFirst(c => c.Id == model.Id);

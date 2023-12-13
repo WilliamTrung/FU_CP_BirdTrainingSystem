@@ -35,8 +35,8 @@ namespace BirdTrainingCenterAPI.Controllers.OnlineCourse
             }
             var picture = await _firebaseService.UploadFile(model.Picture, $"{model.Picture.FileName}_{DateTime.Now.ToString("yyyyMMddHHmmss")}", FirebaseFolder.WOKRSHOP, _bucket.General);            
             var courseAdd = model.ToOnlineCourseAddModel(picture);
-            await _onlineCourseService.Manager.CreateOnlineCourse(courseAdd);
-            return Ok();
+            var id = await _onlineCourseService.Manager.CreateOnlineCourse(courseAdd);
+            return Ok(id);
         }
         [HttpPost]
         [Route("add-section")]
@@ -153,6 +153,23 @@ namespace BirdTrainingCenterAPI.Controllers.OnlineCourse
         public async Task<IActionResult> CancelCourse([FromBody] int courseId)
         {
             await _onlineCourseService.Manager.ChangeCourseStatus(courseId, Models.Enum.OnlineCourse.Status.CANCELLED);
+            return Ok();
+        }
+        [HttpPut]
+        [Route("/modify-course")]
+        public async Task<IActionResult> Modify([FromForm] OnlineCourseModifyParamModel model)
+        {
+            string? picture = null;
+            if(model.Picture != null)
+            {
+                if (!model.Picture.IsImage())
+                {
+                    return BadRequest("Upload image only!");
+                }
+                picture = await _firebaseService.UploadFile(model.Picture, $"{model.Picture.FileName}_{DateTime.Now.ToString("yyyyMMddHHmmss")}", FirebaseFolder.WOKRSHOP, _bucket.General);
+            }
+            var courseModify = model.ToOnlineCourseModifyModel(picture);
+            await _onlineCourseService.Manager.ModifyOnlineCourse(courseModify);
             return Ok();
         }
     }
