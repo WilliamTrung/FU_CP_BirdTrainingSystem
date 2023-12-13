@@ -13,7 +13,6 @@ namespace Models.Entities
         public int? Status { get; set; }
 
         public virtual BirdTrainingProgress BirdTrainingProgress { get; set; } = null!;
-        public virtual Trainer Trainer { get; set; } = null!;
         public virtual TrainerSlot TrainerSlot { get; set; } = null!;
     }
 }
