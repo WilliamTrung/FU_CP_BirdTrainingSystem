@@ -77,14 +77,7 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             await _workshopService.Manager.ModifyWorkshop(workshopAdd);
             return Ok();
         }
-        [HttpGet]
-        [EnableQuery]
-        [Route("detail-template")]
-        public async Task<IActionResult> GetWorkshopDetailTemplate([FromQuery] int workshopId)
-        {
-            var result = await _workshopService.Manager.GetDetailTemplatesByWorkshopId(workshopId);
-            return Ok(result);
-        }
+       
         
         [HttpGet]
         [EnableQuery]
