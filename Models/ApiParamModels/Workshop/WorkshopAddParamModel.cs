@@ -14,11 +14,16 @@ namespace Models.ApiParamModels.Workshop
         public string Title { get; set; } = null!;
         public string Description { get; set; } = null!;
         public List<IFormFile> Pictures { get; set; } = null!;
+        [SP_Validator.PositiveNumber]
         public int? RegisterEnd { get; set; }
+        [SP_Validator.PositiveNumber]
         public decimal Price { get; set; }
+        [SP_Validator.PositiveNumber]
         public int TotalSlot { get; set; }
         //public string Location { get; set; } = null!;
+        [SP_Validator.PositiveNumber]
         public int MinimumRegistration { get; set; }
+        [SP_Validator.PositiveNumber]
         public int MaximumRegistration { get; set; }
 
         public WorkshopAddModel ToWorkshopAddModel(string picture)
