@@ -5,6 +5,7 @@ using Models.Entities;
 using Models.ServiceModels.WorkshopModels;
 using Models.ServiceModels.WorkshopModels.CustomerRegister;
 using Models.ServiceModels.WorkshopModels.WorkshopClass;
+using Models.ServiceModels.WorkshopModels.WorkshopRefundPolicy;
 using System;
 using System.Collections.Generic;
 using System.Linq;
