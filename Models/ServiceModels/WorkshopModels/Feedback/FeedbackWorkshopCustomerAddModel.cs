@@ -11,6 +11,7 @@ namespace Models.ServiceModels.WorkshopModels.Feedback
     {
         public int WorkshopId { get; set; }
         public string? Feedback { get; set; }
+        [SP_Validator.PositiveNumber]
         public int Rating { get; set; }
         
     }
