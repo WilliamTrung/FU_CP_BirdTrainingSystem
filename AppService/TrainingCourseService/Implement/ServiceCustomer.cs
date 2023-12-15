@@ -17,7 +17,7 @@ namespace AppService.TrainingCourseService.Implement
 {
     public class ServiceCustomer : ServiceAll, IServiceCustomer
     {
-        public ServiceCustomer(ITrainingCourseFeature trainingCourse, ITimetableFeature timetable) : base(trainingCourse, timetable)
+        public ServiceCustomer(ITrainingCourseFeature trainingCourse, ITimetableFeature timetable, IMailService mail) : base(trainingCourse, timetable, mail)
         {
         }
 

@@ -17,7 +17,7 @@ namespace AppService.TrainingCourseService.Implement
 {
     public class ServiceManager : ServiceAll, IServiceManager
     {
-        public ServiceManager(ITrainingCourseFeature trainingCourse, ITimetableFeature timetable) : base(trainingCourse, timetable)
+        public ServiceManager(ITrainingCourseFeature trainingCourse, ITimetableFeature timetable, IMailService mail) : base(trainingCourse, timetable, mail)
         {
         }
         #region ManagerBase

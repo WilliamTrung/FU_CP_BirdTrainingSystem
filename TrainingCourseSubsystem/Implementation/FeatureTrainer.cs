@@ -3,6 +3,7 @@ using AutoMapper;
 using Models.Entities;
 using Models.ServiceModels.TrainingCourseModels.BirdCertificate;
 using Models.ServiceModels.TrainingCourseModels.BirdCertificate.BirdCertificateDetail;
+using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
 using System;
@@ -51,7 +52,7 @@ namespace TrainingCourseSubsystem.Implementation
             }
         }
 
-        public async Task MarkTrainingSkillDone(MarkSkillDone markDone)
+        public async Task<BirdTrainingCourseListView> MarkTrainingSkillDone(MarkSkillDone markDone)
         {
             var entity = _unitOfWork.BirdTrainingProgressRepository.GetFirst(e => e.Id == markDone.Id).Result;
             if (entity == null)
@@ -81,10 +82,10 @@ namespace TrainingCourseSubsystem.Implementation
                         allDone = false;
                     }
                 }
+                var birdTrainingCourse = _unitOfWork.BirdTrainingCourseRepository.GetFirst(e => e.Id == entity.BirdTrainingCourseId
+                                                                                               , nameof(BirdTrainingCourse.TrainingCourse)).Result;
                 if (allDone)
                 {
-                    var birdTrainingCourse = _unitOfWork.BirdTrainingCourseRepository.GetFirst(e => e.Id == entity.BirdTrainingCourseId
-                                                                                               , nameof(BirdTrainingCourse.TrainingCourse)).Result;
                     birdTrainingCourse.TrainingDoneDate = DateTime.UtcNow.AddHours(7);
                     birdTrainingCourse.Status = (int)Models.Enum.BirdTrainingCourse.Status.TrainingDone;
 
@@ -116,6 +117,8 @@ namespace TrainingCourseSubsystem.Implementation
                         await CreateBirdCertificateDetail(birdCertificateDetailAdd);
                     }
                 }
+
+                return _mapper.Map<BirdTrainingCourseListView>(birdTrainingCourse);
             }
         }
 
@@ -209,9 +212,6 @@ namespace TrainingCourseSubsystem.Implementation
                     }
                     await _unitOfWork.BirdTrainingProgressRepository.Update(birdProgress);
 
-                    entity.Status = (int)Models.Enum.BirdTrainingReport.Status.Done;
-                    await _unitOfWork.BirdTrainingReportRepository.Update(entity);
-
                     if (result == (int)Models.Enum.BirdTrainingReport.FirstOrEnd.EndSlot)
                     {
                         MarkSkillDone allSlotDone = new MarkSkillDone()
@@ -222,6 +222,9 @@ namespace TrainingCourseSubsystem.Implementation
                         };
                         await MarkTrainingSkillDone(allSlotDone);
                     }
+
+                    entity.Status = (int)Models.Enum.BirdTrainingReport.Status.Done;
+                    await _unitOfWork.BirdTrainingReportRepository.Update(entity);
                 }
             }
             return result;
