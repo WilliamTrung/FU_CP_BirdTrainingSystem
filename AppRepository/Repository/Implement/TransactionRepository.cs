@@ -11,8 +11,8 @@ namespace AppRepository.Repository.Implement
         }
         public override Task Add(Transaction entity)
         {
-            entity.DateCreate = DateTime.Now;
-            entity.PaymentDate = DateTime.Now.Date;
+            entity.DateCreate = DateTime.UtcNow.AddHours(7);
+            entity.PaymentDate = DateTime.UtcNow.AddHours(7);
             entity.Status = (int)Models.Enum.Transaction.Status.Unpaid;
             return base.Add(entity);
         }
