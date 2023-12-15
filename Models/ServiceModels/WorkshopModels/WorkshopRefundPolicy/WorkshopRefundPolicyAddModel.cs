@@ -8,7 +8,9 @@ namespace Models.ServiceModels.WorkshopModels.WorkshopRefundPolicy
 {
     public class WorkshopRefundPolicyAddModel
     {
+        [SP_Validator.PositiveNumber]
         public int TotalDayBeforeStart { get; set; }
+        [SP_Validator.PositiveNumber]
         public float? RefundRate { get; set; }
     }
 }
