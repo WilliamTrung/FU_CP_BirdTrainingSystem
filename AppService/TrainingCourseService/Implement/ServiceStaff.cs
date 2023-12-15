@@ -174,19 +174,19 @@ namespace AppService.TrainingCourseService.Implement
             {
                 var rs = await _trainingCourse.Staff.AssignTrainer(progressId, trainerId);
 
-                var requesteds = _trainingCourse.All.GetBirdTrainingCourse().Result.ToList();
-                var requested = requesteds.FirstOrDefault(e => e.Id == rs.BirdTrainingCourseId);
-                if (requested == null)
-                {
-                    throw new KeyNotFoundException("BirdTrainingCourse not found");
-                }
-                else
-                {
-                    if(requested.Status == Models.Enum.BirdTrainingCourse.Status.Confirmed)
-                    {
-                        await SendNotiSendBirdToCenter(requested);
-                    }
-                }
+                //var requesteds = _trainingCourse.All.GetBirdTrainingCourse().Result.ToList();
+                //var requested = requesteds.FirstOrDefault(e => e.Id == rs.BirdTrainingCourseId);
+                //if (requested == null)
+                //{
+                //    throw new KeyNotFoundException("BirdTrainingCourse not found");
+                //}
+                //else
+                //{
+                //    if(requested.Status == Models.Enum.BirdTrainingCourse.Status.Confirmed)
+                //    {
+                //        await SendNotiSendBirdToCenter(requested);
+                //    }
+                //}
 
                 return rs;
             }
