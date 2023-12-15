@@ -1,4 +1,5 @@
 ﻿using Microsoft.Win32;
+using Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingProgress;
 using Models.ServiceModels.TrainingCourseModels.BirdTrainingReport;
 using System;
@@ -18,7 +19,7 @@ namespace TrainingCourseSubsystem
         //=> 
 
         Task<IEnumerable<BirdTrainingProgressViewModel>> GetBirdTrainingProgressByTrainerId(int trainerId);
-        Task MarkTrainingSkillDone(MarkSkillDone markDone);
+        Task<BirdTrainingCourseListView> MarkTrainingSkillDone(MarkSkillDone markDone);
         Task<int> MarkTrainingSlotDone(int birdTrainingReportId);
         Task<TimetableReportView> GetTimetableReportView(int trainerSlotId);
     }

@@ -12,7 +12,7 @@ namespace AppService.TrainingCourseService.Implement
 {
     public class ServiceTrainer : ServiceAll, IServiceTrainer
     {
-        public ServiceTrainer(ITrainingCourseFeature trainingCourse, ITimetableFeature timetable) : base(trainingCourse, timetable)
+        public ServiceTrainer(ITrainingCourseFeature trainingCourse, ITimetableFeature timetable, IMailService mail) : base(trainingCourse, timetable, mail)
         {
         }
 
@@ -28,12 +28,24 @@ namespace AppService.TrainingCourseService.Implement
 
         public async Task MarkTrainingSkillDone(MarkSkillDone markDone)
         {
-            await _trainingCourse.Trainer.MarkTrainingSkillDone(markDone);
+            var course = await _trainingCourse.Trainer.MarkTrainingSkillDone(markDone);
+            if (course != null)
+            {
+                if(course.Status == Models.Enum.BirdTrainingCourse.Status.TrainingDone)
+                {
+                    await SendNotiReceiveBirdFromCenter(course);
+                }
+            }
+            else
+            {
+                throw new KeyNotFoundException("BirdTrainingCourse not found");
+            }
         }
 
         public async Task<int> MarkTrainingSlotDone(int birdTrainingReportId)
         {
-            return await _trainingCourse.Trainer.MarkTrainingSlotDone(birdTrainingReportId);
+            var rs = await _trainingCourse.Trainer.MarkTrainingSlotDone(birdTrainingReportId);
+            return rs;
         }
     }
 }

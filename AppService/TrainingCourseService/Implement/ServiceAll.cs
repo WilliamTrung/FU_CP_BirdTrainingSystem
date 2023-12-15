@@ -1,4 +1,5 @@
-﻿using Models.Enum.BirdTrainingProgress;
+﻿using ApplicationService.MailSettings;
+using Models.Enum.BirdTrainingProgress;
 using Models.ServiceModels.TrainingCourseModels;
 using Models.ServiceModels.TrainingCourseModels.Bird;
 using Models.ServiceModels.TrainingCourseModels.BirdCertificate;
@@ -25,10 +26,12 @@ namespace AppService.TrainingCourseService.Implement
     {
         internal readonly ITrainingCourseFeature _trainingCourse;
         internal readonly ITimetableFeature _timetable;
-        public ServiceAll(ITrainingCourseFeature trainingCourse, ITimetableFeature timetable)
+        internal readonly IMailService _mail;
+        public ServiceAll(ITrainingCourseFeature trainingCourse, ITimetableFeature timetable, IMailService mail)
         {
             _timetable = timetable;
             _trainingCourse = trainingCourse;
+            _mail = mail;
         }
         public async Task<IEnumerable<BirdTrainingCourseListView>> GetBirdTrainingCourse()
         {
@@ -191,6 +194,64 @@ namespace AppService.TrainingCourseService.Implement
         public async Task<IEnumerable<TrainingCourseCheckOutPolicyModel>> GetTrainingCoursePricePolicies()
         {
             return await _trainingCourse.All.GetTrainingCoursePricePolicies();
+        }
+
+        public async Task SendNotiSendBirdToCenter(BirdTrainingCourseListView course)
+        {
+            if (course != null)
+            {
+                if (course.Status == Models.Enum.BirdTrainingCourse.Status.Confirmed)
+                {
+                    MailContent mailContent = new MailContent()
+                    {
+                        Subject = "Your registered course for bird have been confirm",
+                        //    HtmlMessage = $"Dear Mr /Mrs.{course.CustomerName},\r\n" +
+                        //$"Your request register at {course.RegisteredDate} Training course: {course.TrainingCourseTitle} for Bird: {course.BirdName} have been confirmed.\n" +
+                        //$"Please take your bird to center before {course.StartTrainingDate} to start training at the center.\r\n" +
+                        //$"Thanks and regards,\n" +
+                        //$"BIRD TRAINING CENTER AV Buddy."
+                        HtmlMessage = $"<p>Dear Mr/Mrs.{course.CustomerName},</p>\r\n" +
+                        $"\r\n<p>Your request registered on {course.RegisteredDate} for the Training Course: {course.TrainingCourseTitle} for Bird: {course.BirdName} has been confirmed.</p>\r\n" +
+                        $"\r\n<p>Please take your bird to the center before {course.StartTrainingDate} to start training at the center.</p>\r\n" +
+                        $"\r\n<p>Thanks and regards,</p>" +
+                        $"\r\n<p>BIRD TRAINING CENTER AV Buddy.</p>"
+                    };
+                    await _mail.SendEmailAsync(course.CustomerEmail, mailContent);
+                }
+            }
+            else
+            {
+                throw new KeyNotFoundException("BirdTrainingCourse not found");
+            }
+        }
+
+        public async Task SendNotiReceiveBirdFromCenter(BirdTrainingCourseListView course)
+        {
+            if (course != null)
+            {
+                if (course.Status == Models.Enum.BirdTrainingCourse.Status.TrainingDone)
+                {
+                    MailContent mailContent = new MailContent()
+                    {
+                        Subject = "Your training course for bird have done",
+                        //HtmlMessage = $"Dear Mr /Mrs.{course.CustomerName},\r\n" +
+                        //$"Your request register at {course.RegisteredDate} Training course: {course.TrainingCourseTitle} for Bird: {course.BirdName} have done at {course.TrainingDoneDate}.\n" +
+                        //$"Please go to center to receive bird and check out.\r\n" +
+                        //$"Thanks and regards,\n" +
+                        //$"BIRD TRAINING CENTER AV Buddy"
+                        HtmlMessage = $"<p>Dear Mr/Mrs.{course.CustomerName},</p>\r\n" +
+                    $"\r\n<p>Your request registered on {course.RegisteredDate} for the Training Course: {course.TrainingCourseTitle} for Bird: {course.BirdName} has been completed on {course.TrainingDoneDate}.</p>\r\n" +
+                    $"\r\n<p>Please go to the center to receive the bird and complete the check-out process.</p>\r\n" +
+                    $"\r\n<p>Thanks and regards,</p>\r\n" +
+                    $"<p>BIRD TRAINING CENTER AV Buddy</p>"
+                    };
+                    await _mail.SendEmailAsync(course.CustomerEmail, mailContent);
+                }
+            }
+            else
+            {
+                throw new KeyNotFoundException("BirdTrainingCourse not found");
+            }
         }
     }
 }
