@@ -212,6 +212,7 @@ namespace SP_AutoMapperConfig
                 destination.Status = (Models.Enum.ConsultingTicket.Status)source.Status;
                 destination.CustomerEmail = customer.User.Email;
                 destination.CustomerPhone = customer.User.PhoneNumber;
+                destination.CustomerAvatar = customer.User.Avatar;
             }
         }
     }
