@@ -213,6 +213,7 @@ namespace SP_AutoMapperConfig
                 destination.CustomerEmail = customer.User.Email;
                 destination.CustomerPhone = customer.User.PhoneNumber;
                 destination.CustomerAvatar = customer.User.Avatar;
+                destination.TrainerAvatar = trainer.User.Avatar;
             }
         }
     }

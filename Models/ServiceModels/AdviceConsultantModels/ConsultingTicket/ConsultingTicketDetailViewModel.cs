@@ -16,6 +16,7 @@ namespace Models.ServiceModels.AdviceConsultantModels.ConsultingTicket
         public string AddressDetail { get; set; } = null!;
         public string ConsultingType { get; set; } = null!;
         public string TrainerName { get; set; } = null!;
+        public string? TrainerAvatar { get; set;}
         public string? ConsultingDetail { get; set; }
         public int? Distance { get; set; }
         public bool OnlineOrOffline { get; set; }
