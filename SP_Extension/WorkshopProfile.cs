@@ -252,7 +252,6 @@ namespace SP_AutoMapperConfig
             destination.Id = source.Id;
 #pragma warning disable CS8629 // Nullable value type may be null.
             destination.Title = source.WorkshopClass.Workshop.Title;
-            destination.Location = source.WorkshopClass.Location;
             if (source.DaySlotId == null)
             {
                 //not yet assign trainer
