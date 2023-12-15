@@ -2,9 +2,11 @@
 using AutoMapper;
 using Models.DashboardModels;
 using Models.Entities;
+using Models.Enum;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -75,11 +77,16 @@ namespace DashboardSubsystem.Implementation
 
         }
 
-        public async Task<IEnumerable<TransactionModel>> GetTransactions()
+        public async Task<IEnumerable<TransactionModel>> GetTransactions(EntityType? type = null)
         {
-            var entities = await _uow.TransactionRepository.Get(null, nameof(Transaction.Customer)
+            Expression<Func<Transaction, bool>>? expression = null;
+            if (type.HasValue)
+            {
+                expression = c => c.EntityTypeId == (int)type.Value;
+            }
+            var entities = await _uow.TransactionRepository.Get(expression, nameof(Transaction.Customer)
                                                                     , $"{nameof(Transaction.Customer)}.{nameof(Customer.User)}");
-            entities = entities.OrderByDescending(c => c.DateCreate);
+            entities = entities.Reverse();
             var models = _mapper.Map<IEnumerable<TransactionModel>>(entities);
             return models;
         }

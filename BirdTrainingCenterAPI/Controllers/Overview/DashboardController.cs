@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
+using Models.Enum;
 
 namespace BirdTrainingCenterAPI.Controllers.Overview
 {
@@ -50,9 +51,9 @@ namespace BirdTrainingCenterAPI.Controllers.Overview
         [HttpGet]
         [Route("transactions")]
         [EnableQuery]
-        public async Task<IActionResult> GetTransactions()
+        public async Task<IActionResult> GetTransactions(EntityType? type = null)
         {
-            var result = await _dashboard.GetTransactions();
+            var result = await _dashboard.GetTransactions(type);
             return Ok(result);
         }
     }

@@ -1,5 +1,6 @@
 ﻿using DashboardSubsystem;
 using Models.DashboardModels;
+using Models.Enum;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,9 +31,9 @@ namespace AppService.DashboardService.Implementation
             return _dashboard.GetDashboardWorkshop();
         }
 
-        public Task<IEnumerable<TransactionModel>> GetTransactions()
+        public Task<IEnumerable<TransactionModel>> GetTransactions(EntityType? type = null)
         {
-            return _dashboard.GetTransactions();
+            return _dashboard.GetTransactions(type);
         }
     }
 }
