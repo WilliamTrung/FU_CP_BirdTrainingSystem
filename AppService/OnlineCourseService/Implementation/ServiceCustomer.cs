@@ -61,7 +61,7 @@ namespace AppService.OnlineCourseService.Implementation
             {
                 CustomerId = customerId,
                 EntityId = courseId,
-                EntityTypeId = (int)Models.Enum.EntityType.WorkshopClass,
+                EntityTypeId = (int)Models.Enum.EntityType.OnlineCourse,
                 PaymentCode = paymentCode,
                 Detail = $"{paymentCode}:{customerId}:{billing.Email}-enroll online course {courseId}:{billing.CourseTitle}-at:{formattedDateTime}",
                 Status = (int)Models.Enum.Transaction.Status.Paid,
