@@ -12,6 +12,7 @@ namespace Models.ServiceModels.TrainingCourseModels.TrainingCourse
         public string Title { get; set; } = null!;
         public string? Description { get; set; }
         public string? Picture { get; set; }
+        [SP_Validator.PositiveNumber]
         public decimal TotalPrice { get; set; }
     }
 }

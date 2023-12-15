@@ -10,6 +10,7 @@ namespace Models.ServiceModels.TrainingCourseModels.TrainingCourseCheckOutPolicy
     {
         public int Id { get; set; }
         public string Name { get; set; } = null!;
+        [SP_Validator.PositiveNumber]
         public float ChargeRate { get; set; }
     }
 }

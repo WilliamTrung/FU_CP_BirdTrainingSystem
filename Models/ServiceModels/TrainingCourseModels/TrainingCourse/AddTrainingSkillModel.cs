@@ -10,6 +10,7 @@ namespace Models.ServiceModels.TrainingCourseModels.TrainingCourse
     {
         public int BirdSkillId { get; set; }
         public int TrainingCourseId { get; set; }
+        [SP_Validator.PositiveNumber]
         public int TotalSlot { get; set; }
     }
 }
