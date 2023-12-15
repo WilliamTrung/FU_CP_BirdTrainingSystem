@@ -43,13 +43,17 @@ namespace AppService.AdviceConsultingService.Implementation
             var mailContent = new MailContent()
             {
                 Subject = "Consulting Appointment Information",
-                HtmlMessage = "Thank you for using our center's services. Consulting appointment details: \n" +
-                $" -Topic: {ticket.ConsultingType} \n" +
-                $" -Consultants: {ticket.TrainerName} \n" +
-                $" -Type: {type} \n" +
-                $" -Time: {ticket.ActualSlotStart} \n" +
-                $" -Google Meet Link: {meetLink} \n" +
-                $"- Price: {ticket.Price} \n",
+                HtmlMessage = $"Dear {ticket.CustomerName}\r\n" +
+                "Thank you for using our center's services.\r\n" +
+                "Here is your Consulting Appointment Detail: \r\n" +
+                $"- Topic: {ticket.ConsultingType}\r\n" +
+                $"- Consultants: {ticket.TrainerName}\r\n" +
+                $"- Type: {type}\r\n" +
+                $"- Time: {ticket.ActualSlotStart}\r\n" +
+                $"- Google Meet Link: {meetLink}\r\n" +
+                $"- Price: {ticket.Price}\r\n" +
+                "If you have any questions, please contact us via email: williamthanhtrungq2@gmail.com\r\n" +
+                "Thanks and Regards"
             };
             await _mail.SendEmailAsync(ticket.CustomerEmail, mailContent);
         }
