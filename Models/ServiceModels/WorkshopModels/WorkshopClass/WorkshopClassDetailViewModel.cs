@@ -23,6 +23,7 @@ namespace Models.ServiceModels.WorkshopModels.WorkshopClass
     public class WorkshopClassDetailViewModel : IClassSlot
     {
         public int Id { get; set; }
+        public int SlotId { get; set; } 
         public string Detail { get; set; } = null!;
         public TimeSpan? StartTime { get  ; set  ; }
         public TimeSpan? EndTime { get  ; set  ; }

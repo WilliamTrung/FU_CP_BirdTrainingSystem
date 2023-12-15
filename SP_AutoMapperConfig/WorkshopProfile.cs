@@ -210,6 +210,7 @@ namespace SP_AutoMapperConfig
         {
             destination.Detail = source.WorkshopDetailTemplate.Detail;
             destination.Id = source.Id;
+            destination.SlotId = source.DaySlotId;
 #pragma warning disable CS8629 // Nullable value type may be null.
             if(source.DaySlotId == null)
             {
