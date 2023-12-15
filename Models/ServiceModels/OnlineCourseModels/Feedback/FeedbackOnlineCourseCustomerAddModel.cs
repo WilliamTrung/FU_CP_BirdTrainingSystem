@@ -10,6 +10,7 @@ namespace Models.ServiceModels.OnlineCourseModels.Feedback
     {
         public int CourseId { get; set; }
         public string? Feedback { get; set; }
+        [SP_Validator.PositiveNumber]
         public int Rating { get; set; }
     }
 }
