@@ -27,10 +27,29 @@ namespace AppService.AdviceConsultingService.Implementation
             decimal discountedPrice = price.GetType().GetProperty("DiscountedPrice").GetValue(price, null);
             await _consulting.Staff.ApproveConsultingTicket(ticketId, distance, finalPrice, discountedPrice);
             var ticket = await _consulting.Other.GetConsultingTicketById(ticketId);
+            string type = null;
+            string meetLink = null;
+            if (ticket.OnlineOrOffline == true)
+            {
+                type = "Online";
+                meetLink = ticket.GgMeetLink;
+            }
+            else
+            {
+                type = "Offline";
+                meetLink = "";
+            }
+
             var mailContent = new MailContent()
             {
-                Subject = "Consultant Time",
-                HtmlMessage = ticket.GgMeetLink
+                Subject = "Consulting Appointment Information",
+                HtmlMessage = "Thank you for using our center's services. Consulting appointment details: " +
+                $" -Topic: {ticket.ConsultingType}" +
+                $" -Consultants: {ticket.TrainerName}" +
+                $" -Type: {type}" +
+                $" -Time: {ticket.ActualSlotStart}" +
+                $" -Google Meet Link: {meetLink}" +
+                $"- Price: {ticket.Price}",
             };
             await _mail.SendEmailAsync(ticket.CustomerEmail, mailContent);
         }
@@ -42,6 +61,15 @@ namespace AppService.AdviceConsultingService.Implementation
             decimal discountedPrice = price.GetType().GetProperty("DiscountedPrice").GetValue(price, null);
             await _consulting.Staff.AssignTrainer(trainerId, ticketId, distance, finalPrice, discountedPrice);
             var ticket = await _consulting.Other.GetConsultingTicketById(ticketId);
+            string type = null;
+            if (ticket.OnlineOrOffline == true)
+            {
+                type = "Online";
+            }
+            else
+            {
+                type = "Offline";
+            }
             var mailContent = new MailContent()
             {
                 Subject = "Consultant Time",
