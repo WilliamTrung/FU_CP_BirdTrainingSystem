@@ -20,6 +20,7 @@ namespace SP_AutoMapperConfig
             Map_WorkshopAddModel_Workshop();
             Map_WorkshopClassDetail_WorkshopDetailViewModel();
             Map_WorkshopDetailTemplateAddModel_WorkshopDetailTemplate();
+            Map_WorkshopRefundPolicy_WorkshopRefundPolicyModel();
             Map_WorkshopClass_WorkshopClassAdminViewModel();
             Map_WorkshopClassDetailTemplate_WorkshopClassDetailTemplateViewModel();
             Map_WorkshopClassAddModel_WorkshopClass();
@@ -61,6 +62,10 @@ namespace SP_AutoMapperConfig
         {
             CreateMap<Workshop, WorkshopAdminModel>()
                 .ForMember(c => c.Status, opt => opt.MapFrom(e => e.Status));
+        }
+        private void Map_WorkshopRefundPolicy_WorkshopRefundPolicyModel()
+        {
+            CreateMap<WorkshopRefundPolicy, WorkshopRefundPolicyModel>();
         }
         private void Map_Workshop_WorkshopModel()
         {
@@ -247,7 +252,6 @@ namespace SP_AutoMapperConfig
             destination.Id = source.Id;
 #pragma warning disable CS8629 // Nullable value type may be null.
             destination.Title = source.WorkshopClass.Workshop.Title;
-            destination.Location = source.WorkshopClass.Location;
             if (source.DaySlotId == null)
             {
                 //not yet assign trainer
