@@ -21,6 +21,40 @@ namespace DashboardSubsystem.Implementation
             _mapper = mapper;
             _uow = uow; 
         }
+
+        public async Task<CampaignModel> GetCampaignModel(CampaignQueryModel query)
+        {
+            var transactions = await _uow.TransactionRepository.Get(null, nameof(Transaction.Customer)
+                                                                        , $"{nameof(Transaction.Customer)}.{nameof(Customer.User)}");
+            decimal? totalRevenue = transactions.Sum(c => c.TotalPayment);
+            
+            if(query.Month == 1)
+            {
+                var revenuePrevMonth = transactions.Where(c => c.PaymentDate.Value.Month == 12 && c.PaymentDate.Value.Year == query.Year - 1).Sum(c => c.TotalPayment);
+                var revenueThisMonth = transactions.Where(c => c.PaymentDate.Value.Month == query.Month && c.PaymentDate.Value.Year == query.Year).Sum(c => c.TotalPayment);
+                decimal percentRevenueFromLastMonth = revenueThisMonth.Value / (revenueThisMonth.Value + revenuePrevMonth.Value);//(revenueThisMonth.Value / revenuePrevMonth.Value) * 100;
+                CampaignModel model = new CampaignModel()
+                {
+                    PercentRevenueFromLastMonth = percentRevenueFromLastMonth,
+                    RevenueInMonth = revenueThisMonth.Value,
+                    RevenueInYear = totalRevenue.Value
+                };
+                return model;
+            } else
+            {
+                var revenuePrevMonth = transactions.Where(c => c.PaymentDate.Value.Month == query.Month-1 && c.PaymentDate.Value.Year == query.Year).Sum(c => c.TotalPayment);
+                var revenueThisMonth = transactions.Where(c => c.PaymentDate.Value.Month == query.Month && c.PaymentDate.Value.Year == query.Year).Sum(c => c.TotalPayment);
+                decimal percentRevenueFromLastMonth = revenueThisMonth.Value / (revenueThisMonth.Value + revenuePrevMonth.Value);// (revenueThisMonth.Value / revenuePrevMonth.Value) * 100;
+                CampaignModel model = new CampaignModel()
+                {
+                    PercentRevenueFromLastMonth = percentRevenueFromLastMonth,
+                    RevenueInMonth = revenueThisMonth.Value,
+                    RevenueInYear = totalRevenue.Value
+                };
+                return model;
+            }
+        }
+
         public async Task<DashboardConsultingTicket> GetDashboardConsultingTicket()
         {
             var entities = await _uow.ConsultingTicketRepository.Get();

@@ -16,6 +16,12 @@ namespace AppService.DashboardService.Implementation
         {
             _dashboard = dashboardFeature;
         }
+
+        public Task<CampaignModel> GetCampaignModel(CampaignQueryModel model)
+        {
+            return _dashboard.GetCampaignModel(model);
+        }
+
         public Task<DashboardConsultingTicket> GetDashboardConsultingTicket()
         {
             return _dashboard.GetDashboardConsultingTicket();
