@@ -43,13 +43,13 @@ namespace AppService.AdviceConsultingService.Implementation
             var mailContent = new MailContent()
             {
                 Subject = "Consulting Appointment Information",
-                HtmlMessage = "Thank you for using our center's services. Consulting appointment details: " +
-                $" -Topic: {ticket.ConsultingType}" +
-                $" -Consultants: {ticket.TrainerName}" +
-                $" -Type: {type}" +
-                $" -Time: {ticket.ActualSlotStart}" +
-                $" -Google Meet Link: {meetLink}" +
-                $"- Price: {ticket.Price}",
+                HtmlMessage = "Thank you for using our center's services. Consulting appointment details: \n" +
+                $" -Topic: {ticket.ConsultingType} \n" +
+                $" -Consultants: {ticket.TrainerName} \n" +
+                $" -Type: {type} \n" +
+                $" -Time: {ticket.ActualSlotStart} \n" +
+                $" -Google Meet Link: {meetLink} \n" +
+                $"- Price: {ticket.Price} \n",
             };
             await _mail.SendEmailAsync(ticket.CustomerEmail, mailContent);
         }
