@@ -10,5 +10,6 @@ namespace Models.ServiceModels.WorkshopModels.WorkshopClass
     public class WorkshopClassDetailTrainerViewModel : WorkshopClassDetailViewModel
     {
         public string Title { get; set; } = null!;
+        public string? Location { get; set; }
     }
 }

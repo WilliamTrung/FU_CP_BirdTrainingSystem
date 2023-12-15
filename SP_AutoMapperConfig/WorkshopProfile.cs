@@ -5,6 +5,7 @@ using Models.Entities;
 using Models.ServiceModels.WorkshopModels;
 using Models.ServiceModels.WorkshopModels.CustomerRegister;
 using Models.ServiceModels.WorkshopModels.WorkshopClass;
+using Models.ServiceModels.WorkshopModels.WorkshopRefundPolicy;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -209,6 +210,7 @@ namespace SP_AutoMapperConfig
         {
             destination.Detail = source.WorkshopDetailTemplate.Detail;
             destination.Id = source.Id;
+            destination.SlotId = source.DaySlotId;
 #pragma warning disable CS8629 // Nullable value type may be null.
             if(source.DaySlotId == null)
             {
@@ -247,6 +249,7 @@ namespace SP_AutoMapperConfig
             destination.Id = source.Id;
 #pragma warning disable CS8629 // Nullable value type may be null.
             destination.Title = source.WorkshopClass.Workshop.Title;
+            destination.Location = source.WorkshopClass.Location;
             if (source.DaySlotId == null)
             {
                 //not yet assign trainer

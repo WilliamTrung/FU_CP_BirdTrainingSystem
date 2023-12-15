@@ -27,10 +27,33 @@ namespace AppService.AdviceConsultingService.Implementation
             decimal discountedPrice = price.GetType().GetProperty("DiscountedPrice").GetValue(price, null);
             await _consulting.Staff.ApproveConsultingTicket(ticketId, distance, finalPrice, discountedPrice);
             var ticket = await _consulting.Other.GetConsultingTicketById(ticketId);
+            string type = null;
+            string meetLink = null;
+            if (ticket.OnlineOrOffline == true)
+            {
+                type = "Online";
+                meetLink = ticket.GgMeetLink;
+            }
+            else
+            {
+                type = "Offline";
+                meetLink = "";
+            }
+
             var mailContent = new MailContent()
             {
-                Subject = "Consultant Time",
-                HtmlMessage = ticket.GgMeetLink
+                Subject = "Consulting Appointment Information",
+                HtmlMessage = $"Dear {ticket.CustomerName}\r\n" +
+                "Thank you for using our center's services.\r\n" +
+                "Here is your Consulting Appointment Detail: \r\n" +
+                $"- Topic: {ticket.ConsultingType}\r\n" +
+                $"- Consultants: {ticket.TrainerName}\r\n" +
+                $"- Type: {type}\r\n" +
+                $"- Time: {ticket.ActualSlotStart}\r\n" +
+                $"- Google Meet Link: {meetLink}\r\n" +
+                $"- Price: {ticket.Price}\r\n" +
+                "If you have any questions, please contact us via email: williamthanhtrungq2@gmail.com\r\n" +
+                "Thanks and Regards"
             };
             await _mail.SendEmailAsync(ticket.CustomerEmail, mailContent);
         }
@@ -42,6 +65,15 @@ namespace AppService.AdviceConsultingService.Implementation
             decimal discountedPrice = price.GetType().GetProperty("DiscountedPrice").GetValue(price, null);
             await _consulting.Staff.AssignTrainer(trainerId, ticketId, distance, finalPrice, discountedPrice);
             var ticket = await _consulting.Other.GetConsultingTicketById(ticketId);
+            string type = null;
+            if (ticket.OnlineOrOffline == true)
+            {
+                type = "Online";
+            }
+            else
+            {
+                type = "Offline";
+            }
             var mailContent = new MailContent()
             {
                 Subject = "Consultant Time",

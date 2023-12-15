@@ -1,4 +1,5 @@
 ﻿using Models.DashboardModels;
+using Models.Enum;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,6 @@ namespace DashboardSubsystem
         Task<DashboardConsultingTicket> GetDashboardConsultingTicket();
         Task<DashboardOnlineCourse> GetDashboardOnlineCourse();
         Task<DashboardWorkshop> GetDashboardWorkshop();
-        Task<IEnumerable<TransactionModel>> GetTransactions();
+        Task<IEnumerable<TransactionModel>> GetTransactions(EntityType? type = null);
     }
 }
