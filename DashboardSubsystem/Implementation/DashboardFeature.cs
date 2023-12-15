@@ -77,8 +77,9 @@ namespace DashboardSubsystem.Implementation
 
         public async Task<IEnumerable<TransactionModel>> GetTransactions()
         {
-            var entities = await _uow.TransactionRepository.Get(null, nameof(Transaction.Customer)
+            var entities = await _uow.TransactionRepository.Get(c => c.EntityTypeId == 1, nameof(Transaction.Customer)
                                                                     , $"{nameof(Transaction.Customer)}.{nameof(Customer.User)}");
+            entities = entities.OrderByDescending(c => c.DateCreate);
             var models = _mapper.Map<IEnumerable<TransactionModel>>(entities);
             return models;
         }
