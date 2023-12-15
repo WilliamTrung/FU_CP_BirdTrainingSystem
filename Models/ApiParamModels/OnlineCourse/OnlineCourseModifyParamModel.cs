@@ -14,6 +14,7 @@ namespace Models.ApiParamModels.OnlineCourse
         public string? Title { get; set; } = null!;
         public string? ShortDescription { get; set; } = null!;
         public IFormFile? Picture { get; set; } = null!;
+        [SP_Validator.PositiveNumber]
         public decimal? Price { get; set; }
 
         public OnlineCourseModifyModel ToOnlineCourseModifyModel(string? picture)
