@@ -33,7 +33,38 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             string accessToken = authHeader[0].Split(' ')[1];
             return _authService.DeserializedToken(accessToken);
         }
-
+        [HttpPost]
+        [Route("sendnoticonfirmedrequest")]
+        public async Task<IActionResult> SendNotiConfirmedRequest([FromQuery] int requestedId)
+        {
+            var requesteds = await _trainingCourseService.Staff.GetBirdTrainingCourse();
+            var requested = requesteds.FirstOrDefault(e => e.Id == requestedId);
+            if (requested == null)
+            {
+                throw new KeyNotFoundException("BirdTrainingCourse not found" + requestedId);
+            }
+            else
+            {
+                await _trainingCourseService.All.SendNotiSendBirdToCenter(requested);
+            }
+            return Ok();
+        }
+        [HttpPost]
+        [Route("sendnotitrainingdonerequest")]
+        public async Task<IActionResult> SendNotiTrainingDoneRequest([FromQuery] int requestedId)
+        {
+            var requesteds = await _trainingCourseService.Staff.GetBirdTrainingCourse();
+            var requested = requesteds.FirstOrDefault(e => e.Id == requestedId);
+            if (requested == null)
+            {
+                throw new KeyNotFoundException("BirdTrainingCourse not found" + requestedId);
+            }
+            else
+            {
+                await _trainingCourseService.All.SendNotiReceiveBirdFromCenter(requested);
+            }
+            return Ok();
+        }
         [HttpGet]
         [EnableQuery]
         [Route("birdtrainingcourse")]
