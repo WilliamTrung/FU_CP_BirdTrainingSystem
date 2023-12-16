@@ -1,4 +1,6 @@
-﻿using Models.ServiceModels;
+﻿using ApplicationService.MailSettings;
+using Models.Entities;
+using Models.ServiceModels;
 using Models.ServiceModels.WorkshopModels;
 using Models.ServiceModels.WorkshopModels.Feedback;
 using Models.ServiceModels.WorkshopModels.WorkshopClass;
@@ -16,9 +18,11 @@ namespace AppService.WorkshopService.Implementation
     public class CustomerService : AllService, IServiceCustomer
     {
         private readonly IFeatureTransaction _transaction;
-        public CustomerService(IWorkshopFeature workshop, ITimetableFeature timetable, IFeatureTransaction transaction) : base(workshop, timetable)
+        private readonly IMailService _mailService;
+        public CustomerService(IWorkshopFeature workshop, ITimetableFeature timetable, IFeatureTransaction transaction, IMailService mailService) : base(workshop, timetable)
         {
             _transaction = transaction;
+            _mailService = mailService;
         }
 
         public async Task<IEnumerable<WorkshopClassViewModel>> GetRegisteredClass(int customerId, int workshopId)
@@ -81,8 +85,19 @@ namespace AppService.WorkshopService.Implementation
                 Title = "Workshop class enrolled",
                 TotalPayment = billingInfo.TotalPrice,               
             };
-            await _transaction.AddTransaction(transactionAddModel);
-            await _workshop.Staff.GenerateWorkshopAttendance(customerId, workshopClassId);
+            Transaction transaction = await _transaction.AddTransaction(transactionAddModel);
+
+            var mailContent = new MailContent
+            {
+                Subject = "Payment information for workshop purchasing",
+                HtmlMessage = $"<h3>You have purchased for workshop: </h3><p>{customerRegistered.WorkshopClass.Workshop.Title}</p><br/>" +
+                $"<h3>Your payment code: </h3>{transaction.PaymentCode.Split("_secret")[0]}<br/>" +
+                $"<h3>At {transaction.PaymentDate}</h3><br/><h2>Please save this information for service convenience!</h2>"
+            };
+            Task t_sendMail =  _mailService.SendEmailAsync(customerRegistered.Customer.User.Email, mailContent);
+
+            Task t_generateWorkshopAttendance = _workshop.Staff.GenerateWorkshopAttendance(customerId, workshopClassId);
+            Task.WaitAll(t_sendMail, t_generateWorkshopAttendance);
         }
         public async Task<IEnumerable<WorkshopClassViewModel>> GetWorkshopClassesByWorkshopId(int customerId, int workshopId)
         {

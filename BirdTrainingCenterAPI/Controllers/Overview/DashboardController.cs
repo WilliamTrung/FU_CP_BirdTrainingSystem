@@ -58,6 +58,7 @@ namespace BirdTrainingCenterAPI.Controllers.Overview
             return Ok(result);
         }
         [Route("campaign-revenue")]
+        [HttpGet]
         [EnableQuery]
         public async Task<IActionResult> GetCampaignRevenue([FromQuery] CampaignQueryModel query)
         {
