@@ -1,4 +1,5 @@
 ﻿using ApplicationService.MailSettings;
+using Google.Api.Gax;
 using Models.Entities;
 using Models.ServiceModels;
 using Models.ServiceModels.WorkshopModels;
@@ -92,6 +93,9 @@ namespace AppService.WorkshopService.Implementation
                 Subject = "Payment information for workshop purchasing",
                 HtmlMessage = $"<h3>You have purchased for workshop: </h3><p>{customerRegistered.WorkshopClass.Workshop.Title}</p><br/>" +
                 $"<h3>Your payment code: </h3>{transaction.PaymentCode.Split("_secret")[0]}<br/>" +
+                  $"<h3>Original cost: </h3>{billingInfo.WorkshopPrice} VND<br/>" +
+             $"<h3>Discounted: </h3>{billingInfo.DiscountedPrice} VND<br/>" +
+             $"<h3>Actual Cost: </h3>{transaction.TotalPayment} VND<br/>" +
                 $"<h3>At {transaction.PaymentDate}</h3><br/><h2>Please save this information for service convenience!</h2>"
             };
             Task t_sendMail =  _mailService.SendEmailAsync(customerRegistered.Customer.User.Email, mailContent);
