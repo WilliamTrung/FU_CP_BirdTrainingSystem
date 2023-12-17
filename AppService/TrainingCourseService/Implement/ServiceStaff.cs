@@ -23,7 +23,7 @@ namespace AppService.TrainingCourseService.Implement
     public class ServiceStaff : ServiceAll, IServiceStaff
     {
         private readonly IFeatureTransaction _transaction;
-        public ServiceStaff(ITrainingCourseFeature trainingCourse, ITimetableFeature timetable, IFeatureTransaction transaction) : base(trainingCourse, timetable)
+        public ServiceStaff(ITrainingCourseFeature trainingCourse, ITimetableFeature timetable, IFeatureTransaction transaction, IMailService mail) : base(trainingCourse, timetable, mail)
         {
             _transaction = transaction;
         }
@@ -172,7 +172,23 @@ namespace AppService.TrainingCourseService.Implement
             }
             if(IsAssignable)
             {
-                return await _trainingCourse.Staff.AssignTrainer(progressId, trainerId);
+                var rs = await _trainingCourse.Staff.AssignTrainer(progressId, trainerId);
+
+                //var requesteds = _trainingCourse.All.GetBirdTrainingCourse().Result.ToList();
+                //var requested = requesteds.FirstOrDefault(e => e.Id == rs.BirdTrainingCourseId);
+                //if (requested == null)
+                //{
+                //    throw new KeyNotFoundException("BirdTrainingCourse not found");
+                //}
+                //else
+                //{
+                //    if(requested.Status == Models.Enum.BirdTrainingCourse.Status.Confirmed)
+                //    {
+                //        await SendNotiSendBirdToCenter(requested);
+                //    }
+                //}
+
+                return rs;
             }
             else
             {

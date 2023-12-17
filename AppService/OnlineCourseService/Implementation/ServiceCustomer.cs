@@ -1,4 +1,5 @@
-﻿using GoogleApi.Entities.Maps.StreetView.Request.Enums;
+﻿using ApplicationService.MailSettings;
+using GoogleApi.Entities.Maps.StreetView.Request.Enums;
 using Models.Enum.OnlineCourse.Customer.OnlineCourse;
 using Models.ServiceModels;
 using Models.ServiceModels.OnlineCourseModels;
@@ -18,9 +19,11 @@ namespace AppService.OnlineCourseService.Implementation
     public class ServiceCustomer : ServiceAll, IServiceCustomer
     {
         private readonly IFeatureTransaction _transaction;
-        public ServiceCustomer (IOnlineCourseFeature onlineCourse, IFeatureTransaction transaction) : base (onlineCourse) 
+        private readonly IMailService _mailService;
+        public ServiceCustomer (IOnlineCourseFeature onlineCourse, IFeatureTransaction transaction, IMailService mailService) : base (onlineCourse) 
         { 
             _transaction = transaction;
+            _mailService = mailService;
         }
 
         public async Task CheckCompleteCourse(int customerId, int courseId)
@@ -68,8 +71,21 @@ namespace AppService.OnlineCourseService.Implementation
                 Title = "Online course enrolled",
                 TotalPayment = billing.TotalPrice,
             };
-            await _transaction.AddTransaction(transactionAddModel);
-            await _onlineCourse.Customer.EnrollCourse(customerId, billing);
+            var transaction = await _transaction.AddTransaction(transactionAddModel);
+
+            var mailContent = new MailContent
+            {
+                Subject = "Payment information for online course purchasing",
+                HtmlMessage = $"<h3>You have purchased for online course: </h3><p>{billing.CourseTitle}</p><br/>" +
+             $"<h3>Your payment code: </h3>{transaction.PaymentCode.Split("_secret")[0]}<br/>" +
+             $"<h3>Original cost: </h3>{billing.CoursePrice} VND<br/>" +
+             $"<h3>Discounted: </h3>{billing.DiscountedPrice} VND<br/>" +
+             $"<h3>Actual Cost: </h3>{transaction.TotalPayment} VND<br/>" +
+             $"<h3>At {transaction.PaymentDate}</h3><br/><h2>Please save this information for service convenience!</h2>"
+            };
+            Task t_sendMail = _mailService.SendEmailAsync(billing.Email, mailContent);
+            Task t_enrollCourse =  _onlineCourse.Customer.EnrollCourse(customerId, billing);
+            Task.WaitAll(t_sendMail, t_enrollCourse);
         }
 
         public async Task<BillingModel> GetBillingInformation(int customerId, int courseId)

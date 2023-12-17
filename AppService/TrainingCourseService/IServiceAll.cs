@@ -60,5 +60,7 @@ namespace AppService.TrainingCourseService
         Task<IEnumerable<CustomerModel>> GetCustomerModels();
 
         Task<IEnumerable<TrainingCourseCheckOutPolicyModel>> GetTrainingCoursePricePolicies();
+        Task SendNotiSendBirdToCenter(BirdTrainingCourseListView course);
+        Task SendNotiReceiveBirdFromCenter(BirdTrainingCourseListView course);
     }
 }

@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
+using Models.DashboardModels;
+using Models.Enum;
 
 namespace BirdTrainingCenterAPI.Controllers.Endpoints.DashboardInformative
 {
@@ -24,6 +26,9 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.DashboardInformative
         [HttpGet]
         [Route("transactions")]
         [EnableQuery]
-        Task<IActionResult> GetTransactions();
+        Task<IActionResult> GetTransactions(EntityType? type = null);
+        [Route("campaign-revenue")]
+        [EnableQuery]
+        Task<IActionResult> GetCampaignRevenue([FromQuery]CampaignQueryModel query);
     }
 }

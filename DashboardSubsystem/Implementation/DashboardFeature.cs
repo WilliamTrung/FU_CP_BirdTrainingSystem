@@ -2,9 +2,11 @@
 using AutoMapper;
 using Models.DashboardModels;
 using Models.Entities;
+using Models.Enum;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,6 +21,40 @@ namespace DashboardSubsystem.Implementation
             _mapper = mapper;
             _uow = uow; 
         }
+
+        public async Task<CampaignModel> GetCampaignModel(CampaignQueryModel query)
+        {
+            var transactions = await _uow.TransactionRepository.Get(null, nameof(Transaction.Customer)
+                                                                        , $"{nameof(Transaction.Customer)}.{nameof(Customer.User)}");
+            decimal? totalRevenue = transactions.Sum(c => c.TotalPayment);
+            
+            if(query.Month == 1)
+            {
+                var revenuePrevMonth = transactions.Where(c => c.PaymentDate.Value.Month == 12 && c.PaymentDate.Value.Year == query.Year - 1).Sum(c => c.TotalPayment);
+                var revenueThisMonth = transactions.Where(c => c.PaymentDate.Value.Month == query.Month && c.PaymentDate.Value.Year == query.Year).Sum(c => c.TotalPayment);
+                decimal percentRevenueFromLastMonth = revenueThisMonth.Value / (revenueThisMonth.Value + revenuePrevMonth.Value);//(revenueThisMonth.Value / revenuePrevMonth.Value) * 100;
+                CampaignModel model = new CampaignModel()
+                {
+                    PercentRevenueFromLastMonth = percentRevenueFromLastMonth,
+                    RevenueInMonth = revenueThisMonth.Value,
+                    RevenueInYear = totalRevenue.Value
+                };
+                return model;
+            } else
+            {
+                var revenuePrevMonth = transactions.Where(c => c.PaymentDate.Value.Month == query.Month-1 && c.PaymentDate.Value.Year == query.Year).Sum(c => c.TotalPayment);
+                var revenueThisMonth = transactions.Where(c => c.PaymentDate.Value.Month == query.Month && c.PaymentDate.Value.Year == query.Year).Sum(c => c.TotalPayment);
+                decimal percentRevenueFromLastMonth = revenueThisMonth.Value / (revenueThisMonth.Value + revenuePrevMonth.Value);// (revenueThisMonth.Value / revenuePrevMonth.Value) * 100;
+                CampaignModel model = new CampaignModel()
+                {
+                    PercentRevenueFromLastMonth = percentRevenueFromLastMonth,
+                    RevenueInMonth = revenueThisMonth.Value,
+                    RevenueInYear = totalRevenue.Value
+                };
+                return model;
+            }
+        }
+
         public async Task<DashboardConsultingTicket> GetDashboardConsultingTicket()
         {
             var entities = await _uow.ConsultingTicketRepository.Get();
@@ -75,11 +111,16 @@ namespace DashboardSubsystem.Implementation
 
         }
 
-        public async Task<IEnumerable<TransactionModel>> GetTransactions()
+        public async Task<IEnumerable<TransactionModel>> GetTransactions(EntityType? type = null)
         {
-            var entities = await _uow.TransactionRepository.Get(null, nameof(Transaction.Customer)
+            Expression<Func<Transaction, bool>>? expression = null;
+            if (type.HasValue)
+            {
+                expression = c => c.EntityTypeId == (int)type.Value;
+            }
+            var entities = await _uow.TransactionRepository.Get(expression, nameof(Transaction.Customer)
                                                                     , $"{nameof(Transaction.Customer)}.{nameof(Customer.User)}");
-            entities = entities.OrderByDescending(c => c.DateCreate);
+            entities = entities.Reverse();
             var models = _mapper.Map<IEnumerable<TransactionModel>>(entities);
             return models;
         }
