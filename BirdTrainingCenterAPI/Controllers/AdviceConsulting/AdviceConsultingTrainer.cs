@@ -84,26 +84,6 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
             return Ok();
         }
 
-        [HttpPut]
-        [Route("updateGooglemeetLink")]
-        public async Task<IActionResult> UpdateGooglemeetLink(int ticketId, string ggmeetLink)
-        {
-            try
-            {
-                var accessToken = Request.DeserializeToken(_authService);
-                if (accessToken == null)
-                {
-                    return Unauthorized();
-                }
-                await _consultingService.Trainer.UpdateAppointment(ticketId, ggmeetLink);
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
-        }
-
         [HttpGet]
         [Route("getListAssignedConsultingTicket")]
         public async Task<IActionResult> GetListAssignedConsultingTicket()
