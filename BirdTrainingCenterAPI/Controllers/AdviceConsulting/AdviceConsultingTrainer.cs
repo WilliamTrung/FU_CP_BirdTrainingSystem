@@ -80,6 +80,11 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         [Route("updateRecord")]
         public async Task<IActionResult> UpdateRecord(ConsultingTicketTrainerFinishModel ticket)
         {
+            var accessToken = Request.DeserializeToken(_authService);
+            if (accessToken == null)
+            {
+                return Unauthorized();
+            }
             await _consultingService.Trainer.UpdateEvidence(ticket);
             return Ok();
         }
