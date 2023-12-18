@@ -30,7 +30,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
 
         [HttpPut]
         [Route("finishAppointment")]
-        public async Task<IActionResult> FinishAppointment([FromForm]ConsultingTicketTrainerUpdateParamModel consultingTicket)
+        public async Task<IActionResult> FinishAppointment([FromForm] ConsultingTicketTrainerFinishBillingServiceModel ticket)
         {
             try
             {
@@ -39,20 +39,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
                 {
                     return Unauthorized();
                 }
-                var evidence = string.Empty;
-                if (consultingTicket.Evidence  == null)
-                {
-                    return BadRequest("Please update evidince");
-                }
-                foreach (var file in consultingTicket.Evidence)
-                {
-                    string fileName = $"{nameof(FinishAppointment)}-{consultingTicket.Id}-{DateTime.Now.ToString("yyyyMMdd-HHmmss")}";
-                    var temp = await _firebaseService.UploadFile(file, fileName, FirebaseFolder.CONSULTINGTICKET, _bucket.General);
-                    evidence += $"{temp},";
-                }
-                evidence = evidence.Substring(0, evidence.Length - 1);
-                var ticket = consultingTicket.ToConsultingTicketUpdateModel(evidence);
-
+                
                 await _consultingService.Trainer.FinishAppointment(ticket);
                 return Ok();
             }
@@ -63,19 +50,37 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         }
 
         [HttpPut]
-        [Route("finishOnlineAppointment")]
-        public async Task<IActionResult> FinishOnlineAppointment(ConsultingTicketTrainerFinishModel consultingTicket)
+        [Route("updateEvidence")]
+        public async Task<IActionResult> UpdateEvidence(ConsultingTicketTrainerUpdateParamModel ticket)
         {
             var accessToken = Request.DeserializeToken(_authService);
             if (accessToken == null)
             {
                 return Unauthorized();
             }
-            if (consultingTicket.Evidence == null)
+            var evidence = string.Empty;
+            if (ticket.Evidence == null)
             {
-                return BadRequest("Please update evidence");
+                return StatusCode(StatusCodes.Status503ServiceUnavailable, "Please update evidence");
             }
-            await _consultingService.Trainer.FinishAppointment(consultingTicket);
+            foreach (var file in ticket.Evidence)
+            {
+                string fileName = $"{nameof(FinishAppointment)}-{ticket.Id}-{DateTime.Now.ToString("yyyyMMdd-HHmmss")}";
+                var temp = await _firebaseService.UploadFile(file, fileName, FirebaseFolder.CONSULTINGTICKET, _bucket.General);
+                evidence += $"{temp},";
+            }
+            evidence = evidence.Substring(0, evidence.Length - 1);
+
+            var updateTicket = ticket.ToConsultingTicketUpdateModel(evidence);
+            await _consultingService.Trainer.UpdateEvidence(updateTicket);
+            return Ok();
+        }
+
+        [HttpPut]
+        [Route("updateRecord")]
+        public async Task<IActionResult> UpdateRecord(ConsultingTicketTrainerFinishModel ticket)
+        {
+            await _consultingService.Trainer.UpdateEvidence(ticket);
             return Ok();
         }
 

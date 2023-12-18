@@ -18,7 +18,7 @@ namespace AppService.AdviceConsultingService.Implementation
             _timetable = timetable;
         }
 
-        public async Task FinishAppointment(ConsultingTicketTrainerFinishModel ticket)
+        public async Task FinishAppointment(ConsultingTicketTrainerFinishBillingServiceModel ticket)
         {
             var listSlot = await _timetable.GetSlotRangeForConsultant(ticket.ActualSlotStart, ticket.ActualEndSlot);
             int totalSlot = listSlot.Count();
@@ -37,6 +37,11 @@ namespace AppService.AdviceConsultingService.Implementation
         public async Task<IEnumerable<ConsultingTicketListViewModel>> GetListAssignedConsultingTicket(int trainerId)
         {
             return await _consulting.Trainer.GetListAssignedConsultingTicket(trainerId);
+        }
+
+        public async Task UpdateEvidence(ConsultingTicketTrainerFinishModel ticket)
+        {
+            await _consulting.Trainer.UpdateEvidence(ticket);
         }
     }
 }

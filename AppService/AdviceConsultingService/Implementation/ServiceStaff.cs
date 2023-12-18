@@ -16,10 +16,46 @@ namespace AppService.AdviceConsultingService.Implementation
     public class ServiceStaff : OtherService, IServiceStaff
     {
         private readonly IMailService _mail;
-        public ServiceStaff(IAdviceConsultingFeature consulting, IFeatureTransaction transaction, IMailService mail) : base(consulting, transaction) 
+        public ServiceStaff(IAdviceConsultingFeature consulting, IFeatureTransaction transaction, IMailService mail) : base(consulting, transaction)
         {
             _mail = mail;
         }
+
+        private string createHtmlMessage(string customerrName, string topic, string trainerName, string type, string slotStart, string link, decimal price)
+        {
+            string message = $@"
+            <!DOCTYPE html>
+            <html lang=""en"">
+            <head>
+            <meta charset=""UTF-8"">
+            <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+            <title>Consulting Appointment Detail</title>
+            </head>
+            <body>
+            <p>Dear {customerrName},</p>
+    
+            <p>Thank you for using our center's services.</p>
+    
+            <p>Here is your Consulting Appointment Detail:</p>
+            
+            <ul>
+            <li>Topic: {topic}</li>
+            <li>Consultants: {trainerName}</li>
+            <li>Type: {type}</li>
+            <li>Time: {slotStart}</li>
+            <li>Google Meet Link: {link}</li>
+            <li>Price: {price}</li>
+            </ul>
+    
+            <p>If you have any questions, please contact us via email: <a href=""mailto:williamthanhtrungq2@gmail.com"">williamthanhtrungq2@gmail.com</a></p>
+    
+            <p>Thanks and Regards</p>
+            </body>
+            </html>
+            ";
+            return message;
+        }
+
         public async Task ApproveConsultingTicket(int ticketId, int distance)
         {
             dynamic price = await _transaction.CalculateConsultingTicketFinalPrice(ticketId, distance);
@@ -40,20 +76,11 @@ namespace AppService.AdviceConsultingService.Implementation
                 meetLink = "";
             }
 
+            string message = createHtmlMessage(ticket.CustomerName, ticket.ConsultingType, ticket.TrainerName, type, ticket.ActualSlotStart, meetLink, (decimal)ticket.Price);
             var mailContent = new MailContent()
             {
                 Subject = "Consulting Appointment Information",
-                HtmlMessage = $"Dear {ticket.CustomerName}\r\n" +
-                "Thank you for using our center's services.\r\n" +
-                "Here is your Consulting Appointment Detail: \r\n" +
-                $"- Topic: {ticket.ConsultingType}\r\n" +
-                $"- Consultants: {ticket.TrainerName}\r\n" +
-                $"- Type: {type}\r\n" +
-                $"- Time: {ticket.ActualSlotStart}\r\n" +
-                $"- Google Meet Link: {meetLink}\r\n" +
-                $"- Price: {ticket.Price}\r\n" +
-                "If you have any questions, please contact us via email: williamthanhtrungq2@gmail.com\r\n" +
-                "Thanks and Regards"
+                HtmlMessage = message,
             };
             await _mail.SendEmailAsync(ticket.CustomerEmail, mailContent);
         }
@@ -66,18 +93,22 @@ namespace AppService.AdviceConsultingService.Implementation
             await _consulting.Staff.AssignTrainer(trainerId, ticketId, distance, finalPrice, discountedPrice);
             var ticket = await _consulting.Other.GetConsultingTicketById(ticketId);
             string type = null;
+            string meetLink = null;
             if (ticket.OnlineOrOffline == true)
             {
                 type = "Online";
+                meetLink = ticket.GgMeetLink;
             }
             else
             {
                 type = "Offline";
+                meetLink = "";
             }
+            string message = createHtmlMessage(ticket.CustomerName, ticket.ConsultingType, ticket.TrainerName, type, ticket.ActualSlotStart, meetLink, (decimal)ticket.Price);
             var mailContent = new MailContent()
             {
-                Subject = "Consultant Time",
-                HtmlMessage = ticket.GgMeetLink
+                Subject = "Consulting Appointment Information",
+                HtmlMessage = message,
             };
             await _mail.SendEmailAsync(ticket.CustomerEmail, mailContent);
         }
@@ -129,7 +160,7 @@ namespace AppService.AdviceConsultingService.Implementation
 
         public async Task<IEnumerable<ConsultingTicketListViewModel>> GetListConsultingTicketsByCustomerID(int customerID)
         {
-            return await _consulting.Staff.GetListConsultingTicketsByCustomerID (customerID);
+            return await _consulting.Staff.GetListConsultingTicketsByCustomerID(customerID);
         }
 
         public async Task<IEnumerable<ConsultingTicketListViewModel>> GetListHandledConsultingTicket()

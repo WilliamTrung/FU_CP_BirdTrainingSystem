@@ -1,4 +1,5 @@
-﻿using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
+﻿using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +12,7 @@ namespace AppService.AdviceConsultingService
     {
         Task<IEnumerable<ConsultingTicketListViewModel>> GetListAssignedConsultingTicket(int trainerId);
         Task UpdateAppointment(int ticketId, string ggmeetLink);
-        Task FinishAppointment(ConsultingTicketTrainerFinishModel consultingTicket);
+        Task FinishAppointment(ConsultingTicketTrainerFinishBillingServiceModel ticket);
+        Task UpdateEvidence(ConsultingTicketTrainerFinishModel ticket);
     }
 }
