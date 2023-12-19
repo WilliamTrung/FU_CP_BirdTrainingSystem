@@ -55,7 +55,17 @@ namespace TrainingCourseSubsystem.Implementation
             else
             {
                 entity.BirdSpeciesId = trainingCourse.BirdSpeciesId ?? entity.BirdSpeciesId;
-                entity.Title = trainingCourse.Title ?? entity.Title;
+                if (trainingCourse.Title != null && trainingCourse.Title != string.Empty)
+                {
+                    entity.Title = trainingCourse.Title;
+
+                    var certi = await _unitOfWork.BirdCertificateRepository.Get(e => e.TrainingCourseId == entity.Id);
+                    foreach(var cert in certi)
+                    {
+                        cert.Title = trainingCourse.Title;
+                        await _unitOfWork.BirdCertificateRepository.Update(cert);
+                    }
+                }
                 entity.Description = trainingCourse.Description ?? entity.Description;
                 if (trainingCourse.Picture != null && trainingCourse.Picture != string.Empty)
                 {
@@ -97,14 +107,18 @@ namespace TrainingCourseSubsystem.Implementation
                 entity.Status = (int)Models.Enum.TrainingCourse.Status.Active;
                 await _unitOfWork.TrainingCourseRepository.Update(entity);
 
-                BirdCertificateAddModel birdCertificateAdd = new BirdCertificateAddModel()
+                var certi = await _unitOfWork.BirdCertificateRepository.Get(e => e.TrainingCourseId == entity.Id);
+                if(certi == null || certi.Count() == 0)
                 {
-                    TrainingCourseId = trainingCourseId,
-                    BirdCenterName = "Bird Training Center",
-                    ShortDescrption = entity.Description,
-                    Picture = "https://storage.googleapis.com/birdtrainingcentersystem.appspot.com/trainingcourses/BirdCertificate-8-20231121-171022",
-                };
-                await CreateBirdCertitficate(birdCertificateAdd);
+                    BirdCertificateAddModel birdCertificateAdd = new BirdCertificateAddModel()
+                    {
+                        TrainingCourseId = trainingCourseId,
+                        BirdCenterName = "Bird Training Center",
+                        ShortDescrption = entity.Description,
+                        Picture = "https://storage.googleapis.com/birdtrainingcentersystem.appspot.com/trainingcourses/BirdCertificate-8-20231121-171022",
+                    };
+                    await CreateBirdCertitficate(birdCertificateAdd);
+                }
             }
         }
 
