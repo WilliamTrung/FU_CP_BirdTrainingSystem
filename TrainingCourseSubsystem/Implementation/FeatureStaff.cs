@@ -377,7 +377,7 @@ namespace TrainingCourseSubsystem.Implementation
                 //}
                 else
                 {
-                    var policy = _unitOfWork.TrainingCourseCheckOutPolicyRepository.GetFirst(e => e.Id == birdTrainingCourse.TrainingPricePolicyId
+                    var policy = await _unitOfWork.TrainingCourseCheckOutPolicyRepository.GetFirst(e => e.Id == birdTrainingCourse.TrainingPricePolicyId
                                                                                                   && e.Status == (int)Models.Enum.TCCheckOutPolicy.Status.Active);
                     if(policy == null)
                     {
