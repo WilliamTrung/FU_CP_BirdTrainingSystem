@@ -75,6 +75,7 @@ namespace BirdTrainingCenterAPI.Startup
         {
 
             builder.Services.AddTransient<ITimetableFeature, TimetableFeature>();
+            builder.Services.AddTransient<ILogAbsentFeature, LogAbsentFeature>();
             builder.Services.AddTransient<AppService.TimetableService.IServiceAll, AppService.TimetableService.Implementation.ServiceAll>();
             //builder.Services.AddTransient<AppService.TimetableService.IServiceCustomer, AppService.WorkshopService.Implementation.CustomerService>();
             builder.Services.AddTransient<AppService.TimetableService.IServiceManager, AppService.TimetableService.Implementation.ServiceManager>();
