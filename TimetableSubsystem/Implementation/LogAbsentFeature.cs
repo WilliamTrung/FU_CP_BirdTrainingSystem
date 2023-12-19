@@ -27,7 +27,7 @@ namespace TimetableSubsystem.Implementation
         //- Nếu có lịch bận trong duration --> báo lỗi
         public async Task LogAbsentDateRange(AbsentDateRangeModel absentLog)
         {
-            var listAbsentLogInDay = _mapper.Map<IEnumerable<AbsentInDayModel>>(absentLog);
+            var listAbsentLogInDay = _mapper.Map<List<AbsentInDayModel>>(absentLog);
             foreach (var absentLogInDay in listAbsentLogInDay)
             {
                 await LogAbsentInDay(absentLogInDay);
@@ -60,8 +60,16 @@ namespace TimetableSubsystem.Implementation
             
             for (int i = slotStart; i <= slotEnd; i++)
             {
-                trainerSlot.SlotId = i;
-                appendSlots.Add(trainerSlot);
+                var loggedSlot = new TrainerSlot()
+                {
+                    Date = trainerSlot.Date,
+                    Reason = trainerSlot.Reason,
+                    EntityTypeId = trainerSlot.EntityTypeId,
+                    SlotId = i,
+                    Status = trainerSlot.Status,
+                    TrainerId = trainerSlot.TrainerId,
+                };
+                appendSlots.Add(loggedSlot);
             }
 
             bool isValid = await CheckOccupied(appendSlots);
