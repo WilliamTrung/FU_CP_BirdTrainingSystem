@@ -1,4 +1,5 @@
-﻿using Models.ServiceModels;
+﻿using Models.Entities;
+using Models.ServiceModels;
 using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,6 @@ namespace TransactionSubsystem
         Task<dynamic> CalculateConsultingTicketFinalPriceForTrainer(int ticketId, int totalSlot);
         Task<dynamic> CalculateConsultingTicketFinalPriceForCustomer(ConsultingTicketCreateNewModel consultingTicket, int distance);
         Task<dynamic> CalculateFinalPrice(int customerId, decimal price);
-        Task AddTransaction(TransactionAddModel transaction);
+        Task<Transaction> AddTransaction(TransactionAddModel transaction);
     }
 }

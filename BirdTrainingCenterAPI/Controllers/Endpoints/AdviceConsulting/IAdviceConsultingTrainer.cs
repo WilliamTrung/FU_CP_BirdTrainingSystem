@@ -11,17 +11,16 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting
         Task<IActionResult> GetListAssignedConsultingTicket();
 
         [HttpPut]
-        [Route("updateGooglemeetLink")]
-        Task<IActionResult> UpdateGooglemeetLink([FromQuery] int ticketId, string ggmeetLink);
-
-        [HttpPut]
         [Route("finishAppointment")]
-        Task<IActionResult> FinishAppointment([FromForm]ConsultingTicketTrainerUpdateParamModel consultingTicket);
-
+        Task<IActionResult> FinishAppointment([FromForm] ConsultingTicketTrainerFinishBillingServiceModel ticket);
 
         [HttpPut]
-        [Route("finishOnlineAppointment")]
-        Task<IActionResult> FinishOnlineAppointment(ConsultingTicketTrainerFinishModel consultingTicket);
+        [Route("updateEvidence")]
+        Task<IActionResult> UpdateEvidence(ConsultingTicketTrainerUpdateParamModel ticket);
+
+        [HttpPut]
+        [Route("updateRecord")]
+        Task<IActionResult> UpdateRecord(ConsultingTicketTrainerFinishModel ticket);
 
         [HttpGet]
         [Route("getAvailableFinishTime")]

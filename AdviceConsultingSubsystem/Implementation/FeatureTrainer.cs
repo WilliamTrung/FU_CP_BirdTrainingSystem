@@ -1,13 +1,17 @@
 ﻿using AppRepository.Repository;
 using AppRepository.UnitOfWork;
 using AutoMapper;
+using Models.Entities;
+using Models.ServiceModels;
 using Models.ServiceModels.AdviceConsultantModels;
 using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using TransactionSubsystem;
 
 namespace AdviceConsultingSubsystem.Implementation
 {
@@ -15,10 +19,12 @@ namespace AdviceConsultingSubsystem.Implementation
     {
         internal readonly IUnitOfWork _unitOfWork;
         internal readonly IMapper _mapper;
-        public FeatureTrainer(IUnitOfWork unitOfWork, IMapper mapper)
+        internal readonly IFeatureTransaction _transaction;
+        public FeatureTrainer(IUnitOfWork unitOfWork, IMapper mapper, IFeatureTransaction transaction)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _transaction = transaction;
         }
 
         public async Task<IEnumerable<ConsultingTicketListViewModel>> GetListAssignedConsultingTicket(int trainerId)
@@ -50,20 +56,48 @@ namespace AdviceConsultingSubsystem.Implementation
             await _unitOfWork.ConsultingTicketRepository.Update(entity);
         }
 
-        public async Task FinishAppointment(ConsultingTicketTrainerFinishModel ticket, decimal finalPrice, decimal discountedPrice)
+        public async Task FinishAppointment(ConsultingTicketTrainerFinishBillingServiceModel ticket, decimal finalPrice, decimal discountedPrice)
+        {
+            var entity = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id == ticket.Id, nameof(Customer.User));
+            if (entity == null)
+            {
+                throw new KeyNotFoundException($"{nameof(entity)} not found for id: {ticket.Id}");
+            }
+            
+            entity.Price = finalPrice;
+            entity.DiscountedPrice = discountedPrice;
+            entity.Status = (int)Models.Enum.ConsultingTicket.Status.Finished;
+
+            await _unitOfWork.ConsultingTicketRepository.Update(entity);
+
+            string paymentCode = "offline";
+            string formattedDateTime = DateTime.UtcNow.AddHours(7).ToString("ddMMMyyyyhhmm");
+            var transactionModel = new TransactionAddModel()
+            {
+                CustomerId = entity.CustomerId,
+                EntityId = entity.Id,
+                EntityTypeId = (int)Models.Enum.EntityType.AdviceConsulting,
+                PaymentCode = paymentCode,
+                Detail = $"{paymentCode}:{entity.CustomerId}:{entity.Customer.User.Email}-" +
+                $"Finish Consulting Appointmnet {entity.Id}",
+                Status = (int)Models.Enum.Transaction.Status.Paid,
+                Title = "Finish Consulting Appointment",
+                TotalPayment = entity.Price,
+            };
+
+            await _transaction.AddTransaction(transactionModel);
+        }
+
+        public async Task UpdateEvidence(ConsultingTicketTrainerFinishModel ticket)
         {
             var entity = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id == ticket.Id);
             if (entity == null)
             {
                 throw new KeyNotFoundException($"{nameof(entity)} not found for id: {ticket.Id}");
             }
-            
-            entity.ActualEndSlot = ticket.ActualEndSlot;
-            entity.Evidence = ticket.Evidence;
-            entity.Price = finalPrice;
-            entity.DiscountedPrice = discountedPrice;
-            entity.Status = (int)Models.Enum.ConsultingTicket.Status.Finished;
 
+            entity.ActualEndSlot = ticket.ActualEndSlot;    
+            entity.Evidence = ticket.Evidence;
             await _unitOfWork.ConsultingTicketRepository.Update(entity);
         }
     }

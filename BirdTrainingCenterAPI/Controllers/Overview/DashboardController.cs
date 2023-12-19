@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
 using Microsoft.AspNetCore.OData.Routing.Controllers;
+using Models.DashboardModels;
 using Models.Enum;
 
 namespace BirdTrainingCenterAPI.Controllers.Overview
@@ -54,6 +55,14 @@ namespace BirdTrainingCenterAPI.Controllers.Overview
         public async Task<IActionResult> GetTransactions(EntityType? type = null)
         {
             var result = await _dashboard.GetTransactions(type);
+            return Ok(result);
+        }
+        [Route("campaign-revenue")]
+        [HttpGet]
+        [EnableQuery]
+        public async Task<IActionResult> GetCampaignRevenue([FromQuery] CampaignQueryModel query)
+        {
+            var result = await _dashboard.GetCampaignModel(query);
             return Ok(result);
         }
     }

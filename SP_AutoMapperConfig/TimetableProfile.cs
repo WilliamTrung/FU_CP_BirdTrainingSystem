@@ -22,6 +22,18 @@ namespace SP_AutoMapperConfig
             Map_TrainerSlot_TrainerSlotDetailModel();
             Map_TrainerSlot_TimetableModel();
             Map_Trainer_TrainerModel();
+            Map_AbsentInDayModel_TrainerSlot();
+            Map_AbsentDayRangeModel_ListAbsentInDayModel();
+        }
+        private void Map_AbsentDayRangeModel_ListAbsentInDayModel()
+        {
+            CreateMap<AbsentDateRangeModel, IEnumerable<AbsentInDayModel>>()
+                .AfterMap<MappingAction_AbsentDateRange_ListAbsentInDayModel_TrainerSlot>();
+        }
+        private void Map_AbsentInDayModel_TrainerSlot()
+        {
+            CreateMap<AbsentInDayModel, TrainerSlot>()
+                .AfterMap<MappingAction_AbsentInDayModel_TrainerSlot>();
         }
         private void Map_Trainer_TrainerModel()
         {
@@ -123,7 +135,44 @@ namespace SP_AutoMapperConfig
             destination = _mapper.Map<SlotModel>(source.Slot);
         }
     }
-    public class MappingAction_Trainer_TrainerModel : IMappingAction<Trainer, TrainerModel>
+    public class MappingAction_AbsentDateRange_ListAbsentInDayModel_TrainerSlot : IMappingAction<AbsentDateRangeModel, IEnumerable<AbsentInDayModel>>
+    {
+        public void Process(AbsentDateRangeModel source, IEnumerable<AbsentInDayModel> destination, ResolutionContext context)
+        {
+            var list = new List<AbsentInDayModel>();
+            DateOnly iterating = source.From < source.To ? source.From : source.To;     
+            DateOnly end = source.From < source.To ? source.To : source.To;
+            while (true)
+            {
+                var absentInDay = new AbsentInDayModel()
+                {
+                    Option = Models.Enum.Timetable.AbsentOption.AllDay,
+                    Reason = source.Reason,
+                    SelectedDate = iterating,
+                    TrainerId = source.TrainerId,
+                };
+                list.Add(absentInDay);
+                if (iterating > end)
+                    break;
+                else
+                    iterating = iterating.AddDays(1);
+            }
+            destination = list;
+        }
+    }
+    public class MappingAction_AbsentInDayModel_TrainerSlot : IMappingAction<AbsentInDayModel, TrainerSlot>
+    {
+        public void Process(AbsentInDayModel source, TrainerSlot destination, ResolutionContext context)
+        {
+            destination.TrainerId = source.TrainerId;
+            destination.Reason = source.Reason;
+            //destination.SlotId = source.SlotId;
+            destination.Date = source.SelectedDate.ToDateTime(new TimeOnly());
+            destination.EntityTypeId = (int)source.EntityTypeId;
+            destination.Status = (int)source.Status;
+        }
+    }
+        public class MappingAction_Trainer_TrainerModel : IMappingAction<Trainer, TrainerModel>
     {
         private readonly IMapper _mapper;
         public MappingAction_Trainer_TrainerModel(IMapper mapper)

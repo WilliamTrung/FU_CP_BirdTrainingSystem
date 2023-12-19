@@ -14,5 +14,6 @@ namespace Models.Enum
         OnlineCourse = 4,
         TrainingCourse = 5,
         Topup = 6,
+        AbsentRequest = 7,
     }
 }

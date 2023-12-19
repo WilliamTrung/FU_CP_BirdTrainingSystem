@@ -21,7 +21,7 @@ namespace TransactionSubsystem.Implementation
             _mapper = mapper;
         }
 
-        public async Task AddTransaction(TransactionAddModel transaction)
+        public async Task<Transaction> AddTransaction(TransactionAddModel transaction)
         {
             var entity = _mapper.Map<Transaction>(transaction);
             await _unitOfWork.TransactionRepository.Add(entity);
@@ -39,6 +39,7 @@ namespace TransactionSubsystem.Implementation
 #pragma warning restore CS8629 // Nullable value type may be null.
                 await _unitOfWork.CustomerRepository.Update(customer);
             }
+            return entity;
         }
 
         public async Task<dynamic> CalculateConsultingTicketFinalPrice(int ticketId, int distance)
