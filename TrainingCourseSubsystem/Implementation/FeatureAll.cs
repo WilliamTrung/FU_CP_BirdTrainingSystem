@@ -333,7 +333,7 @@ namespace TrainingCourseSubsystem.Implementation
                     }
                 }
             }
-            models.DistinctBy(m => m.Id).ToList();
+            models = models.DistinctBy(m => m.Id).ToList();
             return models;
         }
 
