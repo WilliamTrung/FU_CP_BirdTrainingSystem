@@ -3,6 +3,7 @@ using AutoMapper;
 using Models.DashboardModels;
 using Models.Entities;
 using Models.Enum;
+using Models.ServiceModels.DashboardModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -110,7 +111,48 @@ namespace DashboardSubsystem.Implementation
             return model;
 
         }
-
+#pragma warning disable CS8629 // Nullable value type may be null.
+        public async Task<IEnumerable<DashboardIncomeLineChartModel>> GetIncomeLineChartModel(int year)
+        {
+            var result = new List<DashboardIncomeLineChartModel>();
+            var onlineCourseData = new DashboardIncomeLineChartModel()
+            {
+                Id = 1,
+                Label = "Online Course"
+            };
+            var consultantData = new DashboardIncomeLineChartModel()
+            {
+                Id = 2,
+                Label = "Advice Consultant"
+            };
+            var workshopData = new DashboardIncomeLineChartModel()
+            {
+                Id = 3,
+                Label = "Workshop"
+            };
+            var trainingCourseData = new DashboardIncomeLineChartModel()
+            {
+                Id = 4,
+                Label = "Training Course"
+            };
+            result.Add(onlineCourseData);
+            result.Add(consultantData);
+            result.Add(workshopData);
+            result.Add(trainingCourseData);
+            var transactionsInYear = await _uow.TransactionRepository.Get(c => c.PaymentDate.Value.Year == year);
+            var currentMonth = DateTime.UtcNow.AddHours(7).Month;
+            for (int i = 0; i < currentMonth; i++)
+            {
+                int month = i + 1;
+                var transactionInMonth = transactionsInYear.Where(c => c.PaymentDate.Value.Month == month);
+                onlineCourseData.Data.Add((decimal)transactionInMonth.Where(c => c.EntityTypeId == (int)EntityType.OnlineCourse && c.Status == (int)Models.Enum.Transaction.Status.Paid).Sum(c => c.TotalPayment));
+                consultantData.Data.Add((decimal)transactionInMonth.Where(c => c.EntityTypeId == (int)EntityType.AdviceConsulting && c.Status == (int)Models.Enum.Transaction.Status.Paid).Sum(c => c.TotalPayment));
+                workshopData.Data.Add((decimal)transactionInMonth.Where(c => c.EntityTypeId == (int)EntityType.WorkshopClass && c.Status == (int)Models.Enum.Transaction.Status.Paid).Sum(c => c.TotalPayment));
+                trainingCourseData.Data.Add((decimal)transactionInMonth.Where(c => c.EntityTypeId == (int)EntityType.TrainingCourse && c.Status == (int)Models.Enum.Transaction.Status.Paid).Sum(c => c.TotalPayment));
+            }
+            return result;
+        }
+#pragma warning restore CS8629 // Nullable value type may be null.
         public async Task<IEnumerable<TransactionModel>> GetTransactions(EntityType? type = null)
         {
             Expression<Func<Transaction, bool>>? expression = null;

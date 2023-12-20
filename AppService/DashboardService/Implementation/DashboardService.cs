@@ -1,6 +1,7 @@
 ﻿using DashboardSubsystem;
 using Models.DashboardModels;
 using Models.Enum;
+using Models.ServiceModels.DashboardModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,6 +41,10 @@ namespace AppService.DashboardService.Implementation
         public Task<IEnumerable<TransactionModel>> GetTransactions(EntityType? type = null)
         {
             return _dashboard.GetTransactions(type);
+        }
+        public Task<IEnumerable<DashboardIncomeLineChartModel>> GetIncomeLineChartModel(int year)
+        {
+            return _dashboard.GetIncomeLineChartModel(year);
         }
     }
 }
