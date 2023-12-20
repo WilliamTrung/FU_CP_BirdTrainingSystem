@@ -20,9 +20,10 @@ namespace Models.Entities
         public string? Evidence { get; set; }
         public decimal? Price { get; set; }
         public decimal? DiscountedPrice { get; set; }
+        public decimal? DistancePriceCalculate { get; set; }
+        public decimal? ConsultingPricePolicyCalculate { get; set; }
         public int Status { get; set; }
         public int ConsultingPricePolicyId { get; set; }
-        public int DistancePriceId { get; set; }
 
         public virtual Address Address { get; set; } = null!;
         public virtual ConsultingPricePolicy ConsultingPricePolicy { get; set; } = null!;

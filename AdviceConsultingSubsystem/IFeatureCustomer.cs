@@ -11,7 +11,7 @@ namespace AdviceConsultingSubsystem
 {
     public interface IFeatureCustomer
     {
-        Task SendConsultingTicket(ConsultingTicketCreateNewModel consultingTicket, int distance, decimal finalPrice, decimal discountedPrice);
+        Task SendConsultingTicket(ConsultingTicketCreateNewModel consultingTicket, int distance, decimal finalPrice, decimal discountedPrice, decimal distancePrice);
         Task<IEnumerable<ConsultingTicketListViewModel>> GetListConsultingTicketByCustomerID(int customerId);
         Task<ConsultingTicketDetailViewModel> GetConsultingTicketByID(int customerId);
         Task<bool> ValidateBeforeUsingSendConsultingTicket(int customerId);

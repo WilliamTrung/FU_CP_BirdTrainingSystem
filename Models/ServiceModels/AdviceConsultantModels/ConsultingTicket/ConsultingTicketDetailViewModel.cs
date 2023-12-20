@@ -27,8 +27,8 @@ namespace Models.ServiceModels.AdviceConsultantModels.ConsultingTicket
         public string? ActualEndSlot { get; set; }
         public string? Evidence { get; set; }
         public decimal? DiscountedPrice { get; set; }
-        public int ConsultingPricePolicyId { get; set; }
-        public int DistancePriceId { get; set; }
+        public decimal? ConsultingPricePolicyCalculate { get; set; }
+        public decimal? DistancePriceCalculate { get; set; }
         public decimal? Price { get; set; }
         public Models.Enum.ConsultingTicket.Status Status { get; set; }
     }

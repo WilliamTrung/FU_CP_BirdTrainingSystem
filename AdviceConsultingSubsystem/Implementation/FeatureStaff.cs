@@ -95,7 +95,6 @@ namespace AdviceConsultingSubsystem.Implementation
 
             entity.Price = finalPrice;
             entity.DiscountedPrice = discountedPrice;
-            entity.DistancePriceId = distancePricePolicy.Id;
             entity.TrainerId = trainerId;
             entity.Status = (int)Models.Enum.ConsultingTicket.Status.Approved;
             await _unitOfWork.ConsultingTicketRepository.Update(entity);
@@ -130,7 +129,7 @@ namespace AdviceConsultingSubsystem.Implementation
 
             entity.Price = finalPrice;
             entity.DiscountedPrice = discountedPrice;
-            entity.DistancePriceId = distancePricePolicy.Id;
+            entity.DiscountedPrice = discountedPrice;
 
             entity.Status = (int)Models.Enum.ConsultingTicket.Status.Approved;
             await _unitOfWork.ConsultingTicketRepository.Update(entity);
