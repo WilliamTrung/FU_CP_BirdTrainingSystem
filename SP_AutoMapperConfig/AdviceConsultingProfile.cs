@@ -186,6 +186,8 @@ namespace SP_AutoMapperConfig
                 var trainer = _uow.TrainerRepository.GetFirst(x => x.Id == source.TrainerId, nameof(User)).Result;
                 var slotstart = _uow.SlotRepository.GetFirst(x => x.Id == source.ActualSlotStart).Result;
                 var endSLot = _uow.SlotRepository.GetFirst(x => x.Id == source.ActualEndSlot).Result;
+                var consultingPricePolicy = _uow.ConsultingPricePolicyRepository.GetFirst(x => x.Id == source.ConsultingPricePolicyId);
+                var distancePrice = _uow.DistancePriceRepository.GetFirst(x => x.Id == source.Id);
 
                 destination.Id = source.Id;
                 destination.CustomerName = customer.User.Name;
@@ -214,6 +216,9 @@ namespace SP_AutoMapperConfig
                 destination.CustomerPhone = customer.User.PhoneNumber;
                 destination.CustomerAvatar = customer.User.Avatar;
                 destination.TrainerAvatar = trainer.User.Avatar;
+                destination.DiscountedPrice = source.DiscountedPrice;
+                destination.ConsultingPricePolicyCalculate = source.ConsultingPricePolicyCalculate;
+                destination.DistancePriceCalculate = source.DistancePriceCalculate;
             }
         }
     }

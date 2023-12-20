@@ -26,7 +26,7 @@ namespace AdviceConsultingSubsystem.Implementation
             _timetable = timetable;
         }
 
-        public async Task SendConsultingTicket(ConsultingTicketCreateNewModel consultingTicket, int distance, decimal finalPrice, decimal discountedPrice)
+        public async Task SendConsultingTicket(ConsultingTicketCreateNewModel consultingTicket, int distance, decimal finalPrice, decimal discountedPrice, decimal distancePrice)
         {
             var date = consultingTicket.AppointmentDate;
             var slotId = consultingTicket.ActualSlotStart;
@@ -70,9 +70,10 @@ namespace AdviceConsultingSubsystem.Implementation
             entity.Distance = distance;
             entity.Price = finalPrice;
             entity.DiscountedPrice = discountedPrice;
+            entity.DistancePriceCalculate = distancePrice;
+            entity.ConsultingPricePolicyCalculate = 0;
             entity.Status = (int)Models.Enum.ConsultingTicket.Status.WaitingForApprove;
             entity.ConsultingPricePolicyId = pricePolicy.Id;
-            entity.DistancePriceId = distancePricePolicy.Id;
             entity.GgMeetLink = trainer.GgMeetLink;
 
             await _unitOfWork.ConsultingTicketRepository.Add(entity);

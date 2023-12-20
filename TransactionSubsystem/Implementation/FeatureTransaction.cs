@@ -52,8 +52,7 @@ namespace TransactionSubsystem.Implementation
             var discountedPrice = await CalculateMemberShipDiscountedPrice(ticket.CustomerId, totalPrice);
             var finalPrice = totalPrice - discountedPrice;
 
-            dynamic price = new { FinalPrice = finalPrice, DiscountedPrice = discountedPrice };
-            //return finalPrice;
+            dynamic price = new { FinalPrice = finalPrice, DiscountedPrice = discountedPrice, DistancePrice = distancePrice };
             return price;
         }
 
@@ -66,7 +65,7 @@ namespace TransactionSubsystem.Implementation
             var discountedPrice = await CalculateMemberShipDiscountedPrice(consultingTicket.CustomerId, totalPrice);
             var finalPrice = totalPrice - discountedPrice;
 
-            dynamic price = new { FinalPrice = finalPrice, DiscountedPrice = discountedPrice };
+            dynamic price = new { FinalPrice = finalPrice, DiscountedPrice = discountedPrice, DistancePrice = distancePrice };
             return price;
         }
 
@@ -83,7 +82,7 @@ namespace TransactionSubsystem.Implementation
             var discountedPrice = await CalculateMemberShipDiscountedPrice(ticket.CustomerId, totalPrice);
             var finalPrice = totalPrice - distancePrice;
 
-            dynamic price = new { FinalPrice = finalPrice, DiscountedPrice = discountedPrice };
+            dynamic price = new { FinalPrice = finalPrice, DiscountedPrice = discountedPrice, DistancePrice = distancePrice };
             return price;
         }
 

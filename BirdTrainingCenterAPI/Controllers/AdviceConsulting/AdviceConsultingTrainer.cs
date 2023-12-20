@@ -85,6 +85,11 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
             {
                 return Unauthorized();
             }
+            var evidence = string.Empty;
+            if (ticket.Evidence == null)
+            {
+                return StatusCode(StatusCodes.Status503ServiceUnavailable, "Please update evidence");
+            }
             await _consultingService.Trainer.UpdateEvidence(ticket);
             return Ok();
         }
