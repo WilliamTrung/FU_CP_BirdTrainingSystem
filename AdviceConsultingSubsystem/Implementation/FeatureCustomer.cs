@@ -71,7 +71,7 @@ namespace AdviceConsultingSubsystem.Implementation
             entity.Price = finalPrice;
             entity.DiscountedPrice = discountedPrice;
             entity.DistancePriceCalculate = distancePrice;
-            entity.ConsultingPricePolicyCalculate = 0;
+            entity.ConsultingPricePolicyCalculate = pricePolicy.Price;
             entity.Status = (int)Models.Enum.ConsultingTicket.Status.WaitingForApprove;
             entity.ConsultingPricePolicyId = pricePolicy.Id;
             entity.GgMeetLink = trainer.GgMeetLink;
