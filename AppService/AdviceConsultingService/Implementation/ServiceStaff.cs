@@ -31,8 +31,8 @@ namespace AppService.AdviceConsultingService.Implementation
                 $"<h3>Time: {slotStart}</h3> <br/>" +
                 $"<h3>Google Meet Link: {link}</h3> <br/> " +
                 $"<h3>Price: {price}</h3> <br/> " +
-                $"<h3>If you have any questions, please contact us via email: <a href=\"\"mailto:williamthanhtrungq2@gmail.com\"\">williamthanhtrungq2@gmail.com</a></h3> <br/> " +
-                $"<h3>Thanks and Regards</h3>"; 
+                $"<h3>If you have any questions, please contact us via email: williamthanhtrungq2@gmail.com </h3> <br/> " +
+                "<h3>Thanks and Regards</h3>"; 
             return message;
         }
 
