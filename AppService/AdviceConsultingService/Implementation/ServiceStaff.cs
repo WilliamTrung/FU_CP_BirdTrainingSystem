@@ -29,8 +29,8 @@ namespace AppService.AdviceConsultingService.Implementation
                 $"<h3>Consultants: {trainerName}</h3> <br/> " +
                 $"<h3>Type: {type}</h3> <br/>" +
                 $"<h3>Time: {slotStart}</h3> <br/>" +
-                $"<h3>Google Meet Link: {link}</h3> <br/> " +
-                $"<h3>Price: {price}</h3> <br/> " +
+                link != null ? $"<h3>Google Meet Link: {link}</h3> <br/> " : null +
+                $"<h3>Price: {price} VND</h3> <br/> " +
                 $"<h3>If you have any questions, please contact us via email: williamthanhtrungq2@gmail.com </h3> <br/> " +
                 "<h3>Thanks and Regards</h3>"; 
             return message;
@@ -41,7 +41,8 @@ namespace AppService.AdviceConsultingService.Implementation
             dynamic price = await _transaction.CalculateConsultingTicketFinalPrice(ticketId, distance);
             decimal finalPrice = price.GetType().GetProperty("FinalPrice").GetValue(price, null);
             decimal discountedPrice = price.GetType().GetProperty("DiscountedPrice").GetValue(price, null);
-            await _consulting.Staff.ApproveConsultingTicket(ticketId, distance, finalPrice, discountedPrice);
+            decimal distancePrice = price.GetType().GetProperty("DistancePrice").GetValue(price, null);
+            await _consulting.Staff.ApproveConsultingTicket(ticketId, distance, finalPrice, discountedPrice, distancePrice);
             var ticket = await _consulting.Other.GetConsultingTicketById(ticketId);
             string type = null;
             string meetLink = null;
@@ -53,7 +54,6 @@ namespace AppService.AdviceConsultingService.Implementation
             else
             {
                 type = "Offline";
-                meetLink = "";
             }
 
             string message = createHtmlMessage(ticket.CustomerName, ticket.ConsultingType, ticket.TrainerName, type, ticket.ActualSlotStart, meetLink, (decimal)ticket.Price);
@@ -70,7 +70,8 @@ namespace AppService.AdviceConsultingService.Implementation
             dynamic price = await _transaction.CalculateConsultingTicketFinalPrice(ticketId, distance);
             decimal finalPrice = price.GetType().GetProperty("FinalPrice").GetValue(price, null);
             decimal discountedPrice = price.GetType().GetProperty("DiscountedPrice").GetValue(price, null);
-            await _consulting.Staff.AssignTrainer(trainerId, ticketId, distance, finalPrice, discountedPrice);
+            decimal distancePrice = price.GetType().GetProperty("DistancePrice").GetValue(price, null);
+            await _consulting.Staff.AssignTrainer(trainerId, ticketId, distance, finalPrice, discountedPrice, distancePrice);
             var ticket = await _consulting.Other.GetConsultingTicketById(ticketId);
             string type = null;
             string meetLink = null;
@@ -82,7 +83,6 @@ namespace AppService.AdviceConsultingService.Implementation
             else
             {
                 type = "Offline";
-                meetLink = "";
             }
             string message = createHtmlMessage(ticket.CustomerName, ticket.ConsultingType, ticket.TrainerName, type, ticket.ActualSlotStart, meetLink, (decimal)ticket.Price);
             var mailContent = new MailContent()

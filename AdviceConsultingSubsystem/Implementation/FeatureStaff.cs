@@ -70,7 +70,7 @@ namespace AdviceConsultingSubsystem.Implementation
             return model;
         }
 
-        public async Task AssignTrainer(int trainerId, int ticketId, int distance, decimal finalPrice, decimal discountedPrice)
+        public async Task AssignTrainer(int trainerId, int ticketId, int distance, decimal finalPrice, decimal discountedPrice, decimal distancePrice)
         {
             var entity = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id.Equals(ticketId));
             if (entity == null)
@@ -95,6 +95,7 @@ namespace AdviceConsultingSubsystem.Implementation
 
             entity.Price = finalPrice;
             entity.DiscountedPrice = discountedPrice;
+            entity.DistancePriceCalculate = distancePrice;
             entity.TrainerId = trainerId;
             entity.Status = (int)Models.Enum.ConsultingTicket.Status.Approved;
             await _unitOfWork.ConsultingTicketRepository.Update(entity);
@@ -104,7 +105,7 @@ namespace AdviceConsultingSubsystem.Implementation
             await _unitOfWork.TrainerSlotRepository.Add(slotEntity);
         }
 
-        public async Task ApproveConsultingTicket(int ticketId, int distance, decimal finalPrice, decimal discountedPrice)
+        public async Task ApproveConsultingTicket(int ticketId, int distance, decimal finalPrice, decimal discountedPrice, decimal distancePrice)
         {
             var entity = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id.Equals(ticketId));
             if (entity == null)
@@ -129,7 +130,7 @@ namespace AdviceConsultingSubsystem.Implementation
 
             entity.Price = finalPrice;
             entity.DiscountedPrice = discountedPrice;
-            entity.DiscountedPrice = discountedPrice;
+            entity.DistancePriceCalculate = distancePrice;
 
             entity.Status = (int)Models.Enum.ConsultingTicket.Status.Approved;
             await _unitOfWork.ConsultingTicketRepository.Update(entity);
