@@ -214,6 +214,7 @@ namespace SP_AutoMapperConfig
                 destination.CustomerPhone = customer.User.PhoneNumber;
                 destination.CustomerAvatar = customer.User.Avatar;
                 destination.TrainerAvatar = trainer.User.Avatar;
+                destination.DiscountedPrice = source.DiscountedPrice;
             }
         }
     }
