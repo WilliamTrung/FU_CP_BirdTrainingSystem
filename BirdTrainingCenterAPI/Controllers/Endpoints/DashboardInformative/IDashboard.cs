@@ -30,5 +30,9 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.DashboardInformative
         [Route("campaign-revenue")]
         [EnableQuery]
         Task<IActionResult> GetCampaignRevenue([FromQuery]CampaignQueryModel query);
+        [Route("revenue-in-year")]
+        [HttpGet]
+        [EnableQuery]
+        Task<IActionResult> GetRevenueInYear([FromQuery] int? year);
     }
 }
