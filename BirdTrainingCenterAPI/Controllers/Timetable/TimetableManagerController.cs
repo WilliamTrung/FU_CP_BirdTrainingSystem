@@ -12,17 +12,15 @@ namespace BirdTrainingCenterAPI.Controllers.Timetable
     [ApiController]
     public class TimetableManagerController : TimetableBaseController, ITimetableManager
     {
-        private readonly ILogAbsentFeature _logAbsent;
         public TimetableManagerController(ITimetableService timetableService, IAuthService authService, ILogAbsentFeature logAbsent) : base(timetableService, authService)
         {
-            _logAbsent = logAbsent;
         }
         [HttpPost]
         [Route("log-in-day")]
         public async Task<IActionResult> LogAbsentInDay([FromBody] AbsentInDayParamModel param)
         {
             var model = param.ToAbsentInDayModel();
-            await _logAbsent.LogAbsentInDay(model);
+            await _timetableService.Manager.LogAbsentInDay(model);
             return Ok();
         }
         [HttpPost]
@@ -30,7 +28,7 @@ namespace BirdTrainingCenterAPI.Controllers.Timetable
         public async Task<IActionResult> LogAbsentDateRange([FromBody] AbsentDateRangeParamModel param)
         {
             var model = param.ToAbsentDateRangeModel();
-            await _logAbsent.LogAbsentDateRange(model);
+            await _timetableService.Manager.LogAbsentDateRange(model);
             return Ok();
         }
     }

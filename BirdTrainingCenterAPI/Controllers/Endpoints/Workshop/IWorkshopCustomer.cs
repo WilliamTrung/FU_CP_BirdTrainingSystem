@@ -12,7 +12,7 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.Workshop
 
         [HttpGet]
         [Route("registered-class")]
-        Task<IActionResult> GetRegisteredClass([FromQuery]int workshopId);
+        Task<IActionResult> GetRegisteredClass([FromQuery]int? workshopId);
         [HttpGet]
         [Route("registered-workshop")]
         Task<IActionResult> GetRegisteredWorkshops();

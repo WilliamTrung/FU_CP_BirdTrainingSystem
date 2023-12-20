@@ -141,5 +141,10 @@ namespace AppService.WorkshopService.Implementation
         {
             return await _workshop.Customer.GetFeedback(customerId, workshopId);
         }
+
+        public async Task<IEnumerable<WorkshopClassViewModel>> GetRegisteredClass(int customerId)
+        {
+            return await _workshop.Customer.GetRegisteredWorkshopClass(customerId);
+        }
     }
 }
