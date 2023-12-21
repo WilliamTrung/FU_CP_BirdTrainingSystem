@@ -30,7 +30,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
 
         [HttpPut]
         [Route("finishAppointment")]
-        public async Task<IActionResult> FinishAppointment([FromForm] ConsultingTicketTrainerFinishBillingServiceModel ticket)
+        public async Task<IActionResult> FinishAppointment(ConsultingTicketTrainerFinishBillingServiceModel ticket)
         {
             try
             {
@@ -51,7 +51,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
 
         [HttpPut]
         [Route("updateEvidence")]
-        public async Task<IActionResult> UpdateEvidence(ConsultingTicketTrainerUpdateParamModel ticket)
+        public async Task<IActionResult> UpdateEvidence([FromForm] ConsultingTicketTrainerUpdateParamModel ticket)
         {
             var accessToken = Request.DeserializeToken(_authService);
             if (accessToken == null)
