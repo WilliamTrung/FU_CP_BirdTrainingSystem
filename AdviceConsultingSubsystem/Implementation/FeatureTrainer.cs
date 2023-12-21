@@ -58,7 +58,7 @@ namespace AdviceConsultingSubsystem.Implementation
 
         public async Task FinishAppointment(int ticketId)
         {
-            var entity = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id == ticketId, nameof(Customer.User));
+            var entity = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id == ticketId);
             if (entity == null)
             {
                 throw new KeyNotFoundException($"{nameof(entity)} not found for id: {ticketId}");
@@ -69,13 +69,14 @@ namespace AdviceConsultingSubsystem.Implementation
 
             string paymentCode = "offline";
             string formattedDateTime = DateTime.UtcNow.AddHours(7).ToString("ddMMMyyyyhhmm");
+            var customer = await _unitOfWork.CustomerRepository.GetFirst(x => x.Id ==  entity.CustomerId, nameof(Customer.User));
             var transactionModel = new TransactionAddModel()
             {
                 CustomerId = entity.CustomerId,
                 EntityId = entity.Id,
                 EntityTypeId = (int)Models.Enum.EntityType.AdviceConsulting,
                 PaymentCode = paymentCode,
-                Detail = $"{paymentCode}:{entity.CustomerId}:{entity.Customer.User.Email}-" +
+                Detail = $"{paymentCode}:{entity.CustomerId}:{customer.User.Email}-" +
                 $"Finish Consulting Appointmnet {entity.Id}",
                 Status = (int)Models.Enum.Transaction.Status.Paid,
                 Title = "Finish Consulting Appointment",
