@@ -34,5 +34,9 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.DashboardInformative
         [HttpGet]
         [EnableQuery]
         Task<IActionResult> GetRevenueInYear([FromQuery] int? year);
+        [Route("trainer-top")]
+        [HttpGet]
+        [EnableQuery]
+        Task<IActionResult> GetTopTrainers([FromQuery] int?month, int? year);
     }
 }
