@@ -12,7 +12,7 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting
 
         [HttpPut]
         [Route("finishAppointment")]
-        Task<IActionResult> FinishAppointment(ConsultingTicketTrainerFinishBillingServiceModel ticket);
+        Task<IActionResult> FinishAppointment(int ticketId);
 
         [HttpPut]
         [Route("updateEvidence")]
