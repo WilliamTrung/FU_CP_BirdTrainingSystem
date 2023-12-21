@@ -180,7 +180,7 @@ namespace SP_AutoMapperConfig
             }
             public void Process (ConsultingTicket source, ConsultingTicketDetailViewModel destination, ResolutionContext context)
             {
-                var customer = _uow.CustomerRepository.GetFirst(x => x.Id == source.CustomerId, nameof(Customer.User)).Result;
+                var customer = _uow.CustomerRepository.GetFirst(x => x.Id == source.CustomerId, nameof(Customer.User), nameof(Customer.MembershipRank)).Result;
                 var address = _uow.AddressRepository.GetFirst(x => x.Id == source.AddressId).Result;
                 var consultingType = _uow.ConsultingTypeRepository.GetFirst(x => x.Id == source.ConsultingTypeId).Result;
                 var trainer = _uow.TrainerRepository.GetFirst(x => x.Id == source.TrainerId, nameof(User)).Result;
@@ -219,6 +219,7 @@ namespace SP_AutoMapperConfig
                 destination.DiscountedPrice = source.DiscountedPrice;
                 destination.ConsultingPricePolicyCalculate = source.ConsultingPricePolicyCalculate;
                 destination.DistancePriceCalculate = source.DistancePriceCalculate;
+                destination.MembershipRank = customer.MembershipRank.Name;
             }
         }
     }

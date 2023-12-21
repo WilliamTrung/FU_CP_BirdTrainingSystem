@@ -30,7 +30,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
 
         [HttpPut]
         [Route("finishAppointment")]
-        public async Task<IActionResult> FinishAppointment(ConsultingTicketTrainerFinishBillingServiceModel ticket)
+        public async Task<IActionResult> FinishAppointment(int ticketId)
         {
             try
             {
@@ -40,7 +40,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
                     return Unauthorized();
                 }
                 
-                await _consultingService.Trainer.FinishAppointment(ticket);
+                await _consultingService.Trainer.FinishAppointment(ticketId);
                 return Ok();
             }
             catch (Exception ex)

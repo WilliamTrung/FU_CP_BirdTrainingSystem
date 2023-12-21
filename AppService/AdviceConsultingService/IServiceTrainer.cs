@@ -12,7 +12,7 @@ namespace AppService.AdviceConsultingService
     {
         Task<IEnumerable<ConsultingTicketListViewModel>> GetListAssignedConsultingTicket(int trainerId);
         Task UpdateAppointment(int ticketId, string ggmeetLink);
-        Task FinishAppointment(ConsultingTicketTrainerFinishBillingServiceModel ticket);
+        Task FinishAppointment(int ticketId);
         Task UpdateEvidence(ConsultingTicketTrainerFinishModel ticket);
     }
 }
