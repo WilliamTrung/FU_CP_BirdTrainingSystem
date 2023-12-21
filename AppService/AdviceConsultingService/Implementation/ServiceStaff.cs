@@ -23,36 +23,16 @@ namespace AppService.AdviceConsultingService.Implementation
 
         private string createHtmlMessage(string customerrName, string topic, string trainerName, string type, string slotStart, string link, decimal price)
         {
-            string message = $@"
-            <!DOCTYPE html>
-            <html lang=""en"">
-            <head>
-            <meta charset=""UTF-8"">
-            <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
-            <title>Consulting Appointment Detail</title>
-            </head>
-            <body>
-            <p>Dear {customerrName},</p>
-    
-            <p>Thank you for using our center's services.</p>
-    
-            <p>Here is your Consulting Appointment Detail:</p>
-            
-            <ul>
-            <li>Topic: {topic}</li>
-            <li>Consultants: {trainerName}</li>
-            <li>Type: {type}</li>
-            <li>Time: {slotStart}</li>
-            <li>Google Meet Link: {link}</li>
-            <li>Price: {price}</li>
-            </ul>
-    
-            <p>If you have any questions, please contact us via email: <a href=""mailto:williamthanhtrungq2@gmail.com"">williamthanhtrungq2@gmail.com</a></p>
-    
-            <p>Thanks and Regards</p>
-            </body>
-            </html>
-            ";
+            string message = $"<h3>Dear {customerrName}, <h3>Thank you for using our center's services.</h3> <br/>" +
+                $"<h3>Here is your Consulting Appointment Detail:</h3> <br/>" +
+                $"<h3>Topic: {topic}</h3> <br/> " +
+                $"<h3>Consultants: {trainerName}</h3> <br/> " +
+                $"<h3>Type: {type}</h3> <br/>" +
+                $"<h3>Time: {slotStart}</h3> <br/>" +
+                link != null ? $"<h3>Google Meet Link: {link}</h3> <br/> " : null +
+                $"<h3>Price: {price} VND</h3> <br/> " +
+                $"<h3>If you have any questions, please contact us via email: williamthanhtrungq2@gmail.com </h3> <br/> " +
+                "<h3>Thanks and Regards</h3>"; 
             return message;
         }
 
@@ -61,7 +41,8 @@ namespace AppService.AdviceConsultingService.Implementation
             dynamic price = await _transaction.CalculateConsultingTicketFinalPrice(ticketId, distance);
             decimal finalPrice = price.GetType().GetProperty("FinalPrice").GetValue(price, null);
             decimal discountedPrice = price.GetType().GetProperty("DiscountedPrice").GetValue(price, null);
-            await _consulting.Staff.ApproveConsultingTicket(ticketId, distance, finalPrice, discountedPrice);
+            decimal distancePrice = price.GetType().GetProperty("DistancePrice").GetValue(price, null);
+            await _consulting.Staff.ApproveConsultingTicket(ticketId, distance, finalPrice, discountedPrice, distancePrice);
             var ticket = await _consulting.Other.GetConsultingTicketById(ticketId);
             string type = null;
             string meetLink = null;
@@ -73,7 +54,6 @@ namespace AppService.AdviceConsultingService.Implementation
             else
             {
                 type = "Offline";
-                meetLink = "";
             }
 
             string message = createHtmlMessage(ticket.CustomerName, ticket.ConsultingType, ticket.TrainerName, type, ticket.ActualSlotStart, meetLink, (decimal)ticket.Price);
@@ -90,7 +70,8 @@ namespace AppService.AdviceConsultingService.Implementation
             dynamic price = await _transaction.CalculateConsultingTicketFinalPrice(ticketId, distance);
             decimal finalPrice = price.GetType().GetProperty("FinalPrice").GetValue(price, null);
             decimal discountedPrice = price.GetType().GetProperty("DiscountedPrice").GetValue(price, null);
-            await _consulting.Staff.AssignTrainer(trainerId, ticketId, distance, finalPrice, discountedPrice);
+            decimal distancePrice = price.GetType().GetProperty("DistancePrice").GetValue(price, null);
+            await _consulting.Staff.AssignTrainer(trainerId, ticketId, distance, finalPrice, discountedPrice, distancePrice);
             var ticket = await _consulting.Other.GetConsultingTicketById(ticketId);
             string type = null;
             string meetLink = null;
@@ -102,7 +83,6 @@ namespace AppService.AdviceConsultingService.Implementation
             else
             {
                 type = "Offline";
-                meetLink = "";
             }
             string message = createHtmlMessage(ticket.CustomerName, ticket.ConsultingType, ticket.TrainerName, type, ticket.ActualSlotStart, meetLink, (decimal)ticket.Price);
             var mailContent = new MailContent()

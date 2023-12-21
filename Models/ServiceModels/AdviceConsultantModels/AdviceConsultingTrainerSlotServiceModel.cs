@@ -13,7 +13,7 @@ namespace Models.ServiceModels.AdviceConsultantModels
         public DateOnly Date { get; private set; }
         public int EntityTypeId { get; } = (int)Models.Enum.EntityType.AdviceConsulting;
         public int EntityId { get; private set; }
-        public int Status { get; } = (int)Models.Enum.TrainerSlotStatus.Enabled;
+        public int Status { get; set; }
         public AdviceConsultingTrainerSlotServiceModel(int trainerId, int slotId, DateOnly date, int ticketId)
         {
             TrainerId = trainerId;

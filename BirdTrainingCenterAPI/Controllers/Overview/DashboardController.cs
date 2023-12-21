@@ -65,5 +65,32 @@ namespace BirdTrainingCenterAPI.Controllers.Overview
             var result = await _dashboard.GetCampaignModel(query);
             return Ok(result);
         }
+        [Route("revenue-in-year")]
+        [HttpGet]
+        [EnableQuery]
+        public async Task<IActionResult> GetRevenueInYear([FromQuery] int? year)
+        {
+            if (year == null)
+                year = DateTime.UtcNow.AddHours(7).Year;
+            var result = await _dashboard.GetIncomeLineChartModel((int)year);
+            return Ok(result);
+        }
+        [Route("trainer-top")]
+        [HttpGet]
+        [EnableQuery]
+        public async Task<IActionResult> GetTopTrainers([FromQuery] int? month, int? year)
+        {
+
+            if(month == null)
+            {
+                month = DateTime.UtcNow.AddHours(7).Month;
+            }
+            if(year == null)
+            {
+                year = DateTime.UtcNow.AddHours(7).Year;
+            }
+            var result = await _dashboard.GetTrainerContributionModels((int)month, (int)year);
+            return Ok(result);
+        }
     }
 }

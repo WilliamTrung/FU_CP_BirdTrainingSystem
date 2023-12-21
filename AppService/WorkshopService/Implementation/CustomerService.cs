@@ -84,7 +84,7 @@ namespace AppService.WorkshopService.Implementation
                 Detail = $"{paymentCode}:{customerRegistered.CustomerId}:{customerRegistered.Customer.User.Email}-buy workshop class {customerRegistered.WorkshopClassId}:{customerRegistered.WorkshopClass.Workshop.Title}-at:{formattedDateTime}",
                 Status = (int)Models.Enum.Transaction.Status.Paid,
                 Title = "Workshop class enrolled",
-                TotalPayment = billingInfo.TotalPrice,               
+                TotalPayment = billingInfo.TotalPrice,                 
             };
             Transaction transaction = await _transaction.AddTransaction(transactionAddModel);
 

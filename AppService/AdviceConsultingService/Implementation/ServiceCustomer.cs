@@ -31,7 +31,8 @@ namespace AppService.AdviceConsultingService.Implementation
             dynamic price = await _transaction.CalculateConsultingTicketFinalPriceForCustomer(consultingTicket, distance);
             decimal finalPrice = price.GetType().GetProperty("FinalPrice").GetValue(price, null);
             decimal discountedPrice = price.GetType().GetProperty("DiscountedPrice").GetValue(price, null);
-            await _consulting.Customer.SendConsultingTicket(consultingTicket, distance, finalPrice, discountedPrice);
+            decimal distancePrice = price.GetType().GetProperty("DistancePrice").GetValue(price, null);
+            await _consulting.Customer.SendConsultingTicket(consultingTicket, distance, finalPrice, discountedPrice, distancePrice);
         }
 
         public async Task<bool> ValidateBeforeUsingSendConsultingTicket(int customerId)

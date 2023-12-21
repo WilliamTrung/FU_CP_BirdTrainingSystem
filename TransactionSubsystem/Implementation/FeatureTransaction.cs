@@ -47,13 +47,12 @@ namespace TransactionSubsystem.Implementation
             var ticket = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id == ticketId);
             var distancePrice = await CalculateDistancePrice(distance);
 
-            var pricePolicy = await _unitOfWork.ConsultingPricePolicyRepository.GetFirst(x => x.OnlineOrOffline == ticket.OnlineOrOffline);
-            var totalPrice = distancePrice + pricePolicy.Price;
+            decimal pricePolicy = (decimal)ticket.ConsultingPricePolicyCalculate;
+            decimal totalPrice = distancePrice + pricePolicy;
             var discountedPrice = await CalculateMemberShipDiscountedPrice(ticket.CustomerId, totalPrice);
             var finalPrice = totalPrice - discountedPrice;
 
-            dynamic price = new { FinalPrice = finalPrice, DiscountedPrice = discountedPrice };
-            //return finalPrice;
+            dynamic price = new { FinalPrice = finalPrice, DiscountedPrice = discountedPrice, DistancePrice = distancePrice };
             return price;
         }
 
@@ -66,24 +65,20 @@ namespace TransactionSubsystem.Implementation
             var discountedPrice = await CalculateMemberShipDiscountedPrice(consultingTicket.CustomerId, totalPrice);
             var finalPrice = totalPrice - discountedPrice;
 
-            dynamic price = new { FinalPrice = finalPrice, DiscountedPrice = discountedPrice };
+            dynamic price = new { FinalPrice = finalPrice, DiscountedPrice = discountedPrice, DistancePrice = distancePrice };
             return price;
         }
 
         public async Task<dynamic> CalculateConsultingTicketFinalPriceForTrainer(int ticketId, int totalSlot)
         {
             var ticket = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id == ticketId);
-            decimal distancePrice = 0;
-            if (ticket.OnlineOrOffline == true)
-            {
-                distancePrice = await CalculateDistancePrice((int)ticket.Distance);
-            }
-            var pricePolicy = await _unitOfWork.ConsultingPricePolicyRepository.GetFirst(x => x.OnlineOrOffline == ticket.OnlineOrOffline);
-            var totalPrice = distancePrice + pricePolicy.Price*totalSlot;
+            decimal distancePrice = (decimal)ticket.DistancePriceCalculate;
+            var pricePolicy = (decimal)ticket.ConsultingPricePolicyCalculate;
+            var totalPrice = distancePrice + pricePolicy*totalSlot;
             var discountedPrice = await CalculateMemberShipDiscountedPrice(ticket.CustomerId, totalPrice);
             var finalPrice = totalPrice - distancePrice;
 
-            dynamic price = new { FinalPrice = finalPrice, DiscountedPrice = discountedPrice };
+            dynamic price = new { FinalPrice = finalPrice, DiscountedPrice = discountedPrice, DistancePrice = distancePrice };
             return price;
         }
 

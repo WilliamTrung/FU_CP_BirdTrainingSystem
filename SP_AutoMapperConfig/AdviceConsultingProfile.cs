@@ -68,7 +68,7 @@ namespace SP_AutoMapperConfig
                 .ForMember(e => e.SlotId, opt => opt.MapFrom(m => m.SlotId))
                 .ForMember(e => e.Date, opt => opt.MapFrom(m => m.Date.ToDateTime(new TimeOnly())))
                 .ForMember(e => e.TrainerId, opt => opt.MapFrom(m => m.TrainerId))
-                .ForMember(e => e.Status, opt => opt.MapFrom(m => (int)Models.Enum.ConsultingTicket.Status.Approved))
+                .ForMember(e => e.Status, opt => opt.MapFrom(m => m.Status))
                 .ForMember(e => e.EntityId, opt => opt.MapFrom(m => m.EntityId))
                 .ForMember(e => e.EntityTypeId, opt => opt.MapFrom(m => m.EntityTypeId))
                 .ForMember(e => e.Reason, opt => opt.MapFrom(m => "Consulting Customer"));
@@ -186,6 +186,8 @@ namespace SP_AutoMapperConfig
                 var trainer = _uow.TrainerRepository.GetFirst(x => x.Id == source.TrainerId, nameof(User)).Result;
                 var slotstart = _uow.SlotRepository.GetFirst(x => x.Id == source.ActualSlotStart).Result;
                 var endSLot = _uow.SlotRepository.GetFirst(x => x.Id == source.ActualEndSlot).Result;
+                var consultingPricePolicy = _uow.ConsultingPricePolicyRepository.GetFirst(x => x.Id == source.ConsultingPricePolicyId);
+                var distancePrice = _uow.DistancePriceRepository.GetFirst(x => x.Id == source.Id);
 
                 destination.Id = source.Id;
                 destination.CustomerName = customer.User.Name;
@@ -214,6 +216,9 @@ namespace SP_AutoMapperConfig
                 destination.CustomerPhone = customer.User.PhoneNumber;
                 destination.CustomerAvatar = customer.User.Avatar;
                 destination.TrainerAvatar = trainer.User.Avatar;
+                destination.DiscountedPrice = source.DiscountedPrice;
+                destination.ConsultingPricePolicyCalculate = source.ConsultingPricePolicyCalculate;
+                destination.DistancePriceCalculate = source.DistancePriceCalculate;
             }
         }
     }
