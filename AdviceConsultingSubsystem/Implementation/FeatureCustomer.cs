@@ -84,6 +84,8 @@ namespace AdviceConsultingSubsystem.Implementation
             {
                 var trainerSlot = new AdviceConsultingTrainerSlotServiceModel(
                     (int)entity.TrainerId, entity.ActualSlotStart, DateOnly.FromDateTime((DateTime)entity.AppointmentDate), entity.Id);
+
+                trainerSlot.Status = (int)Models.Enum.TrainerSlotStatus.Disabled;
                 var slotEntity = _mapper.Map<TrainerSlot>(trainerSlot);
                 await _unitOfWork.TrainerSlotRepository.Add(slotEntity);
             }

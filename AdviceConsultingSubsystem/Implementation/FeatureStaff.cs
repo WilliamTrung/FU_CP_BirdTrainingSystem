@@ -101,6 +101,7 @@ namespace AdviceConsultingSubsystem.Implementation
             await _unitOfWork.ConsultingTicketRepository.Update(entity);
 
             var trainerSlot = new AdviceConsultingTrainerSlotServiceModel((int)entity.TrainerId, entity.ActualSlotStart, DateOnly.FromDateTime((DateTime)entity.AppointmentDate), entity.Id);
+            trainerSlot.Status = (int)Models.Enum.TrainerSlotStatus.Enabled;
             var slotEntity = _mapper.Map<TrainerSlot>(trainerSlot);
             await _unitOfWork.TrainerSlotRepository.Add(slotEntity);
         }
@@ -134,6 +135,13 @@ namespace AdviceConsultingSubsystem.Implementation
 
             entity.Status = (int)Models.Enum.ConsultingTicket.Status.Approved;
             await _unitOfWork.ConsultingTicketRepository.Update(entity);
+
+            var trainerSlot = await _unitOfWork.TrainerSlotRepository.GetFirst(x => x.TrainerId == entity.TrainerId);
+            if (trainerSlot != null) 
+            {
+                trainerSlot.Status = (int)Models.Enum.TrainerSlotStatus.Enabled;
+                await _unitOfWork.TrainerSlotRepository.Update(trainerSlot);
+            }
         }
 
         public async Task CancelConsultingTicket(int ticketId)
