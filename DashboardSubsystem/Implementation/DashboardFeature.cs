@@ -198,7 +198,12 @@ namespace DashboardSubsystem.Implementation
             var traniningSlots = trainerSlots.Where(c => c.EntityTypeId == (int)EntityType.TrainingCourse);
             var mostTraining = GetMostTrainingSlotTrainer(traniningSlots);
 
-            if(mostConsultation != null)
+            var mostContribute = GetMostContributeSlots(trainerSlots);
+            if(mostContribute != null)
+            {
+                result.Add(mostContribute);
+            }
+            if (mostConsultation != null)
             {
                 result.Add(mostConsultation);
             }
@@ -272,6 +277,25 @@ namespace DashboardSubsystem.Implementation
                 return null;
             }
         }
-
+        private TrainerContributionModel? GetMostContributeSlots(IEnumerable<TrainerSlot> slots)
+        {
+            var groupTrainer = slots.GroupBy(c => c.TrainerId);
+            groupTrainer = groupTrainer.OrderByDescending(c => c.Count());
+            try
+            {
+                var mostSlots = groupTrainer.First();
+                var mostWorkedSlot = mostSlots.First().Trainer;
+                return new TrainerContributionModel
+                {
+                    Trainer = _mapper.Map<TrainerModel>(mostWorkedSlot),
+                    Detail = "Most tranining birds duration!",
+                    SlotCount = mostSlots.Count(),
+                };
+            }
+            catch
+            {
+                return null;
+            }
+        }
     }
 }
