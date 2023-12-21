@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Models.ServiceModels.DashboardModels
+namespace Models.DashboardModels
 {
     public class DashboardIncomeLineChartModel
     {

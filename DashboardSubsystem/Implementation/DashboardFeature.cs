@@ -3,7 +3,6 @@ using AutoMapper;
 using Models.DashboardModels;
 using Models.Entities;
 using Models.Enum;
-using Models.ServiceModels.DashboardModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
