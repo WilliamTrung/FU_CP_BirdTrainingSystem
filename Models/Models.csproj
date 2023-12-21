@@ -24,4 +24,8 @@
     <ProjectReference Include="..\SP_Validator\SP_Validator.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ServiceModels\DashboardModels\" />
+  </ItemGroup>
+
 </Project>
