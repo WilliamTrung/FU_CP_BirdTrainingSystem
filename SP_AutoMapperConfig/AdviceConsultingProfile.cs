@@ -68,7 +68,7 @@ namespace SP_AutoMapperConfig
                 .ForMember(e => e.SlotId, opt => opt.MapFrom(m => m.SlotId))
                 .ForMember(e => e.Date, opt => opt.MapFrom(m => m.Date.ToDateTime(new TimeOnly())))
                 .ForMember(e => e.TrainerId, opt => opt.MapFrom(m => m.TrainerId))
-                .ForMember(e => e.Status, opt => opt.MapFrom(m => (int)Models.Enum.ConsultingTicket.Status.Approved))
+                .ForMember(e => e.Status, opt => opt.MapFrom(m => m.Status))
                 .ForMember(e => e.EntityId, opt => opt.MapFrom(m => m.EntityId))
                 .ForMember(e => e.EntityTypeId, opt => opt.MapFrom(m => m.EntityTypeId))
                 .ForMember(e => e.Reason, opt => opt.MapFrom(m => "Consulting Customer"));
