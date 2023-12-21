@@ -134,6 +134,13 @@ namespace AdviceConsultingSubsystem.Implementation
 
             entity.Status = (int)Models.Enum.ConsultingTicket.Status.Approved;
             await _unitOfWork.ConsultingTicketRepository.Update(entity);
+
+            var trainerSlot = await _unitOfWork.TrainerSlotRepository.GetFirst(x => x.TrainerId == entity.TrainerId);
+            if (trainerSlot != null) 
+            {
+                trainerSlot.Status = (int)Models.Enum.TrainerSlotStatus.Enabled;
+                await _unitOfWork.TrainerSlotRepository.Update(trainerSlot);
+            }
         }
 
         public async Task CancelConsultingTicket(int ticketId)
