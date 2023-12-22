@@ -52,7 +52,7 @@ namespace AdviceConsultingSubsystem.Implementation
 
         public async Task<IEnumerable<ConsultingTicketListViewModel>> GetListHandledConsultingTicket()
         {
-            var entities = await _unitOfWork.ConsultingTicketRepository.Get(x => x.Status != (int)Models.Enum.ConsultingTicket.Status.Cancelled);
+            var entities = await _unitOfWork.ConsultingTicketRepository.Get(x => x.Status != (int)Models.Enum.ConsultingTicket.Status.WaitingForApprove);
             var models = new List<ConsultingTicketListViewModel>();
             foreach (var entity in entities)
             {
