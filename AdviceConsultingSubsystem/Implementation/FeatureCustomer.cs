@@ -84,15 +84,6 @@ namespace AdviceConsultingSubsystem.Implementation
             {
                 var trainerSlot = new AdviceConsultingTrainerSlotServiceModel(
                     (int)entity.TrainerId, entity.ActualSlotStart, DateOnly.FromDateTime((DateTime)entity.AppointmentDate), entity.Id);
-
-                var check = await _unitOfWork.TrainerSlotRepository.GetFirst(x => x.TrainerId == entity.TrainerId &&
-                                                                                  x.EntityTypeId == (int)Models.Enum.EntityType.AdviceConsulting &&
-                                                                                  x.SlotId == entity.ActualSlotStart &&
-                                                                                  x.Date == entity.AppointmentDate);
-                if (check != null)
-                {
-                    throw new Exception("Trainer does not have free time at this slot of this date");
-                }
                 trainerSlot.Status = (int)Models.Enum.TrainerSlotStatus.Enabled;
                 var slotEntity = _mapper.Map<TrainerSlot>(trainerSlot);
                 await _unitOfWork.TrainerSlotRepository.Add(slotEntity);
