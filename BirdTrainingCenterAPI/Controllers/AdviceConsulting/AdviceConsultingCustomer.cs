@@ -126,8 +126,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
                     paramTicket.Address = "online";
                 }
 
-                //var ticket = paramTicket.Convert_ParamModel_ServiceModel(Int32.Parse(customerId.Value));
-                var ticket = paramTicket.Convert_ParamModel_ServiceModel(1);
+                var ticket = paramTicket.Convert_ParamModel_ServiceModel(Int32.Parse(customerId.Value));
 
                 int distance = 0;
                 //if (ticket.AddressDetail != null && ticket.OnlineOrOffline == false)
