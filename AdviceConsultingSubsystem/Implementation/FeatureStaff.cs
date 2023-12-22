@@ -135,13 +135,6 @@ namespace AdviceConsultingSubsystem.Implementation
 
             entity.Status = (int)Models.Enum.ConsultingTicket.Status.Approved;
             await _unitOfWork.ConsultingTicketRepository.Update(entity);
-
-            var trainerSlot = await _unitOfWork.TrainerSlotRepository.GetFirst(x => x.TrainerId == entity.TrainerId);
-            if (trainerSlot != null) 
-            {
-                trainerSlot.Status = (int)Models.Enum.TrainerSlotStatus.Enabled;
-                await _unitOfWork.TrainerSlotRepository.Update(trainerSlot);
-            }
         }
 
         public async Task CancelConsultingTicket(int ticketId)
@@ -152,17 +145,17 @@ namespace AdviceConsultingSubsystem.Implementation
                 throw new KeyNotFoundException($"{nameof(entity)} not found for id: {ticketId}");
             }
 
+            entity.Status = (int)Models.Enum.ConsultingTicket.Status.Cancelled;
+            await _unitOfWork.ConsultingTicketRepository.Update(entity);
+
             var trainerSlot = await _unitOfWork.TrainerSlotRepository.GetFirst(x => x.Date == entity.AppointmentDate
                                                                             && x.SlotId == entity.ActualSlotStart
                                                                             && x.TrainerId == entity.TrainerId);
             if (trainerSlot != null && trainerSlot.EntityTypeId == (int)Models.Enum.EntityType.AdviceConsulting)
             {
-                //trainerSlot.Status = (int)Models.Enum.TrainerSlotStatus.Disabled;
-                await _unitOfWork.TrainerSlotRepository.Delete(trainerSlot);
+                trainerSlot.Status = (int)Models.Enum.TrainerSlotStatus.Disabled;
+                await _unitOfWork.TrainerSlotRepository.Update(trainerSlot);
             }
-
-            entity.Status = (int)Models.Enum.ConsultingTicket.Status.Cancelled;
-            await _unitOfWork.ConsultingTicketRepository.Update(entity);
         }
 
         public async Task<IEnumerable<ConsultingTicketListViewModel>> GetListNotAssignedConsultingTicket()
