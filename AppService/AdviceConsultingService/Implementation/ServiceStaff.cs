@@ -23,13 +23,14 @@ namespace AppService.AdviceConsultingService.Implementation
 
         private string createHtmlMessage(string customerrName, string topic, string trainerName, string type, string slotStart, string link, decimal price)
         {
+            string ggLink = link != null ? $"<h3>Google Meet Link: {link}</h3> <br/> " : "";
             string message = $"<h3>Dear {customerrName}, <h3>Thank you for using our center's services.</h3> <br/>" +
                 $"<h3>Here is your Consulting Appointment Detail:</h3> <br/>" +
                 $"<h3>Topic: {topic}</h3> <br/> " +
                 $"<h3>Consultants: {trainerName}</h3> <br/> " +
                 $"<h3>Type: {type}</h3> <br/>" +
                 $"<h3>Time: {slotStart}</h3> <br/>" +
-                link != null ? $"<h3>Google Meet Link: {link}</h3> <br/> " : null +
+                ggLink +
                 $"<h3>Price: {price} VND</h3> <br/> " +
                 $"<h3>If you have any questions, please contact us via email: williamthanhtrungq2@gmail.com </h3> <br/> " +
                 "<h3>Thanks and Regards</h3>"; 
