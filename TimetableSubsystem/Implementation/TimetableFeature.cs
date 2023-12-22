@@ -143,7 +143,7 @@ namespace TimetableSubsystem.Implementation
                                                                                 && c.Date.Month == date.Month
                                                                                 && c.Date.Year == date.Year
                                                                              && c.TrainerId == trainerId
-                                                                             && c.Status != (int)Models.Enum.TrainerSlotStatus.Disabled
+                                                                             && c.Status != (int)Models.Enum.TrainerSlotStatus.Enabled
                                                                              , nameof(TrainerSlot.Slot));            
             //var occuppiedSlots = _mapper.Map<List<SlotModel>>(trainerSlots);
             var slots = await GetSlotData();
