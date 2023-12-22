@@ -415,7 +415,7 @@ namespace WorkshopSubsystem.Implementation
             {
                 throw new InvalidOperationException("Current class state cannot be modified!");
             }
-            if(modified.StartTime != null && workshopClass.Status != (int)Models.Enum.Workshop.Class.Status.Pending)
+            if(modified.StartTime != null && modified.StartTime != workshopClass.StartTime.Value.ToDateOnly() && workshopClass.Status != (int)Models.Enum.Workshop.Class.Status.Pending)
             {
                 throw new InvalidOperationException("Class must be at pending state to change open time!");
             }
