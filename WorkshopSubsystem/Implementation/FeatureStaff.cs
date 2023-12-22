@@ -411,9 +411,13 @@ namespace WorkshopSubsystem.Implementation
             var workshopClass = await _unitOfWork.WorkshopClassRepository.GetFirst(c => c.Id == modified.Id
                                                                                         , nameof(WorkshopClass.WorkshopClassDetails)
                                                                                         , nameof(WorkshopClass.Workshop));
-            if(workshopClass.Status != (int)Models.Enum.Workshop.Class.Status.Pending)
+            if(workshopClass.Status == (int)Models.Enum.Workshop.Class.Status.Completed || workshopClass.Status == (int)Models.Enum.Workshop.Class.Status.Cancelled)
             {
-                throw new InvalidOperationException("Class must be at pending state!");
+                throw new InvalidOperationException("Current class state cannot be modified!");
+            }
+            if(modified.StartTime != null && modified.StartTime != workshopClass.StartTime.Value.ToDateOnly() && workshopClass.Status != (int)Models.Enum.Workshop.Class.Status.Pending)
+            {
+                throw new InvalidOperationException("Class must be at pending state to change open time!");
             }
             if(modified.StartTime != null && modified.StartTime != workshopClass.StartTime.Value.ToDateOnly())
             {
