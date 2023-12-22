@@ -198,15 +198,23 @@ namespace SP_AutoMapperConfig
     {
         public void Process(TrainerSlot source, TimetableModel destination, ResolutionContext context)
         {
+           
             destination.Start = source.Date + source.Slot.StartTime.Value;
             destination.End = source.Date + source.Slot.EndTime.Value;
             destination.Date = source.Date;
             destination.Id = source.Id;
-            destination.EntityId = (int)source.EntityId;
+            destination.EntityId = source.EntityId;
             destination.SlotId = source.SlotId;
-            destination.Title = source.Reason;
+            destination.Title = source.Reason;            
             destination.TypeId = source.EntityTypeId;
+            
             destination.TypeName = (Models.Enum.EntityType)source.EntityTypeId;
+
+            if (source.EntityTypeId == (int)Models.Enum.EntityType.AbsentRequest)
+            {
+                destination.Reason = source.Reason;
+                destination.Title = "Off Slot";
+            }
         }
     }
 }
