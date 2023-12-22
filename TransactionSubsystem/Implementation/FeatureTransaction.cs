@@ -72,7 +72,11 @@ namespace TransactionSubsystem.Implementation
         public async Task<dynamic> CalculateConsultingTicketFinalPriceForTrainer(int ticketId, int totalSlot)
         {
             var ticket = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id == ticketId);
-            decimal distancePrice = (decimal)ticket.DistancePriceCalculate;
+            decimal distancePrice = 0;
+            if (ticket.DistancePriceCalculate != null)
+            {
+                distancePrice = (decimal)ticket.DistancePriceCalculate;
+            }
             var pricePolicy = (decimal)ticket.ConsultingPricePolicyCalculate;
             var totalPrice = distancePrice + pricePolicy*totalSlot;
             var discountedPrice = await CalculateMemberShipDiscountedPrice(ticket.CustomerId, totalPrice);
