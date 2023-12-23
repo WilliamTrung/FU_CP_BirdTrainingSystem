@@ -144,7 +144,19 @@ namespace AppService.WorkshopService.Implementation
 
         public async Task<IEnumerable<WorkshopClassViewModel>> GetRegisteredClass(int customerId)
         {
-            return await _workshop.Customer.GetRegisteredWorkshopClass(customerId);
+            var result = await _workshop.Customer.GetRegisteredWorkshopClass(customerId);
+            var sorted = new List<WorkshopClassViewModel>();
+            var groupOngoing = result.Where(c => c.ClassStatus == Models.Enum.Workshop.Class.Status.OnGoing);
+            sorted.AddRange(groupOngoing);
+            var groupClosed = result.Where(c => c.ClassStatus == Models.Enum.Workshop.Class.Status.ClosedRegistration);
+            sorted.AddRange(groupClosed);
+            var groupOpen = result.Where(c => c.ClassStatus == Models.Enum.Workshop.Class.Status.OpenRegistration);
+            sorted.AddRange(groupOpen);
+            var groupComplete = result.Where(c => c.ClassStatus == Models.Enum.Workshop.Class.Status.Completed);
+            sorted.AddRange(groupComplete);
+            var groupCancel = result.Where(c => c.ClassStatus == Models.Enum.Workshop.Class.Status.Cancelled);
+            sorted.AddRange(groupCancel);
+            return sorted;
         }
     }
 }
