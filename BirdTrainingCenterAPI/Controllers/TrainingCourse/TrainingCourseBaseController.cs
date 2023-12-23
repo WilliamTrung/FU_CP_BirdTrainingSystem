@@ -90,6 +90,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             return Ok(result);
         }
         [HttpGet]
+        [EnableQuery]
         [Route("birdtrainingprogress-requestedId")]
         public async Task<IActionResult> GetBirdTrainingCourseProgressByBirdTrainingCourseId([FromQuery] int birdTrainingCourseId)
         {
@@ -97,6 +98,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             return Ok(result);
         }
         [HttpGet]
+        [EnableQuery]
         [Route("birdtrainingreport-progressid")]
         public async Task<IActionResult> GetReportByProgressId([FromQuery] int progressId)
         {
@@ -119,6 +121,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
             return Ok(result);
         }
         [HttpGet]
+        [EnableQuery]
         [Route("birdspecies-id")]
         public async Task<IActionResult> GetBirdSpeciesById([FromQuery] int birdSpeciesId)
         {
@@ -127,6 +130,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         }
 
         [HttpGet]
+        [EnableQuery]
         [Route("birdtrainingprogress-statuses")]
         public IActionResult GetEnumBirdTrainingProgressStatuses()
         {
@@ -144,6 +148,7 @@ namespace BirdTrainingCenterAPI.Controllers.TrainingCourse
         }
 
         [HttpGet]
+        [EnableQuery]
         [Route("basetrainingcourse-id")]
         public async Task<IActionResult> GetTrainingCoursesById([FromQuery] int courseId)
         {
