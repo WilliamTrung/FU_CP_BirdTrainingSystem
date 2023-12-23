@@ -154,20 +154,103 @@ namespace AppService.TrainingCourseService.Implement
 
         public async Task<BirdTrainingProgressViewModel> AssignTrainer(int progressId, int trainerId)
         {
-            var reports = GetReportByProgressId(progressId).Result;
-            bool IsAssignable = true;
-            List<string> busySlot = new List<string>();
-            if(reports != null)
+            //check trainer is adapt to this progress
+            var check = await _trainingCourse.Staff.CheckTrainerInProgressAdaptable(progressId, trainerId);
+            if (!check)
             {
-                foreach(var report in reports)
+                throw new InvalidOperationException("This trainer is not qualified for this skill!");
+            }
+            //check previous progress
+            var allProgressId = await _trainingCourse.Staff.GetAllCourseProgressIdByProgressId(progressId);
+            allProgressId = allProgressId.OrderBy(c => c);
+            int prevProgressId = 0;
+            foreach (var progress in allProgressId)
+            {                
+                if(progress == progressId)
                 {
-                    var trainerFree = _timetable.CheckTrainerFree(trainerId, report.Date, report.SlotId).Result;
-                    if (!trainerFree)
+                    break;
+                }
+                prevProgressId = progress;
+                var reports = await GetReportByProgressId(progress);
+                if(reports.Any(c => c.TrainerId == null))
+                {
+                    throw new InvalidOperationException("Previous skill must be assigned!");
+                }
+            }   
+            
+            var reportsAtSelectedProgress = GetReportByProgressId(progressId).Result;
+            //old
+            bool IsAssignable = true;
+            //end old
+            List<string> busySlot = new List<string>();
+
+            if(reportsAtSelectedProgress != null)
+            {
+                DateTime lastDate = reportsAtSelectedProgress.First().Date;
+                if (prevProgressId == 0)
+                {
+                    //progressId is the first progress of skill
+                    //do thing
+                }
+                else
+                {
+                    //get last day of previous report 
+                    //then current progress start at get date add(1) day
+                    var prevReports = await GetReportByProgressId(prevProgressId);
+                    prevReports = prevReports.OrderByDescending(c => c.Date);
+                    var lastExecution = prevReports.FirstOrDefault();
+                    if (lastExecution != null)
                     {
-                        string busyString = $"/n slot {report.SlotId}, date {report.Date}";
-                        busySlot.Add(busyString);
-                        IsAssignable = false;
+                        lastDate = lastExecution.Date.AddDays(1);
                     }
+                    else
+                    {
+                        throw new Exception("An error has occured!");
+                    }
+                }
+
+                //check assigned slot of each report in list reports                
+                foreach (var report in reportsAtSelectedProgress)
+                {
+                    report.Date = lastDate;
+                    //new
+                    bool isFree = false;
+                    //find free slot of trainer
+                    while(!isFree)
+                    {
+                        isFree = _timetable.CheckTrainerFree(trainerId, report.Date, report.SlotId).Result;
+                        if (!isFree)
+                        {
+                            if(report.SlotId < 8)
+                            {
+                                report.SlotId++;
+                            }                                
+                            else
+                            {
+                                report.Date = report.Date.AddDays(1);
+                                report.SlotId = 1;
+                            }
+                        }
+                    }
+                    lastDate = report.Date.AddDays(1);
+                    var modifyModel = new ReportModifyModel
+                    {
+                        ReportId = report.ReportId,
+                        Date = report.Date,
+                        SlotId = report.SlotId,
+                        TrainerId = trainerId,
+                    };
+                    await _trainingCourse.Staff.ModifyTrainingSlot(modifyModel);
+                    //end new
+                    //old
+                    //var trainerFree = _timetable.CheckTrainerFree(trainerId, report.Date, report.SlotId).Result;
+                    //if (!trainerFree)
+                    //{
+                    //    string busyString = $"/n slot {report.SlotId}, date {report.Date}";
+                    //    busySlot.Add(busyString);
+                    //    IsAssignable = false;
+                    //}
+                    //end old
                 }
             }
             if(IsAssignable)
