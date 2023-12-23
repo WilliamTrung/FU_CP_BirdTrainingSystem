@@ -9,6 +9,7 @@ namespace Models.ServiceModels.AdviceConsultantModels.ConsultingTicket
     public class ConsultingTicketTrainerFinishModel
     {
         public int Id { get; set; }
+        public string ActualSlotStart { get; set; }
         public int ActualEndSlot { get; set; }
         public string? Evidence { get; set; }
     }

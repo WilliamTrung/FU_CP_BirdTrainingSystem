@@ -84,7 +84,7 @@ namespace AppService.WorkshopService.Implementation
                 Detail = $"{paymentCode}:{customerRegistered.CustomerId}:{customerRegistered.Customer.User.Email}-buy workshop class {customerRegistered.WorkshopClassId}:{customerRegistered.WorkshopClass.Workshop.Title}-at:{formattedDateTime}",
                 Status = (int)Models.Enum.Transaction.Status.Paid,
                 Title = "Workshop class enrolled",
-                TotalPayment = billingInfo.TotalPrice,               
+                TotalPayment = billingInfo.TotalPrice,                 
             };
             Transaction transaction = await _transaction.AddTransaction(transactionAddModel);
 
@@ -140,6 +140,23 @@ namespace AppService.WorkshopService.Implementation
         public async Task<FeedbackWorkshopCustomerViewModel?> GetFeedback(int customerId, int workshopId)
         {
             return await _workshop.Customer.GetFeedback(customerId, workshopId);
+        }
+
+        public async Task<IEnumerable<WorkshopClassViewModel>> GetRegisteredClass(int customerId)
+        {
+            var result = await _workshop.Customer.GetRegisteredWorkshopClass(customerId);
+            var sorted = new List<WorkshopClassViewModel>();
+            var groupOngoing = result.Where(c => c.ClassStatus == Models.Enum.Workshop.Class.Status.OnGoing);
+            sorted.AddRange(groupOngoing);
+            var groupClosed = result.Where(c => c.ClassStatus == Models.Enum.Workshop.Class.Status.ClosedRegistration);
+            sorted.AddRange(groupClosed);
+            var groupOpen = result.Where(c => c.ClassStatus == Models.Enum.Workshop.Class.Status.OpenRegistration);
+            sorted.AddRange(groupOpen);
+            var groupComplete = result.Where(c => c.ClassStatus == Models.Enum.Workshop.Class.Status.Completed);
+            sorted.AddRange(groupComplete);
+            var groupCancel = result.Where(c => c.ClassStatus == Models.Enum.Workshop.Class.Status.Cancelled);
+            sorted.AddRange(groupCancel);
+            return sorted;
         }
     }
 }

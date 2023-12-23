@@ -482,12 +482,6 @@ namespace AppCore.Context
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKConsulting154539");
 
-                entity.HasOne(d => d.DistancePrice)
-                    .WithMany(p => p.ConsultingTickets)
-                    .HasForeignKey(d => d.DistancePriceId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FKConsulting564465");
-
                 entity.HasOne(d => d.Trainer)
                     .WithMany(p => p.ConsultingTickets)
                     .HasForeignKey(d => d.TrainerId)

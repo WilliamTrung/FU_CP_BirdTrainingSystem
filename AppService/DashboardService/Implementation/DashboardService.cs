@@ -41,5 +41,13 @@ namespace AppService.DashboardService.Implementation
         {
             return _dashboard.GetTransactions(type);
         }
+        public Task<IEnumerable<DashboardIncomeLineChartModel>> GetIncomeLineChartModel(int year)
+        {
+            return _dashboard.GetIncomeLineChartModel(year);
+        }
+        public Task<IEnumerable<TrainerContributionModel>> GetTrainerContributionModels(int month, int year)
+        {
+            return _dashboard.GetTrainerContributionModels(month, year);
+        }
     }
 }

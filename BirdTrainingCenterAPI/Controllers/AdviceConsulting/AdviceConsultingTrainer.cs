@@ -30,7 +30,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
 
         [HttpPut]
         [Route("finishAppointment")]
-        public async Task<IActionResult> FinishAppointment([FromForm] ConsultingTicketTrainerFinishBillingServiceModel ticket)
+        public async Task<IActionResult> FinishAppointment(int ticketId)
         {
             try
             {
@@ -40,7 +40,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
                     return Unauthorized();
                 }
                 
-                await _consultingService.Trainer.FinishAppointment(ticket);
+                await _consultingService.Trainer.FinishAppointment(ticketId);
                 return Ok();
             }
             catch (Exception ex)
@@ -51,7 +51,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
 
         [HttpPut]
         [Route("updateEvidence")]
-        public async Task<IActionResult> UpdateEvidence(ConsultingTicketTrainerUpdateParamModel ticket)
+        public async Task<IActionResult> UpdateEvidence([FromForm] ConsultingTicketTrainerUpdateParamModel ticket)
         {
             var accessToken = Request.DeserializeToken(_authService);
             if (accessToken == null)
@@ -84,6 +84,11 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
             if (accessToken == null)
             {
                 return Unauthorized();
+            }
+            var evidence = string.Empty;
+            if (ticket.Evidence == null)
+            {
+                return StatusCode(StatusCodes.Status503ServiceUnavailable, "Please update evidence");
             }
             await _consultingService.Trainer.UpdateEvidence(ticket);
             return Ok();

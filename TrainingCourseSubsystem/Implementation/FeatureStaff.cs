@@ -505,5 +505,32 @@ namespace TrainingCourseSubsystem.Implementation
             }
             return trainerSlots;
         }
+
+        public async Task<IEnumerable<int>> GetAllCourseProgressIdByProgressId(int progressId)
+        {
+            var entities = await _unitOfWork.BirdTrainingProgressRepository.GetFirst(c => c.Id == progressId
+                                                                                    , nameof(BirdTrainingProgress.BirdTrainingCourse)
+                                                                                    , $"{nameof(BirdTrainingCourse)}.{nameof(BirdTrainingCourse.BirdTrainingProgresses)}");
+            return entities.BirdTrainingCourse.BirdTrainingProgresses.Select(c => c.Id);
+        }
+
+        public async Task<bool> CheckTrainerInProgressAdaptable(int progressId, int trainerId)
+        {
+            var progress = await _unitOfWork.BirdTrainingProgressRepository.GetFirst(c => c.Id == progressId
+                                                                                            , nameof(BirdTrainingProgress.TrainingCourseSkill)
+                                                                                            , $"{nameof(TrainingCourseSkill)}.{nameof(TrainingCourseSkill.BirdSkill)}"
+                                                                                            , $"{nameof(TrainingCourseSkill)}.{nameof(TrainingCourseSkill.BirdSkill)}.{nameof(BirdSkill.TrainableSkills)}"
+                                                                                            , $"{nameof(TrainingCourseSkill)}.{nameof(TrainingCourseSkill.BirdSkill)}.{nameof(BirdSkill.TrainableSkills)}.{nameof(TrainableSkill.Skill)}");
+            var trainableSkills = progress.TrainingCourseSkill.BirdSkill.TrainableSkills;
+            var skillsOfTrainer = await _unitOfWork.SkillRepository.Get(c => c.TrainerSkills.Any(e => e.TrainerId == trainerId));
+            foreach (var trainableSkill in trainableSkills)
+            {
+                if(skillsOfTrainer.Any(c => c.Id == trainableSkill.SkillId))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
     }
 }

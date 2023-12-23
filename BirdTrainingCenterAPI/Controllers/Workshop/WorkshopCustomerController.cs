@@ -24,7 +24,7 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
         [HttpGet]
         [EnableQuery]
         [Route("registered-class")]
-        public async Task<IActionResult> GetRegisteredClass([FromQuery]int workshopId)
+        public async Task<IActionResult> GetRegisteredClass([FromQuery]int? workshopId)
         {
             //var accessToken = DeserializeToken();
             //if(accessToken == null)
@@ -37,12 +37,17 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
                 return Unauthorized();
             }
             var customerId = accessToken.First(c => c.Type == CustomClaimTypes.Id);
-
-            var result = await _workshopService.Customer.GetRegisteredClass(Int32.Parse(customerId.Value), workshopId);
-            return Ok(result);
-
+            if(workshopId == null)
+            {
+                var result = await _workshopService.Customer.GetRegisteredClass(Int32.Parse(customerId.Value));
+                return Ok(result);
+            } else
+            {
+                var result = await _workshopService.Customer.GetRegisteredClass(Int32.Parse(customerId.Value), (int)workshopId);
+                return Ok(result);
+            }            
         }
-        //[HttpPost]
+        //[HttpPost]89--
         //[Route("register")]
         //public async Task<IActionResult> Register([FromQuery] int workshopClassId)
         //{

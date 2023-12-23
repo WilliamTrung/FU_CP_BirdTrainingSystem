@@ -12,6 +12,7 @@ namespace Models.ApiParamModels.AdviceConsulting
     public class ConsultingTicketTrainerUpdateParamModel
     {
         public int Id { get; set; }
+        public string ActualSlotStart { get; set; }
         public int ActualEndSlot { get; set; }
         [FileImageValidator]
         public List<IFormFile> Evidence { get; set; }
@@ -21,6 +22,7 @@ namespace Models.ApiParamModels.AdviceConsulting
             return new ConsultingTicketTrainerFinishModel
             {
                 Id = this.Id,
+                ActualSlotStart = ActualSlotStart,
                 ActualEndSlot = ActualEndSlot,
                 Evidence = evidence
             };

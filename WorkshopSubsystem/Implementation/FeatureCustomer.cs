@@ -39,6 +39,25 @@ namespace WorkshopSubsystem.Implementation
             }            
             return models;
         }
+        public async Task<IEnumerable<WorkshopClassViewModel>> GetRegisteredWorkshopClass(int customerId)
+        {
+            var entities = await _unitOfWork.CustomerWorkshopClassRepository.Get(c => c.CustomerId == customerId
+                                                                                    && c.Status == (int)Models.Enum.Workshop.Transaction.Status.Paid
+                                                                                , nameof(CustomerWorkshopClass.WorkshopClass)
+                                                                                , $"{nameof(CustomerWorkshopClass.WorkshopClass)}.{nameof(WorkshopClass.WorkshopClassDetails)}"
+                                                                                , $"{nameof(CustomerWorkshopClass.WorkshopClass)}.{nameof(WorkshopClass.Workshop)}");
+            var models = new List<WorkshopClassViewModel>();
+            foreach (var entity in entities)
+            {
+                var model = _mapper.Map<WorkshopClassViewModel>(entity.WorkshopClass);
+                foreach (var classSlot in model.ClassSlots)
+                {
+                    classSlot.Status = await CheckAttend(customerId, classSlot.Id);
+                }
+                models.Add(model);
+            }
+            return models;
+        }
         public async Task<IEnumerable<WorkshopModel>> GetRegisteredWorkshops(int customerId)
         {
             var entities = await _unitOfWork.CustomerWorkshopClassRepository.Get(c => c.CustomerId == customerId

@@ -56,29 +56,27 @@ namespace AdviceConsultingSubsystem.Implementation
             await _unitOfWork.ConsultingTicketRepository.Update(entity);
         }
 
-        public async Task FinishAppointment(ConsultingTicketTrainerFinishBillingServiceModel ticket, decimal finalPrice, decimal discountedPrice)
+        public async Task FinishAppointment(int ticketId)
         {
-            var entity = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id == ticket.Id, nameof(Customer.User));
+            var entity = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id == ticketId);
             if (entity == null)
             {
-                throw new KeyNotFoundException($"{nameof(entity)} not found for id: {ticket.Id}");
+                throw new KeyNotFoundException($"{nameof(entity)} not found for id: {ticketId}");
             }
-            
-            entity.Price = finalPrice;
-            entity.DiscountedPrice = discountedPrice;
             entity.Status = (int)Models.Enum.ConsultingTicket.Status.Finished;
 
             await _unitOfWork.ConsultingTicketRepository.Update(entity);
 
             string paymentCode = "offline";
             string formattedDateTime = DateTime.UtcNow.AddHours(7).ToString("ddMMMyyyyhhmm");
+            var customer = await _unitOfWork.CustomerRepository.GetFirst(x => x.Id ==  entity.CustomerId, nameof(Customer.User));
             var transactionModel = new TransactionAddModel()
             {
                 CustomerId = entity.CustomerId,
                 EntityId = entity.Id,
                 EntityTypeId = (int)Models.Enum.EntityType.AdviceConsulting,
                 PaymentCode = paymentCode,
-                Detail = $"{paymentCode}:{entity.CustomerId}:{entity.Customer.User.Email}-" +
+                Detail = $"{paymentCode}:{entity.CustomerId}:{customer.User.Email}-" +
                 $"Finish Consulting Appointmnet {entity.Id}",
                 Status = (int)Models.Enum.Transaction.Status.Paid,
                 Title = "Finish Consulting Appointment",
@@ -88,7 +86,7 @@ namespace AdviceConsultingSubsystem.Implementation
             await _transaction.AddTransaction(transactionModel);
         }
 
-        public async Task UpdateEvidence(ConsultingTicketTrainerFinishModel ticket)
+        public async Task UpdateEvidence(ConsultingTicketTrainerFinishModel ticket, decimal finalPrice, decimal discountedPrice)
         {
             var entity = await _unitOfWork.ConsultingTicketRepository.GetFirst(x => x.Id == ticket.Id);
             if (entity == null)
@@ -98,6 +96,8 @@ namespace AdviceConsultingSubsystem.Implementation
 
             entity.ActualEndSlot = ticket.ActualEndSlot;    
             entity.Evidence = ticket.Evidence;
+            entity.Price = finalPrice;
+            entity.DiscountedPrice = discountedPrice;
             await _unitOfWork.ConsultingTicketRepository.Update(entity);
         }
     }

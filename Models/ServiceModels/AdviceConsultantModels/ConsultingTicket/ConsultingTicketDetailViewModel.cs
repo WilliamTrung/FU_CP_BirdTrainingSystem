@@ -13,6 +13,7 @@ namespace Models.ServiceModels.AdviceConsultantModels.ConsultingTicket
         public string CustomerEmail { get; set; }
         public decimal? CustomerPhone { get; set; }
         public string? CustomerAvatar { get; set; }
+        public string? MembershipRank { get; set; }
         public string AddressDetail { get; set; } = null!;
         public string ConsultingType { get; set; } = null!;
         public string TrainerName { get; set; } = null!;
@@ -26,6 +27,9 @@ namespace Models.ServiceModels.AdviceConsultantModels.ConsultingTicket
         public string ActualSlotStart { get; set; }
         public string? ActualEndSlot { get; set; }
         public string? Evidence { get; set; }
+        public decimal? DiscountedPrice { get; set; }
+        public decimal? ConsultingPricePolicyCalculate { get; set; }
+        public decimal? DistancePriceCalculate { get; set; }
         public decimal? Price { get; set; }
         public Models.Enum.ConsultingTicket.Status Status { get; set; }
     }

@@ -16,5 +16,7 @@ namespace AppService.DashboardService
         Task<DashboardWorkshop> GetDashboardWorkshop();
         Task<IEnumerable<TransactionModel>> GetTransactions(EntityType? type = null);
         Task<CampaignModel> GetCampaignModel(CampaignQueryModel model);
+        Task<IEnumerable<DashboardIncomeLineChartModel>> GetIncomeLineChartModel(int year);
+        Task<IEnumerable<TrainerContributionModel>> GetTrainerContributionModels(int month, int year);
     }
 }
