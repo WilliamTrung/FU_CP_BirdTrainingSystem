@@ -11,6 +11,7 @@ using Models.ApiParamModels.AdviceConsulting;
 using Models.ConfigModels;
 using Microsoft.Extensions.Options;
 using AppService.TimetableService;
+using Microsoft.AspNetCore.OData.Query;
 
 namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
 {
@@ -96,6 +97,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
 
         [HttpGet]
         [Route("getListAssignedConsultingTicket")]
+        [EnableQuery]
         public async Task<IActionResult> GetListAssignedConsultingTicket()
         {
             try

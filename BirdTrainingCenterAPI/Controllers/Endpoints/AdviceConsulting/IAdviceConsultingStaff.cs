@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Query;
 using Models.ServiceModels.AdviceConsultantModels;
 using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
 
@@ -8,6 +9,7 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting
     {
         [HttpGet]
         [Route("viewListHandledConsultingTicket")]
+        [EnableQuery]
         Task<IActionResult> viewListHandledConsultingTicket();
 
         [HttpPut]
@@ -24,10 +26,12 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting
 
         [HttpGet]
         [Route("viewListNotAssignedConsultingTicket")]
+        [EnableQuery]
         Task<IActionResult> ViewListNotAssignedConsultingTicket();
 
         [HttpGet]
         [Route("viewListAssignedConsultingTicket")]
+        [EnableQuery]
         Task<IActionResult> ViewListAssignedConsultingTicket();
 
         [HttpPost]
