@@ -36,6 +36,10 @@ namespace AppService.DashboardService.Implementation
         {
             return _dashboard.GetDashboardWorkshop();
         }
+        public Task<DashboardTrainingCourse> GetDashboardTrainingCourse()
+        {
+            return _dashboard.GetDashboardTrainingCourse();
+        }
 
         public Task<IEnumerable<TransactionModel>> GetTransactions(EntityType? type = null)
         {

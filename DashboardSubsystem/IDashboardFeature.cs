@@ -13,6 +13,7 @@ namespace DashboardSubsystem
         Task<DashboardConsultingTicket> GetDashboardConsultingTicket();
         Task<DashboardOnlineCourse> GetDashboardOnlineCourse();
         Task<DashboardWorkshop> GetDashboardWorkshop();
+        Task<DashboardTrainingCourse> GetDashboardTrainingCourse();
         Task<IEnumerable<TransactionModel>> GetTransactions(EntityType? type = null);
         Task<CampaignModel> GetCampaignModel(CampaignQueryModel query);
         Task<IEnumerable<DashboardIncomeLineChartModel>> GetIncomeLineChartModel(int year);

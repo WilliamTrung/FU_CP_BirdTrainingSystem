@@ -61,14 +61,11 @@ namespace DashboardSubsystem.Implementation
             var entities = await _uow.ConsultingTicketRepository.Get();
             var totalAmount = entities.Count();
             var unhandledAmount = entities.Count(c => c.Status == (int)Models.Enum.ConsultingTicket.Status.WaitingForApprove);
-            var handledAmount = entities.Count(c => c.Status != (int)Models.Enum.ConsultingTicket.Status.WaitingForApprove);
+            var approvedAmount = entities.Count(c => c.Status != (int)Models.Enum.ConsultingTicket.Status.Approved);
 
-            float handledRatio = (float) handledAmount / totalAmount;
             var model = new DashboardConsultingTicket()
             {
-                HandledRatio = handledRatio,
-                TotalAmount = totalAmount,
-                HandledTicket = handledAmount,
+                ApprovedTicket = approvedAmount,
                 UnhandledTicket = unhandledAmount,
             };
             return model;
@@ -76,37 +73,34 @@ namespace DashboardSubsystem.Implementation
 
         public async Task<DashboardOnlineCourse> GetDashboardOnlineCourse()
         {
-            var entities = await _uow.CustomerOnlineCourseDetailRepository.Get();
-            var totalAmount = entities.Count();
+            var entities = await _uow.CustomerOnlineCourseDetailRepository.Get(c => c.Status == (int)Models.Enum.OnlineCourse.Status.ACTIVE, nameof(CustomerOnlineCourseDetail.OnlineCourse));
+
+            var activeCourses = entities.Select(c => c.OnlineCourse).Distinct();
+            int activeCourseAmount = activeCourses.Count();
+            var totalAttempts = entities.Count();
             var completed = entities.Count(c => c.Status == (int)Models.Enum.OnlineCourse.Customer.OnlineCourse.Status.Completed);
 
             var model = new DashboardOnlineCourse()
             {
-                TotalAttempts = totalAmount,
-                CustomerCompleted = completed,
-                CompleteCourseRatio = (float)completed / totalAmount,
+                TotalAttempts = totalAttempts,
+                ActiveCourseAmount = activeCourseAmount,
+                CompletedAttempts = completed,
+                RatioCompletedAndTotal = (float)completed / totalAttempts,
             };
             return model;
         }
 
         public async Task<DashboardWorkshop> GetDashboardWorkshop()
         {
-            var entities = await _uow.CustomerWorkshopClassRepository.Get();
-            var totalAmount = entities.Count();
-            var attendances = await _uow.WorkshopAttendanceRepository.Get(c => c.Status != (int)Models.Enum.Workshop.Class.Customer.Status.NotYet);
-            var totalAttendance = attendances.Count();
-            var presentAmount = attendances.Count(c => c.Status == (int)Models.Enum.Workshop.Class.Customer.Status.Attended);
-            float presentRatio = (float)presentAmount / totalAttendance;
-
-            var classes = await _uow.WorkshopClassRepository.Get(c => c.Workshop.Status == (int)Models.Enum.Workshop.Status.Active
-                                                                    && c.Status != (int)Models.Enum.Workshop.Class.Status.Cancelled
-                                                                    && c.Status != (int)Models.Enum.Workshop.Class.Status.Completed
-                                                                    , nameof(WorkshopClass.Workshop));
+            var entities = await _uow.CustomerWorkshopClassRepository.Get(c => c.WorkshopClass.Status == (int)Models.Enum.Workshop.Class.Status.OnGoing, nameof(CustomerWorkshopClass.WorkshopClass));
+            var ongoingClassAmount = entities.Select(c => c.WorkshopClass).Distinct().Count();
+            var enrolledAmount = entities.Count();   
+            
+         
             var model = new DashboardWorkshop()
             {
-                CustomerAttempts = totalAmount,
-                PresentRatio = presentRatio,
-                WorkshopClass = classes.Count(),
+                OnGoingClassAmount = ongoingClassAmount,
+                EnrolledAmount = enrolledAmount,
             };
             return model;
 
@@ -296,6 +290,28 @@ namespace DashboardSubsystem.Implementation
             {
                 return null;
             }
+        }
+
+        public async Task<DashboardTrainingCourse> GetDashboardTrainingCourse()
+        {
+            var progresses = await _uow.BirdTrainingProgressRepository.Get(c => c.Status == (int)Models.Enum.BirdTrainingProgress.Status.Assigned
+                                                                             || c.Status == (int)Models.Enum.BirdTrainingProgress.Status.Training
+                                                                             || c.Status == (int)Models.Enum.BirdTrainingProgress.Status.WaitingForTimetable
+                                                                             || c.Status == (int)Models.Enum.BirdTrainingProgress.Status.WaitingForAssign
+                                                                             , nameof(BirdTrainingProgress.BirdTrainingCourse)
+                                                                             , $"{nameof(BirdTrainingProgress.BirdTrainingCourse)}.{nameof(BirdTrainingCourse.TrainingCourse)}");
+            var trainingCourses = progresses.Select(c => c.BirdTrainingCourse.TrainingCourse).Distinct().ToList();
+            var registration = progresses.Where(c => c.Status == (int)Models.Enum.BirdTrainingProgress.Status.Assigned
+                                                  || c.Status == (int)Models.Enum.BirdTrainingProgress.Status.Training);
+            var unhandledRequest = progresses.Where(c => c.Status == (int)Models.Enum.BirdTrainingProgress.Status.WaitingForTimetable
+                                                      || c.Status == (int)Models.Enum.BirdTrainingProgress.Status.WaitingForAssign);
+            var model = new DashboardTrainingCourse
+            {
+                ClientAmount = registration.Count(),
+                OnGoingCourseAmount = trainingCourses.Count(),
+                UnhandledAttempts = unhandledRequest.Count(),
+            };
+            return model;
         }
     }
 }
