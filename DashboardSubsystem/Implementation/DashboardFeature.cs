@@ -1,6 +1,7 @@
 ﻿using AppRepository.UnitOfWork;
 using AutoMapper;
 using Models.DashboardModels;
+using Models.DashboardModels.PieCartModel;
 using Models.Entities;
 using Models.Enum;
 using Models.ServiceModels;
@@ -313,5 +314,37 @@ namespace DashboardSubsystem.Implementation
             };
             return model;
         }
+#pragma warning disable CS8629 // Nullable value type may be null.
+        public async Task<PieChartServicesData> GetRatioTotalServices(int year)
+        {
+            var transactions = await _uow.TransactionRepository.Get(c => c.PaymentDate.Value.Year == year
+                                                                        && c.Status == (int)Models.Enum.Transaction.Status.Paid
+                                                                        && (
+                                                                        c.EntityTypeId == (int)Models.Enum.EntityType.AdviceConsulting
+                                                                        || c.EntityTypeId == (int)Models.Enum.EntityType.TrainingCourse
+                                                                        || c.EntityTypeId == (int)Models.Enum.EntityType.WorkshopClass
+                                                                        || c.EntityTypeId == (int)Models.Enum.EntityType.OnlineCourse
+                                                                        ));
+            var model = new PieChartServicesData();
+
+            var onlineCourseTransactions = transactions.Where(c => c.EntityTypeId == (int)Models.Enum.EntityType.OnlineCourse);
+            model.Labels.Add("Online Course");
+            model.Data.Add((decimal)onlineCourseTransactions.Sum(c => c.TotalPayment));
+
+            var consultingTransactions = transactions.Where(c => c.EntityTypeId == (int)Models.Enum.EntityType.AdviceConsulting);
+            model.Labels.Add("Consultation");
+            model.Data.Add((decimal)consultingTransactions.Sum(c => c.TotalPayment));
+
+            var workshopTransactions = transactions.Where(c => c.EntityTypeId == (int)Models.Enum.EntityType.WorkshopClass);
+            model.Labels.Add("Workshop");
+            model.Data.Add((decimal)workshopTransactions.Sum(c => c.TotalPayment));
+
+            var trainingCourseTransactions = transactions.Where(c => c.EntityTypeId == (int)Models.Enum.EntityType.TrainingCourse);
+            model.Labels.Add("Training Course");
+            model.Data.Add((decimal)trainingCourseTransactions.Sum(c => c.TotalPayment));
+
+            return model;
+        }
+#pragma warning restore CS8629 // Nullable value type may be null.
     }
 }

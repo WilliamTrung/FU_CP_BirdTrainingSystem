@@ -93,5 +93,17 @@ namespace BirdTrainingCenterAPI.Controllers.Overview
             var result = await _dashboard.GetTrainerContributionModels((int)month, (int)year);
             return Ok(result);
         }
+        [Route("pie-services-data")]
+        [HttpGet]
+        [EnableQuery]
+        public async Task<IActionResult> GetPieServicesData([FromQuery] int? year)
+        {
+            if (year == null)
+            {
+                year = DateTime.UtcNow.AddHours(7).Year;
+            }
+            var result = await _dashboard.GetRatioTotalServices((int)year);
+            return Ok(result);
+        }
     }
 }
