@@ -1,5 +1,6 @@
 ﻿using DashboardSubsystem;
 using Models.DashboardModels;
+using Models.DashboardModels.PieCartModel;
 using Models.Enum;
 using System;
 using System.Collections.Generic;
@@ -19,5 +20,6 @@ namespace AppService.DashboardService
         Task<CampaignModel> GetCampaignModel(CampaignQueryModel model);
         Task<IEnumerable<DashboardIncomeLineChartModel>> GetIncomeLineChartModel(int year);
         Task<IEnumerable<TrainerContributionModel>> GetTrainerContributionModels(int month, int year);
+        Task<PieChartServicesData> GetRatioTotalServices(int year);
     }
 }

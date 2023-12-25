@@ -1,5 +1,6 @@
 ﻿using DashboardSubsystem;
 using Models.DashboardModels;
+using Models.DashboardModels.PieCartModel;
 using Models.Enum;
 using System;
 using System.Collections.Generic;
@@ -52,6 +53,10 @@ namespace AppService.DashboardService.Implementation
         public Task<IEnumerable<TrainerContributionModel>> GetTrainerContributionModels(int month, int year)
         {
             return _dashboard.GetTrainerContributionModels(month, year);
+        }
+        public Task<PieChartServicesData> GetRatioTotalServices(int year)
+        {
+            return _dashboard.GetRatioTotalServices(year);
         }
     }
 }
