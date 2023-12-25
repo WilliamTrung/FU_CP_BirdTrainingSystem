@@ -8,11 +8,7 @@ namespace Models.DashboardModels
 {
     public class DashboardWorkshop
     {
-        //Total attempts (customer enroll course, status == all)
-        //Customer attempts
-        //Customer present / Customer attendance ratio
-        public int WorkshopClass { get; set; }
-        public int CustomerAttempts { get; set; }
-        public float PresentRatio { get; set; }
+        public int OnGoingClassAmount { get; set; }
+        public int EnrolledAmount { get; set; }
     }
 }

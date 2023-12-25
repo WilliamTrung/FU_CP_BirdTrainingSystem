@@ -8,12 +8,10 @@ namespace Models.DashboardModels
 {
     public class DashboardOnlineCourse
     {
-        //Total attempts (customer enroll course, status == all)
-        //Customer attempts (not complete course)
-        //Customer completes course / Customer attempts (not complete course) ratio
+        public int ActiveCourseAmount { get; set; }
         public int TotalAttempts { get; set; }
-        public int CustomerCompleted { get; set; }
-        public float CompleteCourseRatio { get; set; }
+        public int CompletedAttempts { get; set; }
+        public float RatioCompletedAndTotal { get; set; }
 
     }
 }

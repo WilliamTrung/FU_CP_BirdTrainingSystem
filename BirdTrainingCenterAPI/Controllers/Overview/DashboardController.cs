@@ -45,9 +45,10 @@ namespace BirdTrainingCenterAPI.Controllers.Overview
         [HttpGet]
         [Route("training-course")]
         [EnableQuery]
-        public Task<IActionResult> GetTrainingCourseOverview()
+        public async Task<IActionResult> GetTrainingCourseOverview()
         {
-            throw new NotImplementedException();
+            var result = await _dashboard.GetDashboardTrainingCourse();
+            return Ok(result);
         }
         [HttpGet]
         [Route("transactions")]
