@@ -8,6 +8,7 @@ using TimetableSubsystem;
 using AppService.TimetableService;
 using BirdTrainingCenterAPI.Helper;
 using Models.ServiceModels.AdviceConsultantModels;
+using Microsoft.AspNetCore.OData.Query;
 
 namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
 {
@@ -240,6 +241,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
 
         [HttpGet]
         [Route("viewListAssignedConsultingTicket")]
+        [EnableQuery]
         public async Task<IActionResult> ViewListAssignedConsultingTicket()
         {
             try
@@ -255,6 +257,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
 
         [HttpGet]
         [Route("viewListHandledConsultingTicket")]
+        [EnableQuery]
         public async Task<IActionResult> viewListHandledConsultingTicket()
         {
             try
@@ -270,6 +273,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
 
         [HttpGet]
         [Route("viewListNotAssignedConsultingTicket")]
+        [EnableQuery]
         public async Task<IActionResult> ViewListNotAssignedConsultingTicket()
         {
             try

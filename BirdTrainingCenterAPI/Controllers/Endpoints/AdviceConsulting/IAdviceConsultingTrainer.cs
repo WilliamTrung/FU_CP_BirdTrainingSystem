@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.OData.Query;
 using Models.ApiParamModels.AdviceConsulting;
 using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
 
@@ -8,6 +9,7 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting
     {
         [HttpGet]
         [Route("getListAssignedConsultingTicket")]
+        [EnableQuery]
         Task<IActionResult> GetListAssignedConsultingTicket();
 
         [HttpPut]
