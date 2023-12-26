@@ -287,7 +287,7 @@ namespace DashboardSubsystem.Implementation
                 return new TrainerContributionModel
                 {
                     Trainer = _mapper.Map<TrainerModel>(mostWorkedSlot),
-                    Detail = "Most tranining birds duration!",
+                    Detail = "Most working hours!",
                     SlotCount = mostSlots.Count(),
                 };
             }
