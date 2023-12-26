@@ -181,5 +181,10 @@ namespace AppService.AdviceConsultingService.Implementation
         {
             return await _consulting.Staff.GetTicketRatioOnlOff(year);
         }
+
+        public async Task<TicketRatioOnlOff> GetTicketRatioOnlOffByMonth(int month)
+        {
+            return await _consulting.Staff.GetTicketRatioOnlOffByMonth(month);
+        }
     }
 }

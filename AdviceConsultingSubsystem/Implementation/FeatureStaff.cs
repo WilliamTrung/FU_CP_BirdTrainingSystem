@@ -279,5 +279,40 @@ namespace AdviceConsultingSubsystem.Implementation
 
             return model;
         }
+
+        public async Task<TicketRatioOnlOff> GetTicketRatioOnlOffByMonth(int month)
+        {
+            List<Data> OnlineTicket = new List<Data>();
+            List<Data> OfflineTicket = new List<Data>();
+
+            var time = DateTime.UtcNow.AddHours(7);
+            var entities = await _unitOfWork.ConsultingTicketRepository.Get(x => x.Status == (int)Models.Enum.ConsultingTicket.Status.Finished && x.AppointmentDate.Value.Month == month);
+
+            var label = (Models.Enum.Month)month;
+            var listOnl = entities.Where(x => x.OnlineOrOffline == true);
+            var listOff = entities.Where(x => x.OnlineOrOffline == false);
+
+            var dataOnl = new Data()
+            {
+                Label = label,
+                Y = listOnl.Count(),
+            };
+            var dataOff = new Data()
+            {
+                Label = label,
+                Y = listOff.Count(),
+            };
+
+            OnlineTicket.Add(dataOnl);
+            OfflineTicket.Add(dataOff);
+
+            var model = new TicketRatioOnlOff()
+            {
+                Online = OnlineTicket,
+                Offline = OfflineTicket,
+            };
+
+            return model;
+        }
     }
 }

@@ -184,14 +184,26 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         }
 
         [HttpGet]
-        [Route("getTicketRatioOnlOff")]
-        public async Task<IActionResult> GetTicketRatioOnlOff(int year)
+        [Route("get-ticket-ratio-onl-off-by-year")]
+        public async Task<IActionResult> GetTicketRatioOnlOff(int? year)
         {
             if (year == null)
             {
                 year = DateTime.UtcNow.AddHours(7).Year;
             }
-            var result = await _consultingService.Staff.GetTicketRatioOnlOff(year);
+            var result = await _consultingService.Staff.GetTicketRatioOnlOff((int)year);
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("get-ticket-ratio-onl-off-by-month")]
+        public async Task<IActionResult> GetTicketRatioOnlOffByMonth(int? month)
+        {
+            if (month == null)
+            {
+                month = DateTime.UtcNow.AddHours(7).Month;
+            }
+            var result = await _consultingService.Staff.GetTicketRatioOnlOffByMonth((int)month);
             return Ok(result);
         }
 
