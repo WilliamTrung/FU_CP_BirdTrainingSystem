@@ -126,7 +126,7 @@ namespace BirdTrainingCenterAPI.Startup
         }
         public static void AddDashboardFeature(this WebApplicationBuilder builder)
         {
-            builder.Services.AddTransient<DashboardSubsystem.IDashboardFeature, DashboardSubsystem.Implementation.DashboardFeature>();
+            builder.Services.AddTransient<DashboardSubsystem.IDashboardFeature, DashboardSubsystem.Implementation.DashboardFeature>();            
 
             builder.Services.AddTransient<AppService.DashboardService.IDashboardService, AppService.DashboardService.Implementation.DashboardService> ();
         }
