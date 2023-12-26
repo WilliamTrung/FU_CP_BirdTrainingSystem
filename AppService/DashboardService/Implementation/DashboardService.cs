@@ -13,6 +13,9 @@ namespace AppService.DashboardService.Implementation
     public class DashboardService : IDashboardService
     {
         private readonly IDashboardFeature _dashboard;
+
+        public ITopFeature Top => _dashboard.Top;
+
         public DashboardService(IDashboardFeature dashboardFeature)
         {
             _dashboard = dashboardFeature;

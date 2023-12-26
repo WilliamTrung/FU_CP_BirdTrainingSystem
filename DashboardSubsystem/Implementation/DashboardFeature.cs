@@ -18,10 +18,14 @@ namespace DashboardSubsystem.Implementation
     {
         private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
+
+        public ITopFeature Top { get ; }
+
         public DashboardFeature(IUnitOfWork uow, IMapper mapper)
         {
             _mapper = mapper;
-            _uow = uow; 
+            _uow = uow;
+            Top = new TopFeature(_uow);
         }
 
         public async Task<CampaignModel> GetCampaignModel(CampaignQueryModel query)

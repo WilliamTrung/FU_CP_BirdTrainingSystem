@@ -20,5 +20,6 @@ namespace DashboardSubsystem
         Task<IEnumerable<DashboardIncomeLineChartModel>> GetIncomeLineChartModel(int year);
         Task<IEnumerable<TrainerContributionModel>> GetTrainerContributionModels(int month, int year);
         Task<PieChartServicesData> GetRatioTotalServices(int year);
+        ITopFeature Top { get; }
     }
 }
