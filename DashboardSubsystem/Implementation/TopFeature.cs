@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 #pragma warning disable CS8629 // Nullable value type may be null.
+#pragma warning disable CS8604 // Possible null reference argument.
+#pragma warning disable CS8601 // Possible null reference assignment.
 namespace DashboardSubsystem.Implementation
 {
     public class TopFeature : ITopFeature
@@ -638,6 +640,60 @@ namespace DashboardSubsystem.Implementation
             result.DataPoints = result.DataPoints.OrderByDescending(c => c.Y).ToList();
             return result;
         }
+
+
         #endregion
+        public async Task<IEnumerable<TopTrainerModel>> TopTrainer(int month, int year)
+        {
+            var trainerSlots = await _uow.TrainerSlotRepository.Get(c => c.Status == (int)Models.Enum.TrainerSlotStatus.Enabled
+                                                                       && c.Date.Month == month && c.Date.Year == year
+                                                                       && c.TrainerId != null
+                                                                       , nameof(Trainer)
+                                                                       , $"{nameof(Trainer)}.{nameof(Trainer.User)}");
+            var groupTrainers = trainerSlots.GroupBy(c => c.Trainer);            
+            Dictionary<Trainer, int> keyValuePairs = new Dictionary<Trainer, int>();
+            foreach (var trainer in groupTrainers)
+            {
+                keyValuePairs.Add(trainer.Key, trainer.Count());
+            }
+            var topTrainers = keyValuePairs.OrderByDescending(keyValue => keyValue.Value).ToList().Take(5);
+            var result = new List<TopTrainerModel>();
+            foreach (var trainer in topTrainers)
+            {
+                var model = new TopTrainerModel
+                {
+                    Name = trainer.Key.User.Name,
+                };
+                //count consultant
+                var consultantSlots = trainerSlots.Where(c => c.TrainerId == trainer.Key.Id 
+                                                            && c.EntityTypeId == (int)Models.Enum.EntityType.AdviceConsulting);
+                var dataPointConsultant = new TopTrainerDataPoint
+                {
+                    Label = "Consultation",
+                    Y = consultantSlots.Count(),
+                };
+                model.DataPoints.Add(dataPointConsultant);
+                //count workshop
+                var workshopSlots = trainerSlots.Where(c => c.TrainerId == trainer.Key.Id
+                                                        && c.EntityTypeId == (int)Models.Enum.EntityType.WorkshopClass);
+                var dataPointWorkshop = new TopTrainerDataPoint
+                {
+                    Label = "Workshop",
+                    Y = workshopSlots.Count(),
+                };
+                model.DataPoints.Add(dataPointWorkshop);
+                //count trainint course
+                var trainingSlots = trainerSlots.Where(c => c.TrainerId == trainer.Key.Id 
+                                                        && c.EntityTypeId == (int)Models.Enum.EntityType.TrainingCourse);
+                var dataPointTrainingCourse = new TopTrainerDataPoint
+                {
+                    Label = "Training Course",
+                    Y = trainingSlots.Count(),
+                };
+                model.DataPoints.Add(dataPointTrainingCourse);
+                result.Add(model);
+            }
+            return result;
+        }
     }
 }
