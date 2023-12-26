@@ -91,7 +91,6 @@ namespace DashboardSubsystem.Implementation
                 }
                 keyValuePairs.Add(groupCourse.Key, sum);
             }
-            int totalFake = transactions.Where(c => c.EntityId == null).Count();
 
             var result = new TopModel
             {
@@ -106,11 +105,15 @@ namespace DashboardSubsystem.Implementation
                 };
                 result.DataPoints.Add(model);
             }
-            result.DataPoints.Add(new Model
+            int totalFake = transactions.Where(c => c.EntityId == null).Count();
+            if (totalFake > 0)
             {
-                Label = "Fake Training Course",
-                Y = totalFake,
-            });
+                result.DataPoints.Add(new Model
+                {
+                    Label = "Fake Class",
+                    Y = totalFake,
+                });
+            }
             result.DataPoints = result.DataPoints.OrderByDescending(c => c.Y).ToList();
             return result;
         }
@@ -139,7 +142,7 @@ namespace DashboardSubsystem.Implementation
                 }
                 keyValuePairs.Add(groupWorkshop.Key, sum);
             }
-            int totalFake = transactions.Where(c => c.EntityId == null).Count();
+            
 
             var result = new TopModel
             {
@@ -154,11 +157,18 @@ namespace DashboardSubsystem.Implementation
                 };
                 result.DataPoints.Add(model);
             }
-            result.DataPoints.Add(new Model
+
+            int totalFake = transactions.Where(c => c.EntityId == null).Count();
+            if(totalFake > 0)
             {
-                Label = "Fake Class",
-                Y = totalFake,
-            });
+                result.DataPoints.Add(new Model
+                {
+                    Label = "Fake Class",
+                    Y = totalFake,
+                });
+            }
+            
+
             result.DataPoints = result.DataPoints.OrderByDescending(c => c.Y).ToList();
             return result;
         }
@@ -237,7 +247,7 @@ namespace DashboardSubsystem.Implementation
                 }
                 keyValuePairs.Add(groupCourse.Key, sum);
             }
-            decimal totalFake = (decimal)transactions.Where(c => c.EntityId == null).Sum(e => e.TotalPayment);
+            
 
             var result = new TopModel
             {
@@ -252,11 +262,16 @@ namespace DashboardSubsystem.Implementation
                 };
                 result.DataPoints.Add(model);
             }
-            result.DataPoints.Add(new Model
+
+            if(transactions.Any(c => c.EntityId == null))
             {
-                Label = "Fake Training Course",
-                Y = totalFake,
-            });
+                decimal totalFake = (decimal)transactions.Where(c => c.EntityId == null).Sum(e => e.TotalPayment);
+                result.DataPoints.Add(new Model
+                {
+                    Label = "Fake Training Course",
+                    Y = totalFake,
+                });
+            }
             result.DataPoints = result.DataPoints.OrderByDescending(c => c.Y).ToList();
             return result;
         }
@@ -285,7 +300,6 @@ namespace DashboardSubsystem.Implementation
                 }
                 keyValuePairs.Add(groupWorkshop.Key, sum);
             }
-            decimal totalFake = (decimal)transactions.Where(c => c.EntityId == null).Sum(e => e.TotalPayment);
 
             var result = new TopModel
             {
@@ -300,11 +314,16 @@ namespace DashboardSubsystem.Implementation
                 };
                 result.DataPoints.Add(model);
             }
-            result.DataPoints.Add(new Model
+
+            if (transactions.Any(c => c.EntityId == null))
             {
-                Label = "Fake Class",
-                Y = totalFake,
-            });
+                decimal totalFake = (decimal)transactions.Where(c => c.EntityId == null).Sum(e => e.TotalPayment);
+                result.DataPoints.Add(new Model
+                {
+                    Label = "Fake Class",
+                    Y = totalFake,
+                });
+            }
             result.DataPoints = result.DataPoints.OrderByDescending(c => c.Y).ToList();
             return result;
         }
@@ -319,7 +338,7 @@ namespace DashboardSubsystem.Implementation
             {
                 return new TopModel
                 {
-                    Title = "Highest Registration Online Course",
+                    Title = "Highest Registration Online Course In Month",
                 };
             }
             var groups = transactions.GroupBy(c => c.EntityId);
@@ -365,12 +384,13 @@ namespace DashboardSubsystem.Implementation
         public async Task<TopModel> RegistrationTrainingCourse(int month, int year)
         {
             var transactions = await _uow.TransactionRepository.Get(c => c.PaymentDate.Value.Year == year
+                                                                   && c.PaymentDate.Value.Month == month
                                                                    && c.EntityTypeId == (int)Models.Enum.EntityType.TrainingCourse);
             if (transactions.Count() <= 0)
             {
                 return new TopModel
                 {
-                    Title = "Highest Registration Training Course",
+                    Title = "Highest Registration Training Course In Month",
                 };
             }
             var allCourses = await _uow.BirdTrainingCourseRepository.Get(null, nameof(BirdTrainingCourse.TrainingCourse));
@@ -386,7 +406,7 @@ namespace DashboardSubsystem.Implementation
                 }
                 keyValuePairs.Add(groupCourse.Key, sum);
             }
-            int totalFake = transactions.Where(c => c.EntityId == null).Count();
+            
 
             var result = new TopModel
             {
@@ -401,24 +421,28 @@ namespace DashboardSubsystem.Implementation
                 };
                 result.DataPoints.Add(model);
             }
-            result.DataPoints.Add(new Model
+            int totalFake = transactions.Where(c => c.EntityId == null).Count();
+            if(totalFake > 0)
             {
-                Label = "Fake Training Course",
-                Y = totalFake,
-            });
+                result.DataPoints.Add(new Model
+                {
+                    Label = "Fake Training Course",
+                    Y = totalFake,
+                });
+            }
             result.DataPoints = result.DataPoints.OrderByDescending(c => c.Y).ToList();
             return result;
         }
 
         public async Task<TopModel> RegistrationWorkshop(int month, int year)
         {
-            var transactions = await _uow.TransactionRepository.Get(c => c.PaymentDate.Value.Year == year
+            var transactions = await _uow.TransactionRepository.Get(c => c.PaymentDate.Value.Year == year && c.PaymentDate.Value.Month == month
                                                                      && c.EntityTypeId == (int)Models.Enum.EntityType.WorkshopClass);
             if (transactions.Count() <= 0)
             {
                 return new TopModel
                 {
-                    Title = "Highest Registration Workshop",
+                    Title = "Highest Registration Workshop In Month",
                 };
             }
             var allClasses = await _uow.WorkshopClassRepository.Get(null, nameof(WorkshopClass.Workshop));
@@ -434,11 +458,10 @@ namespace DashboardSubsystem.Implementation
                 }
                 keyValuePairs.Add(groupWorkshop.Key, sum);
             }
-            int totalFake = transactions.Where(c => c.EntityId == null).Count();
 
             var result = new TopModel
             {
-                Title = "Highest Registration Workshop",
+                Title = "Highest Registration Workshop In Month",
             };
             foreach (var item in keyValuePairs)
             {
@@ -449,24 +472,28 @@ namespace DashboardSubsystem.Implementation
                 };
                 result.DataPoints.Add(model);
             }
-            result.DataPoints.Add(new Model
+            int totalFake = transactions.Where(c => c.EntityId == null).Count();
+            if (totalFake > 0)
             {
-                Label = "Fake Class",
-                Y = totalFake,
-            });
+                result.DataPoints.Add(new Model
+                {
+                    Label = "Fake Class",
+                    Y = totalFake,
+                });
+            }
             result.DataPoints = result.DataPoints.OrderByDescending(c => c.Y).ToList();
             return result;
         }
 
         public async Task<TopModel> RevenueOnlineCourse(int month, int year)
         {
-            var transactions = await _uow.TransactionRepository.Get(c => c.PaymentDate.Value.Year == year
+            var transactions = await _uow.TransactionRepository.Get(c => c.PaymentDate.Value.Year == year && c.PaymentDate.Value.Month == month
                                                                       && c.EntityTypeId == (int)Models.Enum.EntityType.OnlineCourse);
             if (transactions.Count() <= 0)
             {
                 return new TopModel
                 {
-                    Title = "Highest Revenue Online Course",
+                    Title = "Highest Revenue Online Course In Month",
                 };
             }
             var groups = transactions.GroupBy(c => c.EntityId);
@@ -481,7 +508,7 @@ namespace DashboardSubsystem.Implementation
 
             var result = new TopModel
             {
-                Title = "Highest Revenue Online Course",
+                Title = "Highest Revenue Online Course In Month",
             };
             foreach (var item in top)
             {
@@ -511,13 +538,13 @@ namespace DashboardSubsystem.Implementation
 
         public async Task<TopModel> RevenueTrainingCourse(int month, int year)
         {
-            var transactions = await _uow.TransactionRepository.Get(c => c.PaymentDate.Value.Year == year
+            var transactions = await _uow.TransactionRepository.Get(c => c.PaymentDate.Value.Year == year && c.PaymentDate.Value.Month == month
                                                                     && c.EntityTypeId == (int)Models.Enum.EntityType.TrainingCourse);
             if (transactions.Count() <= 0)
             {
                 return new TopModel
                 {
-                    Title = "Highest Revenue Training Course",
+                    Title = "Highest Revenue Training Course In Month",
                 };
             }
             var allRegistrations = await _uow.BirdTrainingCourseRepository.Get(null, nameof(BirdTrainingCourse.TrainingCourse));
@@ -533,11 +560,11 @@ namespace DashboardSubsystem.Implementation
                 }
                 keyValuePairs.Add(groupCourse.Key, sum);
             }
-            decimal totalFake = (decimal)transactions.Where(c => c.EntityId == null).Sum(e => e.TotalPayment);
+            
 
             var result = new TopModel
             {
-                Title = "Highest Revenue Training Course",
+                Title = "Highest Revenue Training Course In Month",
             };
             foreach (var item in keyValuePairs)
             {
@@ -548,24 +575,28 @@ namespace DashboardSubsystem.Implementation
                 };
                 result.DataPoints.Add(model);
             }
-            result.DataPoints.Add(new Model
+            if(transactions.Any(c => c.EntityId == null))
             {
-                Label = "Fake Training Course",
-                Y = totalFake,
-            });
+                decimal totalFake = (decimal)transactions.Where(c => c.EntityId == null).Sum(e => e.TotalPayment);
+                result.DataPoints.Add(new Model
+                {
+                    Label = "Fake Training Course",
+                    Y = totalFake,
+                });
+            }
             result.DataPoints = result.DataPoints.OrderByDescending(c => c.Y).ToList();
             return result;
         }
 
         public async Task<TopModel> RevenueWorkshop(int month, int year)
         {
-            var transactions = await _uow.TransactionRepository.Get(c => c.PaymentDate.Value.Year == year
+            var transactions = await _uow.TransactionRepository.Get(c => c.PaymentDate.Value.Year == year && c.PaymentDate.Value.Month == month
                                                                      && c.EntityTypeId == (int)Models.Enum.EntityType.WorkshopClass);
             if (transactions.Count() <= 0)
             {
                 return new TopModel
                 {
-                    Title = "Highest Revenue Workshop",
+                    Title = "Highest Revenue Workshop In Month",
                 };
             }
             var allClasses = await _uow.WorkshopClassRepository.Get(null, nameof(WorkshopClass.Workshop));
@@ -581,11 +612,10 @@ namespace DashboardSubsystem.Implementation
                 }
                 keyValuePairs.Add(groupWorkshop.Key, sum);
             }
-            decimal totalFake = (decimal)transactions.Where(c => c.EntityId == null).Sum(e => e.TotalPayment);
 
             var result = new TopModel
             {
-                Title = "Highest Revenue Workshop",
+                Title = "Highest Revenue Workshop In Month",
             };
             foreach (var item in keyValuePairs)
             {
@@ -596,11 +626,15 @@ namespace DashboardSubsystem.Implementation
                 };
                 result.DataPoints.Add(model);
             }
-            result.DataPoints.Add(new Model
+            if (transactions.Any(c => c.EntityId == null))
             {
-                Label = "Fake Class",
-                Y = totalFake,
-            });
+                decimal totalFake = (decimal)transactions.Where(c => c.EntityId == null).Sum(e => e.TotalPayment);
+                result.DataPoints.Add(new Model
+                {
+                    Label = "Fake Class",
+                    Y = totalFake,
+                });
+            }
             result.DataPoints = result.DataPoints.OrderByDescending(c => c.Y).ToList();
             return result;
         }
