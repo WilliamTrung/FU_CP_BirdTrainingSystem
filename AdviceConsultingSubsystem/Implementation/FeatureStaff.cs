@@ -248,8 +248,9 @@ namespace AdviceConsultingSubsystem.Implementation
             List<Data> OnlineTicket = new List<Data>();
             List<Data> OfflineTicket = new List<Data>();
 
+            var time = DateTime.UtcNow.AddHours(7);
             var entities = await _unitOfWork.ConsultingTicketRepository.Get(x => x.Status == (int)Models.Enum.ConsultingTicket.Status.Finished && x.AppointmentDate.Value.Year == year);
-            for (int i = 1; i <= 12; i++)
+            for (int i = 1; i <= time.Month; i++)
             {
                 var label = (Models.Enum.Month)i;
                 var listOnl = entities.Where(x => x.OnlineOrOffline == true && x.AppointmentDate.Value.Month == i);
@@ -269,6 +270,7 @@ namespace AdviceConsultingSubsystem.Implementation
                 OnlineTicket.Add(dataOnl);
                 OfflineTicket.Add(dataOff);
             }
+
             var model = new TicketRatioOnlOff()
             {
                 Online = OnlineTicket,
