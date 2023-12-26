@@ -187,6 +187,10 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         [Route("getTicketRatioOnlOff")]
         public async Task<IActionResult> GetTicketRatioOnlOff(int year)
         {
+            if (year == null)
+            {
+                year = DateTime.UtcNow.AddHours(7).Year;
+            }
             var result = await _consultingService.Staff.GetTicketRatioOnlOff(year);
             return Ok(result);
         }
