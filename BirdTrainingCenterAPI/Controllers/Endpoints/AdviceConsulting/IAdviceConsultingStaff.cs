@@ -75,7 +75,7 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting
         Task<IActionResult> CreateConsultingType(ConsultingTypeCreateNewServiceModel consultingType);
 
         [HttpGet]
-        [Route("getTicketRatioOnlOff")]
+        [Route("get-ticket-ratio-onl-off-by-year")]
         Task<IActionResult> GetTicketRatioOnlOff(int? year);
 
         [HttpGet]

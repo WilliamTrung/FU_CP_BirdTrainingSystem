@@ -184,7 +184,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         }
 
         [HttpGet]
-        [Route("getTicketRatioOnlOff")]
+        [Route("get-ticket-ratio-onl-off-by-year")]
         public async Task<IActionResult> GetTicketRatioOnlOff(int? year)
         {
             if (year == null)
