@@ -76,6 +76,10 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting
 
         [HttpGet]
         [Route("getTicketRatioOnlOff")]
-        Task<IActionResult> GetTicketRatioOnlOff(int year);
+        Task<IActionResult> GetTicketRatioOnlOff(int? year);
+
+        [HttpGet]
+        [Route("get-ticket-ratio-onl-off-by-month")]
+        Task<IActionResult> GetTicketRatioOnlOffByMonth(int? month);
     }
 }

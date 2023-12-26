@@ -30,5 +30,6 @@ namespace AdviceConsultingSubsystem
         Task UpdateConsultingType(ConsultingTypeServiceModel consultingType);
         Task DeleteConsultingType(int consultingTypeId);
         Task<TicketRatioOnlOff> GetTicketRatioOnlOff(int year);
+        Task<TicketRatioOnlOff> GetTicketRatioOnlOffByMonth(int month);
     }
 }
