@@ -65,7 +65,7 @@ namespace DashboardSubsystem.Implementation
                     result.DataPoints.Add(model);
                 }
             }
-            result.DataPoints = result.DataPoints.OrderByDescending(c => c.Y).ToList();
+            result.DataPoints = result.DataPoints.OrderBy(c => c.Y).ToList();
             return result;
         }
 
@@ -116,7 +116,7 @@ namespace DashboardSubsystem.Implementation
                     Y = totalFake,
                 });
             }
-            result.DataPoints = result.DataPoints.OrderByDescending(c => c.Y).ToList();
+            result.DataPoints = result.DataPoints.OrderBy(c => c.Y).ToList();
             return result;
         }
 
@@ -171,7 +171,7 @@ namespace DashboardSubsystem.Implementation
             }
             
 
-            result.DataPoints = result.DataPoints.OrderByDescending(c => c.Y).ToList();
+            result.DataPoints = result.DataPoints.OrderBy(c => c.Y).ToList();
             return result;
         }
 
@@ -221,7 +221,7 @@ namespace DashboardSubsystem.Implementation
                     result.DataPoints.Add(model);
                 }
             }
-            result.DataPoints = result.DataPoints.OrderByDescending(c => c.Y).ToList();
+            result.DataPoints = result.DataPoints.OrderBy(c => c.Y).ToList();
             return result;
         }
 
@@ -274,7 +274,7 @@ namespace DashboardSubsystem.Implementation
                     Y = totalFake,
                 });
             }
-            result.DataPoints = result.DataPoints.OrderByDescending(c => c.Y).ToList();
+            result.DataPoints = result.DataPoints.OrderBy(c => c.Y).ToList();
             return result;
         }
 
@@ -326,7 +326,7 @@ namespace DashboardSubsystem.Implementation
                     Y = totalFake,
                 });
             }
-            result.DataPoints = result.DataPoints.OrderByDescending(c => c.Y).ToList();
+            result.DataPoints = result.DataPoints.OrderBy(c => c.Y).ToList();
             return result;
         }
         #endregion
