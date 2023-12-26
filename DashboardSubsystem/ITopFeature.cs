@@ -22,5 +22,6 @@ namespace DashboardSubsystem
         Task<TopModel> RevenueOnlineCourse(int month, int year);
         Task<TopModel> RegistrationOnlineCourse(int month, int year);
 
+        Task<IEnumerable<TopTrainerModel>> TopTrainer(int month, int year);
     }
 }
