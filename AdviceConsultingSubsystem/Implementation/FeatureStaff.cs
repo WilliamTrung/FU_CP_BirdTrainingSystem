@@ -11,6 +11,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using Models.DashboardModels.TicketRatioBetweenOnlOff;
 
 namespace AdviceConsultingSubsystem.Implementation
 {
@@ -240,6 +241,41 @@ namespace AdviceConsultingSubsystem.Implementation
         {
             var entity = await _unitOfWork.ConsultingTypeRepository.GetFirst(x => x.Id == consultingTypeId);
             await _unitOfWork.ConsultingTypeRepository.Delete(entity);
+        }
+
+        public async Task<TicketRatioOnlOff> GetTicketRatioOnlOff(int year)
+        {
+            List<Data> OnlineTicket = new List<Data>();
+            List<Data> OfflineTicket = new List<Data>();
+
+            var entities = await _unitOfWork.ConsultingTicketRepository.Get(x => x.Status == (int)Models.Enum.ConsultingTicket.Status.Finished && x.AppointmentDate.Value.Year == year);
+            for (int i = 1; i <= 12; i++)
+            {
+                var label = (Models.Enum.Month)i;
+                var listOnl = entities.Where(x => x.OnlineOrOffline == true && x.AppointmentDate.Value.Month == i);
+                var listOff = entities.Where(x => x.OnlineOrOffline == false && x.AppointmentDate.Value.Month == i);
+
+                var dataOnl = new Data()
+                {
+                    Label = label,
+                    Y = listOnl.Count(),
+                };
+                var dataOff = new Data()
+                {
+                    Label = label,
+                    Y = listOff.Count(),
+                };
+
+                OnlineTicket.Add(dataOnl);
+                OfflineTicket.Add(dataOff);
+            }
+            var model = new TicketRatioOnlOff()
+            {
+                Online = OnlineTicket,
+                Offline = OfflineTicket,
+            };
+
+            return model;
         }
     }
 }

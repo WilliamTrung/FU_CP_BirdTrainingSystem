@@ -8,7 +8,7 @@ namespace Models.DashboardModels.TicketRatioBetweenOnlOff
 {
     public class Data
     {
-        public string Label { get; set; } = null!;
+        public Models.Enum.Month Label { get; set; }
         public double Y { get; set; }
     }
     public class TicketRatioOnlOff
@@ -18,7 +18,7 @@ namespace Models.DashboardModels.TicketRatioBetweenOnlOff
             Online = new List<Data>();
             Offline = new List<Data>();
         }
-        List<Data> Online { get; set; } = null!;
-        List<Data> Offline { get; set; } = null!;
+        public List<Data> Online { get; set; } = null!;
+        public List<Data> Offline { get; set; } = null!;
     }
 }

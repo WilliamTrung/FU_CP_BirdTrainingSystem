@@ -1,4 +1,5 @@
-﻿using Models.Entities;
+﻿using Models.DashboardModels.TicketRatioBetweenOnlOff;
+using Models.Entities;
 using Models.ServiceModels.AdviceConsultantModels;
 using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
 using System;
@@ -30,5 +31,6 @@ namespace AppService.AdviceConsultingService
         Task CreateConsultingType(ConsultingTypeCreateNewServiceModel consultingType);
         Task UpdateConsultingType(ConsultingTypeServiceModel consultingType);
         Task DeleteConsultingType(int consultingTypeId);
+        Task<TicketRatioOnlOff> GetTicketRatioOnlOff(int year);
     }
 }
