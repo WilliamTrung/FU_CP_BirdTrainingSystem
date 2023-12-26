@@ -15,6 +15,7 @@ namespace BirdTrainingCenterAPI.Controllers.Overview
         {
             _dashboard = dashboardService;
         }
+        #region ByYear
         [HttpGet]
         [Route("workshop")]
         [EnableQuery]
@@ -51,6 +52,56 @@ namespace BirdTrainingCenterAPI.Controllers.Overview
             var result = await _dashboard.Top.RegistrationOnlineCourse((int)year);
             return Ok(new { Title = result.Title, DataPoints = result.DataPoints });
         }
-
+        #endregion
+        #region ByMonth
+        [HttpGet]
+        [Route("workshop-month")]
+        [EnableQuery]
+        public async Task<IActionResult> GetTopWorkshop(int? month, int? year)
+        {
+            if (month == null)
+            {
+                month = DateTime.UtcNow.AddHours(7).Month;
+            }
+            if (year == null)
+            {
+                year = DateTime.UtcNow.AddHours(7).Year;
+            }
+            var result = await _dashboard.Top.RegistrationWorkshop((int)month, (int)year);
+            return Ok(new { Title = result.Title, DataPoints = result.DataPoints });
+        }
+        [HttpGet]
+        [Route("training-course-month")]
+        [EnableQuery]
+        public async Task<IActionResult> GetTopTrainingCourse(int? month, int? year)
+        {
+            if (month == null)
+            {
+                month = DateTime.UtcNow.AddHours(7).Month;
+            }
+            if (year == null)
+            {
+                year = DateTime.UtcNow.AddHours(7).Year;
+            }
+            var result = await _dashboard.Top.RegistrationTrainingCourse((int)month, (int)year);
+            return Ok(new { Title = result.Title, DataPoints = result.DataPoints });
+        }
+        [HttpGet]
+        [Route("online-course-month")]
+        [EnableQuery]
+        public async Task<IActionResult> GetTopOnlineCourse(int? month, int? year)
+        {
+            if (month == null)
+            {
+                month = DateTime.UtcNow.AddHours(7).Month;
+            }
+            if (year == null)
+            {
+                year = DateTime.UtcNow.AddHours(7).Year;
+            }
+            var result = await _dashboard.Top.RegistrationOnlineCourse((int)month, (int)year);
+            return Ok(new { Title = result.Title, DataPoints = result.DataPoints });
+        }
+        #endregion
     }
 }
