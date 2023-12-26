@@ -73,5 +73,9 @@ namespace BirdTrainingCenterAPI.Controllers.Endpoints.AdviceConsulting
         [HttpPost]
         [Route("createConsultingType")]
         Task<IActionResult> CreateConsultingType(ConsultingTypeCreateNewServiceModel consultingType);
+
+        [HttpGet]
+        [Route("getTicketRatioOnlOff")]
+        Task<IActionResult> GetTicketRatioOnlOff(int year);
     }
 }

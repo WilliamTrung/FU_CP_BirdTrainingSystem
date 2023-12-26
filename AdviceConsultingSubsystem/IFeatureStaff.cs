@@ -1,4 +1,5 @@
-﻿using Models.ServiceModels.AdviceConsultantModels;
+﻿using Models.DashboardModels.TicketRatioBetweenOnlOff;
+using Models.ServiceModels.AdviceConsultantModels;
 using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
 using System;
 using System.Collections.Generic;
@@ -28,5 +29,6 @@ namespace AdviceConsultingSubsystem
         Task CreateConsultingType(ConsultingTypeCreateNewServiceModel consultingType);
         Task UpdateConsultingType(ConsultingTypeServiceModel consultingType);
         Task DeleteConsultingType(int consultingTypeId);
+        Task<TicketRatioOnlOff> GetTicketRatioOnlOff(int year);
     }
 }

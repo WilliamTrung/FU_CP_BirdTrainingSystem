@@ -184,6 +184,14 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
         }
 
         [HttpGet]
+        [Route("getTicketRatioOnlOff")]
+        public async Task<IActionResult> GetTicketRatioOnlOff(int year)
+        {
+            var result = await _consultingService.Staff.GetTicketRatioOnlOff(year);
+            return Ok(result);
+        }
+
+        [HttpGet]
         [Route("preCalculateConsultantPrice")]
         public async Task<IActionResult> PreCalculateConsultantPrice(int ticketId, int distance)
         {

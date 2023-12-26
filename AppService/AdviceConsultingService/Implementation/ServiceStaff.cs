@@ -1,6 +1,7 @@
 ﻿using AdviceConsultingSubsystem;
 using AppCore.Models;
 using ApplicationService.MailSettings;
+using Models.DashboardModels.TicketRatioBetweenOnlOff;
 using Models.Entities;
 using Models.ServiceModels.AdviceConsultantModels;
 using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
@@ -175,6 +176,10 @@ namespace AppService.AdviceConsultingService.Implementation
         public async Task UpdateDistancePricePolicy(DistancePricePolicyUpdateServiceModel distancePricePolicy)
         {
             await _consulting.Staff.UpdateDistancePricePolicy(distancePricePolicy);
+        }
+        public async Task<TicketRatioOnlOff> GetTicketRatioOnlOff(int year)
+        {
+            return await _consulting.Staff.GetTicketRatioOnlOff(year);
         }
     }
 }
