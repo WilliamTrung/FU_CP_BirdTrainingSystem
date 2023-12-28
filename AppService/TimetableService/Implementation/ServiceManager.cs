@@ -44,7 +44,7 @@ namespace AppService.TimetableService.Implementation
             //check 3 last days in month
             int daysInMonth = DateTime.DaysInMonth(checkDate.Year, checkDate.Month);
             int currentDay = DateTime.UtcNow.AddHours(7).Day;
-            if (currentDay > daysInMonth - 3)
+            if (currentDay >= daysInMonth - 3)
             {
                 throw new InvalidOperationException("Cannot log absent at last 3 days in month!");
             }
