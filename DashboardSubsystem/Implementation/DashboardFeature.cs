@@ -187,7 +187,8 @@ namespace DashboardSubsystem.Implementation
                                                                                        && c.Date.Year == year
                                                                                        && c.Status == (int)TrainerSlotStatus.Enabled
                                                                                        , nameof(Trainer)
-                                                                                       , $"{nameof(Trainer)}.{nameof(Trainer.TrainerSkills)}");
+                                                                                       , $"{nameof(Trainer)}.{nameof(Trainer.TrainerSkills)}"
+                                                                                       , $"{nameof(Trainer)}.{nameof(Trainer.User)}");
             }
             //get trainer with most consultant slot
             var consultantSlots = trainerSlots.Where(c => c.EntityTypeId == (int)Models.Enum.EntityType.AdviceConsulting);
