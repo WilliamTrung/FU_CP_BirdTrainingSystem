@@ -214,6 +214,19 @@ namespace DashboardSubsystem.Implementation
             {
                 result.Add(mostTraining);
             }
+            if(result.Count < 4)
+            {
+                if (month == 1)
+                {
+                    var prevResult = await GetTrainerContributionModels(12, year - 1);
+                    result = prevResult.ToList();
+                }
+                else
+                {
+                    var prevResult = await GetTrainerContributionModels(month - 1, year);
+                    result = prevResult.ToList();
+                }
+            }
             return result;
         }
         private TrainerContributionModel? GetMostConsultantSlotTrainer(IEnumerable<TrainerSlot> consultantSlots)
