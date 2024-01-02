@@ -195,7 +195,7 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
             return Ok(result);
         }
 
-        [HttpGet]
+        [HttpGet ]
         [Route("get-ticket-ratio-onl-off-by-month")]
         public async Task<IActionResult> GetTicketRatioOnlOffByMonth(int? month)
         {
