@@ -54,11 +54,11 @@ namespace OnlineCourseSubsystem.Implementation
             await _unitOfWork.CustomerCertificateDetailRepository.Update(cert);
         }
 
-        public async Task CheckCompleteLesson(int customerId, int lessionId)
+        public async Task CheckCompleteLesson(int customerId, int lessonId)
         {
             var entity = await _unitOfWork.CustomerLessonDetailRepository.GetFirst(c => c.CustomerId== customerId 
-                                                                                    && c.LessionId == lessionId
-                                                                                     , nameof(CustomerLessonDetail.Lession));
+                                                                                    && c.LessonId == lessonId
+                                                                                     , nameof(CustomerLessonDetail.Lesson));
             if(entity == null)
             {
                 throw new KeyNotFoundException("Customer has not enrolled to course!");
@@ -66,9 +66,9 @@ namespace OnlineCourseSubsystem.Implementation
             entity.IsComplete = true;
             await _unitOfWork.CustomerLessonDetailRepository.Update(entity);
 
-            var sectionId = entity.Lession.SectionId;
+            var sectionId = entity.Lesson.SectionId;
             var entities = await _unitOfWork.CustomerLessonDetailRepository.Get(c => c.CustomerId == customerId 
-                                                                                    && c.Lession.SectionId == sectionId);
+                                                                                    && c.Lesson.SectionId == sectionId);
             bool isCompleteAll = true;
             foreach (var item in entities)
             {
@@ -98,7 +98,7 @@ namespace OnlineCourseSubsystem.Implementation
             //force check complete for lessons
             foreach (var lesson in entity.Section.Lessons)
             {
-                var enrolled = lesson.CustomerLessonDetails.First(c => c.CustomerId == customerId && c.LessionId == lesson.Id);
+                var enrolled = lesson.CustomerLessonDetails.First(c => c.CustomerId == customerId && c.LessonId == lesson.Id);
                 enrolled.IsComplete = true;
             }
             entity.IsComplete = true;
@@ -171,7 +171,7 @@ namespace OnlineCourseSubsystem.Implementation
                     var enrolledLesson = new CustomerLessonDetail()
                     {
                         CustomerId = customerId,
-                        LessionId = lesson.Id,
+                        LessonId = lesson.Id,
                         IsComplete = false,
                     };
                     lesson.CustomerLessonDetails.Add(enrolledLesson);
@@ -334,7 +334,7 @@ namespace OnlineCourseSubsystem.Implementation
         public async Task<Models.Enum.OnlineCourse.Customer.Lesson.Status> CheckStatusLesson(int customerId, int lessonId)
         {
             var entity = await _unitOfWork.CustomerLessonDetailRepository.GetFirst(c => c.CustomerId == customerId
-                                                                                    && c.LessionId == lessonId);
+                                                                                    && c.LessonId == lessonId);
             if(entity == null)
             {
                 throw new KeyNotFoundException("Customer has not enrolled to course!");

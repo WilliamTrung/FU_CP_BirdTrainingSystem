@@ -122,7 +122,7 @@ namespace SP_AutoMapperConfig
                 destination.Picture = null;
                 destination.ReceivedDate = source.ReceiveDate.Value.ToDateOnly();
                 destination.Title = source.Certificate.Title;
-                destination.Description = source.Certificate.ShortDescrption;
+                destination.Description = source.Certificate.ShortDescription;
                 destination.BirdCenterName = source.Certificate.BirdCenterName;
                 destination.CustomerName = source.Customer.User.Name;
                 destination.OnlineCourseId = source.Certificate.OnlineCourseId;

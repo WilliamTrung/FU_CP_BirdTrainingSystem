@@ -414,7 +414,7 @@ namespace AppCore.Context
                     .HasMaxLength(512)
                     .IsUnicode(false);
 
-                entity.Property(e => e.ShortDescrption)
+                entity.Property(e => e.ShortDescription)
                     .HasMaxLength(500)
                     .IsUnicode(false);
 
@@ -543,7 +543,7 @@ namespace AppCore.Context
 
             modelBuilder.Entity<CustomerLessonDetail>(entity =>
             {
-                entity.HasKey(e => new { e.CustomerId, e.LessionId })
+                entity.HasKey(e => new { e.CustomerId, e.LessonId })
                     .HasName("PK__Customer__304EA374D16199C5");
 
                 entity.ToTable("Customer_LessonDetail");
@@ -554,9 +554,9 @@ namespace AppCore.Context
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKCustomer_L809461");
 
-                entity.HasOne(d => d.Lession)
+                entity.HasOne(d => d.Lesson)
                     .WithMany(p => p.CustomerLessonDetails)
-                    .HasForeignKey(d => d.LessionId)
+                    .HasForeignKey(d => d.LessonId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FKCustomer_L582869");
             });

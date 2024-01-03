@@ -59,7 +59,7 @@ namespace SP_AutoMapperConfig
             destination.Id = source.Id;
             destination.Role = (Role)Enum.ToObject(typeof(Role), source.RoleId);
             destination.Email = source.Email;
-            destination.PhoneNumber = source.PhoneNumber.Value.ToString();
+            destination.PhoneNumber = source.PhoneNumber.ToString();
             destination.Avatar = source.Avatar == null ? "" : source.Avatar;                        
             if (destination.Role == Role.Customer)
             {
@@ -93,7 +93,7 @@ namespace SP_AutoMapperConfig
         {
             destination.Role = (Role)Enum.ToObject(typeof(Role), source.RoleId);
             destination.Email = source.Email;
-            destination.PhoneNumber = source.PhoneNumber.Value.ToString();
+            destination.PhoneNumber = source.PhoneNumber.ToString();
             destination.Avatar = source.Avatar == null ? "" : source.Avatar;
             if (destination.Role == Role.Customer)
             {

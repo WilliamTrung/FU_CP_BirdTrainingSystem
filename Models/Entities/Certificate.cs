@@ -14,7 +14,7 @@ namespace Models.Entities
         public int OnlineCourseId { get; set; }
         public string BirdCenterName { get; set; } = null!;
         public string? Title { get; set; }
-        public string? ShortDescrption { get; set; }
+        public string? ShortDescription { get; set; }
         public string? Picture { get; set; }
 
         public virtual OnlineCourse OnlineCourse { get; set; } = null!;
