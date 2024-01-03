@@ -12,9 +12,10 @@ namespace Models.AuthModels
     public class RegisterRequestModel
     {
         public string Name { get; set; } = null!;
+        [EmailValidator(ErrorMessage = "Invalid email address")]
         public string Email { get; set; } = null!;
         public string Password { get; set; } = null!;
-        [PhoneValidator]
+        [PhoneValidator(ErrorMessage = "Invalid phone number")]
         public string PhoneNumber { get; set; } = null!;
 
     }
