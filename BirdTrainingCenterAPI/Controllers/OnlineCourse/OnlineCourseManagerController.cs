@@ -77,20 +77,22 @@ namespace BirdTrainingCenterAPI.Controllers.OnlineCourse
             {
                 foreach (var file in model.ResourceFiles)
                 {
-                    var temp = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.ONLINECOURSE_RESOURCE, _bucket.General);
+                    var extension = Path.GetExtension(file.FileName);
+                    var temp = await _firebaseService.UploadFile(file, $"{Guid.NewGuid().ToString()}{extension}", FirebaseFolder.ONLINECOURSE_RESOURCE, _bucket.General);
                     files += $"{temp},";
                 }
                 files = files.Substring(0, files.Length - 1);
-            }
-            await _onlineCourseService.Manager.ModifySection(model.ToOnlineCourseLessonModifyModel(files));
-            var section = await _onlineCourseService.Manager.GetSectionById(model.Id);
-            if (section.ResourceFiles != null)
-            {
-                foreach (var link in section.ResourceFiles.Split(","))
+                var section = await _onlineCourseService.Manager.GetSectionById(model.Id);
+                if (section.ResourceFiles != null)
                 {
-                    await _firebaseService.DeleteFile(link, _bucket.General);
+                    foreach (var link in section.ResourceFiles.Split(","))
+                    {
+                        await _firebaseService.DeleteFile(link, _bucket.General);
+                    }
                 }
-            }
+            }            
+            await _onlineCourseService.Manager.ModifySection(model.ToOnlineCourseLessonModifyModel(files));
+         
             return Ok();
         }
         [HttpDelete]
@@ -114,7 +116,16 @@ namespace BirdTrainingCenterAPI.Controllers.OnlineCourse
             string? video = null;
             if (model.Video != null)
             {
-                video = await _firebaseService.UploadFile(model.Video, $"{model.Video.FileName}_{DateTime.Now.ToString("yyyyMMddHHmmss")}", FirebaseFolder.VIDEO, _bucket.General);
+                var extension = Path.GetExtension(model.Video.FileName);
+                video = await _firebaseService.UploadFile(model.Video, $"{Guid.NewGuid().ToString()}{extension}", FirebaseFolder.VIDEO, _bucket.General);
+                var lesson = await _onlineCourseService.Manager.GetLessonById(model.Id);
+                if (lesson.Video != null)
+                {
+                    foreach (var link in lesson.Video.Split(","))
+                    {
+                        await _firebaseService.DeleteFile(link, _bucket.General);
+                    }
+                }
             }
             var lessonModify = model.ToOnlineCourseLessonModifyModel(video);
             await _onlineCourseService.Manager.ModifyLesson(lessonModify);
@@ -167,6 +178,13 @@ namespace BirdTrainingCenterAPI.Controllers.OnlineCourse
                     return BadRequest("Upload image only!");
                 }
                 picture = await _firebaseService.UploadFile(model.Picture, $"{model.Picture.FileName}_{DateTime.Now.ToString("yyyyMMddHHmmss")}", FirebaseFolder.WOKRSHOP, _bucket.General);
+                var course = await _onlineCourseService.Manager.GetCourseById(model.Id);
+                if (course.Picture != null) {
+                    foreach (var link in course.Picture.Split(","))
+                    {
+                        await _firebaseService.DeleteFile(link, _bucket.General);
+                    }
+                }
             }
             var courseModify = model.ToOnlineCourseModifyModel(picture);
             await _onlineCourseService.Manager.ModifyOnlineCourse(courseModify);

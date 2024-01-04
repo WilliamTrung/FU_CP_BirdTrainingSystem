@@ -57,7 +57,15 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
                 if (workshop.Pictures.Any(e => !e.IsImage()))
                 {
                     return BadRequest("Upload image only!");
+                }                
+                pictures = string.Empty;
+                foreach (var file in workshop.Pictures)
+                {
+                    var extension = Path.GetExtension(file.FileName);
+                    var temp = await _firebaseService.UploadFile(file, $"{Guid.NewGuid().ToString()}{extension}", FirebaseFolder.WOKRSHOP, _bucket.General);
+                    pictures += $"{temp},";
                 }
+                pictures = pictures.Substring(0, pictures.Length - 1);
                 var workshops = await _workshopService.Manager.GetAllWorkshops();
                 var workshopCurrent = workshops.First(c => c.Id == workshop.Id);
                 var workshopPictures = workshopCurrent.Picture;
@@ -65,13 +73,6 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
                 {
                     await _firebaseService.DeleteFile(picture, _bucket.General);
                 }
-                pictures = string.Empty;
-                foreach (var file in workshop.Pictures)
-                {
-                    var temp = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.WOKRSHOP, _bucket.General);
-                    pictures += $"{temp},";
-                }
-                pictures = pictures.Substring(0, pictures.Length - 1);
             }                       
             var workshopAdd = workshop.ToWorkshopModifyModel(pictures);
 
