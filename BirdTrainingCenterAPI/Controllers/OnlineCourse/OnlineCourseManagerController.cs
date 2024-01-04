@@ -62,7 +62,8 @@ namespace BirdTrainingCenterAPI.Controllers.OnlineCourse
             string? video = null;
             if(model.Video != null)
             {
-                video = await _firebaseService.UploadFile(model.Video, $"{model.Video.FileName}_{DateTime.Now.ToString("yyyyMMddHHmmss")}", FirebaseFolder.VIDEO, _bucket.General);
+                var extension = Path.GetExtension(model.Video.FileName);
+                video = await _firebaseService.UploadFile(model.Video, $"{Guid.NewGuid().ToString()}{extension}", FirebaseFolder.VIDEO, _bucket.General);
             } 
             var lessonAdd = model.ToOnlineCourseLessonAddModel(video);
             await _onlineCourseService.Manager.AddLesson(lessonAdd);
