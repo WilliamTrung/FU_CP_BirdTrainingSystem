@@ -251,10 +251,13 @@ namespace TrainingCourseSubsystem.Implementation
                 birdTrainingClass.Status = (int)Models.Enum.BirdTrainingProgress.Status.Assigned;
                 await _unitOfWork.BirdTrainingProgressRepository.Update(birdTrainingClass);
 
-                if (IsAssignForAllClass(birdTrainingClass.BirdTrainingCourse.Id))
+                if (birdTrainingClass.BirdTrainingCourse.Status == (int)Models.Enum.BirdTrainingCourse.Status.Registered)
                 {
-                    birdTrainingClass.BirdTrainingCourse.Status = (int)Models.Enum.BirdTrainingCourse.Status.Confirmed;
-                    await _unitOfWork.BirdTrainingProgressRepository.Update(birdTrainingClass);
+                    if (IsAssignForAllClass(birdTrainingClass.BirdTrainingCourse.Id))
+                    {
+                        birdTrainingClass.BirdTrainingCourse.Status = (int)Models.Enum.BirdTrainingCourse.Status.Confirmed;
+                        await _unitOfWork.BirdTrainingProgressRepository.Update(birdTrainingClass);
+                    }
                 }
                 return _mapper.Map<BirdTrainingProgressViewModel>(birdTrainingClass);
             }
