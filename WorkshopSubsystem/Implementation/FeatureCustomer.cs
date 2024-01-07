@@ -186,27 +186,45 @@ namespace WorkshopSubsystem.Implementation
         public async Task<PreBillingInformation> GetPreBillingInformation(int customerId, int workshopClassId)
         {
             var customer = await _unitOfWork.CustomerRepository.GetFirst(c => c.Id == customerId, nameof(Customer.MembershipRank));
-            if(customer == null)
+            PreBillingInformation result;
+            if (customer == null)
             {
                 throw new KeyNotFoundException("Customer not found!");
             }
-            var workshopClass = await _unitOfWork.WorkshopClassRepository.GetFirst(c => c.Id == workshopClassId, nameof(WorkshopClass.Workshop));
+            var workshopClass = await _unitOfWork.WorkshopClassRepository.GetFirst(c => c.Id == workshopClassId, nameof(WorkshopClass.Workshop), nameof(WorkshopClass.WorkshopClassDetails), $"{nameof(WorkshopClass.WorkshopClassDetails)}.{nameof(WorkshopClassDetail.WorkshopAttendances)}");
             if (workshopClass == null)
             {
                 throw new KeyNotFoundException("Class not found!");
             }
+            try
+            {
+                if (workshopClass.WorkshopClassDetails.First().WorkshopAttendances.Count() == workshopClass.Workshop.MaximumRegistration)
+                {
+                    throw new InvalidOperationException("This worskhop is full!");
+                }
+            } catch
+            {
+                
+            } finally
+            {
 #pragma warning disable CS8629 // Nullable value type may be null.
 #pragma warning disable CS8601 // Possible null reference assignment.
-            var result = new PreBillingInformation()
-            {
-                WorkshopTitle = workshopClass.Workshop.Title,
-                MembershipName = customer.MembershipRank.Name,
-                DiscountPercent = customer.MembershipRank.Discount.Value,
-                WorkshopPrice = workshopClass.Workshop.Price,
-            };
+                result = new PreBillingInformation()
+                {
+                    WorkshopTitle = workshopClass.Workshop.Title,
+                    MembershipName = customer.MembershipRank.Name,
+                    DiscountPercent = customer.MembershipRank.Discount.Value,
+                    WorkshopPrice = workshopClass.Workshop.Price,
+                };
 #pragma warning restore CS8601 // Possible null reference assignment.
 #pragma warning restore CS8629 // Nullable value type may be null.
+                
+            }
+
+
             return result;
+
+
         }
 
         public async Task DoFeedback(int customerId, FeedbackWorkshopCustomerAddModel model)
