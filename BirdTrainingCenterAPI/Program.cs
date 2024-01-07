@@ -86,6 +86,7 @@ builder.AddOnlineCourseFeature();
 builder.AddTrainingSkillFeature();
 builder.AddDashboardFeature();
 builder.AddWorkshopHostedService();
+builder.AddConsulitngTicketHostedService();
 builder.AddMembershipFeature();
 
 var app = builder.Build();
