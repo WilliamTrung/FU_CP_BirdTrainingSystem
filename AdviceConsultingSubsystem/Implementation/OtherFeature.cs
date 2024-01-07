@@ -87,7 +87,7 @@ namespace AdviceConsultingSubsystem.Implementation
             var entities = await _unitOfWork.ConsultingTicketRepository.Get();
             foreach (var entity in entities)
             {
-                var date = DateTime.Now;
+                var date = DateTime.UtcNow.AddHours(7);
                 if (entity.AppointmentDate < date && entity.Status == (int)Models.Enum.ConsultingTicket.Status.WaitingForApprove)
                 {
                     entity.Status = (int)Models.Enum.ConsultingTicket.Status.Cancelled;
