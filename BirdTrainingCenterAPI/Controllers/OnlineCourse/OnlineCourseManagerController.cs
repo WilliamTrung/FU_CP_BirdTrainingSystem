@@ -47,7 +47,8 @@ namespace BirdTrainingCenterAPI.Controllers.OnlineCourse
             {
                 foreach (var file in model.ResourceFiles)
                 {
-                    var temp = await _firebaseService.UploadFile(file, file.FileName, FirebaseFolder.ONLINECOURSE_RESOURCE, _bucket.General);
+                    var extension = Path.GetExtension(file.FileName);
+                    var temp = await _firebaseService.UploadFile(file, $"{Guid.NewGuid().ToString()}{extension}", FirebaseFolder.ONLINECOURSE_RESOURCE, _bucket.General);
                     files += $"{temp},";
                 }
                 files = files.Substring(0, files.Length - 1);

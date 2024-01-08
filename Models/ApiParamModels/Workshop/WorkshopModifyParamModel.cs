@@ -11,7 +11,7 @@ namespace Models.ApiParamModels.Workshop
     public class WorkshopModifyParamModel
     {
         public int Id { get; set; }
-        public string? Location { get; set; }
+        //public string? Location { get; set; }
         [SP_Validator.PositiveNumber]
         public int? MinimumRegistration { get; set; }
         [SP_Validator.PositiveNumber]
@@ -37,7 +37,7 @@ namespace Models.ApiParamModels.Workshop
                 Price = this.Price,
                 TotalSlot = this.TotalSlot,
                 Picture = picture,
-                Location = this.Location,
+                //Location = this.Location,
                 MinimumRegistration = this.MinimumRegistration,
                 MaximumRegistration = this.MaximumRegistration,
             };
