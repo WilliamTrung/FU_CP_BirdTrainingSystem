@@ -210,6 +210,14 @@ namespace TrainingCourseSubsystem.Implementation
                 entity.TrainerSlot.SlotId = reportModModel.SlotId;
                 entity.TrainerSlot.Date = reportModModel.Date;
 
+                DateTime currentDate = DateTime.UtcNow.AddHours(7);
+                DateTime trainDate = reportModModel.Date;
+
+                int tmpRes = currentDate.CompareTo(trainDate);
+                if (tmpRes < 0)
+                {
+                    entity.Status = (int)Models.Enum.BirdTrainingReport.Status.NotYet;
+                }
                 await _unitOfWork.BirdTrainingReportRepository.Update(entity);
             }
 
@@ -382,7 +390,7 @@ namespace TrainingCourseSubsystem.Implementation
                 {
                     var policy = await _unitOfWork.TrainingCourseCheckOutPolicyRepository.GetFirst(e => e.Id == birdTrainingCourse.TrainingPricePolicyId
                                                                                                   && e.Status == (int)Models.Enum.TCCheckOutPolicy.Status.Active);
-                    if(policy == null)
+                    if (policy == null)
                     {
                         throw new InvalidOperationException("Training Price Policy is not valid or active");
                     }
@@ -528,7 +536,7 @@ namespace TrainingCourseSubsystem.Implementation
             var skillsOfTrainer = await _unitOfWork.SkillRepository.Get(c => c.TrainerSkills.Any(e => e.TrainerId == trainerId));
             foreach (var trainableSkill in trainableSkills)
             {
-                if(skillsOfTrainer.Any(c => c.Id == trainableSkill.SkillId))
+                if (skillsOfTrainer.Any(c => c.Id == trainableSkill.SkillId))
                 {
                     return true;
                 }

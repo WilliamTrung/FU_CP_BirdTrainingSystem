@@ -117,9 +117,9 @@ namespace TrainingCourseSubsystem.Implementation
             else
             {
                 var birdSkillReceiveds = _unitOfWork.BirdSkillReceivedRepository.Get(e => e.BirdId == addDeleteModel.BirdId).Result.ToList();
-                foreach(var skill in birdSkillReceiveds)
+                foreach (var skill in birdSkillReceiveds)
                 {
-                    if(skill.BirdSkillId != addDeleteModel.BirdSkillId)
+                    if (skill.BirdSkillId != addDeleteModel.BirdSkillId)
                     {
                         var entity = _mapper.Map<BirdSkillReceived>(addDeleteModel);
                         await _unitOfWork.BirdSkillReceivedRepository.Add(entity);
@@ -262,16 +262,16 @@ namespace TrainingCourseSubsystem.Implementation
             var entities = await _unitOfWork.BirdSkillRepository.Get();
             var models = _mapper.Map<IEnumerable<BirdSkillViewModel>>(entities);
             bool nameAll = true;
-            foreach(var model in models)
+            foreach (var model in models)
             {
-                if(model.Id == 0 && model.Name == "All")
+                if (model.Id == 0 && model.Name == "All")
                 {
                     nameAll = false;
                 }
             }
-            if(nameAll)
+            if (nameAll)
             {
-                models.ToList().Add(new BirdSkillViewModel() { Id = 0, Name = "All"});
+                models.ToList().Add(new BirdSkillViewModel() { Id = 0, Name = "All" });
             }
             return models;
         }
@@ -387,6 +387,20 @@ namespace TrainingCourseSubsystem.Implementation
             var entities = await _unitOfWork.TrainingCourseCheckOutPolicyRepository.Get();
             var models = _mapper.Map<IEnumerable<TrainingCourseCheckOutPolicyModel>>(entities);
             return models;
+        }
+
+        public async Task SetLateTrainingSlotAbsent()
+        {
+            DateTime currentDate = DateTime.UtcNow.AddHours(7);
+            var entities = await _unitOfWork.BirdTrainingReportRepository.Get(expression: null, nameof(BirdTrainingReport.TrainerSlot));
+            entities = entities.Where(e => currentDate.CompareTo(e.TrainerSlot.Date) > 0
+                                        && e.Status == (int)Models.Enum.BirdTrainingReport.Status.NotYet).ToList();
+
+            foreach (var entity in entities)
+            {
+                entity.Status = (int)Models.Enum.BirdTrainingReport.Status.Absent;
+                await _unitOfWork.BirdTrainingReportRepository.Update(entity);
+            }
         }
     }
 }
