@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Models.Enum.BirdTrainingReport
+namespace AppService.HostedService
 {
-    public enum Status
+    public interface ITrainingCourseHostedService : IDisposable
     {
-        NotYet = 0,
-        Done = 1,
-        Absent = 2,
+        Task LateMarkTrainingSlot();
     }
 }
