@@ -16,5 +16,11 @@ namespace BirdTrainingCenterAPI.Startup
             builder.Services.AddTransient<IConsultingTicketHostedService, ConsultingTicketHostedService>();
             builder.Services.AddHostedService<ConsultingTicketBackgroundService>();
         }
+
+        public static void AddTrainingCourseHostedService(this WebApplicationBuilder builder)
+        {
+            builder.Services.AddTransient<ITrainingCourseHostedService, TrainingCourseHostedService>();
+            builder.Services.AddHostedService<TrainingCourseBackgroundService>();
+        }
     }
 }
