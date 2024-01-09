@@ -1,4 +1,5 @@
-﻿using Models.ServiceModels.OnlineCourseModels;
+﻿using Models.Entities;
+using Models.ServiceModels.OnlineCourseModels;
 using Models.ServiceModels.OnlineCourseModels.Certificate;
 using Models.ServiceModels.OnlineCourseModels.Feedback;
 using Models.ServiceModels.OnlineCourseModels.Transaction;
