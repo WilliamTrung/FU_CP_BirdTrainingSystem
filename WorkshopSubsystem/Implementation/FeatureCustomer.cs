@@ -279,5 +279,15 @@ namespace WorkshopSubsystem.Implementation
             }
             return (Status)entity.Status;
         }
+
+        public async Task<Customer> GetCustomerById(int customerId)
+        {
+            var customer = await _unitOfWork.CustomerRepository.GetFirst(c => c.Id == customerId, nameof(Customer.User), nameof(Customer.MembershipRank));
+            if(customer == null)
+            {
+                throw new KeyNotFoundException("Customer not found!");
+            }
+            return customer;
+        }
     }
 }
