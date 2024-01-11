@@ -1,4 +1,5 @@
 ﻿using AdministrativeSubsystem;
+using Models.AuthModels;
 using Models.Enum;
 using Models.ServiceModels.UserModels;
 using Models.ServiceModels.UserModels.Profile;
@@ -13,9 +14,11 @@ namespace AppService.AdministrativeService.Implementation
     public class ServiceProfile : IServiceProfile
     {
         private IFeatureProfileManagement _profile;
-        public ServiceProfile(IFeatureProfileManagement profile)
+        private IAuthService _authService;
+        public ServiceProfile(IFeatureProfileManagement profile, IAuthService authService)
         {
             _profile = profile;
+            _authService = authService;
         }
         public async Task<ProfileViewModel> GetProfile(int id, Role role)
         {
@@ -30,18 +33,25 @@ namespace AppService.AdministrativeService.Implementation
             return await _profile.UpdateAvatar(usedId, avatar);
         }
 
-        public async Task UpdateInformation(int id, Role role, AdditionalUpdateModel model)
+        public async Task<string?> UpdateInformation(int id, Role role, AdditionalUpdateModel model)
         {
+            string? newToken = null;
+            LoginRequestModel? newLogin = null;
             if(role == Role.Customer)
             {
-                await _profile.UpdateCustomerAdditionalInformation(id, model);
+                newLogin = await _profile.UpdateCustomerAdditionalInformation(id, model);
             } else if (role == Role.Trainer)
             {
-                await _profile.UpdateTrainerAdditionalInformation(id, model);
+                newLogin = await _profile.UpdateTrainerAdditionalInformation(id, model);
             } else
             {
-                await _profile.UpdateUserInformation(id, model);
+                newLogin = await _profile.UpdateUserInformation(id, model);
             }
+            if(newLogin != null)
+            {
+                newToken = await _authService.Login(newLogin);
+            }
+            return newToken;
         }
     }
 }

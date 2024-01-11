@@ -1,5 +1,6 @@
 ﻿using AppRepository.UnitOfWork;
 using AutoMapper;
+using Models.AuthModels;
 using Models.Entities;
 using Models.Enum;
 using Models.ServiceModels.UserModels;
@@ -16,7 +17,7 @@ namespace AdministrativeSubsystem.Implementation
     {
         private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
-        private readonly IFeatureUserManagement _userManagement;
+        private readonly IFeatureUserManagement _userManagement;        
         public FeatureProfileManagement(IUnitOfWork uow, IMapper mapper, IFeatureUserManagement userManagement)
         {
             _uow = uow;
@@ -72,8 +73,8 @@ namespace AdministrativeSubsystem.Implementation
             return temp==null?string.Empty:temp;
         }
 
-        public async Task UpdateCustomerAdditionalInformation(int customerId, AdditionalUpdateModel model)
-        {
+        public async Task<LoginRequestModel?> UpdateCustomerAdditionalInformation(int customerId, AdditionalUpdateModel model)
+        {            
             var customer = await _uow.CustomerRepository.GetFirst(c => c.Id == customerId);
             if(customer == null)
             {
@@ -88,12 +89,12 @@ namespace AdministrativeSubsystem.Implementation
                 customer.Gender = model.Gender;
             }
             await _uow.CustomerRepository.Update(customer);
-            await UpdateUserInformation(customer.UserId, model);            
+            return await UpdateUserInformation(customer.UserId, model);            
         }
 
-        public async Task UpdateTrainerAdditionalInformation(int trainerId, AdditionalUpdateModel model)
+        public async Task<LoginRequestModel?> UpdateTrainerAdditionalInformation(int trainerId, AdditionalUpdateModel model)
         {
-            var trainer= await _uow.TrainerRepository.GetFirst(c => c.Id == trainerId, nameof(Trainer.ConsultingTickets));
+            var trainer= await _uow.TrainerRepository.GetFirst(c => c.Id == trainerId, nameof(Trainer.ConsultingTickets));            
             if (trainer == null)
             {
                 throw new KeyNotFoundException("Customer not found!");
@@ -119,13 +120,14 @@ namespace AdministrativeSubsystem.Implementation
                 }
             }
             await _uow.TrainerRepository.Update(trainer);
-            await UpdateUserInformation(trainer.UserId, model);
+            return await UpdateUserInformation(trainer.UserId, model);
         }
 
 
-        public async Task UpdateUserInformation(int id, UserUpdateModel model)
+        public async Task<LoginRequestModel?> UpdateUserInformation(int id, UserUpdateModel model)
         {
             var user = await _uow.UserRepository.GetFirst(c => c.Id == id);
+            LoginRequestModel? newLogin = null;
             if (user == null)
             {
                 throw new KeyNotFoundException("User not found!");
@@ -137,6 +139,8 @@ namespace AdministrativeSubsystem.Implementation
             if(model.Email != null)
             {
                 user.Email = model.Email;
+                newLogin = new LoginRequestModel();
+                newLogin.Email = model.Email;
             }
             if(model.PhoneNumber != null)
             {
@@ -147,6 +151,10 @@ namespace AdministrativeSubsystem.Implementation
                 user.Password = model.Password;
             }
             await _uow.UserRepository.Update(user);
+            if(newLogin != null) {
+                newLogin.Password = user.Password;
+            }            
+            return newLogin;
         }
     }
 }
