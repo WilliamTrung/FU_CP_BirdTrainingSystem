@@ -1,4 +1,5 @@
-﻿using Models.Enum;
+﻿using Models.AuthModels;
+using Models.Enum;
 using Models.ServiceModels.UserModels;
 using Models.ServiceModels.UserModels.Profile;
 using System;
@@ -12,9 +13,9 @@ namespace AdministrativeSubsystem
     public interface IFeatureProfileManagement
     {
         Task<string> UpdateAvatar(int userId, string avatar);
-        Task UpdateUserInformation(int id, UserUpdateModel model);
-        Task UpdateCustomerAdditionalInformation(int customerId, AdditionalUpdateModel model);
-        Task UpdateTrainerAdditionalInformation(int trainerId, AdditionalUpdateModel model);
+        Task<LoginRequestModel?> UpdateUserInformation(int id, UserUpdateModel model);
+        Task<LoginRequestModel?> UpdateCustomerAdditionalInformation(int customerId, AdditionalUpdateModel model);
+        Task<LoginRequestModel?> UpdateTrainerAdditionalInformation(int trainerId, AdditionalUpdateModel model);
         Task<ProfileViewModel> GetUserProfile(int id);     
         Task<int> GetUserId(int id, Role role);
     }
