@@ -36,7 +36,7 @@ namespace AdviceConsultingSubsystem.Implementation
 
             if (date <= DateTime.UtcNow.AddHours(7))
             {
-                throw new Exception("We dont know how to time travel");
+                throw new Exception("Can not select time in past");
             }
 
             var pricePolicy = await _unitOfWork.ConsultingPricePolicyRepository.GetFirst(x => x.OnlineOrOffline == consultingTicket.OnlineOrOffline);

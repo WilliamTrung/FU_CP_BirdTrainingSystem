@@ -65,43 +65,54 @@ namespace AppService.WorkshopService.Implementation
 
         public async Task PurchaseClass(int customerId, int workshopClassId, string paymentCode)
         {
-            //var customerRegistered = await _workshop.Customer.GetCustomerRegistrationInfo(customerId, workshopClassId);
-            if (await _workshop.All.SetWorkshopClassFull(workshopClassId))
+            string customerEmail = string.Empty;
+            MailContent mailContent = new MailContent();
+            try
             {
-                throw new InvalidOperationException("This workshop class is full!");
-            }            
-            var billingInfo = await GetBillingInformation(customerId, workshopClassId);
-            var customerRegistered = await _workshop.Customer.OnPurchaseClass(customerId, workshopClassId, billingInfo);
-
-            //add transaction information
-            string formattedDateTime = DateTime.UtcNow.AddHours(7).ToString("ddMMMyyyyhhmm");
-            var transactionAddModel = new TransactionAddModel()
+                //var customerRegistered = await _workshop.Customer.GetCustomerRegistrationInfo(customerId, workshopClassId);
+                if (await _workshop.All.SetWorkshopClassFull(workshopClassId))
+                {
+                    throw new InvalidOperationException("This workshop class is full!");
+                }
+                var billingInfo = await GetBillingInformation(customerId, workshopClassId);
+                var customerRegistered = await _workshop.Customer.OnPurchaseClass(customerId, workshopClassId, billingInfo);
+                customerEmail = customerRegistered.Customer.User.Email;
+                //add transaction information
+                string formattedDateTime = DateTime.UtcNow.AddHours(7).ToString("ddMMMyyyyhhmm");
+                var transactionAddModel = new TransactionAddModel()
+                {
+                    CustomerId = customerId,
+                    EntityId = workshopClassId,
+                    EntityTypeId = (int)Models.Enum.EntityType.WorkshopClass,
+                    PaymentCode = paymentCode,
+                    Detail = $"{paymentCode}:{customerRegistered.CustomerId}:{customerRegistered.Customer.User.Email}-buy workshop class {customerRegistered.WorkshopClassId}:{customerRegistered.WorkshopClass.Workshop.Title}-at:{formattedDateTime}",
+                    Status = (int)Models.Enum.Transaction.Status.Paid,
+                    Title = "Workshop class enrolled",
+                    TotalPayment = billingInfo.TotalPrice,
+                };
+                Transaction transaction = await _transaction.AddTransaction(transactionAddModel);
+                mailContent.Subject = "Payment information for workshop purchasing";
+                mailContent.HtmlMessage = $"<h3>You have purchased for workshop: </h3><p>{customerRegistered.WorkshopClass.Workshop.Title}</p><br/>" +
+                        $"<h3>Your payment code: </h3>{transaction.PaymentCode.Split("_secret")[0]}<br/>" +
+                        $"<h3>Original cost: </h3>{billingInfo.WorkshopPrice} VND<br/>" +
+                        $"<h3>Discounted: </h3>{billingInfo.DiscountedPrice} VND<br/>" +
+                        $"<h3>Actual Cost: </h3>{transaction.TotalPayment} VND<br/>" +
+                        $"<h3>At {transaction.PaymentDate}</h3><br/><h2>Please save this information for service convenience!</h2>";
+                await _workshop.Staff.GenerateWorkshopAttendance(customerId, workshopClassId);
+            } catch (Exception ex)
             {
-                CustomerId = customerId,
-                EntityId = workshopClassId,
-                EntityTypeId = (int)Models.Enum.EntityType.WorkshopClass,
-                PaymentCode = paymentCode,
-                Detail = $"{paymentCode}:{customerRegistered.CustomerId}:{customerRegistered.Customer.User.Email}-buy workshop class {customerRegistered.WorkshopClassId}:{customerRegistered.WorkshopClass.Workshop.Title}-at:{formattedDateTime}",
-                Status = (int)Models.Enum.Transaction.Status.Paid,
-                Title = "Workshop class enrolled",
-                TotalPayment = billingInfo.TotalPrice,                 
-            };
-            Transaction transaction = await _transaction.AddTransaction(transactionAddModel);
-
-            var mailContent = new MailContent
+                var customer = await _workshop.Customer.GetCustomerById(customerId);
+                mailContent.Subject = "Payment error for workshop purchasing";
+                mailContent.HtmlMessage = $"<h3>You have encountered an error on purchasing workshop</h3>" +
+                        $"<h3>Your payment code: </h3>{paymentCode.Split("_secret")[0]}<br/>" +
+                        $"<h3>Content: </h3>{ex.Message}<br/>" +
+                        $"<h3>Contact to our hotline for a refund!</h3><br/><h2>Please save this information for service convenience!</h2>";
+                customerEmail = customer.User.Email;
+                throw;
+            } finally
             {
-                Subject = "Payment information for workshop purchasing",
-                HtmlMessage = $"<h3>You have purchased for workshop: </h3><p>{customerRegistered.WorkshopClass.Workshop.Title}</p><br/>" +
-                $"<h3>Your payment code: </h3>{transaction.PaymentCode.Split("_secret")[0]}<br/>" +
-                  $"<h3>Original cost: </h3>{billingInfo.WorkshopPrice} VND<br/>" +
-             $"<h3>Discounted: </h3>{billingInfo.DiscountedPrice} VND<br/>" +
-             $"<h3>Actual Cost: </h3>{transaction.TotalPayment} VND<br/>" +
-                $"<h3>At {transaction.PaymentDate}</h3><br/><h2>Please save this information for service convenience!</h2>"
-            };
-            Task t_sendMail =  _mailService.SendEmailAsync(customerRegistered.Customer.User.Email, mailContent);
-
-            Task t_generateWorkshopAttendance = _workshop.Staff.GenerateWorkshopAttendance(customerId, workshopClassId);
-            Task.WaitAll(t_sendMail, t_generateWorkshopAttendance);
+                await _mailService.SendEmailAsync(customerEmail, mailContent);
+            }
         }
         public async Task<IEnumerable<WorkshopClassViewModel>> GetWorkshopClassesByWorkshopId(int customerId, int workshopId)
         {

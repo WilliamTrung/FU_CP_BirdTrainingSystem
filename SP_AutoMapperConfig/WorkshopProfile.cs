@@ -286,6 +286,7 @@ namespace SP_AutoMapperConfig
         {
             destination.StartTime = source.StartTime.Value;
             destination.RegisterEndDate = source.RegisterEndDate.Value;
+            destination.WorkshopTitle = source.Workshop.Title;
             destination.WorkshopId = source.WorkshopId;
             destination.Status = null;
             destination.ClassStatus = (Models.Enum.Workshop.Class.Status)source.Status;

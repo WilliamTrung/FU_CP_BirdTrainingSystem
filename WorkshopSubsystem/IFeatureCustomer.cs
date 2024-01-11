@@ -29,6 +29,6 @@ namespace WorkshopSubsystem
         Task DoFeedback(int customerId, FeedbackWorkshopCustomerAddModel model);
         Task<FeedbackWorkshopCustomerViewModel?> GetFeedback(int customerId, int workshopId);
         Task<Models.Enum.Workshop.Class.Customer.Status?> CheckAttend(int customerId, int classSlotId);
-
+        Task<Customer> GetCustomerById (int customerId);
     }
 }
