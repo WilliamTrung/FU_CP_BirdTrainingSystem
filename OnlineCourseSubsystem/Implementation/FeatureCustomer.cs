@@ -362,5 +362,14 @@ namespace OnlineCourseSubsystem.Implementation
             int result = entity.IsComplete.Value ? 1 : 0;
             return (Models.Enum.OnlineCourse.Customer.Section.Status)result;
         }
+        public async Task<Customer> GetCustomerById(int customerId)
+        {
+            var customer = await _unitOfWork.CustomerRepository.GetFirst(c => c.Id == customerId, nameof(Customer.User), nameof(Customer.MembershipRank));
+            if (customer == null)
+            {
+                throw new KeyNotFoundException("Customer not found!");
+            }
+            return customer;
+        }
     }
 }

@@ -54,38 +54,53 @@ namespace AppService.OnlineCourseService.Implementation
 
         public async Task EnrollCourse(int customerId, int courseId, string paymentCode)
         {
-            if (await _onlineCourse.Customer.CheckEnrolledCourse(customerId, courseId) != Models.Enum.OnlineCourse.Customer.OnlineCourse.Status.Unenrolled)
+            string customerEmail = string.Empty;
+            MailContent mailContent = new MailContent();
+            try
             {
-                throw new InvalidOperationException("Customer has enrolled to course!");
-            }
-            var billing = await GetBillingInformation(customerId, courseId);
-            string formattedDateTime = DateTime.UtcNow.AddHours(7).ToString("ddMMMyyyyhhmm");
-            var transactionAddModel = new TransactionAddModel()
-            {
-                CustomerId = customerId,
-                EntityId = courseId,
-                EntityTypeId = (int)Models.Enum.EntityType.OnlineCourse,
-                PaymentCode = paymentCode,
-                Detail = $"{paymentCode}:{customerId}:{billing.Email}-enroll online course {courseId}:{billing.CourseTitle}-at:{formattedDateTime}",
-                Status = (int)Models.Enum.Transaction.Status.Paid,
-                Title = "Online course enrolled",
-                TotalPayment = billing.TotalPrice,
-            };
-            var transaction = await _transaction.AddTransaction(transactionAddModel);
+                if (await _onlineCourse.Customer.CheckEnrolledCourse(customerId, courseId) != Models.Enum.OnlineCourse.Customer.OnlineCourse.Status.Unenrolled)
+                {
+                    throw new InvalidOperationException("Customer has enrolled to course!");
+                }
+                var billing = await GetBillingInformation(customerId, courseId);
+                customerEmail = billing.Email;
+                string formattedDateTime = DateTime.UtcNow.AddHours(7).ToString("ddMMMyyyyhhmm");
+                var transactionAddModel = new TransactionAddModel()
+                {
+                    CustomerId = customerId,
+                    EntityId = courseId,
+                    EntityTypeId = (int)Models.Enum.EntityType.OnlineCourse,
+                    PaymentCode = paymentCode,
+                    Detail = $"{paymentCode}:{customerId}:{billing.Email}-enroll online course {courseId}:{billing.CourseTitle}-at:{formattedDateTime}",
+                    Status = (int)Models.Enum.Transaction.Status.Paid,
+                    Title = "Online course enrolled",
+                    TotalPayment = billing.TotalPrice,
+                };
+                var transaction = await _transaction.AddTransaction(transactionAddModel);
 
-            var mailContent = new MailContent
+                mailContent.Subject = "Payment information for online course purchasing";
+                mailContent.HtmlMessage = $"<h3>You have purchased for online course: </h3><p>{billing.CourseTitle}</p><br/>" +
+                 $"<h3>Your payment code: </h3>{transaction.PaymentCode.Split("_secret")[0]}<br/>" +
+                 $"<h3>Original cost: </h3>{billing.CoursePrice} VND<br/>" +
+                 $"<h3>Discounted: </h3>{billing.DiscountedPrice} VND<br/>" +
+                 $"<h3>Actual Cost: </h3>{transaction.TotalPayment} VND<br/>" +
+                 $"<h3>At {transaction.PaymentDate}</h3><br/><h2>Please save this information for service convenience!</h2>";                                
+                await _onlineCourse.Customer.EnrollCourse(customerId, billing);                
+            } catch (Exception ex)
             {
-                Subject = "Payment information for online course purchasing",
-                HtmlMessage = $"<h3>You have purchased for online course: </h3><p>{billing.CourseTitle}</p><br/>" +
-             $"<h3>Your payment code: </h3>{transaction.PaymentCode.Split("_secret")[0]}<br/>" +
-             $"<h3>Original cost: </h3>{billing.CoursePrice} VND<br/>" +
-             $"<h3>Discounted: </h3>{billing.DiscountedPrice} VND<br/>" +
-             $"<h3>Actual Cost: </h3>{transaction.TotalPayment} VND<br/>" +
-             $"<h3>At {transaction.PaymentDate}</h3><br/><h2>Please save this information for service convenience!</h2>"
-            };
-            Task t_sendMail = _mailService.SendEmailAsync(billing.Email, mailContent);
-            Task t_enrollCourse =  _onlineCourse.Customer.EnrollCourse(customerId, billing);
-            Task.WaitAll(t_sendMail, t_enrollCourse);
+                var customer = await _onlineCourse.Customer.GetCustomerById(customerId);
+                mailContent.Subject = "Payment error for online course purchasing";
+                mailContent.HtmlMessage = $"<h3>You have encountered an error on purchasing online course</h3>" +
+                        $"<h3>Your payment code: </h3>{paymentCode.Split("_secret")[0]}<br/>" +
+                        $"<h3>Content: </h3>{ex.Message}<br/>" +
+                        $"<h3>Contact to our hotline for a refund!</h3><br/><h2>Please save this information for service convenience!</h2>";
+                customerEmail = customer.User.Email;
+                throw;
+            } finally
+            {
+                await _mailService.SendEmailAsync(customerEmail, mailContent);
+            }
+            
         }
 
         public async Task<BillingModel> GetBillingInformation(int customerId, int courseId)

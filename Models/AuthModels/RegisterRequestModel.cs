@@ -11,6 +11,7 @@ namespace Models.AuthModels
 {
     public class RegisterRequestModel
     {
+        [UsernameValidator(ErrorMessage = "Invalid username\nUsernames can only contain letters, numbers, and underscores, and must be between 3-20 characters")]
         public string Name { get; set; } = null!;
         [EmailValidator(ErrorMessage = "Invalid email address")]
         public string Email { get; set; } = null!;

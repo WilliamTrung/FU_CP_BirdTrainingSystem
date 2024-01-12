@@ -71,8 +71,8 @@ namespace BirdTrainingCenterAPI.Controllers.Administrative
                 var id = accessToken.First(c => c.Type == CustomClaimTypes.Id);
                 var role = accessToken.First(c => c.Type == CustomClaimTypes.Role);
                 Models.Enum.Role roleEnum = (Models.Enum.Role)Enum.Parse(typeof(Models.Enum.Role), role.Value);
-                await _admin.Profile.UpdateInformation(Int32.Parse(id.Value), roleEnum, model);
-                return Ok();
+                var newToken = await _admin.Profile.UpdateInformation(Int32.Parse(id.Value), roleEnum, model);
+                return Ok(newToken);
             }
             catch (KeyNotFoundException ex)
             {

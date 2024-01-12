@@ -1,4 +1,5 @@
-﻿using Models.ServiceModels.OnlineCourseModels;
+﻿using Models.Entities;
+using Models.ServiceModels.OnlineCourseModels;
 using Models.ServiceModels.OnlineCourseModels.Certificate;
 using Models.ServiceModels.OnlineCourseModels.Feedback;
 using Models.ServiceModels.OnlineCourseModels.Transaction;
@@ -32,5 +33,6 @@ namespace OnlineCourseSubsystem
         Task<OnlineCourseCertificateModel> GetCertificateModel(int customerId, int courseId);
         Task<IEnumerable<OnlineCourseCertificateModel>> GetCertificates(int customerId);
         Task<OnlineCourseModel> GetCourseById(int customerId, int courseId);
+        Task<Customer> GetCustomerById(int customerId);
     }
 }

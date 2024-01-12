@@ -17,6 +17,7 @@ namespace Models.ServiceModels.WorkshopModels.WorkshopClass
     {
         public int Id { get; set; }
         public int WorkshopId { get; set; }
+        public string WorkshopTitle { get; set; } = null!;
         public DateTime StartTime { get; set; }
         public DateTime RegisterEndDate { get; set; }
         public string Location { get; set; } = null!;
