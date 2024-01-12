@@ -5,6 +5,7 @@ using Models.DashboardModels.TicketRatioBetweenOnlOff;
 using Models.Entities;
 using Models.ServiceModels.AdviceConsultantModels;
 using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
+using SP_Extension;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,9 @@ namespace AppService.AdviceConsultingService.Implementation
             _mail = mail;
         }
 
-        private string createHtmlMessage(string customerrName, string topic, string trainerName, string type, string slotStart, string link, decimal price)
+        private string createHtmlMessage(string customerrName, string topic, string trainerName,
+                                         string type, DateOnly date, string slotStart, 
+                                         string link, decimal price)
         {
             string ggLink = link != null ? $"<h3>Google Meet Link: {link}</h3> <br/> " : "";
             string message = $"<h3>Dear {customerrName}, <h3>Thank you for using our center's services.</h3> <br/>" +
@@ -30,6 +33,7 @@ namespace AppService.AdviceConsultingService.Implementation
                 $"<h3>Topic: {topic}</h3> <br/> " +
                 $"<h3>Consultants: {trainerName}</h3> <br/> " +
                 $"<h3>Type: {type}</h3> <br/>" +
+                $"<h3>Date: {date}</h3> <br/>" +
                 $"<h3>Time: {slotStart}</h3> <br/>" +
                 ggLink +
                 $"<h3>Price: {price} VND</h3> <br/> " +
@@ -58,7 +62,9 @@ namespace AppService.AdviceConsultingService.Implementation
                 type = "Offline";
             }
 
-            string message = createHtmlMessage(ticket.CustomerName, ticket.ConsultingType, ticket.TrainerName, type, ticket.ActualSlotStart, meetLink, (decimal)ticket.Price);
+            string message = createHtmlMessage(ticket.CustomerName, ticket.ConsultingType, ticket.TrainerName, 
+                                                type, ticket.AppointmentDate.ToDateOnly(), ticket.ActualSlotStart, 
+                                                meetLink, (decimal)ticket.Price);
             var mailContent = new MailContent()
             {
                 Subject = "Consulting Appointment Information",
@@ -86,7 +92,9 @@ namespace AppService.AdviceConsultingService.Implementation
             {
                 type = "Offline";
             }
-            string message = createHtmlMessage(ticket.CustomerName, ticket.ConsultingType, ticket.TrainerName, type, ticket.ActualSlotStart, meetLink, (decimal)ticket.Price);
+            string message = createHtmlMessage(ticket.CustomerName, ticket.ConsultingType, ticket.TrainerName, 
+                                                type, ticket.AppointmentDate.ToDateOnly(), ticket.ActualSlotStart,
+                                                meetLink, (decimal)ticket.Price);
             var mailContent = new MailContent()
             {
                 Subject = "Consulting Appointment Information",

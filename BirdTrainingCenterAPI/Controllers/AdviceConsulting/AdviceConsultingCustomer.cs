@@ -10,12 +10,14 @@ using Models.AuthModels;
 using Models.ServiceModels.AdviceConsultantModels;
 using Models.ServiceModels.AdviceConsultantModels.ConsultingTicket;
 using SP_Extension;
+using SP_Middleware;
 using System.Security.Claims;
 using TimetableSubsystem;
 
 namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
 {
     [Route("api/[controller]")]
+    [CustomAuthorize("Customer")]
     [ApiController]
     public class AdviceConsultingCustomer : AdviceConsultingBaseController, IAdviceConsultingCustomer
     {
@@ -27,67 +29,67 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
             _timetable = timetable;
         }
 
-        [HttpPost]
-        [Route("createNewAddress")]
-        public async Task<IActionResult> CreateNewAddress(AddressCreateNewParamModel paramAddress)
-        {
-            try
-            {
-                var accessToken = Request.DeserializeToken(_authService);
-                if (accessToken == null)
-                {
-                    return Unauthorized();
-                }
-                var customerId = Int32.Parse(accessToken.First(c => c.Type == CustomClaimTypes.Id).Value);
-                var address = paramAddress.Convert_ParamModel_ServiceModel(customerId);
+        //[HttpPost]
+        //[Route("createNewAddress")]
+        //public async Task<IActionResult> CreateNewAddress(AddressCreateNewParamModel paramAddress)
+        //{
+        //    try
+        //    {
+        //        var accessToken = Request.DeserializeToken(_authService);
+        //        if (accessToken == null)
+        //        {
+        //            return Unauthorized();
+        //        }
+        //        var customerId = Int32.Parse(accessToken.First(c => c.Type == CustomClaimTypes.Id).Value);
+        //        var address = paramAddress.Convert_ParamModel_ServiceModel(customerId);
 
-                var result = await _consultingService.Customer.CreateNewAddress(address);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
-        }
+        //        var result = await _consultingService.Customer.CreateNewAddress(address);
+        //        return Ok(result);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        //    }
+        //}
 
-        [HttpGet]
-        [Route("getListAddress")]
-        public async Task<IActionResult> GetListAddress()
-        {
-            try
-            {
-                var accessToken = Request.DeserializeToken(_authService);
-                if (accessToken == null)
-                {
-                    return Unauthorized();
-                }
-                var customerId = Int32.Parse(accessToken.First(c => c.Type == CustomClaimTypes.Id).Value);
+        //[HttpGet]
+        //[Route("getListAddress")]
+        //public async Task<IActionResult> GetListAddress()
+        //{
+        //    try
+        //    {
+        //        var accessToken = Request.DeserializeToken(_authService);
+        //        if (accessToken == null)
+        //        {
+        //            return Unauthorized();
+        //        }
+        //        var customerId = Int32.Parse(accessToken.First(c => c.Type == CustomClaimTypes.Id).Value);
 
-                var result = await _consultingService.Customer.GetListAddress(customerId);
+        //        var result = await _consultingService.Customer.GetListAddress(customerId);
 
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
-        }
+        //        return Ok(result);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        //    }
+        //}
 
-        [HttpGet]
-        [Route("listCustomerConsultingTicket")]
-        public async Task<IActionResult> GetListConsultingTicketByCustomerId(int customerId)
-        {
-            try
-            {
-                var result = await _consultingService.Customer.GetListConsultingTicketByCustomerID(customerId);
+        //[HttpGet]
+        //[Route("listCustomerConsultingTicket")]
+        //public async Task<IActionResult> GetListConsultingTicketByCustomerId(int customerId)
+        //{
+        //    try
+        //    {
+        //        var result = await _consultingService.Customer.GetListConsultingTicketByCustomerID(customerId);
 
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
-        }
+        //        return Ok(result);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        //    }
+        //}
 
         [HttpPost]
         [Route("sendConsultingTicket")]
@@ -143,28 +145,28 @@ namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
             }        
         }
 
-        [HttpGet]
-        [Route("validateBeforeUsingSendConsultingTicket")]
-        public async Task<IActionResult> ValidateBeforeUsingSendConsultingTicket(int customerId)
-        {
-            try
-            {
-                var accessToken = Request.DeserializeToken(_authService);
-                if (accessToken == null)
-                {
-                    return Unauthorized();
-                }
-                var validate = await _consultingService.Customer.ValidateBeforeUsingSendConsultingTicket(customerId);
-                if (validate == false)
-                {
-                    return StatusCode(StatusCodes.Status503ServiceUnavailable, "Customer can not using this function because being fined");
-                }
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
-            }
-        }
+        //[HttpGet]
+        //[Route("validateBeforeUsingSendConsultingTicket")]
+        //public async Task<IActionResult> ValidateBeforeUsingSendConsultingTicket(int customerId)
+        //{
+        //    try
+        //    {
+        //        var accessToken = Request.DeserializeToken(_authService);
+        //        if (accessToken == null)
+        //        {
+        //            return Unauthorized();
+        //        }
+        //        var validate = await _consultingService.Customer.ValidateBeforeUsingSendConsultingTicket(customerId);
+        //        if (validate == false)
+        //        {
+        //            return StatusCode(StatusCodes.Status503ServiceUnavailable, "Customer can not using this function because being fined");
+        //        }
+        //        return Ok();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+        //    }
+        //}
     }
 }
