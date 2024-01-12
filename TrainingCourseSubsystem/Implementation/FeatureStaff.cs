@@ -52,6 +52,7 @@ namespace TrainingCourseSubsystem.Implementation
                             }
                         }
                         progress.Status = (int)Models.Enum.BirdTrainingProgress.Status.Cancel;
+                        progress.TrainerId = null;
                         await _unitOfWork.BirdTrainingProgressRepository.Update(progress);
                     }
                 }
