@@ -12,7 +12,7 @@ namespace AppService.TrainingCourseService
     {
         Task<IEnumerable<BirdTrainingProgressViewModel>> GetBirdTrainingProgressByTrainerId(int trainerId);
         Task MarkTrainingSkillDone(MarkSkillDone markDone);
-        Task<int> MarkTrainingSlotDone(int birdTrainingProgressId);
+        Task<int> MarkTrainingSlotDone(int birdTrainingReportId);
         Task<TimetableReportView> GetTimetableReportView(int trainerSlotId);
     }
 }
