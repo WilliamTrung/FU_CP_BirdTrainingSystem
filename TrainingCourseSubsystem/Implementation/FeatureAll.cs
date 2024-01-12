@@ -393,7 +393,7 @@ namespace TrainingCourseSubsystem.Implementation
         {
             DateTime currentDate = DateTime.UtcNow.AddHours(7);
             var entities = await _unitOfWork.BirdTrainingReportRepository.Get(expression: null, nameof(BirdTrainingReport.TrainerSlot));
-            entities = entities.Where(e => currentDate.CompareTo(e.TrainerSlot.Date) > 0
+            entities = entities.Where(e => currentDate.CompareTo(e.TrainerSlot.Date.AddDays(1)) > 0
                                         && e.Status == (int)Models.Enum.BirdTrainingReport.Status.NotYet).ToList();
 
             foreach (var entity in entities)
