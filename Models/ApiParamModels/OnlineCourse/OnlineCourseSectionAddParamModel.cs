@@ -14,7 +14,7 @@ namespace Models.ApiParamModels.OnlineCourse
         public string Title { get; set; } = null!;
         public string Description { get; set; } = null!;
         public List<IFormFile>? ResourceFiles { get; set; }
-        public OnlineCourseSectionAddModel ToOnlineCourseLessonModifyModel(string? files = null)
+        public OnlineCourseSectionAddModel ToOnlineCourseSectionAddModel(string? files = null)
         {
             return new OnlineCourseSectionAddModel
             {
