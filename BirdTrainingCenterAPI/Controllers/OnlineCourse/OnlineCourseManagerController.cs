@@ -53,7 +53,7 @@ namespace BirdTrainingCenterAPI.Controllers.OnlineCourse
                 }
                 files = files.Substring(0, files.Length - 1);
             }
-            await _onlineCourseService.Manager.AddSection(model.ToOnlineCourseLessonModifyModel(files));
+            await _onlineCourseService.Manager.AddSection(model.ToOnlineCourseSectionAddModel(files));
             return Ok();
         }
         [HttpPost]
