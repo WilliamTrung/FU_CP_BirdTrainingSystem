@@ -28,6 +28,10 @@ namespace Models.ApiParamModels.Workshop
 
         public WorkshopModifyModel ToWorkshopModifyModel(string? picture)
         {
+            if(Description != null && Description == string.Empty)
+            {
+                Description = null;
+            }
             return new WorkshopModifyModel
             {
                 Id = this.Id,
