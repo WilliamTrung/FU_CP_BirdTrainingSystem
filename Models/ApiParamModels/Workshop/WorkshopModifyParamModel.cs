@@ -28,8 +28,8 @@ namespace Models.ApiParamModels.Workshop
 
         public WorkshopModifyModel ToWorkshopModifyModel(string? picture)
         {
-            if(Description != null && Description == string.Empty)
-            {
+            if(Description != null && Description.Trim() == string.Empty)
+            {                
                 Description = null;
             }
             return new WorkshopModifyModel
