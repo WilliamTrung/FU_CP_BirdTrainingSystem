@@ -211,7 +211,7 @@ namespace SP_AutoMapperConfig
                 }
                 destination.Evidence = source.Evidence;
                 destination.Price = source.Price;
-                destination.Status = (Models.Enum.ConsultingTicket.Status)source.Status;
+                destination.Status = (Models.Enum.ConsultingTicket.Status)source.Status;    
                 destination.CustomerEmail = customer.User.Email;
                 destination.CustomerPhone = customer.User.PhoneNumber;
                 destination.CustomerAvatar = customer.User.Avatar;

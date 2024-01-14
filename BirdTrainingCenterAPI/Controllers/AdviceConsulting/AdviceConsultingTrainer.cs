@@ -12,10 +12,12 @@ using Models.ConfigModels;
 using Microsoft.Extensions.Options;
 using AppService.TimetableService;
 using Microsoft.AspNetCore.OData.Query;
+using SP_Middleware;
 
 namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
 {
     [Route("api/[controller]")]
+    [CustomAuthorize("Staff,Manager,Trainer")]
     [ApiController]
     public class AdviceConsultingTrainer : AdviceConsultingBaseController, IAdviceConsultingTrainer
     {

@@ -9,17 +9,17 @@ using AppService.TimetableService;
 using BirdTrainingCenterAPI.Helper;
 using Models.ServiceModels.AdviceConsultantModels;
 using Microsoft.AspNetCore.OData.Query;
+using SP_Middleware;
 
 namespace BirdTrainingCenterAPI.Controllers.AdviceConsulting
 {
     [Route("api/[controller]")]
+    [CustomAuthorize("Staff,Manager")]
     [ApiController]
     public class AdviceConsultingStaff : AdviceConsultingBaseController, IAdviceConsultingStaff
     {
-        private readonly ITimetableService _timetable;
-        public AdviceConsultingStaff(IAdviceConsultingService adviceConsultingService, IAuthService authService, ITimetableService timetable) : base(adviceConsultingService, authService)
+        public AdviceConsultingStaff(IAdviceConsultingService adviceConsultingService, IAuthService authService) : base(adviceConsultingService, authService)
         {
-            _timetable = timetable;
         }
         [HttpPut]
         [Route("approveConsultingTicket")]

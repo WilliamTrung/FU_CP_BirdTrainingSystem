@@ -19,6 +19,7 @@ namespace Models.ServiceModels.TrainingCourseModels.BirdTrainingCourse
         public int BirdId { get; set; }
         public int TrainingCourseId { get; set; }
         public int CustomerId { get; set; }
+        [SP_Validator.PositiveNumber]
         public decimal? TotalPrice { get; set; }
         //public decimal? DiscountedPrice { get; set; }
     }
