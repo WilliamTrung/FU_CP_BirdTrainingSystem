@@ -9,6 +9,7 @@ using Models.ConfigModels;
 using ApplicationService.MailSettings;
 using AppCore.Context;
 using TEST_CERTSAMPLE;
+using Microsoft.EntityFrameworkCore;
 
 namespace BirdTrainingCenterAPI.Startup
 {
@@ -25,9 +26,11 @@ namespace BirdTrainingCenterAPI.Startup
         {
             builder.Services.AddTransient<IAuthFeature, AuthFeature>();
             //Add services
+            var connectionData = builder.Configuration.GetRequiredSection("ConnectionData");
             builder.Services.AddDbContext<BirdTrainingCenterSystemContext>(opt =>
             {
                 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+                opt.UseNpgsql($"Server={connectionData["Server"]};Port={connectionData["Port"]};Database={connectionData["Database"]};User Id={connectionData["UID"]};Password={connectionData["Password"]};SSL Mode=Require;Trust Server Certificate=True;");
             });
             builder.Services.AddSingleton(_ =>
             {
