@@ -12,7 +12,7 @@ namespace SP_Validator
     {
         //^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$
         //private const string Pattern = @"^[a-zA-Z0-9_]{3,20}$";
-        private const string Pattern = @"^(?=[a-zA-Z0-9._]{3,20}$)(?!.*[_.]{2})[^_.].*[^_.]$";
+        private const string Pattern = @"^(?:[0-9a-zA-Z]+[ -]?)+[0-9a-zA-Z]$";
         protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
         {
             if (value == null)
