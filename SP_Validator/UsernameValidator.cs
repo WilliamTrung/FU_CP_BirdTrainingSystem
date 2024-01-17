@@ -10,8 +10,9 @@ namespace SP_Validator
 {
     public class UsernameValidator : ValidationAttribute
     {
-        private const string Pattern = @"^[a-zA-Z0-9_]{3,20}$";
-
+        //^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$
+        //private const string Pattern = @"^[a-zA-Z0-9_]{3,20}$";
+        private const string Pattern = @"^(?=[a-zA-Z0-9._]{3,20}$)(?!.*[_.]{2})[^_.].*[^_.]$";
         protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
         {
             if (value == null)
