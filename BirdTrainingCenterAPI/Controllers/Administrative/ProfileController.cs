@@ -97,6 +97,8 @@ namespace BirdTrainingCenterAPI.Controllers.Administrative
             {
                 var id = accessToken.First(c => c.Type == CustomClaimTypes.Id);
                 var role = accessToken.First(c => c.Type == CustomClaimTypes.Role);
+                var email = accessToken.First(c => c.Type == CustomClaimTypes.Email);
+                var name = accessToken.First(c => c.Type == CustomClaimTypes.Name);
                 Models.Enum.Role roleEnum = (Models.Enum.Role)Enum.Parse(typeof(Models.Enum.Role), role.Value);
 
                 var pictures = string.Empty;
@@ -112,7 +114,16 @@ namespace BirdTrainingCenterAPI.Controllers.Administrative
                 {
                     await _firebaseService.DeleteFile(oldAvatar, _bucket.General);
                 }
-                return Ok();
+                TokenModel newTokenModel = new TokenModel
+                {
+                    Avatar = avatarUrl,
+                    Role = roleEnum,
+                    Email = email.Value,
+                    Id = Int32.Parse(id.Value),
+                    Name = name.Value,                    
+                };
+                var newToken = _auth.GenerateToken(newTokenModel);
+                return Ok(newToken);
             }
             catch (KeyNotFoundException ex)
             {

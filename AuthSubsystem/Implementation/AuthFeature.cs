@@ -26,7 +26,7 @@ namespace AuthSubsystem.Implementation
             _mapper = mapper;
             _jwtConfig = jwtConfig.Value;
         }
-        private string GenerateToken(TokenModel user)
+        public string GenerateToken(TokenModel user)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtConfig.Key));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);

@@ -26,5 +26,6 @@ namespace AuthSubsystem
         Task<string> Register(RegisterRequestModel registerUser);
         Task<TokenModel?> ValidateToken(string? token);
         List<Claim> DeserializedToken(string accessToken);
+        string GenerateToken(TokenModel user);
     }
 }

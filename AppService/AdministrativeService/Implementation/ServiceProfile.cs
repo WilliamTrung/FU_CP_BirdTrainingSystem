@@ -36,7 +36,7 @@ namespace AppService.AdministrativeService.Implementation
         public async Task<string?> UpdateInformation(int id, Role role, AdditionalUpdateModel model)
         {
             string? newToken = null;
-            LoginRequestModel? newLogin = null;
+            LoginRequestModel? newLogin;
             if(role == Role.Customer)
             {
                 newLogin = await _profile.UpdateCustomerAdditionalInformation(id, model);
