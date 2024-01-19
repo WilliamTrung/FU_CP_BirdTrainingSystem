@@ -86,7 +86,7 @@ namespace AppService.OnlineCourseService.Implementation
                  $"<h3>Actual Cost: </h3>{transaction.TotalPayment} VND<br/>" +
                  $"<h3>At {transaction.PaymentDate}</h3><br/><h2>Please save this information for service convenience!</h2>";                                
                 await _onlineCourse.Customer.EnrollCourse(customerId, billing);
-                await _onlineCourse.Customer.GenerateCertificateOnEnroll(customerId, courseId);
+                //await _onlineCourse.Customer.GenerateCertificateOnEnroll(customerId, courseId);
             } catch (Exception ex)
             {
                 var customer = await _onlineCourse.Customer.GetCustomerById(customerId);
