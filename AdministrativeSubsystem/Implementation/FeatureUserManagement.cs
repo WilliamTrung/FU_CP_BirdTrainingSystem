@@ -225,49 +225,87 @@ namespace AdministrativeSubsystem.Implementation
 
         public async Task UpdateStatus(UserStatusUpdateModel model)
         {
-            var user = await _uow.UserRepository.GetFirst(c => c.Id == model.Id, nameof(User.Customers), nameof(User.Trainers));
-            await GenerateRoleModel(model.Id);
-            if(user.RoleId == (int)Role.Customer)
+            //var user = await _uow.UserRepository.GetFirst(c => c.Id == model.Id, nameof(User.Customers), nameof(User.Trainers));
+            //await GenerateRoleModel(model.Id);
+            if(model.Role == Role.Customer)
             {
+                var customer = await _uow.CustomerRepository.GetFirst(c => c.Id == model.Id);
                 Models.Enum.Customer.Status enumValue;
                 if (Enum.TryParse(model.Status, out enumValue))
                 {
-                    // Conversion successful
-                    var customer = user.Customers.First();
                     if (customer.Status != (int)enumValue)
                         customer.Status = (int)enumValue;
                     else
                         throw new InvalidDataException("Status is already set!");
-                    await _uow.UserRepository.Update(user);
-                }
-                else
+                    await _uow.CustomerRepository.Update(customer);
+                } else
                 {
-                    // Handle the case where the string doesn't match any enum value
                     throw new InvalidDataException("Invalid status for customer!");
                 }
-            } else if(user.RoleId == (int)Role.Trainer)
+            } else if (model.Role == Role.Trainer)
             {
+                var trainer = await _uow.TrainerRepository.GetFirst(c => c.Id == model.Id);
                 Models.Enum.Trainer.Status enumValue;
-                if (Enum.TryParse(model.Status, out enumValue))
-                {
-                    // Conversion successful
-                    var trainer = user.Trainers.First();
-                    if (trainer.Status != (int)enumValue)
+                    if (Enum.TryParse(model.Status, out enumValue))
+                    {
+                        // Conversion successful
+                        if (trainer.Status != (int)enumValue)
+                            trainer.Status = (int)enumValue;
+                        else
+                            throw new InvalidDataException("Status is already set!");
                         trainer.Status = (int)enumValue;
+                        await _uow.TrainerRepository.Update(trainer);
+                    }
                     else
-                        throw new InvalidDataException("Status is already set!");
-                    trainer.Status = (int)enumValue;
-                    await _uow.UserRepository.Update(user);
-                }
-                else
-                {
-                    // Handle the case where the string doesn't match any enum value
-                    throw new InvalidDataException("Invalid status for trainer!");
-                }
-            } else
+                    {
+                        // Handle the case where the string doesn't match any enum value
+                        throw new InvalidDataException("Invalid status for trainer!");
+                    }
+                } else
             {
                 throw new InvalidOperationException("Cannot change status for this role!");
             }
+            //if(user.RoleId == (int)Role.Customer)
+            //{
+            //    Models.Enum.Customer.Status enumValue;
+            //    if (Enum.TryParse(model.Status, out enumValue))
+            //    {
+            //        // Conversion successful
+            //        var customer = user.Customers.First();
+            //        if (customer.Status != (int)enumValue)
+            //            customer.Status = (int)enumValue;
+            //        else
+            //            throw new InvalidDataException("Status is already set!");
+            //        await _uow.UserRepository.Update(user);
+            //    }
+            //    else
+            //    {
+            //        // Handle the case where the string doesn't match any enum value
+            //        throw new InvalidDataException("Invalid status for customer!");
+            //    }
+            //} else if(user.RoleId == (int)Role.Trainer)
+            //{
+            //    Models.Enum.Trainer.Status enumValue;
+            //    if (Enum.TryParse(model.Status, out enumValue))
+            //    {
+            //        // Conversion successful
+            //        var trainer = user.Trainers.First();
+            //        if (trainer.Status != (int)enumValue)
+            //            trainer.Status = (int)enumValue;
+            //        else
+            //            throw new InvalidDataException("Status is already set!");
+            //        trainer.Status = (int)enumValue;
+            //        await _uow.UserRepository.Update(user);
+            //    }
+            //    else
+            //    {
+            //        // Handle the case where the string doesn't match any enum value
+            //        throw new InvalidDataException("Invalid status for trainer!");
+            //    }
+            //} else
+            //{
+            //    throw new InvalidOperationException("Cannot change status for this role!");
+            //}
         }
 
         public async Task DeleteUser(int userId)

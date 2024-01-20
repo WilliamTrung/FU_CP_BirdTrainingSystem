@@ -10,5 +10,6 @@ namespace Models.ServiceModels.UserModels
     {
         public int Id { get; set; }
         public string Status { get; set; } = null!;
+        public Models.Enum.Role Role { get; set; }
     }
 }
