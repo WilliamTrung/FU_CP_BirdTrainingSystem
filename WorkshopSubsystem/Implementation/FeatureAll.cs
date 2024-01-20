@@ -52,7 +52,7 @@ namespace WorkshopSubsystem.Implementation
         public async Task<IEnumerable<WorkshopClassDetailViewModel>> GetWorkshopClassDetailOnWorkshopClass(int workshopClassId)
         {
             var entities = await _unitOfWork.WorkshopClassDetailRepository.Get(c => c.WorkshopClassId == workshopClassId 
-                                                                                 && c.WorkshopClass.Workshop.Status != (int)Models.Enum.Workshop.Status.Inactive
+                                                                                 //&& c.WorkshopClass.Workshop.Status != (int)Models.Enum.Workshop.Status.Inactive
                                                                                  , nameof(WorkshopClassDetail.DaySlot)
                                                                                  , nameof(WorkshopClassDetail.WorkshopDetailTemplate));
             entities = entities.OrderBy(c => c.Id);
