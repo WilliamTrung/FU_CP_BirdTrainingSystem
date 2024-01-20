@@ -139,7 +139,15 @@ namespace DashboardSubsystem.Implementation
             result.Add(workshopData);
             result.Add(trainingCourseData);
             var transactionsInYear = await _uow.TransactionRepository.Get(c => c.PaymentDate.Value.Year == year);
-            var currentMonth = DateTime.UtcNow.AddHours(7).Month;
+            int currentMonth = 1;
+            var currentTime = DateTime.UtcNow.AddHours(7);
+            if (currentTime.Year == year)
+            {
+                currentMonth = currentTime.Month;
+            } else
+            {
+                currentMonth = 12;
+            }            
             for (int i = 0; i < currentMonth; i++)
             {
                 int month = i + 1;
