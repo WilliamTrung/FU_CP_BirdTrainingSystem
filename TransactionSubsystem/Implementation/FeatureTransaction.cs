@@ -80,7 +80,7 @@ namespace TransactionSubsystem.Implementation
             var pricePolicy = (decimal)ticket.ConsultingPricePolicyCalculate;
             var totalPrice = distancePrice + pricePolicy*totalSlot;
             var discountedPrice = await CalculateMemberShipDiscountedPrice(ticket.CustomerId, totalPrice);
-            var finalPrice = totalPrice - distancePrice;
+            var finalPrice = totalPrice - discountedPrice;
 
             dynamic price = new { FinalPrice = finalPrice, DiscountedPrice = discountedPrice, DistancePrice = distancePrice };
             return price;

@@ -114,9 +114,9 @@ namespace AdministrativeSubsystem.Implementation
                 //var listTickets = await _uow.ConsultingTicketRepository.Get(x => x.TrainerId == trainerId && x.Status != (int)Models.Enum.ConsultingTicket.Status.);
                 var listTickets = trainer.ConsultingTickets.Where(x => x.TrainerId == trainerId && 
                 (x.Status == (int)Models.Enum.ConsultingTicket.Status.Approved || x.Status == (int)Models.Enum.ConsultingTicket.Status.WaitingForApprove));
-                foreach (var ticket in listTickets)
+                if (listTickets.Count() > 0)
                 {
-                    ticket.GgMeetLink = model.GgMeetLink;
+                    throw new Exception("Cannot update Google Meet Link because another ticket is on progress!");
                 }
             }
             await _uow.TrainerRepository.Update(trainer);
