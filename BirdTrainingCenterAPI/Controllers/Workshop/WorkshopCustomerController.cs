@@ -40,10 +40,18 @@ namespace BirdTrainingCenterAPI.Controllers.Workshop
             if(workshopId == null)
             {
                 var result = await _workshopService.Customer.GetRegisteredClass(Int32.Parse(customerId.Value));
+                foreach (var item in result)
+                {
+                    item.ClassSlots = item.ClassSlots.OrderBy(c => c.StartTime).ToList();
+                }
                 return Ok(result);
             } else
             {
                 var result = await _workshopService.Customer.GetRegisteredClass(Int32.Parse(customerId.Value), (int)workshopId);
+                foreach (var item in result)
+                {
+                    item.ClassSlots = item.ClassSlots.OrderBy(c => c.StartTime).ToList();
+                }
                 return Ok(result);
             }            
         }
